@@ -1,0 +1,19 @@
+{% liquid
+  assign width = width | default: 13
+  assign height = height | default: 12
+  assign fill = fill | default: 'currentColor'
+
+  assign title_fallback = 'accessibility.icons.star_filled' | t
+  assign title = title | default: title_fallback
+%}
+
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="{{ width }}"
+  height="{{ height }}"
+  viewBox="0 0 {{width}} {{height}}"
+  fill="none"
+>
+  <title id="star-filled">{{ title }}</title>
+  <path d="M6.30877 0L7.79807 4.58359H12.6175L8.71851 7.41641L10.2078 12L6.30877 9.16718L2.40974 12L3.89904 7.41641L0 4.58359H4.81947L6.30877 0Z" fill="{{ fill}}"/>
+</svg>

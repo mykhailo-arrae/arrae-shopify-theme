@@ -1,0 +1,150 @@
+/*------------------------------------------------
+* Article Page
+------------------------------------------------*/
+
+@use 'core/unit' as u;
+@use 'core/style-guide/typography' as typography;
+@use 'core/style-guide/colors' as color;
+
+.Article {
+  &-header {
+    width: 100%;
+    max-width: u.rem-calc(640);
+  }
+
+  &-title {
+    margin: u.rem-calc(8) 0 0 0;
+    line-height: 1.25;
+    text-align: left;
+    text-transform: none;
+  }
+
+  &-published {
+    color: color.get(light-gray);
+    text-transform: uppercase;
+  }
+
+  &-featuredIllustration {
+    width: 100%;
+    max-width: 50rem;
+  }
+
+  &-featuredIllustrationPlaceholder {
+    padding: 0 0 75% 0;
+    background-size: cover;
+  }
+
+  &-content {
+    position: relative;
+    max-width: u.rem-calc(640);
+    margin: 0 auto;
+  }
+}
+
+.BackToBlog {
+  font-family: typography.get-font-family(heading);
+  text-align: center;
+  text-transform: uppercase;
+}
+
+/* ===================================================== */
+/* Comments */
+/* ===================================================== */
+
+.Comments {
+  max-width: u.rem-calc(640);
+
+  &-items {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  &-item {
+    display: block;
+    margin: 0;
+    padding: 0;
+  }
+
+  &-form {
+    max-width: 30rem;
+    margin: 0 auto;
+  }
+
+  &-formNote {
+    font-size: u.rem-calc(14);
+    font-style: italic;
+    text-align: center;
+  }
+
+  &-buttonContainer {
+    text-align: center;
+  }
+}
+
+.Comment {
+  position: relative;
+  background-color: $white;
+  border: u.rem-calc(1) solid $gray-60;
+  border-radius: u.rem-calc(3);
+  box-shadow: 0 u.rem-calc(1) u.rem-calc(4) color.get(light-gray);
+
+  &.is-spam {
+    opacity: 0.3;
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      margin: 0;
+      padding: u.rem-calc(16);
+      font-family: typography.get-font-family(body);
+      font-size: u.rem-calc(16);
+      font-weight: 700;
+      text-transform: uppercase;
+      background-color: color.get(off-white);
+    }
+  }
+
+  &.is-unapproved {
+    opacity: 0.75;
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      margin: 0;
+      padding: u.rem-calc(16);
+      font-family: typography.get-font-family(body);
+      font-size: u.rem-calc(16);
+      font-weight: 700;
+      text-transform: uppercase;
+      color: color.get(light-gray);
+      background-color: color.get(off-white);
+    }
+  }
+
+  &-content {
+    @at-root .Comment.is-spam & {
+      max-height: 3rem;
+      overflow: hidden;
+    }
+  }
+
+  &-info {
+    font-family: typography.get-font-family(heading);
+    margin: 0 0 u.rem-calc(16) 0;
+  }
+
+  &-author {
+    font-size: u.rem-calc(14);
+    color: color.get(dark-gray);
+  }
+
+  &-createdAt {
+    font-size: u.rem-calc(12);
+    color: color.get(light-gray);
+  }
+}

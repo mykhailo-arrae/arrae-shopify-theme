@@ -1,0 +1,90 @@
+/* Customer Engagement Footer */
+/* ================================================================== */
+
+@use 'core/unit' as u;
+@use 'core/style-guide/colors' as color;
+
+@mixin customer-engagement-title {
+  display: inline-block;
+  letter-spacing: $letter-spacing;
+  margin-bottom: 0;
+  margin-right: u.rem-calc(16);
+  margin-top: 0;
+  text-transform: uppercase;
+  vertical-align: middle;
+}
+
+.CustomerEngagement {
+  @include clearfix;
+}
+
+.CustomerEngagementNewsletter {
+  &-title {
+    @include customer-engagement-title;
+  }
+
+  &-form {
+    @include clearfix;
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  &-label {
+    display: none;
+  }
+
+  &-buttonWrapper {
+    float: left;
+  }
+
+  &-fieldGroup {
+    float: left;
+  }
+
+  &-submitButton {
+    @include standard-button;
+    margin-bottom: 0;
+    padding: u.rem-calc(12) u.rem-calc(16) u.rem-calc(8) u.rem-calc(16);
+  }
+
+  .CustomerEngagementNewsletter-field {
+    max-width: 320px;
+    margin-bottom: 0;
+    border-right-width: 0;
+
+    &:focus {
+      border-right-width: 0;
+    }
+  }
+}
+
+.CustomerEngagementSocial {
+  float: right;
+
+  &-title {
+    @include customer-engagement-title;
+
+    @media #{$small-only} {
+      display: block;
+      margin-bottom: u.rem-calc(8);
+    }
+  }
+
+  &-item {
+    display: inline-block;
+    margin-left: u.rem-calc(8);
+    margin-right: u.rem-calc(8);
+    vertical-align: middle;
+  }
+
+  &-itemLink {
+    display: block;
+  }
+
+  &-svgIcon {
+    display: block;
+    width: rem-calc(38);
+    height: rem-calc(38);
+    fill: color.get(dark-gray);
+  }
+}

@@ -1,0 +1,26 @@
+@use 'style-guide/colors' as color;
+@use 'style-guide/spacing' as spacing;
+@use 'style-guide/mixins' as mixin;
+
+.root {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+}
+
+.frame {
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+  position: relative;
+  // Match Figma aspect ratio
+  aspect-ratio: 398 / 507;
+  border-radius: spacing.get(size-8);
+  background-color: color.get(light-gray);
+}
+
+.image {
+  @include mixin.fill-parent();
+  object-fit: cover;
+  object-position: center;
+}

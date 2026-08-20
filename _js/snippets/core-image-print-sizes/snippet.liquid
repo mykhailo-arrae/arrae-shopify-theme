@@ -1,0 +1,14 @@
+{% liquid
+  assign image = image | default: null
+  assign sizes = sizes | default: '320,480,640,800,960,1024,1280'
+  assign sizes_array = sizes | split: ','
+%}
+{%- capture image_sizes -%}
+  {%- for size in sizes_array -%}
+    {%- assign size_request = size | round -%}
+    {{- image | image_url: width: size_request | append: ' ' | append: size | append: 'w' -}}
+    {%- unless forloop.last -%},{%- endunless -%}
+  {%- endfor -%}
+{%- endcapture -%}
+{%- assign image_sizes = image_sizes | strip_newlines | strip -%}
+{{- image_sizes -}}

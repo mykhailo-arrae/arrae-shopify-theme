@@ -1,0 +1,196 @@
+@use 'unit' as u;
+@use 'style-guide/media' as mq;
+@use 'style-guide/colors' as color;
+@use 'style-guide/spacing' as spacing;
+@use 'style-guide/typography' as typography;
+@use 'style-guide/mixins' as mixin;
+
+.root {
+  display: block;
+  width: 100%;
+  background-color: color.get(lightest-brown);
+  border-radius: spacing.get(size-8);
+  padding: 0;
+
+  @include mq.min(tabletlandscape) {
+    padding: spacing.get(size-24);
+  }
+}
+
+.inner {
+  @include mixin.container();
+  display: flex;
+  flex-direction: column;
+  gap: spacing.get(size-40);
+  padding-inline: spacing.get(size-24);
+  padding-block: spacing.get(size-24) spacing.get(size-36);
+
+  @include mq.min(tabletlandscape) {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+    gap: spacing.get(size-48);
+    align-items: start;
+    border-radius: spacing.get(size-12);
+    padding: spacing.get(size-56) spacing.get(size-48);
+  }
+}
+
+.intro {
+  display: flex;
+  flex-direction: column;
+  gap: spacing.get(size-24);
+  align-items: center;
+  text-align: center;
+
+  @include mq.min(tabletlandscape) {
+    align-items: flex-start;
+    text-align: left;
+  }
+}
+
+.heading {
+  @include typography.heading-4();
+  margin: 0;
+  color: color.get(dark-gray);
+  text-wrap: balance;
+
+  @include mq.min(tabletlandscape) {
+    @include typography.heading-3();
+  }
+}
+
+.subtitle {
+  @include typography.body(size-16, 300);
+  margin: 0;
+  max-width: u.rem-calc(360);
+  color: color.get(text);
+
+  @include mq.min(tabletlandscape) {
+    font-size: u.rem-calc(18);
+  }
+}
+
+.table {
+  display: flex;
+  flex-direction: column;
+  gap: spacing.get(size-24);
+
+  @include mq.min(tabletlandscape) {
+    gap: spacing.get(size-40);
+  }
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: spacing.get(size-16);
+  align-items: end;
+}
+
+.col-title {
+  @include typography.body(size-16, 600);
+  display: block;
+  width: 100%;
+  margin: 0;
+  padding-bottom: spacing.get(size-8);
+  color: color.get(dark-gray);
+  text-transform: uppercase;
+  letter-spacing: u.rem-calc(1.08);
+  border-bottom: 1px solid color.get(rose);
+
+  @include mq.min(tabletlandscape) {
+    font-size: u.rem-calc(20);
+    letter-spacing: u.rem-calc(1.2);
+  }
+}
+
+.media-cell {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-start;
+}
+
+.media-frame {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  max-width: u.rem-calc(141);
+  max-height: u.rem-calc(126);
+
+  @include mq.min(tabletlandscape) {
+    max-width: u.rem-calc(238);
+    max-height: u.rem-calc(217);
+  }
+}
+
+.media-img {
+  object-fit: contain;
+}
+
+.features {
+  align-items: start;
+  margin-top: spacing.get(size-20);
+
+  @include mq.min(tabletlandscape) {
+    margin-top: 0;
+  }
+}
+
+.feature-list {
+  @include mixin.reset-ul();
+  display: flex;
+  flex-direction: column;
+  row-gap: spacing.get(size-12);
+
+  @include mq.min(tabletlandscape) {
+    row-gap: u.rem-calc(18);
+  }
+}
+
+.feature {
+  display: flex;
+  gap: spacing.get(size-8);
+  align-items: flex-start;
+  text-align: left;
+}
+
+.text {
+  @include typography.body(size-14, 300);
+  color: color.get(dark-gray);
+  text-wrap: pretty;
+
+  @include mq.min(tabletlandscape) {
+    font-size: u.rem-calc(20);
+  }
+}
+
+.feature--product-a .text {
+  font-weight: 400;
+}
+
+.icon-container {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: spacing.get(size-20);
+  height: spacing.get(size-20);
+  border-radius: 50%;
+  overflow: hidden;
+  color: color.get(text);
+  background-color: color.get(rose);
+
+  &--checkmark {
+    color: color.get(on-white);
+    background-color: color.get(brown);
+  }
+
+  @include mq.min(tabletlandscape) {
+    width: spacing.get(size-24);
+    height: spacing.get(size-24);
+  }
+}
+
+.question-mark {
+  font-weight: 200;
+}

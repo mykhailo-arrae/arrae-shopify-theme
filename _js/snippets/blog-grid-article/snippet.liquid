@@ -1,0 +1,66 @@
+{% doc %}
+  @param {article} article - The article object (required)
+
+  @example
+  {% render 'blog-grid-article', article: article %}
+{% enddoc %}
+
+{% liquid
+  assign article = article | default: null
+  assign badge = article.tags | first | default: null
+%}
+
+<div class="{# style card #}">
+  <div class="{# style media #}">
+    <a
+      class="{# style mediaLink #}"
+      href="{{ article.url }}"
+      tabindex="-1"
+      aria-label="{{ 'blogs.article.read_more_aria_label' | t: title: article.title }}"
+    >
+      {% if article.image != blank %}
+        {% render 'core-image',
+          image: article.image,
+          mode: 'cover',
+          object_fit: 'cover',
+          lazyload: true,
+          srcset_print_sizes: '240,320,480,640'
+        %}
+      {% else %}
+        <div class="{# style mediaPlaceholder #}"></div>
+      {% endif %}
+    </a>
+  </div>
+
+  <div class="{# style content #}">
+    {% if article.title != blank %}
+      <a
+        class="{# style title #}"
+        href="{{ article.url }}"
+      >
+        {{ article.title }}
+      </a>
+    {% endif %}
+
+    <div class="{# style content-bottom #}">
+      {% if article.author != blank %}
+        <p class="{# style author #}">
+          {{ article.author }}
+        </p>
+      {% endif %}
+
+      <time
+        class="{# style date #}"
+        datetime="{{ article.published_at | date: '%Y-%m-%d' }}"
+      >
+        {{ article.published_at | date: format: 'month_day_year' }}
+      </time>
+
+      {% if badge != blank %}
+        <span class="{# style tag #}">
+          {{ badge }}
+        </span>
+      {% endif %}
+    </div>
+  </div>
+</div>

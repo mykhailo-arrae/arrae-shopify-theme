@@ -1,0 +1,367 @@
+{% liquid
+  assign heading = section.settings.heading
+  assign subheading = section.settings.subheading
+  assign button_label_1 = section.settings.button_label_1
+  assign button_link_1 = section.settings.button_link_1
+  assign button_label_2 = section.settings.button_label_2
+  assign button_link_2 = section.settings.button_link_2
+  assign featured_product = section.settings.featured_product
+
+  assign background_type = section.settings.background_type | default: 'image'
+  assign desktop_image = section.settings.desktop_image | default: null
+  assign mobile_image = section.settings.mobile_image | default: null
+  assign desktop_video = section.settings.desktop_video | default: null
+  assign mobile_video = section.settings.mobile_video | default: null
+  assign autoplay_video = section.settings.autoplay_video
+  assign autoplay_threshold = section.settings.autoplay_threshold | divided_by: 100.00
+  assign show_video_play_buttons = section.settings.show_video_play_buttons
+  assign show_video_sound_buttons = section.settings.show_video_sound_buttons
+  assign overlay = section.settings.overlay | default: null
+
+  assign desktop_content_position = section.settings.desktop_content_position
+  assign mobile_content_position = section.settings.mobile_content_position
+
+  assign is_first_section = false
+  if section.index == 1
+    assign is_first_section = true
+  endif
+%}
+
+<div class="{# style container #}">
+  <div
+    class="{# style outer-wrapper #}"
+    data-spacing="{{ is_first_section }}"
+  >
+    <div class="{# style background #}">
+      {% if background_type == 'image' %}
+        {%
+          render 'core-image',
+          image: desktop_image,
+          image_mobile: mobile_image,
+          object_fit 'cover',
+          preload: preload,
+          lazyload: lazyload,
+          srcset_print_sizes: '480,640,800,960,1024,1280,1440,1800,2000',
+          mobile_srcset_print_sizes: '320,480,640'
+        %}
+      {% else %}
+        {% assign video_id = 'js-hero-video-' | append: section.id %}
+        {% render 'core-video',
+          video: desktop_video,
+          video_mobile: mobile_video,
+          class: video_id,
+          autoplay: autoplay_video,
+          lazyload: true,
+          playsinline: true,
+          muted: true,
+          loop: true,
+          merge_responsive: false,
+          largest_contentful_paint: is_first_section
+        %}
+      {% endif %}
+
+      {% if overlay != blank %}
+        <div
+          class="{# style overlay #}"
+          style="background:{{ overlay }}"
+        ></div>
+      {% endif %}
+    </div>
+
+    <div class="{# style content-wrapper #}">
+      <div
+        class="{# style content #}"
+        data-mobile-position="{{ mobile_content_position }}"
+        data-desktop-position="{{ desktop_content_position }}"
+      >
+        <div class="{# style inner #}">
+          {% if heading != blank %}
+            {% if section.index == 1 %}
+              <h1 class="{# style heading #}">
+                {{ heading | newline_to_br }}
+              </h1>
+            {% else %}
+              <h2 class="{# style heading #}">
+                {{ heading | newline_to_br }}
+              </h2>
+            {% endif %}
+          {% endif %}
+
+          {% if subheading != blank %}
+            <div class="{# style subheading #}">
+              <p>{{ subheading }}</p>
+            </div>
+          {% endif %}
+
+          <div class="{# style buttons #}">
+            {% if button_label_1 != blank and button_link_1 != blank %}
+              {% render 'core-button',
+                label: button_label_1,
+                url: button_link_1,
+                style: 'secondary',
+                class: '{# style button-1 #}'
+              %}
+            {% endif %}
+            {% if button_label_2 != blank and button_link_2 != blank %}
+              {% render 'core-button',
+                label: button_label_2,
+                url: button_link_2,
+                style: 'primary',
+                class: '{# style button-2 #}'
+              %}
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {% if background_type != 'image' %}
+      <div
+        class="{# style backgroundControls #}"
+        data-mobile-position="{{ mobile_content_position }}"
+        data-desktop-position="{{ desktop_content_position }}"
+      >
+        {% render 'core-video-controls',
+          class: '{# style videoControls #}',
+          has_pause: show_video_play_buttons,
+          has_mute: show_video_sound_buttons,
+          video_class: video_id,
+          scroll_autoplay: autoplay_video,
+          intersection_threshold: autoplay_threshold
+        %}
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Hero",
+  "tag": "section",
+  "class": "{# style section #}",
+  "settings": [
+    {
+      "type": "header",
+      "content": "CONTENT"
+    },
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Burn body fat & reduce cravings"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Improve gut health with a targeted probiotic."
+    },
+    {
+      "type": "text",
+      "id": "button_label_1",
+      "label": "Button Label 1",
+      "info": "Required to show the button"
+    },
+    {
+      "type": "url",
+      "id": "button_link_1",
+      "label": "Button Link 1",
+      "info": "Required to show the button"
+    },
+    {
+      "type": "text",
+      "id": "button_label_2",
+      "label": "Button Label 2",
+      "info": "Required to show the button"
+    },
+    {
+      "type": "url",
+      "id": "button_link_2",
+      "label": "Button Link 2",
+      "info": "Required to show the button"
+    },
+    {
+      "type": "select",
+      "id": "desktop_content_position",
+      "label": "Desktop Content Position",
+      "options": [
+        {
+          "value": "top-left",
+          "label": "Top Left"
+        },
+        {
+          "value": "top-center",
+          "label": "Top Center"
+        },
+        {
+          "value": "top-right",
+          "label": "Top Right"
+        },
+        {
+          "value": "center-left",
+          "label": "Center Left"
+        },
+        {
+          "value": "center-center",
+          "label": "Center Center"
+        },
+        {
+          "value": "center-right",
+          "label": "Center Right"
+        },
+        {
+          "value": "bottom-left",
+          "label": "Bottom Left"
+        },
+        {
+          "value": "bottom-center",
+          "label": "Bottom Center"
+        },
+        {
+          "value": "bottom-right",
+          "label": "Bottom Right"
+        }
+      ],
+      "default": "bottom-left"
+    },
+    {
+      "type": "select",
+      "id": "mobile_content_position",
+      "label": "Mobile Content Position",
+      "options": [
+        {
+          "value": "top-left",
+          "label": "Top Left"
+        },
+        {
+          "value": "top-center",
+          "label": "Top Center"
+        },
+        {
+          "value": "top-right",
+          "label": "Top Right"
+        },
+        {
+          "value": "center-left",
+          "label": "Center Left"
+        },
+        {
+          "value": "center-center",
+          "label": "Center Center"
+        },
+        {
+          "value": "center-right",
+          "label": "Center Right"
+        },
+        {
+          "value": "bottom-left",
+          "label": "Bottom Left"
+        },
+        {
+          "value": "bottom-center",
+          "label": "Bottom Center"
+        },
+        {
+          "value": "bottom-right",
+          "label": "Bottom Right"
+        }
+      ],
+      "default": "bottom-left"
+    },
+    {
+      "type": "header",
+      "content": "MEDIA"
+    },
+    {
+      "type": "select",
+      "id": "background_type",
+      "label": "Background Type",
+      "options": [
+        {
+          "value": "image",
+          "label": "Image"
+        },
+        {
+          "value": "video",
+          "label": "Video"
+        }
+      ],
+      "default": "image"
+    },
+    {
+      "type": "image_picker",
+      "id": "desktop_image",
+      "label": "Desktop Image",
+      "info": "Recommended aspect ratio: 2:1",
+      "visible_if": "{{ section.settings.background_type == 'image' }}"
+    },
+    {
+      "type": "image_picker",
+      "id": "mobile_image",
+      "label": "Mobile Image",
+      "info": "Recommended aspect ratio: 3:4",
+      "visible_if": "{{ section.settings.background_type == 'image' }}"
+    },
+    {
+      "type": "video",
+      "id": "desktop_video",
+      "label": "Desktop Video",
+      "info": "Recommended aspect ratio: 2:1",
+      "visible_if": "{{ section.settings.background_type == 'video' }}"
+    },
+    {
+      "type": "video",
+      "id": "mobile_video",
+      "label": "Mobile Video",
+      "info": "Recommended aspect ratio: 3:4",
+      "visible_if": "{{ section.settings.background_type == 'video' }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay_video",
+      "label": "Autoplay Video",
+      "default": true,
+      "visible_if": "{{ section.settings.background_type == 'video' }}"
+    },
+    {
+      "type": "range",
+      "id": "autoplay_threshold",
+      "label": "Autoplay Threshold",
+      "min": 1,
+      "max": 99,
+      "step": 1,
+      "unit": "%",
+      "default": 10,
+      "info": "% of video element visible on screen before autoplay kicks in.",
+      "visible_if": "{{ section.settings.background_type == 'video' and section.settings.autoplay_video }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_video_sound_buttons",
+      "label": "Show Sound Buttons",
+      "default": true,
+      "visible_if": "{{ section.settings.background_type == 'video' }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_video_play_buttons",
+      "label": "Show Play/Pause Buttons",
+      "default": true,
+      "visible_if": "{{ section.settings.background_type == 'video' }}"
+    },
+    {
+      "type": "color_background",
+      "id": "overlay",
+      "label": "Overlay",
+      "default": "linear-gradient(180deg,rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.25) 100%)"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero",
+      "category": "Banners",
+      "settings": {}
+    }
+  ]
+}
+{% endschema %}

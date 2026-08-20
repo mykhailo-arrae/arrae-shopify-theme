@@ -1,0 +1,14 @@
+/^_js-dist\//*
+/^_js-test\//*
+/^_js\//*
+/^_misc\//*
+_sass
+bin
+biome.json
+colors.json
+devops
+package.json
+terser.config.json
+tmp
+tsconfig.json
+webpack_records.json

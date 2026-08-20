@@ -1,0 +1,43 @@
+@use 'unit' as u;
+
+.Comments {
+  max-width: u.rem-calc(640);
+  margin: auto;
+
+  &-title {
+    display: block;
+  }
+
+  &-items {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  &-item {
+    display: block;
+    margin: 0;
+    padding: 0;
+  }
+
+  &-form {
+    max-width: 30rem;
+    margin: 0 auto;
+  }
+
+  &-form {
+    &Title {
+      display: block;
+    }
+
+    &Note {
+      font-size: u.rem-calc(14);
+      font-style: italic;
+      text-align: center;
+    }
+  }
+
+  &-buttonContainer {
+    text-align: center;
+  }
+}

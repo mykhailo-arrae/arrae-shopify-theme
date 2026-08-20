@@ -1,0 +1,232 @@
+{% comment %}
+  @description
+  React cart snippet for the cart drawer & cart page
+  Settings are in the settings_schema.json file
+  see _js/snippets/cart/app/layouts
+
+  @param {string} context - The rendering context of the cart. Possible values are 'drawer' and 'page'.
+
+  @example
+  {% render 'cart', context: 'drawer' %}
+
+  Free Shipping and Gift With Purchase can be enabled in the section settings to use a different threshold by Markets.
+  To enable it in the section settings, you need to pass the props from cart and cart drawer schema settings,
+  and it will override the theme settings.
+
+  If the project don't use markets, we recommend keeping them
+  from theme settings to have only one source of truth.
+
+  Upsell can use collection products or the Shopify Recommendations API.
+  If a product shouldn't be shown in the upsell, you can add the tags from tags_to_ignore
+  to those products or update the tags list with the project tags used for it.
+{% endcomment %}
+
+{% liquid
+  assign context = context | default: 'page'
+  assign section_id = section_id | default: null
+  assign continue_shopping_link = settings.continue_shopping_link | default: '/'
+
+  # promo bar
+  assign promo_bar_enabled = settings.promo_bar_enabled | default: false
+  assign promo_bar_text = settings.promo_bar_text | default: null
+
+  # empty cart
+  assign empty_cart_title = settings.empty_cart_title | default: 'Your cart is empty!'
+  assign empty_cart_cta_primary_link = settings.empty_cart_cta_primary_link | default: '/'
+  assign empty_cart_cta_primary_text = settings.empty_cart_cta_primary_text | default: 'Shop Best Sellers'
+
+  # rewards (Section level settings with theme settings as a fallback)
+  assign cart_rewards_enable = settings.cart_rewards_enable | default: false
+  assign include_discounts_in_rewards = settings.include_discounts_in_rewards | default: false
+  assign cart_rewards_enable_auto_gwp = settings.cart_rewards_enable_auto_gwp | default: false
+
+  # rewards - free shipping
+  assign cart_rewards_enable_free_shipping = cart_rewards_enable_free_shipping | default: settings.cart_rewards_enable_free_shipping | default: false
+  assign cart_rewards_free_shipping_threshold = cart_rewards_free_shipping_threshold | default: settings.cart_rewards_free_shipping_threshold | default: 0
+  assign cart_rewards_free_shipping_title = cart_rewards_free_shipping_title | default: settings.cart_rewards_free_shipping_title | default: null
+  assign cart_rewards_free_shipping_text_before = cart_rewards_free_shipping_text_before | default: settings.cart_rewards_free_shipping_text_before | default: null
+  assign cart_rewards_free_shipping_text_after = cart_rewards_free_shipping_text_after | default: settings.cart_rewards_free_shipping_text_after | default: null
+
+  # rewards - gift with purchase
+  assign cart_rewards_enable_gwp = cart_rewards_enable_gwp | default: settings.cart_rewards_enable_gwp | default: false
+  assign cart_rewards_gwp_threshold = cart_rewards_gwp_threshold | default: settings.cart_rewards_gwp_threshold | default: 0
+  assign cart_rewards_gwp_title = cart_rewards_gwp_title | default: settings.cart_rewards_gwp_title | default: null
+  assign cart_rewards_gwp_text_before = cart_rewards_gwp_text_before | default: settings.cart_rewards_gwp_text_before | default: null
+  assign cart_rewards_gwp_text_after = cart_rewards_gwp_text_after | default: settings.cart_rewards_gwp_text_after | default: null
+  assign cart_rewards_all_tiers_met_text = cart_rewards_all_tiers_met_text | default: settings.cart_rewards_all_tiers_met_text | default: null
+  assign cart_rewards_gwp_products = cart_rewards_gwp_products | default: settings.cart_rewards_gwp_products | default: null
+
+  # upsell
+  assign upsell_source = settings.upsell_source | default: 'theme'
+  assign enable_cart_upsell = settings.enable_cart_upsell | default: false
+  assign cart_upsell_title = settings.cart_upsell_title | default: ''
+  assign cart_upsell_collection = settings.cart_upsell_collection
+  assign cart_upsell_tags_to_ignore = settings.cart_upsell_tags_to_ignore | default: ''
+  assign cart_upsell_max_quantity = settings.cart_upsell_max_quantity | default: 4
+  if cart_upsell_max_quantity > 8
+    assign cart_upsell_max_quantity = 8
+  elsif cart_upsell_max_quantity < 1
+    assign cart_upsell_max_quantity = 1
+  endif
+  assign rebuy_upsell_section_id = settings.rebuy_upsell_section_id | default: ''
+  if settings.enable_discount_code_input == false
+    assign enable_discount_code_input = false
+  else
+    assign enable_discount_code_input = true
+  endif
+%}
+
+{% liquid
+  assign products_in_cart = ''
+
+  for item in cart.items
+    assign product_handle = item.product.handle | append: ''
+    if product_handle != blank
+      if products_in_cart != blank
+        assign products_in_cart = products_in_cart | append: ','
+      endif
+      assign products_in_cart = products_in_cart | append: product_handle
+    endif
+  endfor
+
+  if products_in_cart != blank
+    assign products_in_cart = products_in_cart | split: ',' | uniq
+  else
+    assign products_in_cart = '' | split: '||'
+  endif
+%}
+
+{% capture cart_product_variants %}
+  {% for product_handle in products_in_cart %}
+    {% unless product_handle == blank %}
+    {% assign product_data = all_products[product_handle] %}
+    {% if product_data != blank %}
+    {%- liquid
+      assign card_image = product_data.metafields.custom.product_card_image.value | default: product_data.featured_image | default: null
+      assign card_image_url = null
+      if card_image != blank
+        assign card_image_url = card_image | image_url: width: 480
+      endif
+      assign marketing_copy = product_data.metafields.custom.product_card_marketing_copy.value | default: product_data.metafields.custom_fields.collection_short_description.value | default: null
+      assign option_value_prefix = product_data.metafields.custom.option_value_prefix.value | default: ''
+    -%}
+    {
+      "product_id": {{ product_data.id | json }},
+      "product_title": {{ product_data.title | json }},
+      "option_value_prefix": {{ option_value_prefix | json }},
+      "card_image_url": {{ card_image_url | json }},
+      "marketing_copy": {{ marketing_copy | json }},
+      "has_subscription_plans": {% if product_data.selling_plan_groups.size > 0 %}true{% else %}false{% endif %},
+      "variants": [
+        {%- for variant in product_data.variants -%}
+          {%- liquid
+            assign variant_selling_plan_id = null
+            assign variant_discount_percent = null
+            if variant.selling_plan_allocations.size > 0
+              assign first_allocation = variant.selling_plan_allocations.first
+              assign variant_selling_plan_id = first_allocation.selling_plan.id
+              for adjustment in first_allocation.selling_plan.price_adjustments
+                if adjustment.value_type == 'percentage' and variant_discount_percent == null
+                  assign variant_discount_percent = adjustment.value
+                endif
+              endfor
+            endif
+          -%}
+          {
+            "id": {{ variant.id | json }},
+            "title": {{ variant.title | json }},
+            "price": {{ variant.price | json }},
+            "has_selling_plan": {% if variant.selling_plan_allocations.size > 0 %}true{% else %}false{% endif %},
+            "selling_plan_id": {{ variant_selling_plan_id | json }},
+            "selling_plan_discount_percent": {{ variant_discount_percent | json }}
+          }{%- unless forloop.last -%},{%- endunless -%}
+        {%- endfor -%}
+      ]
+    }{% if forloop.last == false %},{% endif %}
+    {% endif %}
+    {% endunless %}
+  {% endfor %}
+{% endcapture %}
+
+{% capture cart_upsell_collection_products %}
+  {%- if cart_upsell_collection != blank -%}
+    [
+      {%- for product in cart_upsell_collection.products -%}
+        {{ product | json }}{%- unless forloop.last -%},{%- endunless -%}
+      {%- endfor -%}
+    ]
+  {%- else -%}
+    null
+  {%- endif -%}
+{% endcapture %}
+
+{%- if context -%}
+  <react-cart class="js-cart-render-target">
+    <script class="js-cart-data" type="application/json">
+      {
+        "layout": {{- context | json -}},
+        "section_id": {{- section_id | json -}},
+        "continue_shopping_link": {{- continue_shopping_link | json -}},
+        "market": {
+          "name": {{- localization.country.name | json -}},
+          "iso_code": {{- localization.country.iso_code | json -}},
+          "money_format": {{ shop.money_format | json }},
+          "currency_symbol": {{ cart.currency.symbol | json }}
+        },
+        "promo_bar": {
+          "enabled": {{- promo_bar_enabled | json -}},
+          "text": {{- promo_bar_text | json -}}
+        },
+        "empty_cart": {
+          "title": {{- empty_cart_title | json -}},
+          "cta_primary_link": {{- empty_cart_cta_primary_link | json -}},
+          "cta_primary_text": {{- empty_cart_cta_primary_text | json -}}
+        },
+        "upsell": {
+          "source": {{- upsell_source | json -}},
+          "enabled": {{- enable_cart_upsell | json -}},
+          "title": {{- cart_upsell_title | json -}},
+          "collection_products": {{ cart_upsell_collection_products }},
+          "max_quantity": {{- cart_upsell_max_quantity | json -}},
+          "tags_to_ignore": {{- cart_upsell_tags_to_ignore | json -}},
+          "rebuy_upsell_section_id": {{- rebuy_upsell_section_id | json -}}
+        },
+        "rewards": {
+          "enabled": {{- cart_rewards_enable | json -}},
+          "include_discounts_in_rewards": {{- include_discounts_in_rewards | json -}},
+          "enable_auto_gwp": {{- cart_rewards_enable_auto_gwp | json -}},
+          "all_tiers_met_text": {{- cart_rewards_all_tiers_met_text | json -}},
+          "items": [
+            {
+              "id": 0,
+              "handle": "free_shipping",
+              "enabled": {{- cart_rewards_enable_free_shipping | json -}},
+              "title": {{- cart_rewards_free_shipping_title | json -}},
+              "minimum_value": {{ cart_rewards_free_shipping_threshold | json }},
+              "text_before_reward_met": {{- cart_rewards_free_shipping_text_before | json -}},
+              "text_after_reward_met": {{- cart_rewards_free_shipping_text_after | json -}},
+              "products": []
+            },
+            {
+              "id": 1,
+              "handle": "gwp",
+              "enabled": {{- cart_rewards_enable_gwp | json -}},
+              "title": {{- cart_rewards_gwp_title | json -}},
+              "minimum_value": {{ cart_rewards_gwp_threshold | json }},
+              "text_before_reward_met": {{- cart_rewards_gwp_text_before | json -}},
+              "text_after_reward_met": {{- cart_rewards_gwp_text_after | json -}},
+              "products": [
+                {%- for product in cart_rewards_gwp_products -%}
+                  {%- render 'json-product', product: product -%}
+                {%- unless forloop.last -%},{%- endunless -%}
+                {%- endfor -%}
+              ]
+            }
+          ]
+        },
+        "enable_discount_code_input": {{- enable_discount_code_input | json -}},
+        "cart_product_variants": [ {{ cart_product_variants }} ]
+      }
+    </script>
+  </react-cart>
+{%- endif -%}

@@ -1,0 +1,130 @@
+@use 'unit' as u;
+@use 'style-guide/media' as mq;
+@use 'style-guide/spacing' as spacing;
+@use 'style-guide/sizes' as sizes;
+@use 'style-guide/typography' as typography;
+@use 'style-guide/buttons' as button;
+@use 'style-guide/colors' as color;
+@use 'style-guide/mixins' as mixin;
+@use 'style-guide/form' as form;
+
+.root {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  box-sizing: border-box;
+  gap: spacing.get(size-24);
+
+  @include mq.min(tabletlandscape) {
+    flex-direction: row;
+    gap: spacing.get(size-16);
+  }
+
+  &:global(.successful) {
+    .form {
+      display: none;
+    }
+
+    .thanks {
+      display: block;
+    }
+  }
+}
+
+.supporting-copy {
+  @include typography.heading-5();
+  letter-spacing: u.rem-calc(-0.72);
+  line-height: 112%;
+  text-wrap: balance;
+  padding-right: spacing.get(size-48);
+
+  @include mq.min(tabletlandscape) {
+    @include typography.heading-4();
+    letter-spacing: u.rem-calc(-0.96);
+    max-width: u.rem-calc(342);
+    margin-right: u.rem-calc(120);
+    text-wrap: balance;
+  }
+}
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+  gap: spacing.get(size-16);
+
+  @include mq.min(tabletlandscape) {
+    max-width: spacing.get(columns-4);
+  }
+}
+
+.form-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: spacing.get(size-16);
+  align-self: stretch;
+  border-radius: spacing.get(size-24);
+  background: transparent;
+
+  @include mq.min(tabletlandscape) {
+    padding: spacing.get(size-24);
+    border: u.rem-calc(0.5) solid color.get(off-white);
+  }
+}
+
+.form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  box-sizing: border-box;
+  gap: spacing.get(size-8);
+
+  &__input {
+    @include form.input();
+    font-size: sizes.get(size-16);
+    background-color: transparent;
+    padding: spacing.get(size-8) 0;
+    margin: 0;
+    border: unset;
+    border-radius: unset;
+    border-bottom: u.rem-calc(1) solid color.get(off-white-60);
+    color: color.get(off-white);
+    opacity: 1;
+
+    &::placeholder {
+      color: color.get(off-white);
+      opacity: 1;
+    }
+
+    &:focus-visible {
+      outline: none;
+    }
+  }
+
+  button[type='submit'] {
+    margin-top: spacing.get(size-16);
+    padding: spacing.get(size-8) spacing.get(size-20);
+    height: spacing.get(size-40);
+  }
+}
+
+.thanks {
+  width: 100%;
+  display: none;
+}
+
+.error {
+  width: 100%;
+  display: none;
+  color: color.get(error);
+}
+
+.info {
+  @include typography.body(size-14, 300);
+  line-height: 130%;
+
+  @include mq.min(tabletlandscape) {
+    padding-right: spacing.get(size-120);
+  }
+}

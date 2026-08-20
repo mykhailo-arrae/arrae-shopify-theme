@@ -1,0 +1,126 @@
+@use 'unit' as u;
+@use 'style-guide/media' as mq;
+@use 'style-guide/spacing' as spacing;
+@use 'style-guide/typography' as typography;
+@use 'style-guide/buttons' as buttons;
+@use 'style-guide/colors' as color;
+@use 'style-guide/form' as form;
+
+.Pagination {
+  overflow: hidden;
+  margin: u.rem-calc(40) 0;
+
+  &-items {
+    margin: 0;
+    padding: 0;
+    font-size: typography.get-font-size(size-16);
+    font-weight: 700;
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  &-item {
+    display: none;
+    vertical-align: middle;
+    margin: 0;
+    padding: 0;
+
+    @include mq.min(mobile) {
+      display: inline-block;
+    }
+
+    &_is-current {
+      display: inline-block;
+    }
+
+    &_is-dimmed {
+      display: inline-block;
+    }
+
+    &_is-prev,
+    &_is-next {
+      display: inline-block;
+    }
+  }
+
+  &-arrowLeft {
+    width: u.rem-calc(20);
+
+    & svg {
+      transform: rotate(90deg);
+      width: 100%;
+      height: 100%;
+
+      & path {
+        color: color.get(dark-gray);
+      }
+    }
+  }
+
+  &-arrowRight {
+    width: u.rem-calc(20);
+
+    & svg {
+      transform: rotate(-90deg);
+      width: 100%;
+      height: 100%;
+
+      & path {
+        color: color.get(dark-gray);
+      }
+    }
+  }
+
+  &-itemLink {
+    display: block;
+    min-width: u.rem-calc(40);
+    padding: u.rem-calc(8);
+    background-color: color.get(off-white);
+    color: color.get(dark-gray);
+    border: u.rem-calc(1) solid color.get(text-gray);
+    border-radius: u.rem-calc(4);
+    text-decoration: none;
+
+    &:hover,
+    &:focus {
+      background-color: color.get(light-gray);
+      color: color.get(dark-gray);
+      border-color: color.get(text-gray);
+      outline: none;
+    }
+
+    &[aria-hidden] {
+      min-width: 0;
+      padding: u.rem-calc(4);
+      background-color: color.get(off-white);
+      color: color.get(light-gray);
+      border-color: transparent;
+      cursor: default;
+
+      &:hover,
+      &:focus {
+        color: color.get(light-gray);
+      }
+    }
+
+    &[aria-disabled] {
+      color: color.get(light-gray);
+      background-color: color.get(light-gray);
+
+      &:hover,
+      &:focus {
+        color: color.get(dark-gray);
+      }
+    }
+  }
+
+  &-arrow {
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  &-arrowLink {
+    display: block;
+    padding: u.rem-calc(4);
+  }
+}

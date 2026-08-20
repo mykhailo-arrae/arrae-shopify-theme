@@ -1,0 +1,31 @@
+{% doc %}
+  Resolves alt text for a gallery media item (image, file, or metaobject wrapper).
+
+  @param {object} image - Image, media, file, or metaobject drop
+{% enddoc %}
+
+{% liquid
+  assign image = image | default: null
+  assign resolved_alt = ''
+
+  if image != blank
+    assign resolved_alt = image.alt | default: ''
+
+    if resolved_alt == blank
+      assign resolved_alt = image.image.value.alt | default: image.image.alt | default: ''
+    endif
+    if resolved_alt == blank
+      assign resolved_alt = image.file.value.alt | default: image.file.alt | default: ''
+    endif
+    if resolved_alt == blank
+      assign resolved_alt = image.media.value.alt | default: image.media.alt | default: ''
+    endif
+    if resolved_alt == blank
+      assign resolved_alt = image.gallery_image.value.alt | default: image.gallery_image.alt | default: ''
+    endif
+    if resolved_alt == blank
+      assign resolved_alt = image.title | default: image.name | default: ''
+    endif
+  endif
+%}
+{{- resolved_alt -}}

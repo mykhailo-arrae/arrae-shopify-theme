@@ -1,0 +1,165 @@
+---
+description: Project structure and directory layout
+globs:
+alwaysApply: true
+---
+
+# Project Structure
+
+Shopify theme starter with portable components, modern build pipeline, and Docker-based development environment.
+
+## Core Directories
+
+### `/_js/` - JavaScript/TypeScript Source
+
+Main source directory for all JavaScript/TypeScript code:
+
+**Core Modules:**
+
+- `/core/` - Utilities, helpers, shared modules
+  - `/shopify/`, `/cart/`, `/cart-v2/` - Business logic
+  - `/dom/`, `/viewport/`, `/animation/` - UI utilities
+  - `/analytics/`, `/accessibility/`, `/network/` - Integrations
+
+**Portable Components:**
+
+- `/sections/` - Self-contained Shopify sections
+  - Structure: `section.liquid`, `styles.scss`, `index.ts`
+- `/snippets/` - Reusable UI components
+  - Structure: `snippet.liquid`, `styles.scss`, optional `index.tsx`
+- `/web-components/` - Framework-agnostic custom elements
+  - Structure: `component.ts`, `index.ts`, `style.shadow.scss`, `ssr.scss`
+
+**Other Modules:**
+
+- `/theme/` - Global scripts (`offcanvas-menu.ts`, `lazysizes.ts`)
+- `/standalone/` - Independent bundles
+- `/product/`, `/cart/` - Feature-specific functionality
+
+### `/_sass/` - SCSS Source
+
+Global SCSS files and style guide:
+
+- `master.scss` - Main stylesheet entry
+- `inline-css.scss` - Critical inline styles
+- `/core/` - Style guide modules (colors, typography, spacing, mixins)
+
+### `/devops/` - Build & DevOps Infrastructure
+
+- `/ci/` - GitHub Actions workflows for CI/CD
+- `/codegen/` - Code generation tools (TypeScript types, CSS modules)
+- `/src/` - Build system source code (Gulp tasks, webpack configs)
+- `/bin/` - Compiled build utilities
+- `bb.ts` - Task runner configuration (Babashka-inspired)
+
+### Shopify Theme Structure
+
+- `/assets/` - Compiled assets (managed by build)
+- `/sections/`, `/snippets/` - Theme files + compiled portables
+- `/templates/` - Page templates (JSON)
+- `/layout/` - Theme layouts
+- `/locales/` - Internationalization
+- `/config/` - Theme settings
+
+## Portable Components
+
+Three types of self-contained components:
+
+1. **Portable Sections** (`_js/sections/`)
+   - Structure: `section.liquid`, `styles.scss`, `index.ts`
+   - CSS modules for scoped styles
+   - Auto-loaded when section is on page
+
+2. **Portable Snippets** (`_js/snippets/`)
+   - Structure: `snippet.liquid`, `styles.scss`, optional `index.tsx`
+   - React/TSX support available
+   - Reusable UI components
+
+3. **Portable Web Components** (`_js/web-components/`)
+   - Structure: `component.ts`, `index.ts`, `style.shadow.scss`, `ssr.scss`
+   - Shadow DOM isolation
+   - Framework-agnostic
+
+## Development Commands
+
+All tasks via `bb` command:
+
+**Essential Tasks:**
+
+```bash
+bb ci                 # Run all CI checks (lint, test, typecheck, build, themecheck)
+bb build              # Build all assets
+bb deploy-dev         # Deploy to your virtual (development) theme
+bb commit-assets      # Commit build assets and codegen artefacts
+bb fetch              # Download theme files from Shopify
+```
+
+**Code Quality:**
+
+```bash
+bb test               # Run unit test suite
+bb lint               # Lint the code
+bb typecheck          # TypeScript validation
+bb themecheck         # Run Shopify Theme Check
+bb prettify           # Format files
+bb organize-imports   # Sort imports in TS/JS files
+```
+
+## Development Workflow
+
+### Getting Started
+
+1. **Environment Setup:**
+   - Docker container provides consistent development environment
+   - All dependencies and tools pre-configured in container
+   - No action needed to get started
+
+2. **Development Commands:**
+   - `bb build` - Build all assets for production
+   - `bb test` - Run test suite
+   - `bb lint` - Run linters with autofixes
+   - `bb ci` - **CRITICAL: Run before committing** (see [project-build-validation.mdc](mdc:.cursor/rules/project-build-validation.mdc))
+
+### File Organization Best Practices
+
+**Portable Components:**
+
+- Keep all related files (Liquid, SCSS, TS) in the same folder
+- Use index files for component exports
+- Follow naming conventions: `component-name/component-name.liquid`
+
+**TypeScript Modules:**
+
+- Follow patterns in [lang-typescript.mdc](mdc:.cursor/rules/lang-typescript.mdc)
+- Use named exports. Avoid using barrel exports.
+- Leverage TypeScript strict mode
+
+**Styling:**
+
+- Global styles in `_sass/` directory
+- Component styles as CSS modules in portable folders
+- Use style guide variables from `_sass/core/`
+
+### Build and Deployment
+
+1. **Local Development:**
+
+   ```bash
+   bb build           # Build assets
+   bb ci              # Run full CI suite
+   ```
+
+2. **Deployment:**
+
+   ```bash
+   bb deploy-dev      # Deploy to your development theme
+   ```
+
+3. **Quality Checks:**
+   - Always run `./run-task ci` before committing
+   - Fix any linting errors or test failures
+   - Ensure TypeScript compilation succeeds
+
+## Cross-References
+
+- [devops/ARCHITECTURE.md](mdc:devops/ARCHITECTURE.md) - Complete technical architecture

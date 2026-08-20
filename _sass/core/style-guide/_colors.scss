@@ -1,0 +1,67 @@
+// Colors
+// ===============================================
+
+// You can use HEX, RGB, or OKLCH color notation.
+// Please prefer OKLCH color notation.
+// To transform hex code into oklch use link: https://oklch.com/
+@use 'sass:map';
+@use 'sass:color';
+@use '../stdlib/map' as maptools;
+
+$_colors: (
+  text: oklch(34.85% 0 0deg),
+  text-gray: oklch(53.82% 0 0deg),
+  dark-gray: oklch(21.71% 0.0232 69.07deg),
+  dark-gray-20: oklch(21.71% 0.0232 69.07deg / 20%),
+  dark-gray-10: oklch(21.71% 0.0232 69.07deg / 10%),
+  light-gray: oklch(73.24% 0.0049 78.29deg),
+  lightest-gray: oklch(97.04% 0.0093 62.59deg),
+  off-white: oklch(99.59% 0.0093 99.98deg),
+  off-white-60: oklch(99.59% 0.0093 99.98deg / 60%),
+  off-white-80: oklch(99.59% 0.0093 99.98deg / 80%),
+  off-white-90: oklch(99.59% 0.0093 99.98deg / 90%),
+  on-white: oklch(94.31% 0 0deg),
+  background: oklch(99.59% 0.0093 99.98deg),
+  rose: oklch(88.04% 0.0315 48.34deg),
+  brown: oklch(31.71% 0.0299 64.29deg),
+  warm-sand: oklch(90.68% 0.0264 82.38deg),
+  light-brown: oklch(93.07% 0.0194 80.12deg),
+  soft-cream: oklch(94.8% 0.0148 80.71deg),
+  lightest-brown: oklch(96.19% 0.011 63.36deg),
+  light-brown-strong: oklch(0.86 0.02 80.15),
+  brown-60: oklch(31.71% 0.0299 64.29deg / 60%),
+  mb-1: oklch(79.24% 0.1077 35.04deg),
+  mb-1-45-plus: oklch(47.48% 0.1542 24.44deg),
+  constipation: oklch(72.63% 0.136 356.8deg),
+  sleep: oklch(66.76% 0.0314 315.26deg),
+  calm: oklch(73.12% 0.064 33.6deg),
+  magnesium: oklch(84.25% 0.0147 254.62deg),
+  tribiotic: oklch(38.77% 0.0846 356.98deg),
+  tone: oklch(90.79% 0.0104 81.79deg),
+  raspberry: oklch(44.48% 0.159 11.86deg),
+  greenapple: oklch(86.82% 0.1465 115.4deg),
+  success: oklch(52.82% 0.1073 143.87deg),
+  success-20: oklch(52.82% 0.1073 143.87deg / 20%),
+  error: oklch(47.54% 0.17 26.63deg),
+  error-20: oklch(47.54% 0.17 26.63deg / 20%),
+  graph: linear-gradient(180deg, #f8a28c 0%, #ff8363 100%),
+  graph-blue: linear-gradient(180deg, #cae7f0 0%, #92b8c3 50%, #40636e 100%)
+) !default;
+
+$_deprecated-colors: () !default; // Colors that get deprecated are added here
+
+$_all-colors: map.merge($_deprecated-colors, $_colors) !default;
+
+@function get($color) {
+  @if map.has-key($_deprecated-colors, $color) {
+    @warn 'Color #{$color} is deprecated';
+  }
+
+  $value: maptools.get-strict($_all-colors, $color);
+
+  @if color.space($value) != 'oklch' {
+    @return color.to-space($value, oklch);
+  }
+
+  @return $value;
+}

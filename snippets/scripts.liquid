@@ -1,0 +1,14 @@
+<script src="{{ 'option_selection.js' | shopify_asset_url }}" defer></script>
+
+{% if template contains 'customer' %}
+  <script id="js-customer-input-4b1bed9b28254d1bb50e8b0d8c44afd9" type="application/json">
+    {
+      "currentTemplateName": {{ template.directory | append: '/' | append: template.name | handle | json }}
+    }
+  </script>
+
+  <script src="{{ 'shopify_common.js' | shopify_asset_url }}" defer></script>
+  <script src="{{ 'customer_area.js' | shopify_asset_url }}" defer></script>
+{% endif %}
+
+{% render 'asset-loader' %}

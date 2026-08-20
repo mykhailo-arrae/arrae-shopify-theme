@@ -1,0 +1,6 @@
+{
+  "type": "static",
+  "stylesheet": "external",
+  "tag": "div",
+  "class": ["article-card"]
+}

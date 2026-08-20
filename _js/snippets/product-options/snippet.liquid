@@ -1,0 +1,206 @@
+{%
+  # The `unselectedOptions` prop should be a list of option names
+  # To specify product options that customers must select before adding to cart
+%}
+
+{% liquid
+  assign selected_variant = product.selected_variant | default: null
+
+  if selected_variant == null
+    for variant in product.variants reversed
+      assign hide_on_front_end = variant.metafields.custom.hide_on_front_end.value | default: false, allow_false: true
+      unless hide_on_front_end
+        if variant.available
+          assign selected_variant = variant
+          break
+        endif
+      endunless
+    endfor
+  endif
+
+  if selected_variant == null
+    assign selected_variant = product.selected_or_first_available_variant
+  endif
+
+  assign sellingPlanOneTimeLabel = selling_plan_onetime_label | default: 'Just Once'
+  assign options_layout_override = product.metafields.custom.pdp_options_layout.value | default: ''
+  assign option_value_prefix = product.metafields.custom.option_value_prefix.value | default: ''
+  assign bundle_option_dimensions = product.metafields.custom.bundle_option_dimensions.value | default: null
+  assign smp_sibling_options = product.metafields.custom.smp_sibling_options.value | default: null
+  assign smp_selector_label = product.metafields.custom.smp_selector_label.value | default: ''
+
+  assign hidden_variant_ids = ''
+  for variant in product.variants
+    assign hide_on_front_end = variant.metafields.custom.hide_on_front_end.value | default: false, allow_false: true
+    if hide_on_front_end
+      if hidden_variant_ids != ''
+        assign hidden_variant_ids = hidden_variant_ids | append: ','
+      endif
+      assign hidden_variant_ids = hidden_variant_ids | append: variant.id
+    endif
+  endfor
+%}
+
+{% capture variant_display %}
+  [
+    {%- assign variant_display_first = true -%}
+    {%- for variant in product.variants -%}
+        {%- assign hide_on_front_end = variant.metafields.custom.hide_on_front_end.value | default: false, allow_false: true -%}
+        {%- assign variant_display_price = variant.price -%}
+        {%- assign variant_compare_at = null -%}
+        {%- if variant.selling_plan_allocations.size > 0 -%}
+          {%- assign variant_allocation = variant.selling_plan_allocations.first -%}
+          {%- if variant_allocation.price != blank -%}
+            {%- assign variant_display_price = variant_allocation.price -%}
+          {%- endif -%}
+          {%- if variant.price > variant_display_price -%}
+            {%- assign variant_compare_at = variant.price -%}
+          {%- endif -%}
+        {%- elsif variant.compare_at_price != blank and variant.compare_at_price > variant.price -%}
+          {%- assign variant_compare_at = variant.compare_at_price -%}
+        {%- endif -%}
+        {%- unless hide_on_front_end -%}
+        {%- unless variant_display_first -%},{%- endunless -%}
+        {
+          "variantId": {{ variant.id | json }},
+          "optionValue": {{ variant.option1 | json }},
+          "hasSubscription": {% if variant.selling_plan_allocations.size > 0 %}true{% else %}false{% endif %},
+          "sellingPlanId": {{ variant.selling_plan_allocations.first.selling_plan.id | default: null | json }},
+          "sellingPlanName": {{ variant.selling_plan_allocations.first.selling_plan.name | default: '' | json }},
+          "subscriptionAdditionalInformation": {{ variant.metafields.custom.subscription_additional_information.value | default: '' | json }},
+          "numberOfServings": {{ variant.metafields.custom.number_of_servings.value | default: null | json }},
+          "displayPrice": {{ variant_display_price | json }},
+          "compareAtPrice": {{ variant_compare_at | json }}
+        }
+        {%- assign variant_display_first = false -%}
+      {%- endunless -%}
+    {%- endfor -%}
+  ]
+{% endcapture %}
+
+{% capture smp_sibling_options_json %}
+  [
+    {%- assign smp_options_first = true -%}
+    {%- if smp_sibling_options != blank -%}
+      {%- for entry in smp_sibling_options -%}
+        {%- liquid
+          assign entry_product = entry.product.value
+          if entry_product == blank
+            continue
+          endif
+
+          assign entry_product_id = entry_product.id | default: 0
+          assign entry_url = entry_product.url | default: ''
+          assign entry_display_label = entry.display_label | default: entry.display_name | default: ''
+          assign entry_badge = entry.badge | default: ''
+          assign entry_description = entry.description | default: ''
+          assign entry_image = entry.swatch_image.value | default: entry.swatch_image | default: entry.image
+          assign entry_image_url = null
+          assign entry_use_swatch_image_size = false
+          if entry_image != blank
+            assign entry_image_url = entry_image | image_url: width: 120
+            assign entry_use_swatch_image_size = entry.use_swatch_image_size.value | default: false, allow_false: true
+          endif
+          assign entry_swatch_hex = entry.swatch_hex.value | default: entry.swatch_hex | default: null
+          assign entry_is_current = false
+          if entry_product_id == product.id
+            assign entry_is_current = true
+          endif
+        -%}
+        {%- unless smp_options_first -%},{%- endunless -%}
+        {
+          "productId": {{ entry_product_id | json }},
+          "url": {{ entry_url | json }},
+          "displayLabel": {{ entry_display_label | json }},
+          "badge": {{ entry_badge | json }},
+          "description": {{ entry_description | json }},
+          "imageUrl": {{ entry_image_url | json }},
+          "useSwatchImageSize": {{ entry_use_swatch_image_size | json }},
+          "swatchHex": {{ entry_swatch_hex | json }},
+          "isCurrentProduct": {{ entry_is_current | json }}
+        }
+        {%- assign smp_options_first = false -%}
+      {%- endfor -%}
+    {%- endif -%}
+  ]
+{% endcapture %}
+
+{% capture bundle_option_dimensions_json %}
+  [
+    {%- assign bundle_dimensions_first = true -%}
+    {%- if bundle_option_dimensions != blank -%}
+      {%- for dimension in bundle_option_dimensions -%}
+        {%- liquid
+          assign dimension_row_label = dimension.row_label | default: ''
+          assign dimension_options = dimension.options.value | default: dimension.options
+        -%}
+        {%- unless bundle_dimensions_first -%},{%- endunless -%}
+        {
+          "rowLabel": {{ dimension_row_label | json }},
+          "options": [
+            {%- assign dimension_option_first = true -%}
+            {%- if dimension_options != blank -%}
+              {%- for option in dimension_options -%}
+                {%- liquid
+                  assign option_display_label = option.display_label | default: ''
+                  assign option_match_token = option.match_token | default: ''
+                  assign option_badge = option.badge | default: ''
+                  assign option_description = option.description | default: ''
+                  assign option_swatch_hex = option.swatch_hex.value | default: option.swatch_hex | default: null
+                  assign option_is_default = option.is_default.value | default: false, allow_false: true
+                  assign option_image_url = null
+                  assign option_image = option.swatch_image.value | default: option.swatch_image | default: null
+                  if option_image != blank
+                    assign option_image_url = option_image | image_url: width: 120
+                  endif
+                -%}
+                {%- unless dimension_option_first -%},{%- endunless -%}
+                {
+                  "displayLabel": {{ option_display_label | json }},
+                  "matchToken": {{ option_match_token | json }},
+                  "badge": {{ option_badge | json }},
+                  "description": {{ option_description | json }},
+                  "swatchHex": {{ option_swatch_hex | json }},
+                  "imageUrl": {{ option_image_url | json }},
+                  "isDefault": {% if option_is_default %}true{% else %}false{% endif %}
+                }
+                {%- assign dimension_option_first = false -%}
+              {%- endfor -%}
+            {%- endif -%}
+          ]
+        }
+        {%- assign bundle_dimensions_first = false -%}
+      {%- endfor -%}
+    {%- endif -%}
+  ]
+{% endcapture %}
+
+<script type="application/json" class="js-product-options-props">
+  {
+    "product": {{ product | json }},
+    "variantDisplay": {{ variant_display }},
+    "selectedSellingPlanId": {{ product.selected_selling_plan.id | json }},
+    "sellingPlanRequired": {{ product.requires_selling_plan | json }},
+    "firstSellingPlanId": {{ product.selected_or_first_available_selling_plan_allocation.selling_plan.id | json }},
+    "sellingPlanGroups": {{ product.selling_plan_groups | json }},
+    "initialVariantId": {{ selected_variant.id | json }},
+    "unselectedOptions": {{ product.metafields.custom.unselected_options.value | json }},
+    "sellingPlanSettings": {
+      "oneTimeLabel": {{ sellingPlanOneTimeLabel | json }}
+    },
+    "hiddenVariantIds": [{{ hidden_variant_ids }}],
+    "subscriptionBenefits": {{ settings.subscription_benefits | json }},
+    "optionsLayoutOverride": {{ options_layout_override | json }},
+    "optionValuePrefix": {{ option_value_prefix | json }},
+    "bundleOptionDimensions": {{ bundle_option_dimensions_json }},
+    "smpSiblingOptions": {{ smp_sibling_options_json }},
+    "smpSelectorLabel": {{ smp_selector_label | json }},
+    "settings": {
+      "moneyFormat": {{ shop.money_format | json }}
+    }
+  }
+</script>
+
+<div class="js-product-options-render-target">
+  <input type="hidden" name="id" value="{{ selected_variant.id }}">
+</div>

@@ -1,0 +1,289 @@
+@use 'unit' as u;
+@use 'style-guide/spacing' as spacing;
+@use 'style-guide/typography' as typography;
+@use 'style-guide/colors' as color;
+@use 'style-guide/mixins' as mixins;
+@use 'style-guide/media' as mq;
+@use 'style-guide/buttons' as buttons;
+@use 'style-guide/sizes' as sizes;
+
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: spacing.get(size-24);
+  width: 100%;
+  padding-top: spacing.get(size-48);
+  padding-bottom: spacing.get(size-24);
+}
+
+.title {
+  @include typography.font-cardinal-fruit();
+  font-size: sizes.get(size-32);
+  font-weight: 400;
+  font-style: normal;
+  line-height: 112%;
+  letter-spacing: u.rem-calc(-0.96);
+  color: color.get(dark-gray);
+  padding: spacing.get(size-16) spacing.get(size-8) 0 spacing.get(size-8);
+
+  :global(p) {
+    margin: 0;
+  }
+
+  :global(p + p) {
+    margin-top: spacing.get(size-4);
+  }
+
+  :global(em),
+  :global(i) {
+    font-style: italic;
+  }
+
+  @include mq.min(tabletlandscape) {
+    padding: unset;
+  }
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: spacing.get(size-16);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.item {
+  display: flex;
+  align-items: flex-start;
+  gap: spacing.get(size-12);
+  padding-top: spacing.get(size-16);
+
+  @include mq.min(tabletlandscape) {
+    align-items: center;
+    padding-top: unset;
+  }
+}
+
+.imageLink {
+  flex: 0 0 auto;
+  text-decoration: none;
+}
+
+.image {
+  position: relative;
+  width: u.rem-calc(94);
+  height: auto;
+  aspect-ratio: 47 / 56;
+  overflow: hidden;
+  border-radius: spacing.get(size-8);
+  background-color: color.get(light-brown);
+}
+
+.body {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: spacing.get(size-12);
+  min-width: 0;
+
+  @include mq.min(tabletlandscape) {
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: spacing.get(size-24);
+    height: stretch;
+  }
+}
+
+.details {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.productTitle {
+  @include typography.body(size-14, 600);
+  margin: 0;
+  color: color.get(text);
+  line-height: 106%;
+  letter-spacing: u.rem-calc(0.84);
+  text-transform: uppercase;
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  @include mq.min(tabletlandscape) {
+    height: u.rem-calc(38);
+    padding-bottom: spacing.get(size-4);
+    display: flex;
+    align-items: center;
+  }
+}
+
+.marketingCopy {
+  @include typography.body(size-16, 300);
+  margin: 0;
+  color: color.get(text);
+  line-height: 120%;
+  letter-spacing: u.rem-calc(-0.16);
+  padding-bottom: spacing.get(size-8);
+}
+
+.price {
+  [data-product-price-html] {
+    [data-compare-at-price-group],
+    [data-from-price-prefix],
+    [data-variant-price],
+    [data-sold-out] {
+      @include typography.body(size-16, 500);
+      line-height: 130%;
+      letter-spacing: u.rem-calc(-0.16);
+      color: color.get(text);
+    }
+  }
+}
+
+.cta {
+  @include buttons.button(
+    color.get(text),
+    color.get(off-white),
+    color.get(light-brown),
+    color.get(text),
+    color.get(light-brown),
+    color.get(text),
+    color.get(light-gray),
+    color.get(text)
+  );
+  @include mixins.focus-visible-ring();
+  font-weight: 400;
+  flex: 0 0 auto;
+  padding: spacing.get(size-8) spacing.get(size-24);
+  font-size: sizes.get(size-12);
+  white-space: nowrap;
+
+  &:focus:not(:focus-visible) {
+    outline: none;
+  }
+
+  &[aria-busy='true'] {
+    pointer-events: none;
+    opacity: 0.7;
+  }
+
+  @include mq.min(tabletlandscape) {
+    margin-left: auto;
+  }
+}
+
+.info {
+  border-top: 1px solid color.get(light-brown);
+  border-bottom: 1px solid color.get(light-brown);
+}
+
+.infoTitle {
+  margin: 0;
+  color: color.get(text);
+}
+
+.infoTrigger {
+  @include mixins.reset-button();
+  @include mixins.focus-visible-ring();
+  color: color.get(text);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: spacing.get(size-16);
+  width: 100%;
+  padding: spacing.get(size-12) spacing.get(size-8) spacing.get(size-12) 0;
+  text-align: left;
+  cursor: pointer;
+
+  * {
+    pointer-events: none;
+  }
+
+  &:focus:not(:focus-visible) {
+    outline: none;
+  }
+}
+
+.infoLabel {
+  @include typography.body(size-16, 600);
+
+  flex: 1 1 auto;
+  color: color.get(text);
+  font-size: u.rem-calc(13);
+  line-height: 130%;
+  letter-spacing: u.rem-calc(1);
+  text-transform: uppercase;
+
+  @include mq.min(tabletlandscape) {
+    font-size: u.rem-calc(14);
+  }
+}
+
+.infoIcon {
+  display: block;
+  flex: 0 0 auto;
+  width: spacing.get(size-16);
+  height: spacing.get(size-16);
+  color: color.get(text);
+
+  svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    fill: color.get(text);
+  }
+
+  .infoTrigger[aria-expanded='true'] & {
+    transform: rotate(180deg);
+  }
+}
+
+$collapse-duration: 0.22s;
+
+.infoPanel {
+  display: grid;
+  grid-template-rows: 1fr;
+  opacity: 1;
+  visibility: visible;
+  transition:
+    grid-template-rows $collapse-duration ease,
+    opacity #{$collapse-duration * 0.8} ease,
+    visibility 0s;
+
+  &[hidden] {
+    grid-template-rows: 0fr;
+    opacity: 0;
+    visibility: hidden;
+    transition:
+      grid-template-rows $collapse-duration ease,
+      opacity #{$collapse-duration * 0.8} ease,
+      visibility 0s linear $collapse-duration;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    &,
+    &[hidden] {
+      transition: none;
+    }
+  }
+}
+
+.infoDescription {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.infoBody {
+  @include typography.body(size-16, 300);
+  padding-bottom: spacing.get(size-24);
+  color: color.get(text);
+  line-height: 150%;
+  letter-spacing: u.rem-calc(-0.32);
+}

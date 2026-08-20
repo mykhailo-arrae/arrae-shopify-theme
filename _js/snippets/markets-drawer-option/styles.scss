@@ -1,0 +1,57 @@
+@use 'unit' as u;
+@use 'style-guide/colors' as color;
+@use 'style-guide/spacing' as spacing;
+@use 'style-guide/typography' as typography;
+
+.item {
+  display: flex;
+}
+
+.option {
+  display: flex;
+  align-items: center;
+  gap: spacing.get(size-8);
+  width: 100%;
+  padding-block: spacing.get(size-12);
+  padding-inline: u.rem-calc(19);
+  cursor: pointer;
+  transition: background-color 120ms ease;
+
+  &:hover,
+  &:focus-within,
+  &:has(.option__input:checked) {
+    background-color: color.get(light-brown);
+  }
+}
+
+.option__input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.option__flag {
+  flex-shrink: 0;
+  width: u.rem-calc(26);
+  height: auto;
+  max-height: u.rem-calc(15);
+  object-fit: cover;
+
+  &--eur {
+    object-fit: contain;
+  }
+}
+
+.option__label {
+  @include typography.body(size-14, 500);
+  line-height: 1.2;
+  letter-spacing: u.rem-calc(-0.28);
+  color: color.get(dark-gray);
+  white-space: nowrap;
+}

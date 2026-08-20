@@ -1,0 +1,109 @@
+{% liquid
+  assign featured_article = section.settings.featured_article | default: null
+
+  if current_tags.size > 0
+    if blog.articles.size > 0
+      assign featured_article = blog.articles.first
+    else
+      assign featured_article = null
+    endif
+  endif
+
+  if current_tags.size > 0
+    assign category_tag = current_tags.first
+  else
+    assign category_tag = featured_article.tags.first
+  endif
+%}
+
+{% if featured_article != blank %}
+  <div class="{# style section #}">
+    <div class="{# style layout #}">
+      {% if featured_article.image != blank %}
+        <div class="{# style media #}">
+          {% render 'core-image',
+            image: featured_article.image,
+            object_fit: 'cover',
+            lazyload: false,
+            preload: true,
+            srcset_print_sizes: '480,640,800,960,1024'
+          %}
+        </div>
+      {% endif %}
+
+      <div class="{# style content #}">
+        <h2 class="{# style title #}">
+          {{ featured_article.title }}
+        </h2>
+
+        <div class="{# style paragraph #}">
+          {% if featured_article.excerpt != blank %}
+            {{ featured_article.excerpt }}
+          {% else %}
+            {{ featured_article.content | strip_html | truncatewords: 28 }}
+          {% endif %}
+        </div>
+
+        {% assign read_more_label = 'read_more_label' | t %}
+        {% render 'core-button',
+          url: featured_article.url,
+          label: read_more_label,
+          style: 'secondary',
+          class: '{# style button #}'
+        %}
+
+        <div class="{# style meta #}">
+          <div class="{# style authorBlock #}">
+            {% if featured_article.author != blank %}
+              <p class="{# style author #}">
+                {{ featured_article.author }}
+              </p>
+            {% endif %}
+            <time
+              class="{# style date #}"
+              datetime="{{ featured_article.published_at | date: '%Y-%m-%d' }}"
+            >
+              {{ featured_article.published_at | date: format: 'month_day_year' }}
+            </time>
+          </div>
+
+          {% if category_tag != blank %}
+            <span class="{# style tag #}">
+              {{ category_tag }}
+            </span>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Blog Featured Article",
+  "tag": "section",
+  "enabled_on": {
+    "templates": ["blog"]
+  },
+  "locales": {
+    "en": {
+      "read_more_label": "Read more",
+      "read_more_aria_label": "Continue reading about {{ title }}"
+    }
+  },
+  "settings": [
+    {
+      "type": "article",
+      "id": "featured_article",
+      "label": "Featured article"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Blog Featured Article",
+      "category": "Blog",
+      "settings": {}
+    }
+  ]
+}
+{% endschema %}

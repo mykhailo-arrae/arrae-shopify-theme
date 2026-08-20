@@ -1,0 +1,337 @@
+{% doc %}
+  @description
+  This section uses Shopify's Predictive Search API from Search and Discovery app to render suggestions and search results.
+  Right now it only supports products, but it can be extended to support other types of content (Pages, Articles, etc.).
+  Suggestions and Products recommendations are section blocks.
+{% enddoc %}
+
+{% liquid
+  assign submit_label = 'view_all_results' | t
+  assign submit_q = predictive_search.terms | url_param_escape
+  assign submit_url = routes.search_url | append: '?q=' | append: submit_q | append: '&type=product'
+  assign submit_attributes = 'data-base-url="' | append: submit_url | append: '"'
+
+  assign close_search_label = 'close_search' | t
+  assign clear_search_label = 'clear_search' | t
+
+  assign suggestions = section.blocks | where: 'type', 'suggestion'
+  assign recommendations = section.blocks | where: 'type', 'recommended_product'
+  assign empty_results_text = section.settings.empty_results
+
+  assign recommendations_title = section.settings.recommendations_title
+  assign recommendations_title_searching = section.settings.recommendations_title_searching
+  assign suggestions_title = section.settings.suggestions_title
+  assign suggestions_title_searching = section.settings.suggestions_title_searching
+  assign show_suggestions_on_search = section.settings.show_suggestions_on_search
+
+  assign max_products = section.settings.max_products
+
+  render 'product-card-stylesheet'
+  render 'product-review-ratings-stylesheet'
+%}
+
+{% capture empty_results_content %}
+  <div class='{# style suggestions__wrapper #} {# style suggestions__initial #} js-search-results-suggestions'>
+    {% if predictive_search.performed and predictive_search.terms != blank %}
+      <div class='{# style empty #}'>
+        <span>{{ empty_results_text }} "{{ predictive_search.terms }}"</span>
+      </div>
+    {% else %}
+      {% if suggestions.size > 0 %}
+        {% if suggestions_title != blank %}
+          <h3 class='{# style suggestions__title #}'>
+            {{ suggestions_title }}
+          </h3>
+        {% endif %}
+        <ul class='{# style suggestions #}' data-empty='true'>
+          {% for suggestion in suggestions %}
+            <li class='{# style suggestion #}' role="option" aria-selected="false">
+              <a
+                href="{{ suggestion.settings.url }}"
+                class='{# style suggestion__item #}'
+                tabindex="0"
+              >
+                {{ suggestion.settings.title | highlight: predictive_search.terms }}
+              </a>
+            </li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endif %}
+  </div>
+
+  {% if recommendations.size > 0 %}
+    <div class='{# style products #} js-predictive-search-results'>
+      {% if recommendations_title != blank %}
+        <h3 class='{# style products__title #}'>
+          {{ recommendations_title }}
+        </h3>
+      {% endif %}
+
+      <div class='{# style products__wrapper #}'>
+        {% for recommendation in recommendations %}
+          <div class="{# style product #}">
+            {% render 'product-card', product: recommendation.settings.product, card_design_variant: '2-up' %}
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  {% endif %}
+{% endcapture %}
+
+<div class="{# style overlay #} js-offcanvas-bg"></div>
+<div
+  data-section-id="{{ section.id }}"
+  data-section-name="{{ section.type }}"
+  class="js-offcanvas {# style root #}"
+  id="search-drawer-content"
+  data-drawer-names="search"
+  role="dialog"
+  aria-modal="true"
+  aria-label="{{ 'search_title' | t }}"
+  tabindex="-1"
+  aria-hidden="true"
+  inert
+>
+  <div
+    class="js-offcanvas-content {# style wrapper #}"
+  >
+    <div class="{# style content #}">
+      <div class="{# style header #}">
+        <form
+          class="{# style form #} js-search-drawer-form"
+          action="{{ routes.search_url }}"
+          method="get"
+          data-search-url="{{ routes.search_url }}"
+          data-has-query="false"
+        >
+          <div class="{# style logo #}">
+            <a href="/" class="{# style logo__link #}" aria-label="{{ 'sections.header.home' | t }}">
+              {% render 'icon-logo', title: shop.name %}
+            </a>
+          </div>
+          <div class="{# style form__wrapper #} js-search-form-wrapper">
+            <div class="{# style form__cluster #} js-search-form-cluster">
+              <span class="{# style form__icon #}">
+                {% render 'icon-search' %}
+              </span>
+              <div class="{# style form__field #}">
+                <span
+                  class="{# style form__mirror #} js-search-form-mirror"
+                  aria-hidden="true"
+                ></span>
+                <input
+                  type="text"
+                  name="q"
+                  placeholder="{{ 'search_placeholder' | t }}"
+                  class="{# style form__input #} js-search-query"
+                >
+              </div>
+            </div>
+            <input type="hidden" name="type" value="product">
+          </div>
+          <div class="{# style form__actions #}">
+            <button
+              type="button"
+              class="{# style form__clear #} js-clear-search"
+              aria-label="{{ clear_search_label }}"
+              tabindex="-1"
+              aria-hidden="true"
+            >
+              {% render 'icon-close', title: clear_search_label %}
+            </button>
+            <button
+              type="button"
+              class="js-offcanvas-close {# style form__close #}"
+              aria-label="{{ close_search_label }}"
+            >
+              {% render 'icon-close', title: close_search_label %}
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <div
+        class="{# style container #} js-search-container"
+        data-show-suggestions="{{ show_suggestions_on_search }}"
+        data-max-products="{{ max_products }}"
+      >
+        {% liquid
+          assign has_products = predictive_search.resources.products.size | default: 0
+          assign has_results = false
+          if has_products > 0
+            assign has_results = true
+          endif
+        %}
+
+        <div class="{# style search #} js-search-results">
+          {% if predictive_search.performed and has_results %}
+            <div>
+              {% if suggestions.size > 0 or predictive_search.resources.queries.size > 0 %}
+                <div class="{# style suggestions__wrapper #} js-search-results-suggestions">
+                  {% if suggestions_title_searching != blank %}
+                    <h3 class="{# style suggestions__title #}">
+                      {{ suggestions_title_searching }}
+                    </h3>
+                  {% endif %}
+                  <ul class="{# style suggestions #}">
+                    {% if predictive_search.resources.queries.size > 0 %}
+                      {% for query in predictive_search.resources.queries %}
+                        <li class="{# style suggestion #}" role="option" aria-selected="false">
+                          <a
+                            href="{{ query.url }}"
+                            class="{# style suggestion__item #}"
+                            tabindex="0"
+                          >
+                            {{ query.styled_text }}
+                          </a>
+                        </li>
+                      {% endfor %}
+                    {% else %}
+                      {% for suggestion in suggestions %}
+                        <li class="{# style suggestion #}" role="option" aria-selected="false">
+                          <a
+                            href="{{ suggestion.settings.url }}"
+                            class="{# style suggestion__item #}"
+                            tabindex="0"
+                          >
+                            {{ suggestion.settings.title | highlight: predictive_search.terms }}
+                          </a>
+                        </li>
+                      {% endfor %}
+                    {% endif %}
+                  </ul>
+                </div>
+              {% endif %}
+              <div class="{# style cta__wrapper #}">
+                {% render 'core-button',
+                  label: submit_label,
+                  url: submit_url,
+                  style: 'primary',
+                  target: '_self',
+                  class: '{# style cta #} js-view-all-results',
+                  attributes: submit_attributes
+                %}
+              </div>
+            </div>
+            <div
+              class="{# style products #} js-predictive-search-results"
+              data-active-resource="{% if predictive_search.resources.products.size > 0 %}products{% endif %}"
+              data-has-products="{% if predictive_search.resources.products.size > 0 %}true{% else %}false{% endif %}"
+            >
+              {% if recommendations_title_searching != blank %}
+                <h3 class="{# style products__title #}">
+                  {{ recommendations_title_searching }}
+                </h3>
+              {% endif %}
+              <div class="{# style products__wrapper #}" data-resource-type="products">
+                {% for found_product in predictive_search.resources.products %}
+                  <div class="{# style product #}">
+                    {% render 'product-card', product: found_product, card_design_variant: '2-up' %}
+                  </div>
+                {% endfor %}
+              </div>
+            </div>
+          {% else %}
+            {{ empty_results_content }}
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Search Drawer",
+  "locales": {
+    "en": {
+      "search_title": "Search",
+      "search_placeholder": "Search",
+      "view_all_results": "View All Products",
+      "close_search": "Close search",
+      "clear_search": "Clear search"
+    }
+  },
+  "class": "js-drawer-search",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_suggestions_on_search",
+      "label": "Show suggestions on search",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "empty_results",
+      "label": "Empty Results Content",
+      "default": "We could not find anything for"
+    },
+    {
+      "type": "text",
+      "id": "suggestions_title",
+      "label": "Suggestions Title",
+      "default": "Popular Search Terms"
+    },
+    {
+      "type": "text",
+      "id": "suggestions_title_searching",
+      "label": "Suggestions Title (Searching)",
+      "default": "Top Suggestions"
+    },
+    {
+      "type": "text",
+      "id": "recommendations_title",
+      "label": "Recommendations Title",
+      "default": "Suggested Products"
+    },
+    {
+      "type": "text",
+      "id": "recommendations_title_searching",
+      "label": "Recommendations Title (Searching)",
+      "default": "Products"
+    },
+    {
+      "type": "range",
+      "id": "max_products",
+      "label": "Max Products",
+      "default": 6,
+      "min": 3,
+      "max": 9
+    }
+  ],
+  "blocks": [
+    {
+      "type": "suggestion",
+      "name": "Suggestion",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "URL"
+        }
+      ]
+    },
+    {
+      "type": "recommended_product",
+      "name": "Recommended Product",
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Product"
+        }
+      ],
+      "limit": 4
+    }
+  ],
+  "enabled_on": {
+    "groups": ["header"]
+  }
+}
+{% endschema %}

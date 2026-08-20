@@ -1,0 +1,92 @@
+{% liquid
+  assign image_desktop = block.settings.image_desktop
+  assign image_mobile = block.settings.image_mobile
+  assign hover_video = block.settings.hover_video
+  assign label = block.settings.label
+  assign url = block.settings.url
+%}
+
+<div class="{# style slot #}">
+  {% comment %}
+    Desktop: full tile-card with imagery + hover video. CSS hides this
+    subtree on mobile, where the design calls for a plain text link.
+  {% endcomment %}
+  <div class="{# style desktop #}">
+    {% render 'tile-card',
+      image_desktop: image_desktop,
+      image_mobile: image_mobile,
+      hover_video: hover_video,
+      label: label,
+      url: url,
+      loading: 'lazy',
+      reduced_dimensions: true
+    %}
+  </div>
+
+  {% comment %}
+    Mobile: text-only link. No image, no tile-card — just the
+    label, sized for the offcanvas accordion content.
+  {% endcomment %}
+  {% if url != blank %}
+    <a href="{{ url }}" class="{# style mobile-link #}">
+      <span class="{# style mobile-link__text #}">{{ label }}</span>
+    </a>
+  {% else %}
+    <span class="{# style mobile-link #}">
+      <span class="{# style mobile-link__text #}">{{ label }}</span>
+    </span>
+  {% endif %}
+</div>
+
+{% schema %}
+{
+  "name": "Collection Tile",
+  "class": "{# style tile #}",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Media"
+    },
+    {
+      "type": "paragraph",
+      "content": "Images render on desktop only. The mobile mega menu shows the tile label as a text link."
+    },
+    {
+      "type": "image_picker",
+      "id": "image_desktop",
+      "label": "Desktop image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_mobile",
+      "label": "Mobile image",
+      "info": "Falls back to desktop image when blank."
+    },
+    {
+      "type": "video",
+      "id": "hover_video",
+      "label": "Hover video",
+      "info": "Optional. Plays while the tile is hovered or focused."
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "label",
+      "label": "Label"
+    },
+    {
+      "type": "url",
+      "id": "url",
+      "label": "Link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collection Tile"
+    }
+  ]
+}
+{% endschema %}

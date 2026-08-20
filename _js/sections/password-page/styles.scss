@@ -1,0 +1,51 @@
+@use 'unit' as u;
+@use 'style-guide/media' as mq;
+@use 'style-guide/spacing' as spacing;
+@use 'style-guide/typography' as typography;
+@use 'style-guide/buttons' as buttons;
+@use 'style-guide/colors' as color;
+@use 'style-guide/form' as form;
+
+.PasswordNewsletter {
+  margin: spacing.get(size-40) auto;
+  max-width: u.rem-calc(1512);
+  width: 100%;
+  padding: 0 spacing.get(size-16);
+  box-sizing: border-box;
+
+  &-heading {
+    text-align: center;
+    font-size: typography.get-font-size(size-24);
+    font-weight: 700;
+    margin-bottom: u.rem-calc(40);
+  }
+
+  &-subheading {
+    font-size: typography.get-font-size(size-16);
+    text-align: center;
+  }
+
+  &-btn {
+    @include buttons.primary();
+  }
+
+  &-input {
+    @include form.input();
+  }
+
+  &-success {
+    color: color.get(success);
+  }
+
+  &-errors {
+    color: color.get(error);
+  }
+
+  &-form form {
+    display: flex;
+    gap: u.rem-calc(20);
+    max-width: u.rem-calc(500);
+    margin: auto;
+    margin-top: u.rem-calc(40);
+  }
+}

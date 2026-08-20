@@ -1,0 +1,82 @@
+@use 'unit' as u;
+@use 'style-guide/media' as mq;
+@use 'style-guide/spacing' as spacing;
+@use 'style-guide/sizes' as sizes;
+@use 'style-guide/colors' as color;
+@use 'style-guide/typography' as typography;
+
+.root {
+  display: flex;
+  width: 100%;
+
+  @include mq.max(smalldesktop) {
+    flex: 1 1 auto;
+    height: 100%;
+    min-height: auto;
+    place-content: start center;
+    align-items: flex-end;
+    padding: spacing.get(size-32) spacing.get(size-8);
+  }
+
+  @include mq.min(smalldesktop) {
+    height: 100%;
+    place-content: flex-end;
+    align-items: flex-end;
+    padding: unset;
+  }
+}
+
+.features-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  height: fit-content;
+
+  @include mq.min(smalldesktop) {
+    grid-template-columns: repeat(1, 1fr);
+    max-width: u.rem-calc(380);
+    box-sizing: border-box;
+    position: relative;
+    right: spacing.get(columns-1);
+    bottom: spacing.get(size-32);
+  }
+}
+
+.feature {
+  margin-bottom: 1em;
+
+  @include mq.min(smalldesktop) {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: spacing.get(size-12);
+    border-bottom: 1px solid color.get(off-white);
+    padding: spacing.get(size-12) 0;
+  }
+
+  &__title {
+    @include typography.font-cardinal-fruit();
+    font-size: sizes.get(size-24);
+    font-weight: 500;
+    line-height: 120%;
+    letter-spacing: u.rem-calc(-0.72);
+    width: auto;
+
+    @include mq.min(smalldesktop) {
+      width: 20%;
+    }
+  }
+
+  &__description {
+    @include typography.body(size-16, 300);
+    width: 90%;
+    padding-top: spacing.get(size-4);
+    padding-bottom: u.rem-calc(12);
+
+    @include mq.min(smalldesktop) {
+      width: 80%;
+    }
+  }
+}

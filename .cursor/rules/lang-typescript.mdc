@@ -1,0 +1,159 @@
+---
+description: Coding conventions and best practices for TypeScript
+globs: **/*.ts, **/*.tsx, **/*.spec.ts, **/*.spec.tsx
+alwaysApply: false
+---
+
+# TypeScript Conventions
+
+## Core Principles
+
+- Prefer functions over classes
+- Use const assertions to avoid type widening
+- Prefer functional style (map/filter/reduce) over iteration
+- Replace type assertions with type guards or Zod/Valibot schemas
+- Always use `.js` extensions for imports
+
+## Import/Export Patterns
+
+**Use named exports. Avoid using barrel exports.**
+
+**Always use `.js` extensions for TypeScript imports:**
+
+```typescript
+// Good
+import { Cart } from './schema/index.js'
+import style from './styles.scss.js'
+import { makeEventNamespace } from '../../core/dom/events/index.js'
+
+// Bad
+import { Cart } from './schema'
+import style from './styles.scss'
+```
+
+## Schema Validation with Zod/Valibot
+
+**Use Zod or Valibot for all runtime validation and type inference:**
+
+```typescript
+// Good
+import { z } from 'zod'
+
+const User = z.object({
+  id: z.number(),
+  email: z.string().email()
+})
+
+export type User = z.infer<typeof User>
+
+// Bad - manual type definition without runtime validation
+export type User = {
+  id: number
+  email: string
+}
+```
+
+## Error Handling Patterns
+
+**Use custom error classes with structured details:**
+
+```typescript
+// Good
+import { AppError } from '../errors/app-error.js'
+import { ImplementationError } from '../errors/implementation-error.js'
+
+throw new AppError('Cart operation failed', {
+  productId: 123,
+  quantity: 2
+})
+
+// For implementation errors
+throw new ImplementationError('Context JSON script not found')
+
+// Bad - generic Error
+throw new Error('Something went wrong')
+```
+
+**Use safeAwait for async operations:**
+
+```typescript
+// Good
+import { safeAwait } from '../errors/safe-await.js'
+
+const [error, result] = await safeAwait(fetchData())
+if (error) {
+  // handle error
+  return
+}
+// use result
+
+// Bad - try/catch everywhere
+try {
+  const result = await fetchData()
+} catch (error) {
+  // handle error
+}
+```
+
+## Type Guards and Narrowing
+
+**Use type guard expressions instead of type assertions:**
+
+```typescript
+// Good
+if (target instanceof HTMLElement) {
+  target.classList.add('active') // target is properly typed
+}
+
+// Good - custom type guard
+const isHTMLElement = (element: unknown): element is HTMLElement => {
+  return element instanceof HTMLElement
+}
+
+// Bad - inline type assertion
+;(target as HTMLElement).classList.add('active')
+```
+
+## DOM and Event Handling
+
+**Use event namespaces for cleanup:**
+
+```typescript
+// Good
+import { makeEventNamespace } from '../../core/dom/events/index.js'
+
+const namespace = makeEventNamespace()
+namespace.addDelegatedEventListener(section, '.button', 'click', handler)
+namespace.destroy() // cleanup
+
+// Bad - manual event listener management
+section.addEventListener('click', handler)
+// cleanup is easy to forget
+```
+
+## React/TSX Patterns
+
+**Use proper FC types and imports:**
+
+```typescript
+// Good
+import { type FC } from 'react'
+
+type Props = {
+  children: React.ReactNode
+  className?: string
+}
+
+export const MyComponent: FC<Props> = ({ children, className }) => {
+  return <div className={className}>{children}</div>
+}
+
+// Bad - implicit any
+export const MyComponent = ({ children }) => {
+  return <div>{children}</div>
+}
+```
+
+## Cross-References
+
+- See [project-build-validation.mdc](mdc:.cursor/rules/project-build-validation.mdc) for build workflow

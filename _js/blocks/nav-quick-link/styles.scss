@@ -1,0 +1,68 @@
+@use 'unit' as u;
+@use 'style-guide/typography' as typography;
+@use 'style-guide/sizes' as sizes;
+@use 'style-guide/mixins' as mixin;
+@use 'style-guide/colors' as color;
+@use 'style-guide/media' as mq;
+
+.item {
+  display: block;
+}
+
+.link {
+  @include typography.body(size-14, 500);
+  line-height: 1.06;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  @include mixin.animated-underline();
+  display: inline-block;
+  color: currentcolor;
+  text-decoration: none;
+  cursor: pointer;
+
+  &:focus-visible {
+    outline-offset: u.rem-calc(2);
+  }
+
+  @at-root :global(.quick-links-secondary) & {
+    text-transform: capitalize;
+    font-size: sizes.get(size-20);
+    font-weight: 400;
+
+    // Secondary quick links use text-gray in the mobile drawer.
+    @include mq.max(tabletlandscape) {
+      font-weight: 300;
+      color: color.get(text-gray);
+    }
+  }
+
+  // Secondary quick links use text-gray when the drawer is enabled on desktop.
+  @at-root :global(
+        .js-mobile-drawer[data-drawer-mode-on-desktop='true']
+          .quick-links-secondary
+      )
+      & {
+    font-weight: 300;
+    color: color.get(text-gray);
+    font-size: sizes.get(size-20);
+  }
+
+  // Quick links use size-16 when the drawer is enabled on desktop.
+  @at-root :global(.js-mobile-drawer[data-drawer-mode-on-desktop='true']) & {
+    font-size: sizes.get(size-16);
+  }
+
+  @include mq.max(tabletlandscape) {
+    @include typography.body(size-16, 500);
+  }
+}
+
+.link__text {
+  display: inline-block;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .link::before {
+    transition: none;
+  }
+}

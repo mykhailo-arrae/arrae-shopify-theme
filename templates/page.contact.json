@@ -1,0 +1,66 @@
+{
+  "order": ["main"],
+  "sections": {
+    "main": {
+      "block_order": ["faq", "email", "chat", "portal"],
+      "blocks": {
+        "chat": {
+          "disabled": true,
+          "settings": {
+            "action_key": "gorgias-chat",
+            "icon": "icon-chat",
+            "intro": "Chat with us:",
+            "link_behavior": "action",
+            "link_label": "Start Chat",
+            "link_target": "_self",
+            "url": ""
+          },
+          "type": "contact_option"
+        },
+        "email": {
+          "settings": {
+            "action_key": "gorgias-chat",
+            "icon": "icon-mail",
+            "intro": "Send us an Email:",
+            "link_behavior": "link",
+            "link_label": "hello@arrae.com",
+            "link_target": "_self",
+            "url": "mailto:hello@arrae.com"
+          },
+          "type": "contact_option"
+        },
+        "faq": {
+          "settings": {
+            "action_key": "gorgias-chat",
+            "icon": "icon-globe-question",
+            "intro": "Check out our:",
+            "link_behavior": "link",
+            "link_label": "Frequently Asked Questions",
+            "link_target": "_self",
+            "url": "shopify://pages/faqs"
+          },
+          "type": "contact_option"
+        },
+        "portal": {
+          "settings": {
+            "action_key": "gorgias-chat",
+            "icon": "icon-box",
+            "intro": "Orders and Subscriptions:",
+            "link_behavior": "link",
+            "link_label": "Portal Log In",
+            "link_target": "_self",
+            "url": "/account"
+          },
+          "type": "contact_option"
+        }
+      },
+      "settings": {
+        "body": "<p>We know that wellness is personal and sometimes, you just need a little guidance. Whether you're curious about our ingredients, need help with your routine, or want to share a win. We’re here to listen.</p>",
+        "heading": "Questions on your journey \nto feeling your best?",
+        "show_breadcrumbs": true
+      },
+      "type": "contact"
+    }
+  },
+  "wrapper": "main.ContactPage[role='main']"
+}

@@ -1,0 +1,75 @@
+{% doc %}
+  @description
+  Renders the article media block at the `[article-media-block]` content token.
+
+  The output is driven by the `media_type` article metafield, which switches
+  between two mutually exclusive modes:
+  - `video` (default): renders the Shopify-hosted `article_video` metafield
+    (a video media object) through `core-video` with overlay controls. Portrait
+    sources (aspect ratio < 1) render in the constrained 9/16 box.
+  - `embed`: outputs the raw embed code stored in the `article_embed`
+    multi-line metafield (e.g. a YouTube or podcast iframe). The embed inherits
+    the article RTE iframe styles from the article section.
+
+  Renders nothing when the selected source is empty.
+
+  @param {string} uid - Unique suffix so the rendered video gets its own control scope.
+
+  @example
+  {% render 'article-media', uid: 'article' %}
+{% enddoc %}
+
+{% liquid
+  assign uid = uid | default: ''
+
+  assign media_type = article.metafields.custom.media_type.value | default: 'video'
+  assign article_video = article.metafields.custom.article_video.value | default: null
+  assign article_embed = article.metafields.custom.article_embed.value | default: null
+
+  assign class_seed = article.id | append: '-' | append: uid
+  assign class_hash = class_seed | md5
+  assign media_video_class = 'js-article-media-' | append: class_hash
+
+  assign is_portrait = false
+  assign render_mode = null
+
+  if media_type == 'embed'
+    if article_embed != blank
+      assign render_mode = 'embed'
+    endif
+  else
+    if article_video != blank
+      assign render_mode = 'hosted'
+      assign vid_ratio = article_video.aspect_ratio | default: 0
+      if vid_ratio > 0 and vid_ratio < 1
+        assign is_portrait = true
+      endif
+    endif
+  endif
+%}
+
+{%- case render_mode -%}
+  {%- when 'hosted' -%}
+    <div class="{# style media #}{% if is_portrait %} {# style media--portrait #}{% endif %}">
+      {% render 'core-video',
+        video: article_video,
+        class: media_video_class,
+        autoplay: true,
+        muted: true,
+        playsinline: true,
+        loop: false,
+        lazyload: true
+      %}
+      <div class="{# style media__controls #}">
+        {% render 'core-video-controls',
+          video_class: media_video_class,
+          has_pause: true,
+          has_mute: true,
+          scroll_autoplay: true,
+          pause_page_videos_on_play: false
+        %}
+      </div>
+    </div>
+  {%- when 'embed' -%}
+    {{ article_embed }}
+{%- endcase -%}

@@ -1,0 +1,31 @@
+@use 'unit' as u;
+@use 'style-guide/media' as mq;
+@use 'style-guide/colors' as color;
+@use 'style-guide/typography' as typography;
+@use 'style-guide/spacing' as spacing;
+
+.section {
+  max-width: u.rem-calc(1512);
+  margin: 0 auto;
+  padding: spacing.get(size-48) spacing.get(size-16) spacing.get(size-16)
+    spacing.get(size-16);
+
+  @include mq.min(tabletlandscape) {
+    padding: spacing.get(size-48);
+  }
+}
+
+.title {
+  @include typography.heading-4;
+  line-height: 112%;
+
+  @include mq.min(tabletlandscape) {
+    @include typography.heading-3;
+  }
+}
+
+:global(.oke-w-reviews-writeReview) {
+  a:hover {
+    opacity: 1;
+  }
+}

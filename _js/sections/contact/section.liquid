@@ -1,0 +1,234 @@
+{% liquid
+  assign heading = section.settings.heading
+  assign body = section.settings.body
+  assign show_breadcrumbs = section.settings.show_breadcrumbs
+%}
+
+{% if show_breadcrumbs %}
+  <div class="{# style breadcrumbs #}">
+    {% render 'breadcrumbs' %}
+  </div>
+{% endif %}
+
+<div class="{# style content #}">
+  <div class="{# style layout #}">
+    {%- if heading != blank -%}
+      <h1 class="{# style headline #}">{{ heading | newline_to_br }}</h1>
+    {%- endif -%}
+
+    <div class="{# style col #}">
+      {%- if body != blank -%}
+        <div class="{# style body #}">
+          {{ body }}
+        </div>
+      {%- endif -%}
+
+      {%- if section.blocks.size > 0 -%}
+        <ul class="{# style options #}" role="list">
+          {%- for block in section.blocks -%}
+            {%- liquid
+              assign icon = block.settings.icon
+              assign intro = block.settings.intro
+              assign link_label = block.settings.link_label
+              assign link_behavior = block.settings.link_behavior | default: 'link'
+              assign link_target = block.settings.link_target | default: '_self'
+              assign action_key = block.settings.action_key
+              assign url = block.settings.url
+
+              if link_behavior == 'open_gorgias_chat'
+                assign link_behavior = 'action'
+                assign action_key = 'gorgias-chat'
+              endif
+            -%}
+            <li class="{# style option #}" {{ block.shopify_attributes }}>
+              {%- if icon != blank -%}
+                <span class="{# style optionIcon #}" aria-hidden="true">
+                  {% render 'dynamic-icon', icon_handle: icon %}
+                </span>
+              {%- endif -%}
+              <p class="{# style optionText #}">
+                {%- if intro != blank -%}{{ intro }} {% endif -%}
+                {%- if link_label != blank -%}
+                  {%- if link_behavior == 'action' and action_key != blank -%}
+                    <button
+                      type="button"
+                      class="{# style link #} js-contact-option-action"
+                      data-contact-action="{{ action_key }}"
+                    >
+                      {{ link_label }}
+                    </button>
+                  {%- elsif url != blank -%}
+                    <a
+                      class="{# style link #}"
+                      href="{{ url }}"
+                      {%- if link_target == '_blank' -%}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      {%- endif -%}
+                    >
+                      {{ link_label }}
+                    </a>
+                  {%- else -%}
+                    {{ link_label }}
+                  {%- endif -%}
+                {%- endif -%}
+              </p>
+            </li>
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Contact",
+  "tag": "section",
+  "class": "{# style section #} js-contact-section",
+  "enabled_on": {
+    "templates": ["page"]
+  },
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_breadcrumbs",
+      "label": "Show breadcrumbs",
+      "default": true
+    },
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Questions on your journey\nto feeling your best?"
+    },
+    {
+      "type": "richtext",
+      "id": "body",
+      "label": "Body text",
+      "default": "<p>We know that wellness is personal and sometimes, you just need a little guidance. Whether you're curious about our ingredients, need help with your routine, or want to share a win. We're here to listen.</p>"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "contact_option",
+      "name": "Contact option",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            { "value": "icon-globe-question", "label": "Globe / FAQ" },
+            { "value": "icon-mail", "label": "Mail" },
+            { "value": "icon-chat", "label": "Chat" },
+            { "value": "icon-box", "label": "Box" },
+            { "value": "icon-account", "label": "Account" },
+            { "value": "icon-target", "label": "Target" },
+            { "value": "icon-science", "label": "Science" },
+            { "value": "icon-leaf", "label": "Leaf" },
+            { "value": "icon-focus", "label": "Focus" }
+          ],
+          "default": "icon-globe-question"
+        },
+        {
+          "type": "text",
+          "id": "intro",
+          "label": "Intro text",
+          "info": "Text shown before the link, e.g. \"Check out our:\""
+        },
+        {
+          "type": "text",
+          "id": "link_label",
+          "label": "Link label",
+          "default": "Frequently Asked Questions"
+        },
+        {
+          "type": "select",
+          "id": "link_behavior",
+          "label": "Link behavior",
+          "options": [
+            { "value": "link", "label": "Link" },
+            { "value": "action", "label": "JavaScript action" }
+          ],
+          "default": "link"
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "Link URL",
+          "visible_if": "{{ block.settings.link_behavior == 'link' }}"
+        },
+        {
+          "type": "select",
+          "id": "link_target",
+          "label": "Link open target",
+          "options": [
+            { "value": "_self", "label": "Same tab" },
+            { "value": "_blank", "label": "New tab" }
+          ],
+          "default": "_self",
+          "visible_if": "{{ block.settings.link_behavior == 'link' }}"
+        },
+        {
+          "type": "select",
+          "id": "action_key",
+          "label": "Action",
+          "info": "Runs a registered handler in theme code. Ask your developer to add new actions in the contact section script.",
+          "options": [{ "value": "gorgias-chat", "label": "Open Gorgias chat" }],
+          "default": "gorgias-chat",
+          "visible_if": "{{ block.settings.link_behavior == 'action' }}"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Contact",
+      "category": "Forms",
+      "settings": {
+        "show_breadcrumbs": true
+      },
+      "blocks": [
+        {
+          "type": "contact_option",
+          "settings": {
+            "icon": "icon-globe-question",
+            "intro": "Check out our:",
+            "link_label": "Frequently Asked Questions",
+            "url": "shopify://pages/faqs"
+          }
+        },
+        {
+          "type": "contact_option",
+          "settings": {
+            "icon": "icon-mail",
+            "intro": "Send us an Email:",
+            "link_label": "hello@arrae.com",
+            "url": "mailto:hello@arrae.com"
+          }
+        },
+        {
+          "type": "contact_option",
+          "settings": {
+            "icon": "icon-chat",
+            "intro": "Chat with us:",
+            "link_label": "Start Chat",
+            "link_behavior": "action",
+            "action_key": "gorgias-chat"
+          }
+        },
+        {
+          "type": "contact_option",
+          "settings": {
+            "icon": "icon-box",
+            "intro": "Orders and Subscriptions:",
+            "link_label": "Portal Log In",
+            "url": "/account"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

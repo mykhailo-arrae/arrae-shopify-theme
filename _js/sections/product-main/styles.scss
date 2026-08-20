@@ -1,0 +1,117 @@
+@use 'unit' as u;
+@use 'style-guide/media' as mq;
+@use 'style-guide/colors' as color;
+@use 'style-guide/spacing' as spacing;
+@use 'style-guide/typography' as typography;
+@use 'style-guide/mixins' as mixin;
+
+.Product {
+  &-container {
+    @include mixin.container;
+    width: 100%;
+    padding: spacing.get(size-16);
+    box-sizing: border-box;
+
+    @include mq.min(tabletlandscape) {
+      padding: spacing.get(size-16) spacing.get(size-48);
+    }
+  }
+
+  &-sections {
+    @include mq.min(tabletlandscape) {
+      display: grid;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      justify-content: center;
+      align-items: start;
+      column-gap: u.rem-calc(16);
+    }
+  }
+
+  &-section {
+    &--images {
+      width: 100%;
+
+      @include mq.min(mobile) {
+        grid-column: span 7;
+      }
+
+      @include mq.min(smalldesktop) {
+        grid-column: span 8;
+      }
+    }
+
+    &--details {
+      width: 100%;
+      position: sticky;
+      top: spacing.get(size-32);
+
+      @include mq.min(mobile) {
+        grid-column: span 5;
+      }
+
+      @include mq.min(smalldesktop) {
+        grid-column: span 4;
+        padding: spacing.get(size-32);
+      }
+    }
+  }
+
+  &-title {
+    margin: 0;
+    line-height: 1.25;
+    text-transform: uppercase;
+  }
+
+  &-subheading {
+    margin: 0 0 1em 0;
+    max-width: u.rem-calc(640);
+
+    @include mq.min(mobile) {
+      font-size: u.rem-calc(18);
+    }
+  }
+
+  &-price {
+    margin: 0;
+    font-family: typography.get-font-family(heading);
+    font-size: u.rem-calc(16);
+    font-weight: 700;
+
+    @include mq.min(mobile) {
+      font-size: u.rem-calc(20);
+    }
+
+    & > s {
+      color: color.get(light-gray);
+    }
+
+    & > strong {
+      margin: 0 0.25em;
+    }
+  }
+
+  &-description {
+    overflow-x: hidden;
+
+    p {
+      color: color.get(dark-gray);
+
+      & + p {
+        margin-top: -0.75em;
+      }
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    span {
+      color: color.get(dark-gray);
+    }
+  }
+
+  label {
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+}

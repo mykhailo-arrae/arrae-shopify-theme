@@ -1,0 +1,51 @@
+@use 'sass:math';
+@use '../stdlib/map' as map;
+
+@function -px-as-em($value) {
+  @return math.div($value, 16) * 1em;
+}
+
+// Important! This is file is used in `devops/src/core/styles/preamble.scss`
+// Update the reference in `devops/src/core/styles/preamble.scss` if you change the path
+
+// This variable should remain public for the premable to work
+// Define breakpoints in ascending order
+// Prefer `em` units for media query breakpoints
+$breakpoints: (
+  mobile: -px-as-em(640),
+  tablet: -px-as-em(768),
+  tabletlandscape: -px-as-em(1024),
+  smalldesktop: -px-as-em(1280),
+  desktop: -px-as-em(1440),
+  // not using 1512, so we can match older devices with smaller screens
+  largedesktop: -px-as-em(1920),
+  ultrawidedesktop: -px-as-em(2560)
+) !default;
+
+/// Retrieve the breakpoint value associated with the provided key.
+/// @param {String} $name - pre-defined breakpoint name.
+/// @return {Number} The width value in rem units.
+@function get($name) {
+  @return map.get-strict($breakpoints, $name);
+}
+
+/// Apply a min-width media query for the provided breakpoint name.
+/// @param {String} $name - pre-defined breakpoint name.
+@mixin min($name) {
+  $width: map.get-strict($breakpoints, $name);
+
+  @media print, screen and (width >= #{$width}) {
+    @content;
+  }
+}
+
+/// Apply a max-width media query for the provided breakpoint name.
+/// Use < instead of <= to avoid overlap with min queries.
+/// @param {String} $name - pre-defined breakpoint name.
+@mixin max($name) {
+  $width: map.get-strict($breakpoints, $name);
+
+  @media print, screen and (width < #{$width}) {
+    @content;
+  }
+}

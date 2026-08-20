@@ -1,0 +1,387 @@
+{% liquid
+  assign title = block.settings.title | replace: '[br]', '<br>'
+  assign subtitle = block.settings.subtitle
+  assign cta_label = block.settings.cta_label
+  assign cta_link = block.settings.cta_link
+
+  assign text_color_mode = block.settings.text_color_mode | default: 'light'
+  assign desktop_text_alignment = block.settings.desktop_text_alignment | default: 'left'
+  assign desktop_button_color_mode = block.settings.desktop_button_color_mode | default: 'light'
+  assign mobile_button_color_mode = block.settings.mobile_button_color_mode | default: 'dark'
+  assign overlay = block.settings.overlay | default: null
+  assign desktop_image = block.settings.desktop_image | default: null
+  assign mobile_image = block.settings.mobile_image | default: null
+
+  assign desktop_content_position = block.settings.desktop_content_position
+  assign mobile_content_position = block.settings.mobile_content_position
+  assign desktop_content_padding_left = block.settings.desktop_content_padding_left | default: 0
+  assign desktop_content_padding_top = block.settings.desktop_content_padding_top | default: 0
+
+  assign is_first_block = false
+  if section.index == 1 and block.id == section.blocks.first.id
+    assign is_first_block = true
+  endif
+
+  assign show_mobile_content = false
+  if subtitle != blank or cta_label != blank and cta_link != blank
+    assign show_mobile_content = true
+  endif
+  assign desktop_button_style = 'primary'
+  if desktop_button_color_mode == 'light'
+    assign desktop_button_style = 'secondary'
+  endif
+
+  assign mobile_button_style = 'primary'
+  if mobile_button_color_mode == 'light'
+    assign mobile_button_style = 'secondary'
+  endif
+%}
+
+<div
+  class="{# style container #}"
+  data-text-mode="{{ text_color_mode }}"
+  {{ block.shopify_attributes }}
+>
+  <div class="js-full-screen-banner-slide {# style slide #}">
+    <div class="{# style media #}">
+      <div
+        class="{# style wrapper #}"
+        data-spacing="{{ is_first_block }}"
+      >
+        <div class="{# style background #}">
+          {% if desktop_image != blank or mobile_image != blank %}
+            {% render 'core-image',
+              image: desktop_image,
+              image_mobile: mobile_image,
+              object_fit: 'cover',
+              srcset_print_sizes: '480,640,800,960,1024,1280,1440,1800,2000',
+              mobile_srcset_print_sizes: '320,480,640'
+            %}
+          {% endif %}
+
+          {% if overlay != blank %}
+            <div
+              class="{# style overlay #}"
+              style="background:{{ overlay }}"
+            ></div>
+          {% endif %}
+        </div>
+
+        {% if title != blank or subtitle != blank or cta_label != blank and cta_link != blank %}
+          <div
+            class="{# style content #}"
+            data-mobile-position="{{ mobile_content_position }}"
+            data-desktop-position="{{ desktop_content_position }}"
+          >
+            <div
+              class="{# style inner #}"
+              data-desktop-text-align="{{ desktop_text_alignment }}"
+              style="{# style --desktop-inner-padding-left #}: {{ desktop_content_padding_left }}px; {# style --desktop-inner-padding-top #}: {{ desktop_content_padding_top }}px;"
+            >
+              {% if title != blank %}
+                <h2 class="{# style title #}">
+                  {{ title }}
+                </h2>
+              {% endif %}
+
+              <div class="{# style desktopContent #}">
+                {% if subtitle != blank %}
+                  <div class="{# style subtitle #}">
+                    {{ subtitle | strip_html | truncate: 800 }}
+                  </div>
+                {% endif %}
+
+                {% if cta_label != blank and cta_link != blank %}
+                  {% liquid
+                    assign desktop_button_class = '{# style button #} {# style buttonDesktop #}'
+                    if desktop_button_color_mode == 'dark'
+                      assign desktop_button_class = desktop_button_class | append: ' {# style buttonDesktop--dark #}'
+                    else
+                      assign desktop_button_class = desktop_button_class | append: ' {# style buttonDesktop--light #}'
+                    endif
+                  %}
+                  {% render 'core-button',
+                    label: cta_label,
+                    url: cta_link,
+                    size: 'large',
+                    style: desktop_button_style,
+                    class: desktop_button_class
+                  %}
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  {% if show_mobile_content %}
+    <div class="{# style mobileContent #}">
+      {% if subtitle != blank %}
+        <div class="{# style subtitle #}">
+          {{ subtitle | strip_html | truncate: 800 }}
+        </div>
+      {% endif %}
+
+      {% if cta_label != blank and cta_link != blank %}
+        {% liquid
+          assign mobile_button_class = '{# style button #} {# style buttonMobile #}'
+          if mobile_button_color_mode == 'dark'
+            assign mobile_button_class = mobile_button_class | append: ' {# style mobileButton--dark #}'
+          else
+            assign mobile_button_class = mobile_button_class | append: ' {# style mobileButton--light #}'
+          endif
+        %}
+        {% render 'core-button',
+          label: cta_label,
+          url: cta_link,
+          size: 'large',
+          style: mobile_button_style,
+          class: mobile_button_class
+        %}
+      {% endif %}
+    </div>
+  {% endif %}
+</div>
+
+{% schema %}
+{
+  "name": "Full screen banner",
+  "class": "{# style block #}",
+  "settings": [
+    {
+      "type": "header",
+      "content": "CONTENT"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "title",
+      "label": "Title",
+      "default": "Banner Title",
+      "info": "Use [br] to add a line break"
+    },
+    {
+      "type": "richtext",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "<p>Banner Subtitle</p>"
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "CTA Label",
+      "info": "Required to show the button"
+    },
+    {
+      "type": "url",
+      "id": "cta_link",
+      "label": "CTA Link",
+      "info": "Required to show the button"
+    },
+    {
+      "type": "select",
+      "id": "text_color_mode",
+      "label": "Text color mode",
+      "options": [
+        {
+          "value": "light",
+          "label": "Light"
+        },
+        {
+          "value": "dark",
+          "label": "Dark"
+        }
+      ],
+      "default": "dark"
+    },
+    {
+      "type": "select",
+      "id": "desktop_text_alignment",
+      "label": "Desktop text alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "range",
+      "id": "desktop_content_padding_left",
+      "label": "Padding left content (desktop)",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "desktop_content_padding_top",
+      "label": "Padding top content (desktop)",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "select",
+      "id": "desktop_button_color_mode",
+      "label": "Desktop button color mode",
+      "options": [
+        {
+          "value": "light",
+          "label": "Light"
+        },
+        {
+          "value": "dark",
+          "label": "Dark"
+        }
+      ],
+      "default": "light"
+    },
+    {
+      "type": "select",
+      "id": "mobile_button_color_mode",
+      "label": "Mobile button color mode",
+      "options": [
+        {
+          "value": "light",
+          "label": "Light"
+        },
+        {
+          "value": "dark",
+          "label": "Dark"
+        }
+      ],
+      "default": "dark"
+    },
+    {
+      "type": "select",
+      "id": "desktop_content_position",
+      "label": "Desktop Content Position",
+      "options": [
+        {
+          "value": "top-left",
+          "label": "Top Left"
+        },
+        {
+          "value": "top-center",
+          "label": "Top Center"
+        },
+        {
+          "value": "top-right",
+          "label": "Top Right"
+        },
+        {
+          "value": "center-left",
+          "label": "Center Left"
+        },
+        {
+          "value": "center-center",
+          "label": "Center Center"
+        },
+        {
+          "value": "center-right",
+          "label": "Center Right"
+        },
+        {
+          "value": "bottom-left",
+          "label": "Bottom Left"
+        },
+        {
+          "value": "bottom-center",
+          "label": "Bottom Center"
+        },
+        {
+          "value": "bottom-right",
+          "label": "Bottom Right"
+        }
+      ],
+      "default": "top-left"
+    },
+    {
+      "type": "select",
+      "id": "mobile_content_position",
+      "label": "Mobile Content Position",
+      "options": [
+        {
+          "value": "top-left",
+          "label": "Top Left"
+        },
+        {
+          "value": "top-center",
+          "label": "Top Center"
+        },
+        {
+          "value": "top-right",
+          "label": "Top Right"
+        },
+        {
+          "value": "center-left",
+          "label": "Center Left"
+        },
+        {
+          "value": "center-center",
+          "label": "Center Center"
+        },
+        {
+          "value": "center-right",
+          "label": "Center Right"
+        },
+        {
+          "value": "bottom-left",
+          "label": "Bottom Left"
+        },
+        {
+          "value": "bottom-center",
+          "label": "Bottom Center"
+        },
+        {
+          "value": "bottom-right",
+          "label": "Bottom Right"
+        }
+      ],
+      "default": "top-left"
+    },
+    {
+      "type": "header",
+      "content": "MEDIA"
+    },
+    {
+      "type": "image_picker",
+      "id": "desktop_image",
+      "label": "Desktop Image",
+      "info": "Recommended aspect ratio: 2:1"
+    },
+    {
+      "type": "image_picker",
+      "id": "mobile_image",
+      "label": "Mobile Image",
+      "info": "Recommended aspect ratio: 3:4"
+    },
+    {
+      "type": "color_background",
+      "id": "overlay",
+      "label": "Overlay",
+      "default": "linear-gradient(180deg,rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.25) 100%)"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Full screen banner"
+    }
+  ]
+}
+{% endschema %}

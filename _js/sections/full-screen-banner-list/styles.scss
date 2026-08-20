@@ -1,0 +1,68 @@
+@use 'style-guide/colors' as color;
+@use 'style-guide/media' as mq;
+@use 'style-guide/spacing' as spacing;
+@use 'style-guide/sizes' as sizes;
+@use 'style-guide/mixins' as mixin;
+
+.section {
+  @include mixin.container();
+  z-index: 1;
+  width: 100%;
+  position: relative;
+  padding: spacing.get(size-16) spacing.get(size-16) spacing.get(size-12);
+
+  @include mq.min(tabletlandscape) {
+    padding: spacing.get(size-24);
+  }
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: spacing.get(size-16);
+  width: 100%;
+
+  @include mq.min(tabletlandscape) {
+    gap: spacing.get(size-20);
+    padding-bottom: spacing.get(size-12);
+  }
+
+  &[data-stack='true'] {
+    :global(.shopify-block) {
+      position: sticky;
+      top: var(--full-screen-banner-list-sticky-top, 0);
+      z-index: 1;
+      width: 100%;
+      isolation: isolate;
+      overflow: hidden;
+      border-radius: spacing.get(size-12);
+      background-color: color.get(off-white);
+
+      &:nth-child(2) {
+        z-index: 2;
+      }
+
+      &:nth-child(3) {
+        z-index: 3;
+      }
+
+      &:nth-child(4) {
+        z-index: 4;
+      }
+    }
+  }
+}
+
+.section[data-design-mode='true'] .list {
+  :global(.shopify-block) {
+    position: static;
+    overflow: visible;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .list[data-stack='true'] :global(.shopify-block) {
+    position: static;
+    overflow: visible;
+  }
+}

@@ -1,0 +1,23 @@
+[
+  {
+    "$schema": "https://json.schemastore.org/swcrc",
+    "test": [".*.(js|ts)$"],
+    "module": {
+      "type": "commonjs",
+      "ignoreDynamic": true
+    },
+    "env": {
+      "targets": [
+        "node >= 22"
+      ]
+    },
+    "jsc": {
+      "parser": {
+        "syntax": "typescript",
+        "tsx": false,
+        "decorators": false,
+        "dynamicImport": false
+      }
+    }
+  }
+]

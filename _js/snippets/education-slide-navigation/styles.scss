@@ -1,0 +1,280 @@
+@use 'unit' as u;
+@use 'style-guide/media' as mq;
+@use 'style-guide/spacing' as spacing;
+@use 'style-guide/colors' as color;
+@use 'style-guide/mixins' as mixin;
+@use 'style-guide/typography' as typography;
+
+.root {
+  position: relative;
+  z-index: 4;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  pointer-events: none;
+
+  @include mq.max(smalldesktop) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  @include mq.min(smalldesktop) {
+    position: absolute;
+    left: spacing.get(size-48);
+    bottom: spacing.get(size-48);
+    height: auto;
+  }
+}
+
+.items-scroll {
+  pointer-events: all;
+
+  @include mq.max(smalldesktop) {
+    overflow-x: auto;
+    overflow-y: hidden;
+    width: 100%;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+}
+
+.items {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-around;
+  gap: spacing.get(size-8);
+  padding: spacing.get(size-24) spacing.get(size-16);
+  pointer-events: all;
+
+  @include mq.max(smalldesktop) {
+    flex-wrap: nowrap;
+    justify-content: center;
+    width: max-content;
+    min-width: 100%;
+    gap: spacing.get(size-16);
+    padding: spacing.get(size-24) spacing.get(size-16) 0;
+  }
+
+  @include mq.min(smalldesktop) {
+    display: grid;
+    gap: spacing.get(size-8);
+    min-width: min(16rem, 70vw);
+    padding: unset;
+    justify-content: flex-start;
+  }
+}
+
+.item {
+  @include mixin.reset-button();
+  display: grid;
+  gap: spacing.get(size-2);
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+  width: fit-content;
+  color: color.get(off-white-60);
+
+  @include mq.max(smalldesktop) {
+    gap: 0;
+    flex-shrink: 0;
+  }
+}
+
+.item:hover,
+.item:focus-visible,
+.item[aria-current='true'] {
+  color: color.get(off-white);
+}
+
+.item[data-active='true'] {
+  color: color.get(off-white);
+}
+
+.item:focus-visible {
+  @include mixin.focus-visible-ring();
+}
+
+.title {
+  @include typography.font-cardinal-fruit();
+  font-size: spacing.get(size-20);
+  font-weight: 400;
+  color: inherit;
+  line-height: 1;
+  letter-spacing: u.rem-calc(-0.6);
+
+  @include mq.max(smalldesktop) {
+    white-space: nowrap;
+  }
+
+  @include mq.min(smalldesktop) {
+    font-size: spacing.get(size-32);
+    line-height: 112%;
+    letter-spacing: u.rem-calc(-0.96);
+  }
+}
+
+.root[data-nav-dense='true'] .title {
+  @include mq.min(smalldesktop) {
+    font-size: spacing.get(size-24);
+    letter-spacing: u.rem-calc(-0.48);
+  }
+}
+
+.progress-track {
+  display: block;
+  width: 100%;
+  height: u.rem-calc(1);
+  overflow: hidden;
+  background: transparent;
+  transform-origin: left center;
+}
+
+.progress-bar {
+  display: block;
+  width: 0;
+  height: 100%;
+  background: currentcolor;
+}
+
+.root[data-progress-mode='animated'] .progress-bar {
+  transition: width 80ms linear;
+}
+
+.root[data-progress-mode='static'] {
+  .item:not([data-active='true']) .progress-track {
+    visibility: hidden;
+  }
+
+  .item[data-active='true'] .progress-bar {
+    width: 100%;
+    transition: none;
+  }
+}
+
+.controls {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: spacing.get(size-16);
+  padding: 0 spacing.get(size-16) spacing.get(size-16);
+  pointer-events: all;
+  color: color.get(off-white);
+
+  @include mq.max(smalldesktop) {
+    position: absolute;
+    right: spacing.get(size-24);
+    bottom: spacing.get(size-24);
+    height: calc(#{spacing.get(size-14)} * 1.3);
+    padding: 0;
+    gap: 0;
+    align-items: center;
+    justify-content: center;
+  }
+
+  @include mq.min(smalldesktop) {
+    position: relative;
+    right: unset;
+    bottom: unset;
+    padding: 0;
+    margin-top: spacing.get(size-24);
+    gap: spacing.get(size-24);
+  }
+}
+
+.cta {
+  display: flex;
+  align-items: center;
+}
+
+.cta--desktop {
+  @include mq.max(smalldesktop) {
+    display: none;
+  }
+}
+
+.playback {
+  @include mixin.reset-button();
+  cursor: pointer;
+  color: inherit;
+
+  @include mq.max(smalldesktop) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 0;
+
+    span,
+    span :global(svg) {
+      display: block;
+      width: u.rem-calc(24);
+      height: u.rem-calc(24);
+    }
+  }
+
+  &[data-playback-status='playing'] {
+    span[data-playback-icon='play'] {
+      display: none;
+    }
+
+    span[data-playback-icon='pause'] {
+      display: block;
+    }
+  }
+
+  &[data-playback-status='paused'] {
+    span[data-playback-icon='play'] {
+      display: block;
+    }
+
+    span[data-playback-icon='pause'] {
+      display: none;
+    }
+  }
+}
+
+.cta__button:global(.root--secondary) {
+  border-color: currentcolor;
+  color: currentcolor;
+  background-color: transparent;
+}
+
+.root[data-nav-overflow='true'] {
+  @include mq.max(smalldesktop) {
+    .items {
+      justify-content: flex-start;
+    }
+  }
+}
+
+.root[data-text-contrast='dark'] {
+  .controls,
+  .playback,
+  .item,
+  .cta__button:global(.root--secondary) {
+    color: color.get(text-gray);
+    border-color: color.get(text-gray);
+  }
+
+  .item:hover,
+  .item:focus-visible,
+  .item[aria-current='true'] {
+    color: color.get(text);
+    border-color: color.get(text);
+  }
+
+  .item[data-active='true'] {
+    color: color.get(text);
+    border-color: color.get(text);
+  }
+
+  .title {
+    color: inherit;
+  }
+}

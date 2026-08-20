@@ -1,0 +1,157 @@
+// Typography
+// ===============================================
+
+@use 'sass:map';
+@use '../stdlib/map' as maptools;
+@use '../unit' as u;
+@use './spacing' as spacing;
+@use './sizes' as sizes;
+
+/* ===================================================== */
+/* Font Families Settings */
+/* ===================================================== */
+
+$_serif-font-stack: 'Georgia', 'Book Antiqua', 'Times New Roman', serif;
+
+$_system-font-stack:
+  -apple-system, blinkmacsystemfont, 'Segoe UI', roboto, oxygen-sans, ubuntu,
+  cantarell, 'Helvetica Neue', sans-serif;
+
+$_heading: 'Cardinal Fruit', $_serif-font-stack;
+$_body: 'proxima-nova', $_system-font-stack;
+
+$_fonts: (
+  heading: $_heading,
+  body: $_body
+);
+
+@function get-font-family($font) {
+  @if not map.has-key($_fonts, $font) {
+    @warn 'Font family "#{$font}" is not supported';
+
+    @return maptools.get-strict($_fonts, body);
+  }
+
+  @return maptools.get-strict($_fonts, $font);
+}
+
+/* ===================================================== */
+/* Font Sizes Settings */
+/* ===================================================== */
+
+@function get-font-size($size) {
+  @if not sizes.get($size) {
+    @warn 'Font size "#{$size}" is not supported';
+
+    @return sizes.get(size-16);
+  }
+
+  @return sizes.get($size);
+}
+
+/* ===================================================== */
+/* Typography Mixins */
+/* ===================================================== */
+
+@mixin heading-1 {
+  font-family: get-font-family(heading);
+  font-size: get-font-size(size-80);
+  font-weight: 400;
+  line-height: 92%;
+  letter-spacing: u.rem-calc(-2.4);
+}
+
+@mixin heading-2 {
+  font-family: get-font-family(heading);
+  font-size: get-font-size(size-56);
+  font-weight: 400;
+  line-height: 98%;
+  letter-spacing: u.rem-calc(-1.68);
+}
+
+@mixin heading-3 {
+  font-family: get-font-family(heading);
+  font-size: get-font-size(size-40);
+  font-weight: 400;
+  line-height: 112%;
+  letter-spacing: u.rem-calc(-1.2);
+}
+
+@mixin heading-4 {
+  font-family: get-font-family(heading);
+  font-size: get-font-size(size-32);
+  font-weight: 400;
+  line-height: 98%;
+  letter-spacing: u.rem-calc(-0.72);
+}
+
+@mixin heading-5 {
+  font-family: get-font-family(heading);
+  font-size: get-font-size(size-24);
+  font-weight: 400;
+  line-height: 98%;
+  letter-spacing: u.rem-calc(-0.72);
+}
+
+@mixin body-large {
+  font-family: get-font-family(body);
+  font-size: get-font-size(size-24);
+  text-transform: uppercase;
+  font-weight: 500;
+  line-height: 102%;
+  letter-spacing: u.rem-calc(0.96);
+}
+
+@mixin body-medium {
+  font-family: get-font-family(body);
+  font-size: get-font-size(size-20);
+  font-weight: 300;
+  line-height: 120%;
+}
+@mixin body-regular {
+  font-family: get-font-family(body);
+  font-size: get-font-size(size-16);
+  font-weight: 300;
+  line-height: 120%;
+}
+
+@mixin body-small {
+  font-family: get-font-family(body);
+  font-size: get-font-size(size-14);
+  font-weight: 300;
+  line-height: 120%;
+}
+
+@mixin body-xsmall {
+  font-family: get-font-family(body);
+  font-size: get-font-size(size-12);
+  font-weight: 300;
+  line-height: 120%;
+}
+
+@mixin body-xxsmall {
+  font-family: get-font-family(body);
+  font-size: get-font-size(size-8);
+  font-weight: 300;
+  line-height: 120%;
+}
+
+@mixin body($font-size: size-16, $font-weight: 300) {
+  font-family: get-font-family(body);
+  font-size: get-font-size($font-size);
+  font-weight: $font-weight;
+  line-height: 120%;
+}
+
+@mixin font-cardinal-fruit {
+  font-family: get-font-family(heading);
+  font-weight: 400;
+  line-height: 92%;
+  letter-spacing: u.rem-calc(-2.4);
+}
+
+@mixin font-proxima-nova {
+  font-family: get-font-family(body);
+  font-weight: 300;
+  line-height: 120%;
+}

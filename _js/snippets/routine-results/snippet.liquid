@@ -1,0 +1,45 @@
+{% comment %}
+  Routine Results — React app mounted into a drawer.
+
+  - Receives routine_creator_results and label settings via JSON scripts
+    rendered by the create-your-routine section.
+  - Listens to the routine:show custom event dispatched by the section
+    to render the matching products. Emits routine:close when the user
+    closes the drawer.
+{% endcomment %}
+
+<div
+  class="{# style root #}"
+  role="dialog"
+  aria-modal="false"
+  aria-labelledby="js-routine-results-title"
+>
+  <div class="{# style panel #}">
+    <header class="{# style header #}">
+      <h3 id="js-routine-results-title" class="{# style title #} js-routine-results-title">
+        {{- 'sections.create_your_routine.results_title' | t -}}
+      </h3>
+      <button
+        type="button"
+        class="{# style close #} js-routine-results-close"
+        aria-label="{{ 'sections.create_your_routine.close' | t }}"
+      >
+        {% render 'icon-close', width: 18, height: 18, fill: 'currentColor' %}
+      </button>
+    </header>
+
+    <div class="{# style atc #}">
+      <button
+        type="button"
+        class="{# style atc__button #} js-routine-add-all"
+        disabled
+      >
+        <span class="js-routine-add-all-label">
+          {{- 'sections.create_your_routine.add_all_to_cart' | t -}}
+        </span>
+      </button>
+    </div>
+
+    <div class="{# style list #} js-routine-results-render-target"></div>
+  </div>
+</div>

@@ -1,0 +1,62 @@
+@use 'unit' as u;
+@use 'style-guide/spacing' as spacing;
+@use 'style-guide/sizes' as sizes;
+@use 'style-guide/typography' as typography;
+@use 'style-guide/colors' as color;
+@use 'style-guide/media' as mq;
+@use 'style-guide/mixins' as mixin;
+
+.root {
+  position: relative;
+  border-top: 1px solid color.get(on-white);
+  border-bottom: 1px solid color.get(on-white);
+}
+
+.container {
+  width: 100%;
+  position: relative;
+  @include mixin.container();
+  padding-block: u.rem-calc(9) u.rem-calc(10);
+  padding-inline: spacing.get(size-24);
+
+  @include mq.min(tabletlandscape) {
+    padding-inline: spacing.get(size-48);
+  }
+}
+
+.list {
+  @include mixin.reset-ul();
+  display: flex;
+  flex-direction: row;
+  gap: spacing.get(size-8);
+}
+
+.item {
+  display: flex;
+  flex-direction: row;
+  gap: spacing.get(size-8);
+  position: relative;
+  @include typography.body(size-12, 300);
+  line-height: 1.1;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: color.get(text);
+
+  &::after {
+    content: '>';
+    display: block;
+    position: relative;
+    font-size: sizes.get(size-12);
+    opacity: 0.5;
+  }
+
+  &:last-of-type::after {
+    content: '';
+  }
+
+  & a {
+    color: color.get(text-gray);
+    text-decoration: none;
+    @include mixin.animated-underline();
+  }
+}

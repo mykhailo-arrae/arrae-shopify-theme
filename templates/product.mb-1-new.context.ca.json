@@ -1,0 +1,148 @@
+{
+  "context": {
+    "market": "ca"
+  },
+  "parent": "product.mb-1-new.json",
+  "sections": {
+    "education_slideshow_Gq6RgF": {
+      "blocks": {
+        "image_carousel_slide_hqWa7U": {
+          "settings": {
+            "heading": "Real Women. Real MB-1 Experiences.",
+            "subheading": "<p>See why our MB-1 formulas have become a staple in millions of women’s routines.</p>"
+          }
+        }
+      },
+      "settings": {}
+    },
+    "education_slideshow_rxqxrA": {
+      "blocks": {
+        "ingredients_slide_PKHgFN": {
+          "settings": {
+            "ingredients": ["green-tea-extract-mb-1-ca"],
+            "subheading": "<p>An herbal antioxidant that supports steady energy metabolism.</p>"
+          }
+        },
+        "ingredients_slide_cfwJ9b": {
+          "settings": {
+            "ingredients": ["vitamin-b-6-p-5-p-mb-1-ca"],
+            "subheading": "<p>An essential nutrient in its most bioactive form to support healthy biological function.</p>"
+          }
+        },
+        "ingredients_slide_drXaJD": {
+          "settings": {
+            "ingredients": ["calori-burn-gp-grains-of-paradise-mb-1-ca"],
+            "subheading": "<p>An ancient West African spice clinically studied to support overall metabolic vitality.</p>"
+          }
+        },
+        "ingredients_slide_gUChxT": {
+          "settings": {
+            "ingredients": ["chromium-picolinate"],
+            "subheading": "<p>An essential trace mineral that supports nutrient metabolism and healthy glucose metabolism.</p>"
+          }
+        },
+        "ingredients_slide_tJdxd9": {
+          "settings": {
+            "ingredients": ["igob-131-african-mango-seed-mb-1-ca"],
+            "subheading": "<p>A clinically studied ingredient from African mango seeds that supports healthy glucose metabolism and healthy cholesterol levels.</p>"
+          }
+        },
+        "ingredients_slide_xEJAdT": {
+          "settings": {
+            "ingredients": ["probiotic-b-420-bifodobacterium-lactis"],
+            "subheading": "<p>A clinically-studied probiotic that supports a healthy microbiome, and improves digestive health.</p>"
+          }
+        },
+        "ingredients_slide_z878Mh": {
+          "settings": {
+            "ingredients": ["cqr-300-cissus-extract-mb-1-ca"],
+            "subheading": "<p>A clinically studied extract from Cissus vine that works synergistically with African Mango to support metabolic biomarkers.</p>"
+          }
+        }
+      },
+      "settings": {}
+    },
+    "education_slideshow_xWiVY6": {
+      "blocks": {
+        "percentage_slide_M8cycX": {
+          "settings": {
+            "stat_items": [
+              "months-to-support-a-healthy-gut-microbiome",
+              "decrease-in-blood-glucose-levels-1",
+              "decrease-in-ldl-cholesterol"
+            ]
+          }
+        }
+      },
+      "settings": {}
+    },
+    "faq_iEjbWU": {
+      "blocks": {
+        "faq_question_FCHfrh": {
+          "settings": {
+            "content": "<p>We designed MB-1 to be the #1 solution for all of your metabolism needs. Whether you’re looking to support cardiovascular health, nutrient and energy metabolism, or maintain normal blood glucose and cholesterol levels, MB-1 targets it all. </p>"
+          }
+        },
+        "faq_question_PAxNUn": {
+          "settings": {
+            "content": "<p>We recommend consulting with your physician before combining any of our supplements with other medications.</p>"
+          }
+        },
+        "faq_question_dgiGw9": {
+          "disabled": true,
+          "settings": {}
+        },
+        "faq_question_gpCYaF": {
+          "settings": {
+            "content": "<p>Cautions and Warnings: </p><p>Ask a health care provider before use if you are taking prescription medications or have a liver or kidney disorder, iron deficiency, high blood pressure or glaucoma, fever, vomiting, bloody diarrhoea, severe abdominal pain. Stop use and ask a health care provider if you experience symptoms of hypoglycaemia including feelings of anxiety, dizziness, tremor, sweating, nausea, headache, or if symptoms of digestive upset (e.g. diarrhea) occur, worsen and/or persist beyond 3 days, or if you experience any new symptoms including yellowing of the eyes or skin, dark urine, nausea, vomiting, stomach pain. Do not use if you have diabetes, or if you are pregnant, breastfeeding, or immune compromised (e.g. AIDS, lymphoma, patients undergoing long-term corticosteroid treatment).</p><p>Information provided on this site is for informational purposes only and is not intended to substitute for medical advice from a healthcare professional.</p><p>This product is not intended to diagnose, treat, cure, or prevent any disease. This product is not a treatment for obesity, type 2 diabetes or other metabolic diseases. This product is not intended for individuals 18 years old or under. This product is not intended for those pregnant, trying to become pregnant, or breastfeeding. MB-1 has not been studied in combination with prescription medications or other supplements, if you have any concern about potential interactions, we recommend consulting a medical professional before taking MB-1. If you have any pre-existing health conditions, we recommend consulting a medical professional before taking MB-1.</p>",
+            "title": "Disclaimers"
+          }
+        },
+        "faq_question_kXCcU3": {
+          "disabled": true,
+          "settings": {}
+        }
+      },
+      "settings": {}
+    },
+    "main": {
+      "blocks": {},
+      "settings": {
+        "benefits_list": "Support energy metabolism\nSupport normal blood glucose levels\nSupport healthy cholesterol levels\nSupport your body’s nutrient utilization\nSupport gut health with a targeted probiotic\nSupport a healthy lifestyle in combination with diet and exercise",
+        "description": "<p>Support your weight-management routine with a science-backed blend of vitamins, minerals, botanicals and probiotics. When combined with a calorie-reduced diet and regular physical activity, MB-1 helps to:</p>",
+        "product_accordions": [
+          "what-is-mb-1-ca",
+          "who-is-mb-1-for-ca",
+          "how-to-use-mb-ca",
+          "ingredients-mb-1-ca"
+        ]
+      }
+    },
+    "timeline_QNxyp6": {
+      "blocks": {
+        "step_FipNAT": {
+          "settings": {
+            "description": "<p>Use MB-1 as a complement to a calorie-reduced diet and regular physical activity.</p>",
+            "eyebrow": "PAIR WITH HEALTHY HABITS"
+          }
+        },
+        "step_gFfzTL": {
+          "settings": {
+            "description": "<p>Take two capsules once daily with food.</p>",
+            "eyebrow": "TAKE DAILY"
+          }
+        },
+        "step_phVG7L": {
+          "settings": {
+            "description": "<p>Daily use helps provide ongoing metabolic, nutritional, antioxidant and gastrointestinal support.</p>",
+            "eyebrow": "STAY CONSISTENT",
+            "step_indicator": "3"
+          }
+        }
+      },
+      "settings": {
+        "heading": "<p>Make MB-1 Part of Your Daily Routine</p>"
+      }
+    }
+  }
+}

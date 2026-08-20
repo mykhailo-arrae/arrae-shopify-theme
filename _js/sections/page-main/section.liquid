@@ -1,0 +1,28 @@
+<div class="{# style container #}">
+  <h1 class="{# style title #}">
+    {{ page.title }}
+  </h1>
+
+  <div class="{# style content #}">
+    {{ page.content }}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Page",
+  "tag": "section",
+  "class": "{# style main #}",
+  "enabled_on": {
+    "templates": ["page"]
+  },
+  "settings": [],
+  "presets": [
+    {
+      "name": "Page",
+      "category": "Page Content",
+      "settings": {}
+    }
+  ]
+}
+{% endschema %}

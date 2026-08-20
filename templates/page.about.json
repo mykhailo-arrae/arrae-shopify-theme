@@ -1,0 +1,198 @@
+{
+  "order": [
+    "page_header_pn87hT",
+    "section_70_30_QnJX77",
+    "full_screen_banner_list_qrP4Ni",
+    "timeline_xYjxrK",
+    "journal_article_highlight_zJwcza"
+  ],
+  "sections": {
+    "full_screen_banner_list_qrP4Ni": {
+      "block_order": [
+        "full_screen_banner_kKdUcV",
+        "full_screen_banner_KgcWAg",
+        "full_screen_banner_AqBDwK"
+      ],
+      "blocks": {
+        "full_screen_banner_AqBDwK": {
+          "blocks": {},
+          "name": "Full screen banner",
+          "settings": {
+            "cta_label": "",
+            "cta_link": "",
+            "desktop_button_color_mode": "light",
+            "desktop_content_padding_left": 112,
+            "desktop_content_padding_top": 44,
+            "desktop_content_position": "top-right",
+            "desktop_image": "shopify://shop_images/Nish_About_Us_Founder_Image_1.jpg",
+            "desktop_text_alignment": "left",
+            "mobile_button_color_mode": "dark",
+            "mobile_content_position": "top-left",
+            "mobile_image": "shopify://shop_images/media_3.png",
+            "overlay": "linear-gradient(180deg, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.25) 100%)",
+            "subtitle": "<p>“I created Arrae because I was tired of wellness products that promised everything and delivered nothing. Coming from a fast-paced tech world, I didn’t have time for complicated routines or blind faith. Stress and fatigue piled up before I even realized it until discovering natural remedies that showed me what real working wellness could look like.\"</p>",
+            "text_color_mode": "dark",
+            "title": "Nish[br]Samantray"
+          },
+          "type": "full-screen-banner"
+        },
+        "full_screen_banner_KgcWAg": {
+          "blocks": {},
+          "settings": {
+            "cta_label": "",
+            "cta_link": "",
+            "desktop_button_color_mode": "light",
+            "desktop_content_padding_left": 0,
+            "desktop_content_padding_top": 0,
+            "desktop_content_position": "top-left",
+            "desktop_image": "shopify://shop_images/Group_114.jpg",
+            "desktop_text_alignment": "left",
+            "mobile_button_color_mode": "dark",
+            "mobile_content_position": "top-left",
+            "mobile_image": "shopify://shop_images/media_2_191506f2-5a62-452e-bd41-eb8db42f8f75.png",
+            "overlay": "linear-gradient(180deg, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.15) 100%)",
+            "subtitle": "<p>\"After struggling with my own health issues for years, I turned to natural remedies as a last resort. I discovered the power that herbs, minerals, and vitamins had in not only providing quick relief, but also addressing the root cause of the issue. The trouble was that I couldn’t find natural, high-quality products that were both effective and beautiful. We wanted to bridge that gap with targeted solutions that worked AND looked as good as they make you feel.”</p>",
+            "text_color_mode": "dark",
+            "title": "Siffat Haider"
+          },
+          "type": "full-screen-banner"
+        },
+        "full_screen_banner_kKdUcV": {
+          "blocks": {},
+          "settings": {
+            "cta_label": "",
+            "cta_link": "",
+            "desktop_button_color_mode": "light",
+            "desktop_content_padding_left": 0,
+            "desktop_content_padding_top": 0,
+            "desktop_content_position": "center-center",
+            "desktop_image": "shopify://shop_images/media_1.jpg",
+            "desktop_text_alignment": "center",
+            "mobile_button_color_mode": "dark",
+            "mobile_content_position": "center-center",
+            "mobile_image": "shopify://shop_images/media_1_f51d6676-a83a-4020-bb98-ab8f17a138fb.png",
+            "overlay": "linear-gradient(180deg, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.25) 100%)",
+            "subtitle": "",
+            "text_color_mode": "light",
+            "title": "Meet the[br]<em>Founders</em>"
+          },
+          "type": "full-screen-banner"
+        }
+      },
+      "name": "Full screen banner list",
+      "settings": {},
+      "type": "full-screen-banner-list"
+    },
+    "journal_article_highlight_zJwcza": {
+      "name": "Journal Article Highlight",
+      "settings": {
+        "articles": [
+          "arrae-journal/hamptons",
+          "the-founder-files/volume-01",
+          "arrae-journal/maison-arrae"
+        ],
+        "cta_label": "",
+        "cta_url": "/",
+        "heading": "<p>Highlights & Initiatives</p>",
+        "show_arrows": true,
+        "show_pagination": true,
+        "subheading": "Read inspirational stories inside our Journal and learn how to life your best life."
+      },
+      "type": "journal-article-highlight"
+    },
+    "page_header_pn87hT": {
+      "name": "Page Header",
+      "settings": {
+        "background_image_desktop": "shopify://shop_images/section_1.png",
+        "heading": "This Is Where [br] Science Meets Chic.",
+        "overlay_color": "#000000",
+        "overlay_opacity": "15",
+        "show_breadcrumbs": true,
+        "subheading": "",
+        "text_color": "light"
+      },
+      "type": "page-header"
+    },
+    "section_70_30_QnJX77": {
+      "name": "Section 70/30",
+      "settings": {
+        "background_type": "video",
+        "body": "<p>Life can be complicated, but your wellness shouldn’t be. We create natural, science-backed solutions with real results & zero woo to solve the everyday problems all women deal with.<br/><br/>Our supplements target the root cause of not-so-glamorous struggles like bloating, stubborn weight, and sleepless nights—so you can feel your best, without the guesswork.<br/><br/>We keep it clean, simple, and chic because you should never have to compromise how you feel, even on your busiest days.</p>",
+        "cta_label": "",
+        "cta_open_in_new_tab": false,
+        "cta_url": "",
+        "desktop_video": "shopify://files/videos/Glossyreelfinal.mp4",
+        "headline": "Our Manifesto",
+        "reverse_columns": false,
+        "show_mute_button": true,
+        "show_play_button": true,
+        "signature_video": "shopify://files/videos/Signature (1).mp4",
+        "signature_video_loop_count": 1,
+        "video_url": "https://www.youtube.com/watch?v=_9VUPq3SxOc"
+      },
+      "type": "section-70-30"
+    },
+    "timeline_xYjxrK": {
+      "block_order": [
+        "step_NFhdVC",
+        "step_wMnV97",
+        "step_QmyCtW",
+        "step_VKNeeH"
+      ],
+      "blocks": {
+        "step_NFhdVC": {
+          "settings": {
+            "description": "<p>Back in 2020, we launched arrae with two products (Bloat and Calm) out of our tiny apartment in Toronto. We packed every order by hand, included a Polaroid selfie for every customer, and became obsessed with finding holistic solutions to everyday wellness problems that all women face.</p>",
+            "eyebrow": "Where It All Started",
+            "image_desktop": "shopify://shop_images/Frame_1171277801_3.jpg",
+            "period": "2020",
+            "step_indicator": "",
+            "title": ""
+          },
+          "type": "step"
+        },
+        "step_QmyCtW": {
+          "settings": {
+            "description": "<p>Our shelf got a serious glow-up with four new launches: MB-1, Magnesium, Constipation, and Tribiotic. Plus, we hosted a series of community activations — from café pop-ups to a live, on-stage podcast.</p>",
+            "eyebrow": "Elevating Your Routine",
+            "image_desktop": "shopify://shop_images/Frame_1171277801_1.jpg",
+            "period": "2024",
+            "step_indicator": "",
+            "title": ""
+          },
+          "type": "step"
+        },
+        "step_VKNeeH": {
+          "settings": {
+            "description": "<p>We landed in your local neighborhood — with 2,000+ new locations at Target nationwide, Ulta, Sprouts & more. We dropped our cult-favorite Tone Creatine Gummies, fan-favorite Clear Protein+, and ended the year by partnering with Pamela Anderson for the launch of MB-1 45+</p>",
+            "eyebrow": "Expanding The Vision",
+            "image_desktop": "shopify://shop_images/Frame_1171277801_2.jpg",
+            "period": "2025",
+            "step_indicator": "",
+            "title": ""
+          },
+          "type": "step"
+        },
+        "step_wMnV97": {
+          "settings": {
+            "description": "<p>The makings of some of our earliest brand partnerships. We collaborated with The Skinny Confidential to release the limited-edition Le Depuff tincture (debloating drops), and even launched our own collab smoothie with Erewhon in Los Angeles.</p>",
+            "eyebrow": "Growing in Partnership",
+            "image_desktop": "shopify://shop_images/Frame_1171277801.jpg",
+            "period": "2023",
+            "step_indicator": "",
+            "title": ""
+          },
+          "type": "step"
+        }
+      },
+      "name": "Timeline",
+      "settings": {
+        "default_expanded_card_position": "1",
+        "heading": "<p>Our Story So Far</p>",
+        "subtitle": ""
+      },
+      "type": "timeline"
+    }
+  },
+  "wrapper": "main.o-main[role='main']"
+}

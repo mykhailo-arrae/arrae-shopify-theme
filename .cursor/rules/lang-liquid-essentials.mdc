@@ -1,0 +1,789 @@
+---
+description: Essential Liquid syntax patterns for Shopify theme development
+globs: *.liquid
+alwaysApply: false
+---
+
+# Liquid Syntax Essentials
+
+## Core Syntax Rules
+
+### Delimiters
+
+- `{{ ... }}` - Output (prints value)
+- `{{- ... -}}` - Output with whitespace trim
+- `{% ... %}` - Logic tags (no output)
+- `{%- ... -%}` - Logic tags with whitespace trim
+- `{%- liquid ... -%}` - Multiline logic without delimiters
+
+### 🛑 Critical Limitations (AI Agents: MEMORIZE THESE)
+
+- **NO parentheses** in conditions - will cause syntax error
+- **NO ternary operators** - use `{% if %}` blocks instead
+- **NO more than 2 logical operators** - nest `if` statements for complex logic
+- **Max 50 iterations** per `for` loop - use `paginate` or fail silently
+- **Max 5 levels** of include/render nesting - plan component depth carefully
+
+## Common Patterns
+
+### Variable Assignment
+
+```liquid
+{%- liquid
+  # Always use liquid tag for multiline logic
+  assign product = product | default: null
+  assign show_price = show_price | default: true
+  assign classes = 'product-card' | append: ' ' | append: custom_class
+-%}
+```
+
+### Conditional Rendering
+
+```liquid
+{%- if product and product.available -%}
+  {{- product.title | escape -}}
+{%- elsif product -%}
+  {{ 'products.sold_out' | t }}
+{%- endif -%}
+```
+
+### Safe Array Iteration
+
+```liquid
+{%- for item in collection.products limit: 20 -%}
+  {{ item.title }}
+{%- else -%}
+  {{ 'collections.empty' | t }}
+{%- endfor -%}
+```
+
+### Parameter Validation in Snippets
+
+```liquid
+{%- liquid
+  assign product = product | default: blank
+  unless product != blank
+    echo '<!-- Error: product required -->'
+    break
+  endunless
+-%}
+```
+
+## Shopify-Specific Tags
+
+### Essential Theme Tags
+
+- `{% render 'snippet-name' %}` - Include snippet (isolated scope)
+- `{% section 'section-name' %}` - Static section
+- `{% form 'product' %}` - Product form with required product context
+- `{% paginate collection.products by 24 %}` - Handle large collections
+
+### Form Types (require specific contexts)
+
+```liquid
+{% form 'product', product %}     <!-- Requires product -->
+{% form 'cart', cart %}           <!-- Requires cart -->
+{% form 'customer_login' %}       <!-- No context needed -->
+{% form 'contact' %}              <!-- No context needed -->
+```
+
+## Filter Quick Patterns
+
+### Most Common Filter Mistakes
+
+```liquid
+❌ WRONG (AI agents often try these):
+{{ price | format_money }}           → Use: money
+{{ product | product_img_url }}      → Use: image_url
+{{ array | contains: object }}       → contains is an operator, not filter
+{{ text | t: 'key' }}               → t filter takes key first: {{ 'key' | t }}
+
+✅ CORRECT:
+{{ price | money }}
+{{ product | image_url: width: 300 }}
+{% if array contains 'string' %}
+{{ 'translation.key' | t }}
+```
+
+### Filter Type Checking
+
+Before chaining filters, verify types match (see [Full Reference](mdc:.cursor/rules/lang-liquid-full-reference.mdc)):
+
+```liquid
+{{ 'text' | upcase }} → returns: string {{ 'text' | split: ' ' }} → returns:
+array {{ array | first }} → returns: untyped
+```
+
+## Performance Patterns
+
+### Efficient Liquid
+
+```liquid
+{%- liquid
+  # Good: Single liquid tag for logic
+  assign collection = collections[handle]
+  assign products = collection.products
+-%}
+
+<!-- Bad: Multiple separate tags -->
+{% assign collection = collections[handle] %}
+{% assign products = collection.products %}
+```
+
+### Avoid Expensive Operations
+
+```liquid
+<!-- Bad: Iterating all products -->
+{% for product in all_products %}
+
+<!-- Good: Use paginated collection -->
+{% paginate collection.products by 24 %}
+  {% for product in collection.products %}
+```
+
+## ⚠️ Common AI Agent Mistakes
+
+### 1. `contains` with Objects (ONLY Works with Strings)
+
+```liquid
+❌ {% if collection.products contains product %}
+  <!-- FAILS: contains can't compare objects -->
+{% endif %}
+
+❌ {% if cart.items contains line_item %}
+  <!-- FAILS: contains can't compare objects -->
+{% endif %}
+
+✅ {% assign product_ids = collection.products | map: 'id' %}
+{% if product_ids contains product.id %}
+  <!-- Works: comparing IDs (numbers converted to strings) -->
+{% endif %}
+
+✅ {% if product.tags contains 'featured' %}
+  <!-- Works: string array contains string -->
+{% endif %}
+
+✅ {% if product.title contains 'Sale' %}
+  <!-- Works: string contains substring -->
+{% endif %}
+```
+
+### 2. Variable Scope Isolation
+
+```liquid
+❌ {% assign product_title = product.title %}
+{% render 'card' %}
+<!-- Inside card.liquid: product_title is undefined -->
+
+✅ {% render 'card', product: product %}
+<!-- Pass the entire object -->
+
+✅ {% render 'card', title: product.title, price: product.price %}
+<!-- Pass specific properties -->
+
+❌ {% for product in collection.products %}
+  {% render 'card' %}
+  <!-- Inside card.liquid: product is undefined -->
+{% endfor %}
+
+✅ {% for product in collection.products %}
+  {% render 'card', product: product %}
+  <!-- Explicitly pass loop variable -->
+{% endfor %}
+```
+
+### 3. Loop Indexing (Starts at 1, Not 0)
+
+```liquid
+{% for product in collection.products %}
+  {{ forloop.index }}   <!-- 1, 2, 3, 4... (NOT 0, 1, 2, 3) -->
+  {{ forloop.index0 }}  <!-- 0, 1, 2, 3... (zero-indexed) -->
+  {{ forloop.first }}   <!-- true on first iteration -->
+  {{ forloop.last }}    <!-- true on last iteration -->
+{% endfor %}
+
+❌ {% if forloop.index == 0 %}
+  <!-- Never true! Use forloop.first or forloop.index0 == 0 -->
+{% endif %}
+
+✅ {% if forloop.first %}
+  <!-- Correct way to detect first iteration -->
+{% endif %}
+
+✅ {% if forloop.index0 == 0 %}
+  <!-- Also works for first iteration -->
+{% endif %}
+```
+
+### 4. Null/Empty/Blank Checks
+
+```liquid
+{%- comment -%}
+  blank: checks for nil, false, empty string, or empty array/object
+  empty: only checks for empty collections (arrays, strings)
+  nil: only checks for undefined/null
+{%- endcomment -%}
+
+❌ {% if product == nil %}
+  <!-- Too narrow: misses empty strings, false -->
+{% endif %}
+
+❌ {% if product == empty %}
+  <!-- Won't work for nil values -->
+{% endif %}
+
+✅ {% if product == blank %}
+  <!-- Best: catches nil, empty, false -->
+{% endif %}
+
+✅ {% unless product != blank %}
+  <!-- Double negative: unless not blank = if blank -->
+{% endunless %}
+
+{%- comment -%} Real-world examples {%- endcomment -%}
+
+✅ {% assign product = all_products[handle] | default: blank %}
+{% if product != blank %}
+  <!-- Product exists and has data -->
+{% endif %}
+
+✅ {% if collection.products.size > 0 %}
+  <!-- Explicit size check for arrays -->
+{% else %}
+  <!-- Collection is empty or nil -->
+{% endif %}
+```
+
+### 5. Name Collisions (Local Variables Override Globals)
+
+```liquid
+❌ {%- assign product = 'featured' -%}
+<!-- Now 'product' is a string, not the product object! -->
+{% if product.available %}
+  <!-- ERROR: Strings don't have 'available' property -->
+{% endif %}
+
+✅ {%- assign product_type = 'featured' -%}
+<!-- Use different name to avoid collision -->
+{% if product.available %}
+  <!-- product object still accessible -->
+{% endif %}
+
+{%- comment -%} Common collision variables {%- endcomment -%}
+Global objects that shouldn't be overridden:
+- product, collection, cart, customer, shop
+- page, blog, article, search
+- template, section, block
+- settings, localization, routes
+```
+
+### 6. Filter Chaining Type Mismatches
+
+```liquid
+❌ {{ product.title | split: ' ' | money }}
+<!-- FAILS: money filter expects number, got array -->
+
+❌ {{ product.price | upcase }}
+<!-- FAILS: upcase expects string, got number -->
+
+✅ {{ product.price | money | upcase }}
+<!-- Works: money returns string, upcase processes string -->
+
+✅ {{ product.title | split: ' ' | first | upcase }}
+<!-- Works: first returns string, upcase processes string -->
+
+{%- comment -%} Always check return types {%- endcomment -%}
+{{ product.tags | join: ', ' | upcase }}
+<!-- join returns string → upcase works ✅ -->
+
+{{ collection.products | map: 'title' | join: ', ' }}
+<!-- map returns array → join returns string ✅ -->
+```
+
+### 7. Array Access and Boundaries
+
+```liquid
+❌ {% assign first = collection.products.first %}
+{% if first %}
+  <!-- FAILS when array is empty: first is blank, not false -->
+  {{ first.title }}
+{% endif %}
+
+✅ {% if collection.products.size > 0 %}
+  {% assign first = collection.products.first %}
+  {{ first.title }}
+{% endif %}
+
+✅ {% for product in collection.products limit: 1 %}
+  {{ product.title }}
+  <!-- Loop body only executes if array has items -->
+{% endfor %}
+
+❌ {% for i in (1..collection.products.size) %}
+  {{ collection.products[i].title }}
+  <!-- WRONG: arrays are 0-indexed, but range starts at 1 -->
+{% endfor %}
+
+✅ {% for product in collection.products %}
+  {{ product.title }}
+  <!-- Always prefer direct iteration -->
+{% endfor %}
+```
+
+### 8. Attempting Complex Logic
+
+```liquid
+❌ {% if (product.available and product.price < 50) or (product.tags contains 'sale' and product.compare_at_price > 0) %}
+  <!-- SYNTAX ERROR: parentheses not supported -->
+{% endif %}
+
+❌ {% if product.available ? 'In Stock' : 'Sold Out' %}
+  <!-- SYNTAX ERROR: ternary operators not supported -->
+{% endif %}
+
+✅ {%- liquid
+  assign is_cheap_available = false
+  if product.available and product.price < 5000
+    assign is_cheap_available = true
+  endif
+
+  assign is_on_sale = false
+  if product.tags contains 'sale' and product.compare_at_price > 0
+    assign is_on_sale = true
+  endif
+-%}
+
+{% if is_cheap_available or is_on_sale %}
+  <!-- Complex logic broken into manageable pieces -->
+{% endif %}
+
+✅ {%- liquid
+  if product.available
+    assign status = 'In Stock'
+  else
+    assign status = 'Sold Out'
+  endif
+-%}
+{{ status }}
+<!-- Manual ternary simulation -->
+```
+
+### 9. Forgetting Filter Argument Syntax
+
+```liquid
+❌ {{ product | image_url: 300 }}
+<!-- Wrong: named parameter required -->
+
+✅ {{ product | image_url: width: 300 }}
+<!-- Correct: named parameter -->
+
+❌ {{ product.price | money: 'USD' }}
+<!-- Wrong: money doesn't accept currency parameter -->
+
+✅ {{ product.price | money }}
+<!-- Correct: uses shop's currency settings -->
+
+❌ {{ 'translation.key' | t: count: 3, 'name': 'John' }}
+<!-- Wrong: inconsistent parameter syntax -->
+
+✅ {{ 'translation.key' | t: count: 3, name: 'John' }}
+<!-- Correct: all named parameters, no quotes on keys -->
+```
+
+### 10. Silent Failures and Missing Error Handling
+
+```liquid
+{%- comment -%}
+  Liquid fails silently in many cases - validate inputs!
+{%- endcomment -%}
+
+❌ {{ product.featured_image | image_url: width: 300 }}
+<!-- If featured_image is nil, outputs nothing (silent fail) -->
+
+✅ {% if product.featured_image %}
+  <img src="{{ product.featured_image | image_url: width: 300 }}" alt="{{ product.title }}">
+{% else %}
+  <img src="{{ 'placeholder.svg' | asset_url }}" alt="{{ product.title }}">
+{% endif %}
+
+❌ {{ collection.products.first.title }}
+<!-- If collection.products is empty, silent fail -->
+
+✅ {% if collection.products.size > 0 %}
+  {{ collection.products.first.title }}
+{% else %}
+  {{ 'collections.empty' | t }}
+{% endif %}
+
+❌ {% for product in collections[handle].products %}
+  <!-- If collection doesn't exist, loop silently skips -->
+{% endfor %}
+
+✅ {% assign collection = collections[handle] %}
+{% if collection and collection.products.size > 0 %}
+  {% for product in collection.products %}
+    {{ product.title }}
+  {% endfor %}
+{% else %}
+  {{ 'collections.not_found' | t }}
+{% endif %}
+```
+
+## Edge Cases and Type Coercion
+
+### Price and Money Handling
+
+```liquid
+{%- comment -%}
+  Prices in Shopify are in cents (integer)
+  100 = $1.00, 1999 = $19.99
+{%- endcomment -%}
+
+❌ {% if product.price > 50 %}
+  <!-- WRONG: comparing cents to dollars (50 cents, not $50) -->
+{% endif %}
+
+✅ {% if product.price > 5000 %}
+  <!-- Correct: 5000 cents = $50.00 -->
+{% endif %}
+
+❌ {{ product.price / 100 }}
+  <!-- Wrong: displays "19.99" instead of "$19.99" -->
+
+✅ {{ product.price | money }}
+  <!-- Correct: displays "$19.99" with currency -->
+
+{%- comment -%}
+  Comparing prices: always compare raw values
+{%- endcomment -%}
+
+✅ {% if product.compare_at_price > product.price %}
+  <span class="sale-badge">Sale</span>
+{% endif %}
+
+{%- comment -%}
+  Calculate discount percentage
+{%- endcomment -%}
+
+✅ {%- liquid
+  assign difference = product.compare_at_price | minus: product.price
+  assign discount = difference | times: 100 | divided_by: product.compare_at_price
+-%}
+Save {{ discount }}%
+```
+
+### Number Type Coercion
+
+```liquid
+{%- comment -%}
+  Liquid converts types unpredictably in some contexts
+{%- endcomment -%}
+
+❌ {% assign quantity = '5' %}
+{% if quantity > 3 %}
+  <!-- May work, but unreliable string-to-number coercion -->
+{% endif %}
+
+✅ {% assign quantity = 5 %}
+<!-- Or use filter to ensure number -->
+{% assign quantity = '5' | plus: 0 %}
+{% if quantity > 3 %}
+  <!-- Reliable: explicit number -->
+{% endif %}
+
+{%- comment -%}
+  String concatenation vs. math
+{%- endcomment -%}
+
+❌ {{ '10' | plus: '5' }}
+  <!-- Outputs: 15 (coerced to numbers) -->
+
+❌ {{ 'Price: ' | append: 10 }}
+  <!-- Outputs: Price: 10 (number coerced to string) -->
+
+✅ {{ 'Price: ' | append: product.price | append: ' USD' }}
+  <!-- Explicit string concatenation -->
+```
+
+### Boolean Context Gotchas
+
+```liquid
+{%- comment -%}
+  Truthy values: everything except false, nil, blank
+  Falsy values: false, nil, blank (empty string/array/object)
+{%- endcomment -%}
+
+❌ {% if product.available == true %}
+  <!-- Redundant: available is already boolean -->
+{% endif %}
+
+✅ {% if product.available %}
+  <!-- Cleaner: direct boolean check -->
+{% endif %}
+
+{%- comment -%}
+  String '0' and 'false' are truthy!
+{%- endcomment -%}
+
+❌ {% assign enabled = 'false' %}
+{% if enabled %}
+  <!-- This IS TRUE! String 'false' is truthy -->
+{% endif %}
+
+✅ {% assign enabled = false %}
+<!-- Or use comparison -->
+{% if enabled == false or enabled == 'false' %}
+  <!-- Explicit check -->
+{% endif %}
+
+{%- comment -%}
+  Empty arrays and objects
+{%- endcomment -%}
+
+✅ {% if collection.products.size > 0 %}
+  <!-- Explicit: check size, not truthiness -->
+{% endif %}
+
+❌ {% if collection.products %}
+  <!-- Empty array is still truthy! Always check size -->
+{% endif %}
+```
+
+## Advanced Performance Patterns
+
+### Minimize Object Property Access
+
+```liquid
+❌ {% for product in collection.products %}
+  <h3>{{ product.title }}</h3>
+  <p>{{ product.title | upcase }}</p>
+  <span>{{ product.title | truncate: 20 }}</span>
+  <!-- Accessing product.title 3 times -->
+{% endfor %}
+
+✅ {% for product in collection.products %}
+  {% assign title = product.title %}
+  <h3>{{ title }}</h3>
+  <p>{{ title | upcase }}</p>
+  <span>{{ title | truncate: 20 }}</span>
+  <!-- Cache in variable: access once, use many times -->
+{% endfor %}
+```
+
+### Avoid Nested Loops with Large Datasets
+
+```liquid
+❌ {% for product in collection.products %}
+  {% for variant in product.variants %}
+    {% for tag in product.tags %}
+      <!-- Triple nested loop: O(n³) complexity -->
+    {% endfor %}
+  {% endfor %}
+{% endfor %}
+
+✅ {% for product in collection.products limit: 20 %}
+  <!-- Limit outer loop -->
+  {% assign variant_count = product.variants.size | at_most: 5 %}
+  {% for variant in product.variants limit: variant_count %}
+    <!-- Process only what's needed -->
+  {% endfor %}
+{% endfor %}
+
+✅ Use paginate for large collections
+{% paginate collection.products by 24 %}
+  {% for product in collection.products %}
+    <!-- Pagination prevents timeout -->
+  {% endfor %}
+{% endpaginate %}
+```
+
+### Conditional Rendering vs. CSS Display
+
+```liquid
+❌ <div style="{% unless show_banner %}display: none;{% endunless %}">
+  {% render 'expensive-banner', products: collection.products %}
+  <!-- Snippet still executes even when hidden! -->
+</div>
+
+✅ {% if show_banner %}
+  <div>
+    {% render 'expensive-banner', products: collection.products %}
+    <!-- Only executes when needed -->
+  </div>
+{% endif %}
+```
+
+### Reduce Filter Chains
+
+```liquid
+❌ {{ product.title | upcase | strip | truncate: 50 | escape }}
+<!-- 4 filter operations -->
+
+✅ {% assign title = product.title | strip | truncate: 50 %}
+{{ title | escape }}
+<!-- Split when reusing intermediate results -->
+
+{%- comment -%}
+  Some filters are expensive - cache results
+{%- endcomment -%}
+
+❌ <img src="{{ product.featured_image | image_url: width: 300 }}">
+<img src="{{ product.featured_image | image_url: width: 300 }}" loading="lazy">
+<!-- image_url called twice -->
+
+✅ {% assign image_url = product.featured_image | image_url: width: 300 %}
+<img src="{{ image_url }}">
+<img src="{{ image_url }}" loading="lazy">
+```
+
+## Metafields and Dynamic Content
+
+### Safe Metafield Access
+
+```liquid
+❌ {{ product.metafields.custom.subtitle }}
+<!-- Silent fail if namespace or key doesn't exist -->
+
+✅ {% if product.metafields.custom.subtitle != blank %}
+  <p class="subtitle">{{ product.metafields.custom.subtitle }}</p>
+{% endif %}
+
+✅ {% assign subtitle = product.metafields.custom.subtitle | default: 'Default subtitle' %}
+<p class="subtitle">{{ subtitle }}</p>
+
+{%- comment -%}
+  Metafield value types (use metafield_tag or metafield_text for auto-formatting)
+{%- endcomment -%}
+
+✅ {{ product.metafields.custom.description | metafield_text }}
+<!-- Handles different value types correctly -->
+
+✅ {{ product.metafields.custom.specs | metafield_tag }}
+<!-- Renders with proper HTML structure -->
+```
+
+### Dynamic Object Access
+
+```liquid
+{%- comment -%}
+  Bracket notation for dynamic property access
+{%- endcomment -%}
+
+✅ {% assign field_name = 'title' %}
+{{ product[field_name] }}
+<!-- Dynamically access product.title -->
+
+✅ {% for field in 'title,price,vendor' | split: ',' %}
+  <dt>{{ field | capitalize }}</dt>
+  <dd>{{ product[field] }}</dd>
+{% endfor %}
+
+✅ {% assign collection_handle = 'featured' %}
+{% assign collection = collections[collection_handle] %}
+<!-- Dynamic collection lookup -->
+
+❌ {% assign product = all_products.{{ handle }} %}
+<!-- WRONG: can't use interpolation in dot notation -->
+
+✅ {% assign product = all_products[handle] %}
+<!-- Correct: bracket notation -->
+```
+
+## Whitespace Control Patterns
+
+### Strategic Whitespace Trimming
+
+```liquid
+❌ {%- for product in collection.products -%}
+  {%- assign title = product.title -%}
+  {{- title -}}
+{%- endfor -%}
+<!-- Over-aggressive: removes all whitespace -->
+Output: ProductAProductBProductC
+
+✅ {% for product in collection.products %}
+  {%- assign title = product.title -%}
+  {{ title }}
+{% endfor %}
+<!-- Preserves necessary whitespace between items -->
+Output:
+  Product A
+  Product B
+  Product C
+
+✅ {%- for product in collection.products -%}
+  {{ product.title }}{{ unless forloop.last }}, {% endunless %}
+{%- endfor -%}
+<!-- Clean comma-separated list -->
+Output: Product A, Product B, Product C
+```
+
+### Inline vs. Block Liquid Tags
+
+```liquid
+❌ {% liquid
+assign total = 0
+for item in cart.items
+  assign total = total | plus: item.line_price
+endfor
+%}
+<!-- Hard to read, hard to debug -->
+
+✅ {%- liquid
+  # Better: Use liquid tag for short, related operations
+  assign has_sale_items = false
+  assign has_preorder_items = false
+
+  for item in cart.items
+    if item.product.tags contains 'sale'
+      assign has_sale_items = true
+    endif
+    if item.product.tags contains 'preorder'
+      assign has_preorder_items = true
+    endif
+  endfor
+-%}
+
+✅ Use separate tags for complex, unrelated logic
+{% assign shipping_threshold = 5000 %}
+
+{% if cart.total_price >= shipping_threshold %}
+  {% assign free_shipping = true %}
+{% endif %}
+
+{% for item in cart.items %}
+  <!-- Complex loop body -->
+{% endfor %}
+```
+
+## Reference Strategy
+
+### When to Use Which Reference
+
+**Use THIS FILE for:**
+
+- Critical limitations and gotchas
+- Common AI agent mistakes
+- Performance patterns
+- Variable scoping rules
+- Type coercion and edge cases
+- Silent failure prevention
+
+**Use [Full Reference](mdc:.cursor/rules/lang-liquid-full-reference.mdc) for:**
+
+- Complete filter list with input/output types
+- All available tags with syntax
+- Context-specific object availability
+- Filter chaining type compatibility
+
+### AI Agent Reminders
+
+- ALWAYS verify filter exists before using
+- Check filter type signatures for chaining
+- Never assume parentheses or ternary operators work
+- Validate inputs before using filters (prevent silent failures)
+- Check array size before accessing first/last
+- Use `blank` for null checks, not `nil` or `empty`
+- Remember: prices are in cents, not dollars
+- Always pass variables explicitly to `{% render %}`
+- Prefer explicit boolean checks over truthy/falsy assumptions

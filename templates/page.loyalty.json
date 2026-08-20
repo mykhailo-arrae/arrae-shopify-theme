@@ -1,0 +1,303 @@
+{
+  "order": [
+    "page_header_caMfcG",
+    "tiers_cards_mTgDiU",
+    "full_screen_banner_list_3zcQmL",
+    "ugc_section_3pCPWd",
+    "page_header_6BJdF7",
+    "faq_aJ4FjR"
+  ],
+  "sections": {
+    "faq_aJ4FjR": {
+      "block_order": [
+        "faq_category_gKqH4q",
+        "faq_question_6nDMwF",
+        "faq_question_DitYPd",
+        "faq_question_EyAmRn",
+        "faq_question_FcWktw",
+        "faq_question_hQEDPF",
+        "faq_question_jpzjBD"
+      ],
+      "blocks": {
+        "faq_category_gKqH4q": {
+          "settings": {
+            "subtitle": "",
+            "title": "Frequently asked questions"
+          },
+          "type": "faq-category"
+        },
+        "faq_question_6nDMwF": {
+          "settings": {
+            "content": "<p>We recommend taking 2 MB-1 capsules either in the morning or pre-workout. MB-1 can really be taken at any time of day but it was formulated to boost energy levels, so we don’t recommend taking it close to bedtime.</p>",
+            "title": "What is the best way to take MB-1?"
+          },
+          "type": "faq-question"
+        },
+        "faq_question_DitYPd": {
+          "settings": {
+            "content": "<p>Lorem ipsum dolor sit amet consectetur adipiscing elit nulla dictumst mauris, ullamcorper nullam diam eros praesent vehicula vestibulum nec nisl venenatis, porta interdum turpis dictum integer suspendisse justo fames vel.</p>",
+            "title": "Resources & Disclaimers"
+          },
+          "type": "faq-question"
+        },
+        "faq_question_EyAmRn": {
+          "settings": {
+            "content": "<p>Lorem ipsum dolor sit amet consectetur adipiscing elit nulla dictumst mauris, ullamcorper nullam diam eros praesent vehicula vestibulum nec nisl venenatis, porta interdum turpis dictum integer suspendisse justo fames vel.</p>",
+            "title": "Does MB-1 contain caffeine?"
+          },
+          "type": "faq-question"
+        },
+        "faq_question_FcWktw": {
+          "settings": {
+            "content": "<p>Lorem ipsum dolor sit amet consectetur adipiscing elit nulla dictumst mauris, ullamcorper nullam diam eros praesent vehicula vestibulum nec nisl venenatis, porta interdum turpis dictum integer suspendisse justo fames vel.</p>",
+            "title": "When can I expect to see results from MB-1?"
+          },
+          "type": "faq-question"
+        },
+        "faq_question_hQEDPF": {
+          "settings": {
+            "content": "<p>Lorem ipsum dolor sit amet consectetur adipiscing elit nulla dictumst mauris, ullamcorper nullam diam eros praesent vehicula vestibulum nec nisl venenatis, porta interdum turpis dictum integer suspendisse justo fames vel.</p>",
+            "title": "How is this different from other natural metabolism solutions?"
+          },
+          "type": "faq-question"
+        },
+        "faq_question_jpzjBD": {
+          "settings": {
+            "content": "<p>Lorem ipsum dolor sit amet consectetur adipiscing elit nulla dictumst mauris, ullamcorper nullam diam eros praesent vehicula vestibulum nec nisl venenatis, porta interdum turpis dictum integer suspendisse justo fames vel.</p>",
+            "title": "How is this different from GLP-1 drugs?"
+          },
+          "type": "faq-question"
+        }
+      },
+      "name": "FAQ",
+      "settings": {
+        "heading": "",
+        "subheading": ""
+      },
+      "type": "faq"
+    },
+    "full_screen_banner_list_3zcQmL": {
+      "block_order": [
+        "full_screen_banner_T4brhe",
+        "full_screen_banner_MjTqeG",
+        "full_screen_banner_jxPKgJ"
+      ],
+      "blocks": {
+        "full_screen_banner_MjTqeG": {
+          "blocks": {},
+          "name": "Full screen banner",
+          "settings": {
+            "cta_label": "",
+            "cta_link": "",
+            "desktop_button_color_mode": "light",
+            "desktop_content_padding_left": 0,
+            "desktop_content_padding_top": 36,
+            "desktop_content_position": "top-right",
+            "desktop_image": "shopify://shop_images/loyalty_banner_2_desktop.png",
+            "desktop_text_alignment": "left",
+            "mobile_button_color_mode": "dark",
+            "mobile_content_position": "top-left",
+            "mobile_image": "shopify://shop_images/loyalty_banner_2_mobile.png",
+            "overlay": "",
+            "subtitle": "<p>Get rewarded every time you shop. Build up arrae Cash and unlock exclusive perks with every order.</p>",
+            "text_color_mode": "light",
+            "title": "2. Collect Rewards & arrae cash"
+          },
+          "type": "full-screen-banner"
+        },
+        "full_screen_banner_T4brhe": {
+          "blocks": {},
+          "settings": {
+            "cta_label": "",
+            "cta_link": "",
+            "desktop_button_color_mode": "light",
+            "desktop_content_padding_left": 0,
+            "desktop_content_padding_top": 0,
+            "desktop_content_position": "top-left",
+            "desktop_image": "shopify://shop_images/loyalty_banner_1_desktop_7cfe19aa-a46b-4f70-a064-bb3deb5f9568.png",
+            "desktop_text_alignment": "left",
+            "mobile_button_color_mode": "dark",
+            "mobile_content_position": "top-left",
+            "mobile_image": "shopify://shop_images/loyalty_banner_1_mobile.png",
+            "overlay": "",
+            "subtitle": "<p>Choose what you need, when you need it. Take up to 30% off your first subscription*</p>",
+            "text_color_mode": "light",
+            "title": "1. Start your Subscription"
+          },
+          "type": "full-screen-banner"
+        },
+        "full_screen_banner_jxPKgJ": {
+          "blocks": {},
+          "name": "Full screen banner",
+          "settings": {
+            "cta_label": "SHOP ALL",
+            "cta_link": "shopify://collections",
+            "desktop_button_color_mode": "light",
+            "desktop_content_padding_left": 0,
+            "desktop_content_padding_top": 0,
+            "desktop_content_position": "top-left",
+            "desktop_image": "shopify://shop_images/loyalty_banner_3_desktop.png",
+            "desktop_text_alignment": "left",
+            "mobile_button_color_mode": "dark",
+            "mobile_content_position": "top-left",
+            "mobile_image": "shopify://shop_images/loyalty_banner_3_mobile.png",
+            "overlay": "",
+            "subtitle": "<p>Use your arrae cash to unlock surprise gifts and rewards, and automatically save up to 20% on recurring orders. Because consistency is sexy.</p>",
+            "text_color_mode": "light",
+            "title": "3. Celebrate Your Consistency"
+          },
+          "type": "full-screen-banner"
+        }
+      },
+      "name": "Full screen banner list",
+      "settings": {},
+      "type": "full-screen-banner-list"
+    },
+    "page_header_6BJdF7": {
+      "name": "Page Header",
+      "settings": {
+        "background_image_desktop": "shopify://shop_images/HP_BACK_IN_STOCK_DSK_f1be02b7-d11d-44dd-bc7d-e68d8b828b5b.jpg",
+        "heading": "\"Subscribe has dones hoiadjos\"",
+        "overlay_color": "#000000",
+        "overlay_opacity": "25",
+        "show_breadcrumbs": false,
+        "subheading": "- Swara",
+        "text_color": "light"
+      },
+      "type": "page-header"
+    },
+    "page_header_caMfcG": {
+      "name": "Page Header",
+      "settings": {
+        "heading": "Start Earning With Wellness That Rewards <em>You</em>",
+        "overlay_color": "#000000",
+        "overlay_opacity": "25",
+        "show_breadcrumbs": true,
+        "subheading": "Enjoy the ease of automatic shipments, exclusive savings, and special perks on every renewal.",
+        "text_color": "dark"
+      },
+      "type": "page-header"
+    },
+    "tiers_cards_mTgDiU": {
+      "block_order": [
+        "tier_card_rPg6XF",
+        "tier_card_m9faHx",
+        "tier_card_PUXcCV"
+      ],
+      "blocks": {
+        "tier_card_PUXcCV": {
+          "settings": {
+            "tier_badge": "$300 Subscription Spend",
+            "tier_features": "<ul><li>7% Arrae cash on every recurring order</li><li>FREE USA & CA Shipping</li><li>Exclusive discounts from top brands & partners</li><li>$10 Arrae cash gift</li></ul>",
+            "tier_title": "Elevated"
+          },
+          "type": "tier_card"
+        },
+        "tier_card_m9faHx": {
+          "settings": {
+            "tier_badge": "$150+ Subscription Spend",
+            "tier_features": "<ul><li>5% Arrae cash on every recurring order</li><li>FREE USA & CA Shipping</li><li>Exclusive discounts from top brands & partners</li><li>$5 Arrae cash gift</li></ul>",
+            "tier_title": "Enhanced"
+          },
+          "type": "tier_card"
+        },
+        "tier_card_rPg6XF": {
+          "settings": {
+            "tier_badge": "Active Subscription",
+            "tier_features": "<ul><li>2% Arrae cash on every recurring order</li><li>FREE USA & CA Shipping</li><li>Exclusive discounts from top brands & partners</li></ul>",
+            "tier_title": "Essential"
+          },
+          "type": "tier_card"
+        }
+      },
+      "name": "Tiers Cards",
+      "settings": {
+        "content_contrast_mode": "light",
+        "cta_label": "Build Your Routine",
+        "cta_link": "shopify://collections/all",
+        "heading": "Subscriptions Perks",
+        "section_background": "shopify://shop_images/loyalty-tiers-bg-desktop.jpg"
+      },
+      "type": "tiers-cards"
+    },
+    "ugc_section_3pCPWd": {
+      "block_order": [
+        "ugc_card_qCiW3E",
+        "ugc_card_eTgpCC",
+        "ugc_card_YicnCP",
+        "ugc_card_JiHcGN",
+        "ugc_card_XQbp6h"
+      ],
+      "blocks": {
+        "ugc_card_JiHcGN": {
+          "settings": {
+            "image_alt_text": "",
+            "main_text": "I’ve tried a lot of supplements for bloating, but Arrae MB-1 is the first one that actually made a noticeable difference.",
+            "media_image": "shopify://shop_images/4241da80d5a0d3b9bd7be37f588b0df3b8763bc3_1274404d-0623-4962-b5a3-517468906b02.png",
+            "media_type": "image",
+            "secondary_text": "Imogen, 49",
+            "small_main_text": false,
+            "tertiary_text": ""
+          },
+          "type": "ugc_card"
+        },
+        "ugc_card_XQbp6h": {
+          "settings": {
+            "image_alt_text": "",
+            "main_text": "I feel like a completely different person.",
+            "media_type": "video",
+            "media_video": "shopify://files/videos/tolstoy_d2ca3d35-bd09-4abf-9757-d67b5b425d66.webm",
+            "secondary_text": "Sarah, 42",
+            "small_main_text": false,
+            "tertiary_text": ""
+          },
+          "type": "ugc_card"
+        },
+        "ugc_card_YicnCP": {
+          "settings": {
+            "image_alt_text": "",
+            "main_text": "This has been really helpful for my digestion — I feel so much lighter throughout the day.",
+            "media_image": "shopify://shop_images/media_dd0fd82d-cd40-4638-9ea0-37aa74369852.jpg",
+            "media_type": "image",
+            "secondary_text": "Allison, 34",
+            "small_main_text": false,
+            "tertiary_text": ""
+          },
+          "type": "ugc_card"
+        },
+        "ugc_card_eTgpCC": {
+          "settings": {
+            "image_alt_text": "",
+            "main_text": "I finally feel like myself again, especially after struggling for so long.",
+            "media_type": "video",
+            "media_video": "shopify://files/videos/tolstoy_c9355ec1-33a0-421c-b276-111f1d3d1065.webm",
+            "secondary_text": "Olivia, 44",
+            "small_main_text": false,
+            "tertiary_text": ""
+          },
+          "type": "ugc_card"
+        },
+        "ugc_card_qCiW3E": {
+          "settings": {
+            "image_alt_text": "",
+            "main_text": "I’ve tried a lot of supplements for bloating, but Arrae MB-1 is the first one that actually made a noticeable difference.",
+            "media_image": "shopify://shop_images/4241da80d5a0d3b9bd7be37f588b0df3b8763bc3_1274404d-0623-4962-b5a3-517468906b02.png",
+            "media_type": "image",
+            "secondary_text": "Imogen, 49",
+            "small_main_text": false,
+            "tertiary_text": ""
+          },
+          "type": "ugc_card"
+        }
+      },
+      "name": "UGC Section",
+      "settings": {
+        "heading": "Loved by <em>Our Community</em>",
+        "show_arrows": true,
+        "show_pagination": true
+      },
+      "type": "ugc-section"
+    }
+  },
+  "wrapper": "main.o-main[role='main']"
+}

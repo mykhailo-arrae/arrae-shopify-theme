@@ -1,0 +1,117 @@
+{% doc %}
+  Featured Collection Tiles — responsive grid of up to four 'tile-card' blocks
+{% enddoc %}
+
+{% liquid
+  render 'tile-card-stylesheet'
+%}
+
+{% if section.blocks.size > 0 %}
+  <div class="{# style root #}">
+    <div class="{# style inner #}">
+      <ul class="{# style grid #}" role="list">
+        {% for block in section.blocks %}
+          <li class="{# style item #}" {{ block.shopify_attributes }}>
+            {% render 'tile-card',
+              modifier: 'featured-collection-tiles',
+              image_desktop: block.settings.image_desktop,
+              image_mobile: block.settings.image_mobile,
+              hover_video: block.settings.hover_video,
+              hover_video_mobile: block.settings.hover_video_mobile,
+              hover_image_desktop: block.settings.hover_image_desktop,
+              hover_image_mobile: block.settings.hover_image_mobile,
+              label: block.settings.label,
+              url: block.settings.url
+            %}
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Featured Collection Tiles",
+  "tag": "section",
+  "class": "section-featured-collection-tiles",
+  "max_blocks": 4,
+  "blocks": [
+    {
+      "type": "tile",
+      "name": "Tile",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image_desktop",
+          "label": "Image (desktop)"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_mobile",
+          "label": "Image (mobile)"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "Improve your fitness"
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "Link"
+        },
+        {
+          "type": "header",
+          "content": "Hover"
+        },
+        {
+          "type": "video",
+          "id": "hover_video",
+          "label": "Hover video",
+          "info": "If set, this plays on hover and overrides hover images."
+        },
+        {
+          "type": "video",
+          "id": "hover_video_mobile",
+          "label": "Hover video (mobile)",
+          "info": "Optional. Uses the hover video above when empty."
+        },
+        {
+          "type": "image_picker",
+          "id": "hover_image_desktop",
+          "label": "Hover image (desktop)",
+          "info": "Used on hover when no hover video is set."
+        },
+        {
+          "type": "image_picker",
+          "id": "hover_image_mobile",
+          "label": "Hover image (mobile)",
+          "info": "Optional. Uses the desktop hover image when empty."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured Collection Tiles",
+      "category": "Collection",
+      "blocks": [
+        {
+          "type": "tile"
+        },
+        {
+          "type": "tile"
+        },
+        {
+          "type": "tile"
+        },
+        {
+          "type": "tile"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

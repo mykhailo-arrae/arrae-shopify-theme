@@ -1,0 +1,51 @@
+[
+  {
+    "$schema": "https://swc.rs/schema.json",
+    "test": [".*.(js|jsx|ts|tsx)$"],
+    "exclude": [".*.cjs.(js|jsx|ts|tsx)$"],
+    "module": {
+      "type": "es6"
+    },
+    "jsc": {
+      "target": "es2022",
+      "parser": {
+        "syntax": "typescript",
+        "tsx": true,
+        "decorators": true,
+        "dynamicImport": true
+      },
+      "transform": {
+        "decoratorVersion": "2022-03",
+        "react": {
+          "runtime": "automatic",
+          "throwIfNamespace": true,
+          "development": false
+        }
+      }
+    }
+  },
+  {
+    "$schema": "https://swc.rs/schema.json",
+    "test": [".*.cjs.(js|jsx|ts|tsx)$"],
+    "module": {
+      "type": "commonjs"
+    },
+    "jsc": {
+      "target": "es2022",
+      "parser": {
+        "syntax": "typescript",
+        "tsx": true,
+        "decorators": true,
+        "dynamicImport": true
+      },
+      "transform": {
+        "decoratorVersion": "2022-03",
+        "react": {
+          "runtime": "automatic",
+          "throwIfNamespace": true,
+          "development": false
+        }
+      }
+    }
+  }
+]

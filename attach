@@ -1,0 +1,7 @@
+#!/bin/bash
+
+set -Eeuo pipefail
+
+INFERRED_PROJECT_NAME=$(docker compose ps --format '{{.Project}}' main)
+
+docker compose exec -e INFERRED_PROJECT_NAME="$INFERRED_PROJECT_NAME" main /usr/bin/fish

@@ -1,0 +1,156 @@
+{% doc %}
+  @description
+  Shared education slideshow slide shell.
+
+  @param {block} block - Shopify section block for this slide.
+  @param {string} section_id - Parent section id.
+  @param {number} slide_index - Zero-based slide index.
+  @param {number} slide_count - Total slide count.
+
+  @example
+  {% render 'education-slide', block: block, section_id: section.id, slide_index: 0, slide_count: section.blocks.size %}
+{% enddoc %}
+
+{% liquid
+  assign section_id = section_id | default: 'education-slideshow'
+  assign slide_index = slide_index | default: 0
+  assign slide_count = slide_count | default: 0
+  assign slide_number = slide_index | plus: 1
+
+  assign slide_title = block.settings.slide_title | default: blank
+  # Length limits are advisory only (schema info). Merchants own overflow.
+  assign heading = block.settings.heading | default: blank
+  assign subheading = block.settings.subheading | default: blank
+  assign disclaimers = block.settings.disclaimers | default: blank
+
+  assign background_type = block.settings.background_type | default: 'image' | downcase | strip
+  assign background_image_desktop = block.settings.background_image_desktop | default: blank
+  assign background_image_mobile = block.settings.background_image_mobile | default: blank
+  assign background_color = block.settings.background_color | default: blank
+  assign background_gradient = block.settings.background_gradient | default: blank
+
+  assign background_image_mobile = background_image_mobile | default: background_image_desktop
+  assign background_image_desktop = background_image_desktop | default: background_image_mobile
+
+  # data-text-contrast reflects text color: "light" text on dark surfaces,
+  # "dark" text on light surfaces. Merchant "dark"/"light" maps inversely.
+  assign text_contrast_mode = 'light'
+  if block.type == 'image_carousel_slide' or block.type == 'ingredients_slide'
+    if block.type == 'ingredients_slide'
+      assign background_input = block.settings.text_contrast_mode | default: 'dark' | downcase | strip
+      assign text_contrast_mode = 'dark'
+
+      if background_input == 'dark'
+        assign text_contrast_mode = 'light'
+      endif
+    else
+      assign background_input = block.settings.text_contrast_mode | default: 'light' | downcase | strip
+      assign text_contrast_mode = 'dark'
+
+      if background_input == 'dark'
+        assign text_contrast_mode = 'light'
+      endif
+    endif
+  endif
+
+  assign show_background_image = false
+  assign background_fill = blank
+
+  case background_type
+    when 'image'
+      if background_image_desktop != blank or background_image_mobile != blank
+        assign show_background_image = true
+      endif
+    when 'gradient'
+      if background_gradient != blank
+        assign background_fill = background_gradient
+      endif
+    when 'color'
+      if background_color != blank
+        assign background_fill = background_color
+      endif
+  endcase
+%}
+
+{% unless block == blank %}
+  <article
+    id="education-slide-{{ section_id }}-{{ slide_number }}"
+    class="{# style root #} swiper-slide"
+    data-education-slide
+    data-slide-title="{{ slide_title }}"
+    data-slide-index="{{ slide_index }}"
+    data-slide-count="{{ slide_count }}"
+    data-slide-type="{{ block.type | escape }}"
+    data-text-contrast="{{ text_contrast_mode | escape }}"
+    data-background-type="{{ background_type | escape }}"
+    {% if background_fill != blank %}
+      style="background: {{ background_fill }};"
+    {% endif %}
+    {% if disclaimers != blank %}
+      data-has-disclaimers="true"
+    {% endif %}
+    {{ block.shopify_attributes }}
+  >
+    {% if show_background_image %}
+      <div class="{# style background-image #}">
+        {% render 'core-image',
+          image: background_image_desktop,
+          image_mobile: background_image_mobile,
+          mode: 'cover',
+          object_fit: 'cover',
+          sizes: '100vw'
+        %}
+      </div>
+    {% endif %}
+
+    <div class="{# style inner-container #}">
+      <div class="{# style header #}">
+        {% if heading != blank %}
+          <h2 class="{# style heading #}">
+            {{ heading }}
+          </h2>
+        {% endif %}
+        {% if subheading != blank %}
+          <div class="{# style subheading #} o-rte">
+            {{ subheading }}
+          </div>
+        {% endif %}
+      </div>
+
+      <div class="{# style content #}">
+        {% case block.type %}
+          {% when 'percentage_slide' %}
+            {% assign slide_content = block.settings.stat_items %}
+            {% render 'slide-content-percentage-stats', block: block, slide_content: slide_content %}
+          {% when 'ingredients_slide' %}
+            {% assign slide_content = block.settings.ingredients %}
+            {%
+              render 'slide-content-ingredients',
+              block: block,
+              slide_content: slide_content,
+              has_disclaimers: disclaimers != blank
+            %}
+          {% when 'feature_text_slide' %}
+            {% assign slide_content = block.settings.feature_text_items %}
+            {% render 'slide-content-feature-text-list', block: block, slide_content: slide_content %}
+          {% when 'feature_cards_slide' %}
+            {% assign slide_content = block.settings.feature_cards %}
+            {% render 'slide-content-feature-cards', block: block, slide_content: slide_content %}
+          {% when 'image_carousel_slide' %}
+            {% assign slide_content = block.settings.image_carousel_items %}
+            {% render 'slide-content-image-carousel', block: block, slide_content: slide_content %}
+          {% else %}
+            {% comment %}
+              TODO: Add fallback/debug output for unsupported slide types if needed.
+            {% endcomment %}
+        {% endcase %}
+      </div>
+
+      {% if disclaimers != blank %}
+        <div class="{# style disclaimers #}">
+          {{ disclaimers }}
+        </div>
+      {% endif %}
+    </div>
+  </article>
+{% endunless %}

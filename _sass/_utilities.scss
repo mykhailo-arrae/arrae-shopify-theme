@@ -1,0 +1,104 @@
+/* ===================================================== */
+/* Utility Classes */
+/* ===================================================== */
+
+@use 'core/visibility' as v;
+
+$md-viewport: 1024px;
+$lg-viewport: 1512px;
+
+.u-hide {
+  display: none !important;
+}
+
+.u-vhide {
+  @include v.element-invisible(true);
+}
+
+.u-showMd {
+  display: none !important;
+
+  @media only screen and (min-width: $md-viewport) {
+    display: block !important;
+  }
+
+  &__flex {
+    display: none !important;
+
+    @media only screen and (min-width: $md-viewport) {
+      display: flex !important;
+    }
+  }
+
+  &__grid {
+    display: none !important;
+
+    @media only screen and (min-width: $md-viewport) {
+      display: grid !important;
+    }
+  }
+
+  &__inline {
+    display: none !important;
+
+    @media only screen and (min-width: $md-viewport) {
+      display: inline-block !important;
+    }
+  }
+
+  &__contents {
+    display: none !important;
+
+    @media only screen and (min-width: $md-viewport) {
+      display: contents !important;
+    }
+  }
+}
+
+.u-hideMd {
+  display: block !important;
+
+  @media only screen and (min-width: $md-viewport) {
+    display: none !important;
+  }
+
+  &__flex {
+    display: flex !important;
+
+    @media only screen and (min-width: $md-viewport) {
+      display: none !important;
+    }
+  }
+
+  &__inline {
+    display: inline-block !important;
+
+    @media only screen and (min-width: $md-viewport) {
+      display: none !important;
+    }
+  }
+
+  &__contents {
+    display: contents !important;
+
+    @media only screen and (min-width: $md-viewport) {
+      display: none !important;
+    }
+  }
+}
+
+.u-showLg {
+  display: none !important;
+
+  @media only screen and (min-width: $lg-viewport) {
+    display: block !important;
+  }
+}
+
+.u-hideLg {
+  display: block !important;
+
+  @media only screen and (min-width: $lg-viewport) {
+    display: none !important;
+  }
+}

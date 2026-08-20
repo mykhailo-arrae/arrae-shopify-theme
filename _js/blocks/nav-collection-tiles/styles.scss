@@ -1,0 +1,185 @@
+@use 'style-guide/media' as mq;
+@use 'style-guide/spacing' as spacing;
+@use 'style-guide/typography' as typography;
+@use 'style-guide/colors' as color;
+@use 'style-guide/mixins' as mixin;
+@use 'style-guide/sizes' as sizes;
+@use 'nav-modes' as nav;
+
+.col {
+  flex: 0 1 auto;
+  min-width: 0;
+
+  @include nav.drawer {
+    order: 2;
+    width: 100%;
+  }
+}
+
+.col:has(.root[data-single-row='false']) {
+  @include nav.inline {
+    grid-column: 1;
+  }
+}
+
+.col:has(.root[data-single-row='true']) {
+  @include nav.inline {
+    grid-column: 1 / -1;
+    width: 100%;
+  }
+}
+
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin-bottom: spacing.get(size-12);
+
+  @include nav.inline {
+    gap: spacing.get(size-16);
+    margin-bottom: 0;
+  }
+
+  &[data-heading='true'] {
+    @include nav.drawer {
+      .content {
+        padding-left: spacing.get(size-12);
+      }
+    }
+  }
+}
+
+.heading {
+  margin: 0;
+  @include typography.body(size-12, 500);
+  line-height: 1.06;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: currentcolor;
+  opacity: 0.75;
+
+  // Desktop-only label. The drawer rendering uses the trigger button
+  // below in its place.
+  @include nav.drawer {
+    display: none;
+  }
+}
+
+// ----------------------------------------------------------------------------
+// Mobile accordion trigger (only when a heading is set)
+// ----------------------------------------------------------------------------
+
+.mobile-trigger {
+  @include mixin.reset-button();
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: spacing.get(size-12);
+  color: color.get(text);
+  cursor: pointer;
+  text-align: left;
+
+  &:focus-visible {
+    outline-offset: spacing.get(size-2);
+  }
+
+  @include nav.drawer {
+    display: flex;
+  }
+}
+
+.mobile-trigger__label {
+  @include typography.body(size-16, 400);
+  line-height: 1.06;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.mobile-trigger__icon {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: sizes.get(size-32);
+  height: sizes.get(size-32);
+  transition: transform 250ms ease;
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
+
+  .mobile-trigger[aria-expanded='true'] & {
+    transform: rotate(180deg);
+  }
+
+  svg {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+// ----------------------------------------------------------------------------
+// Content (tile grid on desktop, accordion panel / flat list on mobile)
+// ----------------------------------------------------------------------------
+
+.content {
+  @include nav.drawer {
+    display: grid;
+    grid-template-rows: 1fr;
+    visibility: visible;
+    transition:
+      grid-template-rows 350ms cubic-bezier(0.32, 0.72, 0, 1),
+      visibility 0s linear 0s;
+
+    > * {
+      min-height: 0;
+      overflow: hidden;
+    }
+
+    &[aria-hidden='true'] {
+      grid-template-rows: 0fr;
+      visibility: hidden;
+      transition:
+        grid-template-rows 350ms cubic-bezier(0.32, 0.72, 0, 1),
+        visibility 0s linear 350ms;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      transition: none;
+    }
+  }
+}
+
+.tiles {
+  display: grid;
+  gap: spacing.get(size-8);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+
+  @include nav.drawer {
+    display: flex;
+    flex-direction: column;
+    gap: spacing.get(size-20);
+    padding-left: 0;
+  }
+
+  @include nav.inline {
+    gap: spacing.get(size-24);
+  }
+
+  .root[data-single-row='true'] & {
+    @include nav.inline {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+
+      @include mq.min(smalldesktop) {
+        grid-template-columns: repeat(6, minmax(0, 1fr));
+      }
+    }
+  }
+
+  .root[data-single-row='false'] & {
+    @include nav.inline {
+      grid-template-columns: 1fr;
+    }
+  }
+}

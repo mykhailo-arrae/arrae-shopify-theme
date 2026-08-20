@@ -1,0 +1,14 @@
+@use './unit' as u;
+
+.element {
+  width: u.rem-calc(320);
+  margin: u.rem-calc(0 10 0rem 1em);
+  font-size: u.rem-calc(16);
+  font-size: u.rem-calc(1);
+  font-size: u.rem-calc(1.5rem);
+  line-height: u.rem-calc(1em);
+}
+
+.element {
+  line-height: u.strip-unit(1em);
+}

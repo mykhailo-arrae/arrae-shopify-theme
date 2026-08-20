@@ -1,0 +1,78 @@
+{% liquid
+  assign title = section.settings.title | default: nil
+%}
+
+<div class='{# style SectionsLibrary__container #}'>
+  {% if title %}
+    <h2 class='{# style SectionsLibrary__title #}'>{{ title }}</h2>
+  {% endif %}
+
+  <div class='{# style SectionsLibrary__blocks #}'>
+    {% if section.blocks.size > 0 %}
+      {% for block in section.blocks %}
+        {% liquid
+          assign title = block.settings.title | default: nil
+          assign image = block.settings.image | default: nil
+          assign url = block.settings.url | default: nil
+        %}
+        <div class='{# style SectionsLibraryBlock #}'>
+          <a class='{# style SectionsLibraryBlock__link #}' href='{{ url }}'
+            style="background: url('{{ image | image_url: width: 640 }}') no-repeat center center; background-size: cover;"
+          >
+            {% if title %}
+              <h3 class='{# style SectionsLibraryBlock__title #}'>
+                {{ title }}
+              </h3>
+            {% endif %}
+          </a>
+        </div>
+      {% endfor %}
+    {% endif %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Sections Library",
+  "tag": "section",
+  "class": "js-sections-library {# style SectionsLibrary #}",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Sections Library"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "type",
+      "name": "Type",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Section Title"
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "URL"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Sections Library",
+      "settings": {}
+    }
+  ]
+}
+{% endschema %}

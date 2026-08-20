@@ -1,0 +1,31 @@
+{% liquid
+  assign title = section.settings.title
+%}
+
+<div class="{# style section #}">
+  {% if title != blank %}
+    <h2 class="{# style title #}">{{ title }}</h2>
+  {% endif %}
+
+  {% render 'okendo-reviews-widget', product: product %}
+</div>
+
+{% schema %}
+{
+  "name": "Product Reviews",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title"
+    }
+  ],
+  "blocks": [],
+  "presets": [
+    {
+      "name": "Product Reviews"
+    }
+  ]
+}
+{% endschema %}

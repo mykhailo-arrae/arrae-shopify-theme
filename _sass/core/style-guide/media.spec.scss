@@ -1,0 +1,19 @@
+@use './media' as mq;
+
+.element {
+  @include mq.min(mobile) {
+    color: red;
+  }
+
+  @include mq.min(tabletlandscape) {
+    color: green;
+  }
+
+  @include mq.min(smalldesktop) {
+    color: blue;
+  }
+
+  @include mq.max(desktop) {
+    color: cyan;
+  }
+}

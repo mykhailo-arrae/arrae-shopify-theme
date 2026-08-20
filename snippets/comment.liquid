@@ -1,0 +1,31 @@
+{% # DO NOT EDIT: This file is auto-generated and will be overwritten. [build-fingerprint:assets:source={_js/snippets/comment/snippet.liquid}] %}
+
+<div class="tvg_comment_NFrqqG_Comment tvg_comment_NFrqqG_Comment_{{ comment.status | prepend: 'is-' }}">
+  {% if forloop.first %}
+    <style>
+    .tvg_comment_NFrqqG_Comment_is-spam::after {
+      content: "{{ 'blogs.comments.spam' | t }}";
+    }
+    .tvg_comment_NFrqqG_Comment_is-unapproved::after {
+      content: "{{ 'blogs.comments.unapproved' | t }}";
+    }
+    </style>
+
+    {% render 'comment-stylesheet' %}
+  {% endif %}
+  
+  <div class="tvg_comment_NFrqqG_Comment-info">
+    <div class="tvg_comment_NFrqqG_Comment-author">
+      <strong>{{ comment.author }}</strong>
+    </div>
+    <div class="tvg_comment_NFrqqG_Comment-createdAt">
+      <time datetime="{{ comment.created_at | date: '%Y-%m-%d' }}">
+        {{ comment.created_at | date: format: 'month_day_year' }}
+      </time>
+    </div>
+  </div>
+
+  <div class="tvg_comment_NFrqqG_Comment-content o-rte">
+    {{ comment.content }}
+  </div>
+</div>

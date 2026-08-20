@@ -1,0 +1,6 @@
+@use 'style-guide/mixins' as mixin;
+@use 'style-guide/colors' as color;
+
+.root {
+  @include mixin.container();
+}

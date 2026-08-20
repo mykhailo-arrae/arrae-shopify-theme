@@ -1,0 +1,169 @@
+{% doc %}
+  Klaviyo Back In Stock notify-me popup.
+
+  Product metafields:
+  - custom.enable_notify_me_locally — force Notify Me for every variant
+  - custom.enable_notify_me_for_product — enable qty stock-check for this product
+
+  Variant metafields (same keys as product for parity):
+  - custom.enable_notify_me_locally — force Notify Me for this variant
+  - custom.enable_notify_me_for_product — opt this variant into qty stock-check
+  - custom.enable_oos_ca_market / custom.enable_oos_us_market — market force-show
+
+  @param {product} product - Product object (required)
+  @param {boolean} enable_notify_me_locally - Force notify me for all variants on this product
+  @param {boolean} enable_notify_me_for_product - Enable notify me stock checks for this product
+
+  @example
+  {% render 'notify-me', product: product %}
+{% enddoc %}
+
+{% liquid
+  assign enable_notify_me_locally = enable_notify_me_locally | default: product.metafields.custom.enable_notify_me_locally.value | default: false, allow_false: true
+  assign enable_notify_me_for_product = enable_notify_me_for_product | default: product.metafields.custom.enable_notify_me_for_product.value | default: false, allow_false: true
+  assign klaviyo_enabled = settings.enable_klaviyo | default: false, allow_false: true
+  assign notify_me_company_id = settings.klaviyo_public_api_key | default: ''
+  assign notify_me_popup_bg = settings.notify_me_popup_background_color | default: '#F6F1EA'
+  assign notify_me_image_desktop = settings.notify_me_popup_image_desktop | default: blank
+  assign notify_me_image_mobile = settings.notify_me_popup_image_mobile | default: blank
+
+  assign disabled_variant_ids = ''
+  assign stock_check_variant_ids = ''
+  for variant in product.variants
+    assign force_notify_me = false
+    if variant.metafields.custom.enable_notify_me_locally.value == true
+      assign force_notify_me = true
+    elsif localization.market.handle == 'ca' and variant.metafields.custom.enable_oos_ca_market.value == true
+      assign force_notify_me = true
+    elsif localization.market.handle != 'ca' and variant.metafields.custom.enable_oos_us_market.value == true
+      assign force_notify_me = true
+    endif
+
+    if force_notify_me
+      if disabled_variant_ids != ''
+        assign disabled_variant_ids = disabled_variant_ids | append: ','
+      endif
+      assign disabled_variant_ids = disabled_variant_ids | append: variant.id
+    endif
+
+    if variant.metafields.custom.enable_notify_me_for_product.value == true
+      if stock_check_variant_ids != ''
+        assign stock_check_variant_ids = stock_check_variant_ids | append: ','
+      endif
+      assign stock_check_variant_ids = stock_check_variant_ids | append: variant.id
+    endif
+  endfor
+%}
+
+{% if klaviyo_enabled and notify_me_company_id != blank %}
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/intl-tel-input@26.9.2/build/css/intlTelInput.min.css"
+  >
+
+  <div
+    class="js-notify-me {# style root #}"
+    data-company-id="{{ notify_me_company_id | escape }}"
+    data-success-message="{{ 'products.product.notify_me_success' | t | escape }}"
+    data-invalid-message="{{ 'products.product.notify_me_invalid' | t | escape }}"
+    data-enable-notify-me-globally="{% if settings.enable_notify_me_globally %}true{% else %}false{% endif %}"
+    data-notify-me-quantity-trigger="{{ settings.notify_me_quantity_trigger | default: 0 }}"
+    data-enable-notify-me-locally="{% if enable_notify_me_locally %}true{% else %}false{% endif %}"
+    data-enable-locally-product="{% if enable_notify_me_for_product %}true{% else %}false{% endif %}"
+    data-disabled-variant-ids="{{ disabled_variant_ids | escape }}"
+    data-stock-check-variant-ids="{{ stock_check_variant_ids | escape }}"
+    style="--notify-me-popup-bg: {{ notify_me_popup_bg }};"
+  >
+    <div class="notify-me-popup {# style popup #}">
+      <div class="{# style popupInner #}">
+        <button
+          type="button"
+          class="notify-me-popup__close {# style popupClose #}"
+          aria-label="Close"
+        >
+          ×
+        </button>
+
+        {% if notify_me_image_desktop != blank or notify_me_image_mobile != blank %}
+          <div class="{# style popupMedia #}">
+            {% if notify_me_image_desktop != blank %}
+              {{
+                notify_me_image_desktop
+                | image_url: width: 800
+                | image_tag:
+                  class: 'notify-me-popup__image-desktop {# style popupImageDesktop #}',
+                  loading: 'lazy',
+                  widths: '400,600,800'
+              }}
+            {% endif %}
+            {% if notify_me_image_mobile != blank %}
+              {{
+                notify_me_image_mobile
+                | image_url: width: 600
+                | image_tag:
+                  class: 'notify-me-popup__image-mobile {# style popupImageMobile #}',
+                  loading: 'lazy',
+                  widths: '300,450,600'
+              }}
+            {% endif %}
+          </div>
+        {% endif %}
+
+        <div class="{# style popupContent #}">
+          <h2 class="{# style popupTitle #}">
+            {{ 'products.product.notify_me_popup_title' | t }}
+          </h2>
+
+          <p class="notify-me-popup__variant {# style popupVariant #}"></p>
+
+          <label class="u-vhide" for="notify-me-email-{{ product.id }}">
+            {{ 'products.product.notify_me_email_placeholder' | t }}
+          </label>
+          <input
+            id="notify-me-email-{{ product.id }}"
+            class="notify-me-popup__input-email {# style popupInput #}"
+            type="email"
+            autocomplete="email"
+            placeholder="{{ 'products.product.notify_me_email_placeholder' | t }}"
+          >
+
+          <label class="u-vhide" for="notify-me-phone-{{ product.id }}">
+            {{ 'products.product.notify_me_phone_placeholder' | t }}
+          </label>
+          <input
+            id="notify-me-phone-{{ product.id }}"
+            class="notify-me-popup__input-phone {# style popupInput #}"
+            type="tel"
+            autocomplete="tel"
+            placeholder="{{ 'products.product.notify_me_phone_placeholder' | t }}"
+          >
+
+          <button type="button" class="notify-me-popup__button {# style popupButton #}">
+            {% if settings.notify_me_main_cta_text != blank %}
+              {{ settings.notify_me_main_cta_text }}
+            {% else %}
+              {{ 'products.product.notify_me' | t }}
+            {% endif %}
+          </button>
+
+          <p
+            class="notify-me-popup__message {# style popupMessage #}"
+            role="status"
+            aria-live="polite"
+          ></p>
+        </div>
+      </div>
+    </div>
+
+    <select class="notify-me-popup__variant-select u-vhide" aria-hidden="true" tabindex="-1">
+      {% for variant in product.variants %}
+        <option
+          value="{{ variant.id }}"
+          data-variant-qty="{{ variant.inventory_quantity | default: 0 }}"
+        >
+          {{ variant.title | escape }}
+        </option>
+      {% endfor %}
+    </select>
+  </div>
+{% endif %}

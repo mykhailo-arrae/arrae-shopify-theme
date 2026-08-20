@@ -1,0 +1,8 @@
+### Micro Description ###
+
+/admin/bulk?resource_name=Product
+&edit=
+metafields.theme_extras.product_subheading:string
+&metafield_titles[metafields.theme_extras.product_subheading]=Product%20Subheading
+&limit=100
+&return_to=/admin/products

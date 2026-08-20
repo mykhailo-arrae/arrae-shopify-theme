@@ -1,0 +1,120 @@
+{% doc %}
+  @description
+  - The form is progressively enhanced by `_js/snippets/newsletter-form/index.tsx` to call Klaviyo directly.
+  - Accessibility: input is labelled, errors are announced via an inline live region, and success text is announced.
+
+  @param {string} newsletter_info - Optional small print displayed below the form
+  @param {string} newsletter_button - Submit button label (e.g., 'Subscribe')
+  @param {string} newsletter_thanks_message - Message shown after a successful subscription
+  @param {string} klaviyo_public_api_key - Klaviyo Public API Key; defaults to `settings.klaviyo_public_api_key` if omitted
+  @param {string} klaviyo_list_id - Klaviyo List ID to subscribe users to; defaults to `settings.klaviyo_list_id` if omitted
+  @param {string} newsletter_form_id - Optional unique suffix used to scope DOM IDs when multiple forms render on the same page
+
+  Requires `settings.enable_klaviyo` to be on; otherwise the form does not render.
+
+  @example
+  {% render 'newsletter-form',
+    newsletter_info: 'By subscribing, you agree to our Privacy Policy.',
+    newsletter_button: 'Subscribe',
+    newsletter_thanks_message: 'Thanks! Please check your inbox to confirm.',
+    klaviyo_public_api_key: settings.klaviyo_public_api_key,
+    klaviyo_list_id: settings.klaviyo_list_id
+  %}
+{% enddoc %}
+
+{% liquid
+  assign newsletter_info = newsletter_info | default: null
+  assign newsletter_button = newsletter_button | default: null
+  assign thanks_translation = 'general.newsletter_form.newsletter_thanks_message' | t
+  assign newsletter_thanks_message = newsletter_thanks_message | default: thanks_translation | default: null
+  assign klaviyo_enabled = settings.enable_klaviyo | default: false, allow_false: true
+  assign klaviyo_public_api_key = klaviyo_public_api_key | default: settings.klaviyo_public_api_key | default: null
+  assign klaviyo_list_id = klaviyo_list_id | default: settings.klaviyo_list_id | default: null
+
+  capture newsletter_form_instance
+    increment __newsletter_form_id
+  endcapture
+
+  assign newsletter_form_scope = newsletter_form_id | default: newsletter_form_instance | strip
+  assign newsletter_email_id = 'newsletterEmail-' | append: newsletter_form_scope
+  assign newsletter_email_label_id = 'newsletterEmailLabel-' | append: newsletter_form_scope
+  assign newsletter_firstname_id = 'newsletterFirstname-' | append: newsletter_form_scope
+  assign newsletter_firstname_label_id = 'newsletterFirstnameLabel-' | append: newsletter_form_scope
+  assign newsletter_phone_id = 'newsletterPhone-' | append: newsletter_form_scope
+  assign newsletter_phone_label_id = 'newsletterPhoneLabel-' | append: newsletter_form_scope
+  assign newsletter_error_id = 'newsletterError-' | append: newsletter_form_scope
+%}
+
+{% if klaviyo_enabled and klaviyo_public_api_key != blank and klaviyo_list_id != blank %}
+  <div class="js-newsletter {# style root #}">
+    <div class="{# style form-container #}">
+      <div class="{# style form-wrapper #}">
+        <form
+          class="js-form {# style form #}"
+          data-list-id="{{ klaviyo_list_id }}"
+          data-api-key="{{ klaviyo_public_api_key }}"
+          data-phone-invalid-message="{{ 'general.newsletter_form.newsletter_phone_invalid' | t | escape }}"
+          autocomplete="off"
+        >
+          <label for="{{ newsletter_firstname_id }}" id="{{ newsletter_firstname_label_id }}" class="u-hide">
+            {{- 'general.newsletter_form.newsletter_firstname' | t -}}
+          </label>
+          <input
+            id="{{ newsletter_firstname_id }}"
+            aria-labelledby="{{ newsletter_firstname_label_id }}"
+            aria-describedby="{{ newsletter_error_id }}"
+            class="js-form-firstname {# style form__input #}"
+            type="text"
+            name="first_name"
+            placeholder="{{ 'general.newsletter_form.newsletter_firstname' | t }}"
+            required
+          >
+
+          <label for="{{ newsletter_email_id }}" id="{{ newsletter_email_label_id }}" class="u-hide">
+            {{- 'general.newsletter_form.newsletter_email' | t -}}
+          </label>
+          <input
+            id="{{ newsletter_email_id }}"
+            aria-labelledby="{{ newsletter_email_label_id }}"
+            aria-describedby="{{ newsletter_error_id }}"
+            class="js-form-email {# style form__input #}"
+            type="email"
+            name="email"
+            placeholder="{{ 'general.newsletter_form.newsletter_email' | t }}"
+            required
+          >
+
+          <label for="{{ newsletter_phone_id }}" id="{{ newsletter_phone_label_id }}" class="u-hide">
+            {{- 'general.newsletter_form.newsletter_phone' | t -}}
+          </label>
+          <input
+            id="{{ newsletter_phone_id }}"
+            aria-labelledby="{{ newsletter_phone_label_id }}"
+            aria-describedby="{{ newsletter_error_id }}"
+            class="js-form-phone {# style form__input #}"
+            type="tel"
+            pattern="[0-9+\-\s()]{10,20}"
+            name="phone_number"
+            placeholder="{{ 'general.newsletter_form.newsletter_phone' | t }}"
+            required
+          >
+
+          {% render 'core-button', type: 'submit', label: newsletter_button, style: 'secondary' %}
+        </form>
+
+        <div id="{{ newsletter_error_id }}" class="js-error {# style error #}" role="alert"></div>
+
+        {% if newsletter_thanks_message != blank %}
+          <div class="js-thanks {# style thanks #}" role="status" aria-live="polite" tabindex="-1">
+            {{ newsletter_thanks_message }}
+          </div>
+        {% endif %}
+      </div>
+      {% if newsletter_info != blank %}
+        <div class="{# style info #}">
+          {{ newsletter_info }}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+{% endif %}

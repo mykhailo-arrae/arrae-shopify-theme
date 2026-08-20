@@ -1,0 +1,121 @@
+{% liquid
+  assign title = section.settings.title | default: ''
+  assign show_breadcrumbs = section.settings.show_breadcrumbs | default: true, allow_false: true
+  assign blog_tags_raw = section.settings.blog_tags | split: ','
+  assign blog_tags = ''
+  assign seen_tags = '|'
+
+  for tag in blog_tags_raw
+    assign tag_trimmed = tag | strip
+    if tag_trimmed == blank
+      continue
+    endif
+
+    assign tag_key = tag_trimmed | downcase
+    assign tag_marker = '|' | append: tag_key | append: '|'
+
+    unless seen_tags contains tag_marker
+      assign seen_tags = seen_tags | append: tag_key | append: '|'
+      if blog_tags == blank
+        assign blog_tags = tag_trimmed
+      else
+        assign blog_tags = blog_tags | append: '|||' | append: tag_trimmed
+      endif
+    endunless
+  endfor
+
+  if blog_tags != blank
+    assign blog_tags = blog_tags | split: '|||'
+  endif
+%}
+
+<div>
+  {% if show_breadcrumbs %}
+    <div>
+      {% render 'breadcrumbs', breadcrumbs_title: blog.title %}
+    </div>
+  {% endif %}
+
+  <div class="{# style section_wrapper #}">
+    {% if title != blank %}
+      <h1 class="{# style title #}">
+        {{ title }}
+      </h1>
+    {% endif %}
+
+    <nav class="{# style nav #}" aria-label="{{ 'categories_label' | t }}">
+      <ul class="{# style list #}" role="list">
+        <li class="{# style item #}">
+          <a
+            href="{{ blog.url }}"
+            class="{# style link #}"
+            {% if current_tags == blank %}
+              aria-current="page"
+            {% endif %}
+          >
+            {{ 'all_label' | t }}
+          </a>
+        </li>
+        {% if blog_tags != blank %}
+          {% for tag in blog_tags %}
+            <li class="{# style item #}">
+              <a
+                href="{{ blog.url }}/tagged/{{ tag | handleize }}"
+                class="{# style link #}"
+                {% if current_tags contains tag %}
+                  aria-current="page"
+                {% endif %}
+              >
+                {{ tag }}
+              </a>
+            </li>
+          {% endfor %}
+        {% endif %}
+      </ul>
+    </nav>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Blog Categories",
+  "tag": "section",
+  "enabled_on": {
+    "templates": ["blog"]
+  },
+  "locales": {
+    "en": {
+      "all_label": "All",
+      "categories_label": "Blog categories"
+    }
+  },
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_breadcrumbs",
+      "label": "Show breadcrumbs",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Categories"
+    },
+    {
+      "type": "text",
+      "id": "blog_tags",
+      "label": "Blog tags",
+      "default": "featured, journal, test, trending, video",
+      "info": "Enter the blog tags separated by commas. Example: 'blog, news, tips, etc.'"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Blog Categories",
+      "category": "Blog",
+      "settings": {}
+    }
+  ]
+}
+{% endschema %}

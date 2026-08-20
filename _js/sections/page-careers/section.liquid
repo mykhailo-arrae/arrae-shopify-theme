@@ -1,0 +1,107 @@
+{% liquid
+  assign image = section.settings.image
+  assign image_mobile = section.settings.image_mobile
+  assign heading = section.settings.heading
+  assign subheading = section.settings.subheading
+  assign body = section.settings.body
+  assign roles_title = section.settings.roles_title
+%}
+
+<div class="{# style PageCareers #}">
+  <div class="{# style PageCareers__layout #}">
+    <div class="{# style PageCareers__media #}">
+      {% if image != blank %}
+        {% render 'core-image',
+          image: image,
+          image_mobile: image_mobile,
+          object_fit: 'cover',
+          class: '{# style PageCareers__mediaImage #}'
+        %}
+      {% else %}
+        {{ 'image' | placeholder_svg_tag: 'o-placeholderSvg' }}
+      {% endif %}
+    </div>
+
+    <div class="{# style PageCareers__main #}">
+      <div class="{# style PageCareers__content #}">
+        {% if heading != blank %}
+          <h1 class="{# style PageCareers__heading #}">{{ heading | newline_to_br }}</h1>
+        {% endif %}
+        {% if subheading != blank %}
+          <p class="{# style PageCareers__subheading #}">{{ subheading }}</p>
+        {% endif %}
+        {% if body != blank %}
+          <p class="{# style PageCareers__body #}">{{ body | newline_to_br }}</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  {% if roles_title != blank %}
+    <h2 class="{# style PageCareers__rolesTitle #}">{{ roles_title }}</h2>
+  {% endif %}
+</div>
+
+{% schema %}
+{
+  "name": "Careers",
+  "tag": "section",
+  "class": "{# style section #}",
+  "enabled_on": {
+    "templates": ["page"]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "Hero"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image",
+      "info": "Lifestyle image shown on the left (above the copy on mobile)."
+    },
+    {
+      "type": "image_picker",
+      "id": "image_mobile",
+      "label": "Mobile Image",
+      "info": "Optional. Falls back to the desktop image."
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Join Our Growing Team"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "If You Share Our Company Vision"
+    },
+    {
+      "type": "textarea",
+      "id": "body",
+      "label": "Body",
+      "default": "Our team members have a shared passion for wellness and have thirst and creativity to make Arrae the top wellness brand in the world. We're committed to bringing holistic wellness and optimized health to everyone, and work with the most talented people to make that happen."
+    },
+    {
+      "type": "header",
+      "content": "Open roles"
+    },
+    {
+      "type": "text",
+      "id": "roles_title",
+      "label": "Title",
+      "info": "Introduces the Careers Department sections placed below.",
+      "default": "Open roles by department"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Careers",
+      "category": "Page Content"
+    }
+  ]
+}
+{% endschema %}

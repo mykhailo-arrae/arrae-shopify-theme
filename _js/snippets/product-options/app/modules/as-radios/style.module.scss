@@ -1,0 +1,54 @@
+@use 'style-guide/mixins' as mixin;
+@use 'style-guide/colors' as color;
+@use 'style-guide/spacing' as spacing;
+@use 'style-guide/typography' as typography;
+
+.ProductRadios {
+  display: block;
+
+  &-group {
+    margin-bottom: spacing.get(size-14);
+  }
+
+  &-groupTitle {
+    @include typography.heading-5;
+    color: color.get(dark-gray);
+    margin-bottom: spacing.get(size-12);
+
+    &--focused {
+      display: block;
+    }
+  }
+
+  &-list {
+    display: flex;
+    flex-direction: column;
+    gap: spacing.get(size-8);
+    width: 100%;
+  }
+
+  &-item {
+    display: flex;
+    align-items: center;
+    gap: spacing.get(size-8);
+
+    &--unavailable {
+      opacity: 0.5;
+    }
+
+    &--outOfStock {
+      opacity: 0.7;
+    }
+  }
+
+  &-itemInput {
+    flex-shrink: 0;
+    margin: 0;
+  }
+
+  &-itemLabel {
+    margin: 0;
+    cursor: pointer;
+    color: color.get(dark-gray);
+  }
+}

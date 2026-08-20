@@ -1,0 +1,221 @@
+@use 'unit' as u;
+@use 'style-guide/media' as mq;
+@use 'style-guide/mixins' as mixin;
+@use 'style-guide/spacing' as spacing;
+@use 'style-guide/colors' as color;
+@use 'style-guide/typography' as typography;
+@use 'style-guide/sizes' as sizes;
+
+.section {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  background-color: color.get(background);
+  color: color.get(text);
+}
+
+.root {
+  width: 100%;
+  padding: spacing.get(size-20) spacing.get(size-16);
+  @include mixin.container();
+
+  @include mq.min(tabletlandscape) {
+    padding: spacing.get(size-48);
+  }
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: spacing.get(size-32);
+  width: 100%;
+
+  @include mq.min(tabletlandscape) {
+    gap: spacing.get(size-24);
+    display: grid;
+    grid-template-columns: 6.2fr 3fr;
+
+    [data-reverse='true'] & {
+      grid-template-columns: 3fr 6.2fr;
+    }
+  }
+}
+
+.media-column {
+  width: 100%;
+
+  @include mq.min(tabletlandscape) {
+    grid-column: 1;
+
+    [data-reverse='true'] & {
+      grid-column: 2;
+    }
+  }
+}
+
+.content-column {
+  width: 100%;
+
+  @include mq.min(tabletlandscape) {
+    grid-column: 2;
+
+    [data-reverse='true'] & {
+      grid-column: 1;
+      grid-row: 1;
+    }
+  }
+}
+
+.media {
+  position: relative;
+  overflow: hidden;
+  border-radius: sizes.get(size-8);
+  background-color: color.get(on-white);
+  aspect-ratio: 4 / 5;
+
+  @include mq.min(tablet) {
+    aspect-ratio: 3 / 2;
+  }
+
+  @include mq.min(tabletlandscape) {
+    aspect-ratio: 5 / 3;
+  }
+
+  &__image {
+    @include mixin.fill-parent();
+
+    &--placeholder {
+      object-fit: cover;
+    }
+  }
+
+  &__video {
+    @include mixin.fill-parent();
+    z-index: 1;
+
+    :is(video, img) {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  &__embed {
+    @include mixin.fill-parent();
+    width: 100%;
+    height: 100%;
+    border: 0;
+    z-index: 1;
+  }
+
+  &__controls {
+    position: absolute;
+    z-index: 2;
+    bottom: spacing.get(size-16);
+    left: spacing.get(size-16);
+    display: flex;
+    gap: spacing.get(size-16);
+    pointer-events: none;
+
+    /* Re-enable pointer events on the buttons themselves so the controls
+       don't block clicks on the underlying media. */
+    > * {
+      pointer-events: auto;
+    }
+  }
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: spacing.get(size-24);
+  width: 100%;
+  padding-inline: spacing.get(size-8);
+  text-align: left;
+
+  @include mq.min(tabletlandscape) {
+    padding-inline: 0;
+  }
+
+  &__copy {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: spacing.get(size-16);
+    width: 100%;
+    overflow-wrap: anywhere;
+  }
+}
+
+.headline {
+  @include typography.heading-4();
+  margin: 0;
+  color: color.get(dark-gray);
+  font-weight: 400;
+  line-height: 1.12;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+
+  @include mq.min(tabletlandscape) {
+    @include typography.heading-2();
+  }
+}
+
+.body {
+  @include typography.body-regular();
+  margin: 0;
+  letter-spacing: -0.01em;
+  color: color.get(dark-gray);
+
+  @include mq.min(tabletlandscape) {
+    font-size: u.rem-calc(18);
+  }
+
+  :is(p, ul, ol) {
+    margin: 0;
+  }
+
+  :is(p, ul, ol) + :is(p, ul, ol) {
+    margin-top: u.rem-calc(18);
+
+    @include mq.min(tabletlandscape) {
+      margin-top: u.rem-calc(48);
+    }
+  }
+
+  a {
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: spacing.get(size-4);
+
+    &:hover {
+      opacity: 0.7;
+    }
+  }
+}
+
+.signature {
+  position: relative;
+  width: 100%;
+  max-width: u.rem-calc(180);
+  aspect-ratio: 180 / 64;
+
+  /* Multiply blend mode keeps the signature ink readable on the
+     off-white surface without a hard rectangle around it. */
+  mix-blend-mode: multiply;
+
+  @include mq.min(tabletlandscape) {
+    max-width: u.rem-calc(277);
+    aspect-ratio: 277 / 98;
+  }
+
+  :is(video, img) {
+    @include mixin.fill-parent();
+    object-fit: contain;
+  }
+}
+
+.cta {
+  margin: 0;
+}

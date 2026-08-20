@@ -1,0 +1,45 @@
+@use 'style-guide/media' as mq;
+@use 'style-guide/colors' as color;
+
+.Video {
+  position: absolute;
+  inset: 0;
+  box-sizing: border-box;
+  padding: 0;
+  border: none;
+  margin: auto;
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-width: 100%;
+  max-width: 100%;
+  min-height: 100%;
+  max-height: 100%;
+  background-color: color.get(light-gray);
+
+  &--desktop {
+    display: none;
+    @include mq.min(tabletlandscape) {
+      display: block;
+    }
+  }
+
+  &--mobile {
+    display: block;
+    @include mq.min(tabletlandscape) {
+      display: none;
+    }
+  }
+
+  video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+}

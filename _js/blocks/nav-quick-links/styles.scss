@@ -1,0 +1,106 @@
+@use 'unit' as u;
+@use 'style-guide/spacing' as spacing;
+@use 'style-guide/typography' as typography;
+@use 'style-guide/colors' as color;
+@use 'style-guide/mixins' as mixin;
+@use 'nav-modes' as nav;
+@use 'style-guide/media' as mq;
+@use 'style-guide/sizes' as sizes;
+
+.col {
+  flex: 0 1 auto;
+  min-width: u.rem-calc(180);
+
+  @include nav.drawer {
+    order: 1;
+    width: 100%;
+    min-width: 0;
+  }
+
+  @include nav.inline {
+    min-width: 0;
+    grid-column: span 1;
+  }
+}
+
+.root {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: spacing.get(size-16);
+
+  @include nav.inline {
+    align-items: flex-start;
+  }
+
+  @include nav.drawer {
+    margin-bottom: spacing.get(size-4);
+
+    [data-disable-outer-accordion='true'] & {
+      margin-bottom: spacing.get(size-40);
+    }
+
+    &:global(.quick-links-secondary) {
+      margin-bottom: 0;
+    }
+  }
+}
+
+.list {
+  @include mixin.reset-ul();
+  display: flex;
+  flex-direction: column;
+  gap: spacing.get(size-16);
+
+  @include nav.drawer {
+    &:not(:global([data-disable-outer-accordion='true']) *) {
+      padding-top: spacing.get(size-16);
+      padding-left: spacing.get(size-12);
+      gap: spacing.get(size-20);
+    }
+  }
+}
+
+.cta {
+  display: none;
+
+  @include nav.inline {
+    @include typography.body(size-14, 400);
+    line-height: 1.06;
+    letter-spacing: u.rem-calc(0.84);
+    text-transform: uppercase;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: auto;
+    padding: spacing.get(size-12) spacing.get(size-24);
+    background-color: color.get(dark-gray);
+    color: color.get(off-white) !important;
+    border-radius: 9999px;
+    text-decoration: none;
+    transition: opacity 200ms ease;
+
+    &:hover,
+    &:focus-visible {
+      opacity: 0.85;
+    }
+
+    @include mq.min(smalldesktop) {
+      font-size: sizes.get(size-12);
+    }
+
+    @include mq.min(desktop) {
+      font-size: sizes.get(size-14);
+    }
+  }
+}
+
+.cta__label {
+  display: block;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cta {
+    transition: none;
+  }
+}

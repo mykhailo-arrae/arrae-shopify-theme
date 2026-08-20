@@ -1,0 +1,75 @@
+{% render 'breadcrumbs-stylesheet' %}
+
+{% liquid
+  assign breadcrumbs_title = breadcrumbs_title | default: null
+%}
+
+{% unless template.name == '404' %}
+  <nav class="{# style root #}" role="navigation">
+    <div class="{# style container #}">
+      <ol
+        class="{# style list #}"
+        aria-label="{{ 'general.breadcrumbs.list_title' | t }}"
+      >
+        <li class="{# style item #}">
+          <a href="{{ shop.url }}" title="{{ 'general.breadcrumbs.home_link_title' | t }}">
+            {{ 'general.breadcrumbs.home' | t }}
+          </a>
+        </li>
+
+        {% if breadcrumbs_title != blank %}
+          <li class="{# style item #}">
+            {{ breadcrumbs_title }}
+          </li>
+
+        {% else %}
+          {% if template.name == 'collection' %}
+            {% if current_tags.size > 0 %}
+              <li class="{# style item #}">
+                <a href="/collections/{{ collection.handle }}">
+                  {{ collection.title }}
+                </a>
+              </li>
+              <li class="{# style item #}">{{ current_tags.first }}</li>
+            {% else %}
+              <li class="{# style item #} js-breadcrumb-current" aria-current="page">{{ collection.title }}</li>
+            {% endif %}
+          {% endif %}
+
+          {% if template.name == 'product' %}
+            <li class="{# style item #}">{{ product.title }}</li>
+          {% endif %}
+
+          {% if template.name == 'blog' %}
+            <li class="{# style item #}">{{ blog.title }}</li>
+          {% endif %}
+
+          {% if template.name == 'article' %}
+            <li class="{# style item #}">
+              <a href="/blogs/{{ blog.handle }}">
+                {{ blog.title }}
+              </a>
+            </li>
+            <li class="{# style item #}">{{ article.title }}</li>
+          {% endif %}
+
+          {% if template.name == 'page' %}
+            <li class="{# style item #}">{{ page.title }}</li>
+          {% endif %}
+
+          {% if template.name == 'cart' %}
+            <li class="{# style item #}">Cart</li>
+          {% endif %}
+
+          {% if template.name == 'search' %}
+            <li class="{# style item #}">Search Results</li>
+          {% endif %}
+
+          {% if template.name == 'list-collections' %}
+            <li class="{# style item #}">Collections</li>
+          {% endif %}
+        {% endif %}
+      </ol>
+    </div>
+  </nav>
+{% endunless %}

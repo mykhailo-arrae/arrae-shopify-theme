@@ -1,0 +1,28 @@
+@use 'style-guide/media' as mq;
+
+// Shared mixins for the header nav blocks (nav-item, nav-links,
+// nav-collection-tile(s), nav-quick-links, nav-banner).
+
+// Drawer mode: vertical accordion inside the offcanvas <nav>.
+// Active on mobile, and on desktop when the header opts into drawer mode.
+@mixin drawer {
+  @include mq.max(tabletlandscape) {
+    @content;
+  }
+
+  @include mq.min(tabletlandscape) {
+    :global(.js-mobile-drawer[data-drawer-mode-on-desktop='true']) & {
+      @content;
+    }
+  }
+}
+
+// Inline mode: horizontal strip with absolute-positioned hover dropdowns.
+// Active on desktop only when the header is NOT in drawer mode.
+@mixin inline {
+  @include mq.min(tabletlandscape) {
+    :global(.js-mobile-drawer:not([data-drawer-mode-on-desktop='true'])) & {
+      @content;
+    }
+  }
+}

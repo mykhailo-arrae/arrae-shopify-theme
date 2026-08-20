@@ -1,0 +1,74 @@
+name: 'Backup themes'
+
+on:
+  push:
+    branches:
+      - 'devops/backup-themes'
+  schedule:
+    # Run four times per day on weekdays
+    - cron: '10 2/6 * * 1-5'
+    # Run three times per day on the weekend
+    - cron: '10 2/10 * * 6,0'
+  workflow_dispatch:
+
+concurrency:
+  group: 'backup-themes'
+  cancel-in-progress: true
+
+jobs:
+  backup-themes:
+    runs-on: 'ubuntu-latest'
+    strategy:
+      fail-fast: false
+      max-parallel: 1
+      matrix:
+        environment: ['arrae-staging', 'arrae-wellness']
+        # Use '_live' keyword to backup the live theme
+        theme: ['_live', 'Vaan UAT']
+    environment:
+      name: ${{ matrix.environment }}
+    env:
+      COMPOSE_BAKE: 1
+      COMPOSE_DOCKER_CLI_BUILD: 1
+      DOCKER_BUILDKIT: 1
+      SHOPIFY_CLI_ADMIN_AUTH_TOKEN: ${{ secrets.SHOPIFY_ADMIN_API_TOKEN }}
+      SHOPIFY_CLI_TTY: 0
+      SHOPIFY_SHOP: '${{ matrix.environment }}.myshopify.com'
+      THEME_NAME: ${{ matrix.theme }}
+    steps:
+      - name: Set Docker Compose project name
+        run: |
+          matrixHash=$(printf '%s' '${{ matrix.environment }}-${{ matrix.theme }}' | sha256sum | awk '{ print $1 }')
+          echo "COMPOSE_PROJECT_NAME=backup-${matrixHash}" >> $GITHUB_ENV
+
+      - name: 'Checkout everything'
+        uses: 'actions/checkout@v4'
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.CHECKOUT_ACTION_PAT }}
+
+      - name: 'Init git config'
+        run: |
+          ./devops/ci/init-git-config.sh
+        # Workaround for No TTY issue
+        shell: 'script -qec "bash {0}"'
+
+      - name: 'Build and start `main_cd` container'
+        run: |
+          ./devops/ci/start-cd-container.sh
+        shell: 'script -qec "bash {0}"'
+
+      - name: 'Backup theme'
+        run: |
+          ./devops/ci/run-in-cd-container.sh ./devops/backup-theme.sh
+        shell: 'script -qec "bash {0}"'
+
+      - name: 'Push changes'
+        run: |
+          git push --all origin
+        shell: 'script -qec "bash {0}"'
+
+      - name: 'Shutdown containers'
+        run: |
+          ./devops/ci/shutdown-cd-container.sh
+        shell: 'script -qec "bash {0}"'

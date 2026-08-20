@@ -1,0 +1,15 @@
+{
+  "apps": [
+    {
+      "args": "-D -f /home/node/.ssh-server/sshd_config",
+      "error_file": "/dev/null",
+      "instances": 1,
+      "interpreter": "none",
+      "kill_timeout": 3000,
+      "name": "ssh-server",
+      "out_file": "/dev/null",
+      "script": "/usr/sbin/sshd",
+      "watch": false
+    }
+  ]
+}

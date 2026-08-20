@@ -1,0 +1,278 @@
+{% liquid
+  assign label = block.settings.label
+  assign item_type = block.settings.item_type
+  assign link_url = block.settings.link_url
+
+  assign mobile_banner_image = block.settings.mobile_banner_image
+  assign mobile_banner_title = block.settings.mobile_banner_title
+  assign mobile_banner_url = block.settings.mobile_banner_url
+  assign mobile_cta_label = block.settings.mobile_cta_label
+  assign mobile_cta_url = block.settings.mobile_cta_url
+  assign disable_outer_accordion_setting = block.settings.disable_outer_accordion | default: false, allow_false: true
+
+  assign trigger_id = 'megamenu-trigger-' | append: block.id
+  assign panel_id = 'megamenu-panel-' | append: block.id
+  assign mobile_trigger_id = 'mobile-megamenu-trigger-' | append: block.id
+
+  assign is_megamenu = false
+  if item_type == 'mega_menu'
+    assign is_megamenu = true
+  endif
+
+  assign disable_outer_accordion = false
+  if is_megamenu and disable_outer_accordion_setting
+    assign disable_outer_accordion = true
+  endif
+
+  assign show_mobile_banner = false
+  if is_megamenu and mobile_banner_image != blank
+    assign show_mobile_banner = true
+  endif
+
+  assign show_mobile_cta = false
+  if is_megamenu and mobile_cta_label != blank and mobile_cta_url != blank
+    assign show_mobile_cta = true
+  endif
+%}
+
+{% if is_megamenu %}
+  {% comment %}
+    Desktop trigger — hover/click driven hover panel. Hidden on mobile.
+    The mobile drawer renders its own trigger (below) so the desktop
+    interaction model stays untouched.
+  {% endcomment %}
+  <button
+    type="button"
+    id="{{ trigger_id }}"
+    class="{# style nav-link #} {# style desktop-trigger #} js-megamenu-trigger"
+    data-block-id="{{ block.id }}"
+    aria-haspopup="true"
+    aria-expanded="false"
+    aria-controls="{{ panel_id }}"
+  >
+    <span class="{# style nav-link__text #}">{{ label }}</span>
+  </button>
+
+  {% comment %}
+    Mobile accordion trigger — click-only. Hidden on desktop and omitted
+    entirely when `disable_outer_accordion` is enabled.
+  {% endcomment %}
+  {% unless disable_outer_accordion %}
+    <button
+      type="button"
+      id="{{ mobile_trigger_id }}"
+      class="{# style mobile-trigger #} js-mobile-accordion-trigger"
+      data-block-id="{{ block.id }}"
+      aria-expanded="false"
+      aria-controls="{{ panel_id }}"
+    >
+      <span class="{# style mobile-trigger__label #}">{{ label }}</span>
+      <span class="{# style mobile-trigger__icon #}" aria-hidden="true">
+        {% render 'icon-chevron-bottom', width: 24, height: 24 %}
+      </span>
+    </button>
+  {% endunless %}
+
+  {% comment %}
+    Single panel element that serves as both the desktop hover dropdown
+    AND the mobile accordion content.
+  {% endcomment %}
+  <div class="{# style panel-wrap #}">
+    <div
+      id="{{ panel_id }}"
+      class="{# style panel #} js-megamenu-panel"
+      role="region"
+      aria-labelledby="{{ trigger_id }}"
+      aria-hidden="true"
+      {% if disable_outer_accordion %}
+        data-disable-outer-accordion="true"
+      {% endif %}
+      hidden
+    >
+      <div class="{# style panel__inner #}" data-mobile-accordion-group="true">
+        {% content_for 'blocks' %}
+
+        {% if show_mobile_banner %}
+          <div class="{# style mobile-banner #}">
+            {% render 'nav-banner-card',
+              image: mobile_banner_image,
+              title: mobile_banner_title,
+              url: mobile_banner_url,
+              sizes: '(max-width: 1024px) 100vw, 480px'
+            %}
+          </div>
+        {% endif %}
+
+        {% if show_mobile_cta %}
+          <a
+            href="{{ mobile_cta_url }}"
+            class="{# style mobile-cta #}"
+          >
+            <span class="{# style mobile-cta__label #}">{{ mobile_cta_label }}</span>
+          </a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+{% elsif link_url != blank %}
+  <a
+    href="{{ link_url }}"
+    class="{# style nav-link #} {# style link #} js-nav-link"
+  >
+    <span class="{# style nav-link__text #}">{{ label }}</span>
+  </a>
+{% else %}
+  <span class="{# style nav-link #} {# style link #} js-nav-link">
+    <span class="{# style nav-link__text #}">{{ label }}</span>
+  </span>
+{% endif %}
+
+{% comment %}
+  Inline desktop drawer trigger. It is shown when `use_drawer_mode_on_desktop` is enabled
+{% endcomment %}
+{% if is_megamenu %}
+  <button
+    type="button"
+    class="{# style nav-link #} {# style inline-trigger #} js-inline-drawer-trigger js-drawer-trigger"
+    data-block-id="{{ block.id }}"
+    aria-haspopup="menu"
+    hidden
+  >
+    <span class="{# style nav-link__text #}">{{ label }}</span>
+  </button>
+{% elsif link_url != blank %}
+  <a
+    href="{{ link_url }}"
+    class="{# style nav-link #} {# style inline-trigger #} js-inline-drawer-trigger"
+    hidden
+  >
+    <span class="{# style nav-link__text #}">{{ label }}</span>
+  </a>
+{% else %}
+  <span class="{# style nav-link #} {# style inline-trigger #} js-inline-drawer-trigger" hidden>
+    <span class="{# style nav-link__text #}">{{ label }}</span>
+  </span>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Nav Item",
+  "tag": "li",
+  "class": "{# style nav-item #}",
+  "settings": [
+    {
+      "type": "text",
+      "id": "label",
+      "label": "Label",
+      "info": "Maximum 25 characters recommended."
+    },
+    {
+      "type": "select",
+      "id": "item_type",
+      "label": "Type",
+      "default": "link",
+      "options": [
+        { "value": "link", "label": "Link" },
+        { "value": "mega_menu", "label": "Mega Menu" }
+      ]
+    },
+    {
+      "type": "url",
+      "id": "link_url",
+      "label": "Link",
+      "info": "Page, product, collection, or external URL.",
+      "visible_if": "{{ block.settings.item_type == 'link' }}"
+    },
+    {
+      "type": "paragraph",
+      "content": "Mega menu panels can compose Collection Tiles, Quick Links, Header Links, and a single Menu Banner.",
+      "visible_if": "{{ block.settings.item_type == 'mega_menu' }}"
+    },
+    {
+      "type": "header",
+      "content": "Mobile",
+      "visible_if": "{{ block.settings.item_type == 'mega_menu' }}"
+    },
+    {
+      "type": "paragraph",
+      "content": "These options only affect the mobile mega menu and have no impact on desktop.",
+      "visible_if": "{{ block.settings.item_type == 'mega_menu' }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "disable_outer_accordion",
+      "label": "Disable outer accordion",
+      "info": "When enabled, the label / accordion trigger is hidden on mobile and the content renders expanded by default. Nested accordions still behave normally.",
+      "default": false,
+      "visible_if": "{{ block.settings.item_type == 'mega_menu' }}"
+    },
+    {
+      "type": "header",
+      "content": "Mobile mega menu banner",
+      "visible_if": "{{ block.settings.item_type == 'mega_menu' }}"
+    },
+    {
+      "type": "paragraph",
+      "content": "Only visible on mobile. Renders at the very end of the mega menu, after the mobile CTA.",
+      "visible_if": "{{ block.settings.item_type == 'mega_menu' }}"
+    },
+    {
+      "type": "image_picker",
+      "id": "mobile_banner_image",
+      "label": "Banner image",
+      "visible_if": "{{ block.settings.item_type == 'mega_menu' }}"
+    },
+    {
+      "type": "text",
+      "id": "mobile_banner_title",
+      "label": "Banner title",
+      "info": "Optional text rendered over the image, mirroring the desktop Menu Banner.",
+      "visible_if": "{{ block.settings.item_type == 'mega_menu' }}"
+    },
+    {
+      "type": "url",
+      "id": "mobile_banner_url",
+      "label": "Banner link",
+      "visible_if": "{{ block.settings.item_type == 'mega_menu' }}"
+    },
+    {
+      "type": "header",
+      "content": "Mobile mega menu CTA",
+      "visible_if": "{{ block.settings.item_type == 'mega_menu' }}"
+    },
+    {
+      "type": "paragraph",
+      "content": "Only visible on mobile. Renders near the bottom of the mega menu, just above the mobile banner.",
+      "visible_if": "{{ block.settings.item_type == 'mega_menu' }}"
+    },
+    {
+      "type": "text",
+      "id": "mobile_cta_label",
+      "label": "CTA label",
+      "info": "e.g. \"Shop Spring Sale\".",
+      "visible_if": "{{ block.settings.item_type == 'mega_menu' }}"
+    },
+    {
+      "type": "url",
+      "id": "mobile_cta_url",
+      "label": "CTA link",
+      "visible_if": "{{ block.settings.item_type == 'mega_menu' }}"
+    }
+  ],
+  "blocks": [
+    { "type": "nav-collection-tiles" },
+    { "type": "nav-quick-links" },
+    { "type": "nav-links" },
+    { "type": "nav-banner" }
+  ],
+  "presets": [
+    {
+      "name": "Nav Item",
+      "settings": {
+        "label": "Shop",
+        "item_type": "mega_menu"
+      }
+    }
+  ]
+}
+{% endschema %}

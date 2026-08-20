@@ -1,0 +1,155 @@
+{% doc %}
+  @param {string} modifier - Optional. Adds a modifier class to the card.
+  @param {image} image_desktop - Background image for tablet landscape and up; if only mobile is set, mobile is reused here.
+  @param {image} image_mobile - Background image below tablet landscape; if only desktop is set, desktop is reused here. At least one of desktop/mobile should be set.
+  @param {video} hover_video - Optional. If set, shown on hover (takes precedence over hover images). Plays while hovered/focused.
+  @param {video} hover_video_mobile - Optional. Separate hover video for small screens; falls back to hover_video.
+  @param {image} hover_image_desktop - Optional hover image (desktop); used when hover_video is blank.
+  @param {image} hover_image_mobile - Optional hover image (mobile); falls back to hover_image_desktop.
+  @param {string} label - Short heading.
+  @param {string} url - Destination for the card; if blank, the card is not a link.
+  @param {string} loading - image loading: lazy (default) or eager for above-the-fold.
+  @param {boolean} preload - When true, passes preload to core-image (default false).
+  @param {boolean} reduced_dimensions - When true, reduces the dimensions of the card (default false).
+
+  @example
+  {% render 'tile-card',
+    modifier: 'featured-collection-tiles',
+    image_desktop: section.settings.image_desktop,
+    image_mobile: section.settings.image_mobile,
+    label: 'Improve your fitness',
+    url: section.settings.url
+  %}
+{% enddoc %}
+
+{% liquid
+  assign modifier = modifier | default: ''
+  assign image_desktop = image_desktop | default: null
+  assign image_mobile = image_mobile | default: null
+  assign image_mobile = image_mobile | default: image_desktop
+  assign image_desktop = image_desktop | default: image_mobile
+  assign hover_video = hover_video | default: null
+  assign hover_video_mobile = hover_video_mobile | default: null
+  assign hover_image_desktop = hover_image_desktop | default: null
+  assign hover_image_mobile = hover_image_mobile | default: null
+  assign hover_image_mobile = hover_image_mobile | default: hover_image_desktop
+  assign hover_image_desktop = hover_image_desktop | default: hover_image_mobile
+  assign reduced_dimensions = reduced_dimensions | default: false
+
+  assign use_hover_video = false
+  if hover_video != blank
+    assign use_hover_video = true
+  endif
+
+  assign use_hover_image = false
+  if use_hover_video == false and hover_image_desktop != blank
+    assign use_hover_image = true
+  endif
+
+  assign has_hover_media = false
+  if use_hover_video or use_hover_image
+    assign has_hover_media = true
+  endif
+
+  assign label = label | default: ''
+  assign url = url | default: ''
+  assign loading_attr = loading | default: 'lazy'
+  assign preload = preload | default: false, allow_false: true
+%}
+
+{% if image_desktop != blank %}
+  {% capture tile_card_inner %}
+    <div class="{# style card__media #}">
+      <div class="{# style card__mediaBase #}">
+        {% render 'core-image',
+          image: image_desktop,
+          image_mobile: image_mobile,
+          object_fit: 'cover',
+          mode: 'cover',
+          lazyload: loading_attr != 'eager',
+          sizes: '100vw',
+          srcset_print_sizes: '375,480,640,768,1024,1200,1600',
+          mobile_srcset_print_sizes: '375,480,640,768',
+          image_alt_text: label | strip,
+          preload: preload
+        %}
+      </div>
+
+      {% if has_hover_media %}
+        <div class="{# style card__mediaHover #}" aria-hidden="true">
+          {% if use_hover_video %}
+            {% render 'core-video',
+              video: hover_video,
+              video_mobile: hover_video_mobile,
+              class: 'js-card-hover-video',
+              autoplay: false,
+              muted: true,
+              loop: true,
+              controls: false,
+              lazyload: true,
+              playsinline: true,
+              skip_focus: true
+            %}
+          {% else %}
+            {% render 'core-image',
+              image: hover_image_desktop,
+              image_mobile: hover_image_mobile,
+              object_fit: 'cover',
+              mode: 'cover',
+              lazyload: true,
+              sizes: '100vw',
+              srcset_print_sizes: '375,480,640,768,1024,1200,1600',
+              mobile_srcset_print_sizes: '375,480,640,768',
+              image_alt_text: label | strip
+            %}
+          {% endif %}
+        </div>
+      {% endif %}
+
+      <div class="{# style card__overlay #}" aria-hidden="true"></div>
+    </div>
+
+    <div class="{# style card__inner #}">
+      {% if label != blank %}
+        <p class="{# style card__label #}">{{ label | newline_to_br }}</p>
+      {% endif %}
+      <span class="{# style card__arrow #}" aria-hidden="true">
+        {% render 'icon-arrow-right' %}
+      </span>
+    </div>
+  {% endcapture %}
+
+  {% if url != blank %}
+    <a
+      class="
+        {# style card #}
+        {# style card #}--{{ modifier }}
+        js-card
+        {% if reduced_dimensions %}{# style card--reduced-dimensions #}{% endif %}
+      "
+      href="{{ url }}"
+      {% if label != blank %}
+        aria-label="{{ label | strip_html | strip | escape }}"
+      {% else %}
+        aria-label="Learn more"
+      {% endif %}
+    >
+      {{ tile_card_inner }}
+    </a>
+  {% else %}
+    <div
+      class="
+        {# style card #}
+        {# style card #}--{{ modifier }}
+        js-card
+        {% if reduced_dimensions %}{# style card--reduced-dimensions #}{% endif %}
+      "
+      role="group"
+      {% if label != blank %}
+        aria-label="{{ label | strip_html | strip | escape }}"
+      {% endif %}
+    >
+      {{ tile_card_inner }}
+    </div>
+  {% endif %}
+{% endif %}

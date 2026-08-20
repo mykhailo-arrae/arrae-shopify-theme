@@ -1,0 +1,387 @@
+@use 'sass:list';
+@use 'unit' as u;
+@use 'style-guide/media' as mq;
+@use 'style-guide/spacing' as spacing;
+@use 'style-guide/colors' as color;
+@use 'style-guide/mixins' as mixin;
+@use 'style-guide/typography' as typography;
+
+$transition-card: 350ms ease;
+
+// `$mobile-stack-peek` is how much of each card's header stays
+// visible when the next card stacks on top of it. `$stack-top` is
+// the sticky offset used before JS measures the live (sticky) site-header
+// height into `--timeline-sticky-top`.
+$mobile-stack-peek: u.rem-calc(60);
+$mobile-card-gap: spacing.get(size-24);
+$stack-top: spacing.get(size-48);
+
+$card-backgrounds: (
+  color.get(warm-sand),
+  color.get(light-brown),
+  color.get(soft-cream),
+  color.get(lightest-brown)
+);
+
+.section {
+  display: block;
+}
+
+.root {
+  @include mixin.container();
+  box-sizing: border-box;
+  padding: spacing.get(size-40) spacing.get(size-24) spacing.get(size-64);
+  background: color.get(off-white);
+  color: color.get(text);
+  --timeline-sticky-top: #{$stack-top};
+  --timeline-card-min-height: 0;
+
+  @include mq.min(tabletlandscape) {
+    padding: spacing.get(size-64) spacing.get(size-40) spacing.get(size-96);
+  }
+}
+
+.intro {
+  margin: 0 auto spacing.get(size-24);
+  max-width: u.rem-calc(640);
+  text-align: center;
+
+  @include mq.min(tabletlandscape) {
+    margin-bottom: u.rem-calc(52);
+  }
+}
+
+.heading {
+  @include typography.heading-4();
+  margin: 0 0 u.rem-calc(37);
+  color: color.get(dark-gray);
+  letter-spacing: -0.03em;
+
+  @include mq.min(tabletlandscape) {
+    @include typography.heading-3();
+    margin-bottom: spacing.get(size-16);
+    letter-spacing: -0.03em;
+  }
+
+  p {
+    margin: 0;
+  }
+}
+
+.subtitle {
+  @include typography.body();
+  margin: 0 auto;
+  max-width: u.rem-calc(580);
+  font-size: u.rem-calc(18);
+  line-height: 1.2;
+  letter-spacing: u.rem-calc(-0.18);
+  color: color.get(text);
+
+  p {
+    margin: 0;
+  }
+
+  @include mq.max(tabletlandscape) {
+    font-size: u.rem-calc(16);
+    letter-spacing: u.rem-calc(-0.16);
+    padding-inline: spacing.get(size-16);
+  }
+}
+
+.timeline {
+  display: flex;
+  flex-direction: column;
+  gap: spacing.get(size-24);
+
+  @include mq.min(tabletlandscape) {
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: center;
+    gap: spacing.get(size-16);
+  }
+}
+
+.runway {
+  display: none;
+  flex-shrink: 0;
+  width: 100%;
+  height: $mobile-card-gap;
+  pointer-events: none;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: u.rem-calc(22);
+  width: 100%;
+  max-width: u.rem-calc(500);
+  min-height: var(--timeline-card-min-height, 0);
+  margin-inline: auto;
+  padding: u.rem-calc(15) spacing.get(size-16) spacing.get(size-16)
+    spacing.get(size-16);
+  border-radius: spacing.get(size-16);
+  background: color.get(light-brown);
+
+  @include mq.min(tabletlandscape) {
+    // Fixed desktop card width — reused for width and scale overlap margins.
+    --timeline-card-width: min(#{u.rem-calc(387)}, 28%);
+    flex: 0 0 auto;
+    width: var(--timeline-card-width);
+    padding: u.rem-calc(19) spacing.get(size-16) u.rem-calc(30)
+      spacing.get(size-16);
+    cursor: pointer;
+    transform: scale(0.75);
+    transform-origin: bottom center;
+    margin-inline: calc(var(--timeline-card-width) * -0.125);
+    margin-bottom: 0;
+    transition:
+      transform $transition-card,
+      margin-inline $transition-card;
+
+    @include mixin.focus-visible-ring();
+  }
+
+  &[data-active] {
+    @include mq.min(tabletlandscape) {
+      z-index: 1;
+      transform: scale(1);
+      padding-bottom: u.rem-calc(32);
+      margin-inline: 0;
+    }
+  }
+}
+
+@for $i from 1 through list.length($card-backgrounds) {
+  .timeline .card:nth-child(#{$i}) {
+    background-color: list.nth($card-backgrounds, $i);
+  }
+}
+
+.card-heading {
+  margin: 0;
+}
+
+.trigger {
+  display: block;
+  width: 100%;
+  text-align: left;
+}
+
+.header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: spacing.get(size-16);
+  width: 100%;
+}
+
+.step-group {
+  display: flex;
+  align-items: center;
+  gap: spacing.get(size-12);
+  min-width: 0;
+}
+
+.step-indicator {
+  @include typography.body(size-16, 400);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: u.rem-calc(32);
+  height: u.rem-calc(32);
+  border: 1px solid color.get(text);
+  border-radius: 50%;
+  font-size: u.rem-calc(16);
+  line-height: 1.1;
+  letter-spacing: u.rem-calc(0.96);
+  text-transform: uppercase;
+  color: color.get(text);
+}
+
+.period {
+  @include typography.body(size-16, 400);
+  font-size: u.rem-calc(16);
+  line-height: 1.1;
+  letter-spacing: u.rem-calc(0.96);
+  text-transform: uppercase;
+  color: color.get(text);
+  white-space: nowrap;
+}
+
+.eyebrow {
+  @include typography.font-cardinal-fruit();
+  font-style: italic;
+  font-size: u.rem-calc(20);
+  line-height: 1.2;
+  letter-spacing: u.rem-calc(-0.6);
+  text-align: right;
+  color: color.get(text);
+}
+
+.panel {
+  display: block;
+}
+
+.panel-inner {
+  display: flex;
+  flex-direction: column;
+  gap: spacing.get(size-16);
+
+  @include mq.min(tabletlandscape) {
+    gap: u.rem-calc(22);
+  }
+}
+
+.image {
+  position: relative;
+  flex-shrink: 0;
+  width: 100%;
+  aspect-ratio: 298 / 342;
+  border-radius: spacing.get(size-8);
+  overflow: hidden;
+
+  @include mq.min(tabletlandscape) {
+    aspect-ratio: 355 / 342;
+  }
+}
+
+.image-hover {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 400ms ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  @include mq.min(smalldesktop) {
+    .image[data-has-hover='true']:hover .image-hover {
+      opacity: 1;
+    }
+  }
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  gap: spacing.get(size-12);
+
+  @include mq.min(tabletlandscape) {
+    padding-inline: u.rem-calc(7);
+  }
+}
+
+.title {
+  @include typography.body(size-14, 500);
+  font-size: u.rem-calc(14);
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: color.get(dark-gray);
+  margin: 0;
+}
+
+.description {
+  @include typography.body();
+  font-size: u.rem-calc(16);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  color: color.get(dark-gray);
+  margin: 0;
+  max-height: u.rem-calc(150);
+  overflow: hidden;
+
+  p {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 7;
+    line-clamp: 7;
+    overflow: hidden;
+    margin: 0;
+  }
+
+  ul,
+  ol {
+    margin: unset;
+    padding: unset;
+    padding-left: spacing.get(size-16);
+
+    li {
+      margin-bottom: spacing.get(size-4);
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+}
+
+@include mq.max(tabletlandscape) {
+  .timeline[data-stack='true'] {
+    position: relative;
+    gap: 0;
+
+    // With the runway as the last child, this also adds a trailing gap after
+    // the last card — that extra space is required so the penultimate stays
+    // pinned until the last card fully covers it.
+    .card:not(:last-child) {
+      margin-bottom: $mobile-card-gap;
+    }
+
+    .runway {
+      display: block;
+    }
+  }
+
+  .timeline[data-stack='true'] .card {
+    position: sticky;
+    isolation: isolate;
+    gap: 0;
+  }
+
+  .timeline[data-stack='true'] .card-heading {
+    box-sizing: border-box;
+    height: calc(#{$mobile-stack-peek} - #{spacing.get(size-12)});
+    min-height: unset;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+
+  .timeline[data-stack='true'] .panel {
+    margin-top: 0;
+  }
+
+  // .timeline[data-stack='true'] .image {
+  //   margin-top: spacing.get(size-8);
+  // }
+
+  @for $i from 1 through 4 {
+    .timeline[data-stack='true'] .card:nth-child(#{$i}) {
+      z-index: $i;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card,
+  .panel,
+  .panel-inner {
+    transition: none;
+  }
+
+  .timeline[data-stack='true'] {
+    gap: spacing.get(size-24);
+    padding-bottom: 0;
+    margin-bottom: 0;
+
+    .runway {
+      display: none;
+    }
+  }
+
+  .timeline[data-stack='true'] .card {
+    position: static;
+    margin-bottom: 0;
+  }
+}

@@ -1,0 +1,53 @@
+@use 'style-guide/media' as mq;
+@use 'unit' as u;
+@use 'style-guide/colors' as color;
+@use 'style-guide/spacing' as spacing;
+
+.controls {
+  display: flex;
+  gap: spacing.get(size-12);
+
+  @include mq.min(tabletlandscape) {
+    gap: spacing.get(size-16);
+  }
+
+  &__button {
+    width: spacing.get(size-40);
+    height: spacing.get(size-40);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    border-radius: 50%;
+    background-color: color.get(off-white-60);
+    cursor: pointer;
+    /* iOS Safari uses link/accent blue for `currentColor` on `<button>` unless color is set */
+    color: color.get(text);
+    -webkit-tap-highlight-color: transparent;
+
+    span {
+      display: none;
+
+      &[data-display='hide'] {
+        display: none;
+      }
+
+      &[data-display='show'] {
+        display: flex;
+      }
+    }
+
+    svg {
+      pointer-events: none;
+      color: inherit;
+
+      path {
+        fill: currentcolor;
+      }
+    }
+
+    &--hidden {
+      display: none;
+    }
+  }
+}

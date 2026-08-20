@@ -1,0 +1,285 @@
+// Components
+// ===============================================
+
+@use '../unit' as u;
+@use './typography' as typography;
+@use './spacing' as spacing;
+@use './sizes' as sizes;
+@use './colors' as color;
+@use './buttons' as button;
+@use './mixins' as mixin;
+@use './media' as mq;
+
+@mixin badge($bg: color.get(dark-gray-10), $color: color.get(text)) {
+  @include typography.font-proxima-nova();
+  @include mixin.no-select();
+  font-weight: 400;
+  font-size: sizes.get(size-14);
+  letter-spacing: u.rem-calc(0.56);
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: spacing.get(size-12);
+  background-color: $bg;
+  color: $color;
+  border-radius: spacing.get(size-8);
+  padding: u.rem-calc(10);
+  width: fit-content;
+}
+
+@mixin video-controls {
+  @include mixin.reset-button();
+  border-radius: spacing.get(size-8);
+  width: spacing.get(size-40);
+  height: spacing.get(size-40);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.25s ease;
+
+  &:hover {
+    opacity: 0.6;
+  }
+}
+
+@mixin scrollbar {
+  width: 100%;
+  height: u.rem-calc(3);
+  background: color.get(dark-gray-20);
+  box-shadow: u.rem-calc(368) 0 0 0 color.get(dark-gray) inset;
+}
+
+@mixin carousel-dots {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: start;
+  gap: spacing.get(size-8);
+}
+
+@mixin carousel-dot {
+  @include mixin.reset-button();
+  aspect-ratio: 1;
+  width: spacing.get(size-8);
+  height: spacing.get(size-8);
+  border-radius: 50%;
+  background-color: color.get(dark-gray-20);
+  transition: all 0.25s ease;
+  cursor: pointer;
+
+  &:hover:not(&--active) {
+    background-color: color.get(light-gray);
+  }
+
+  &--active {
+    background-color: color.get(dark-gray);
+    width: spacing.get(size-12);
+    height: spacing.get(size-12);
+  }
+}
+
+@mixin carousel-arrow {
+  @include mixin.reset-button();
+  background-color: color.get(text);
+  border-radius: 50%;
+  aspect-ratio: 1;
+  width: spacing.get(size-40);
+  height: spacing.get(size-40);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  color: color.get(off-white);
+
+  &:hover {
+    opacity: 0.86;
+  }
+}
+
+@mixin filter-badge {
+  @include typography.font-proxima-nova();
+  @include mixin.no-select();
+  font-weight: 400;
+  font-size: sizes.get(size-14);
+  line-height: 106%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: u.rem-calc(9999);
+  background-color: color.get(on-white);
+  width: fit-content;
+  padding-left: spacing.get(size-12);
+  padding-top: spacing.get(size-2);
+  padding-bottom: spacing.get(size-2);
+  position: relative;
+  transition: all 0.25s ease;
+
+  &__close {
+    @include mixin.reset-button();
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    width: u.rem-calc(26);
+    height: u.rem-calc(26);
+    position: relative;
+    top: u.rem-calc(1);
+    right: u.rem-calc(1);
+
+    & svg {
+      width: u.rem-calc(26);
+      height: u.rem-calc(26);
+    }
+  }
+
+  &:hover {
+    background-color: color.get(text);
+    color: color.get(off-white);
+  }
+}
+
+@mixin quantity-selector {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  background-color: color.get(on-white);
+  border-radius: u.rem-calc(9999);
+  height: spacing.get(size-40);
+  width: fit-content;
+  padding: spacing.get(size-12) spacing.get(size-8);
+  gap: spacing.get(size-2);
+
+  & button {
+    @include mixin.reset-button();
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: spacing.get(size-24);
+    height: spacing.get(size-24);
+  }
+
+  & span {
+    @include typography.font-proxima-nova();
+    font-size: sizes.get(size-16);
+    font-weight: 400;
+    line-height: 120%;
+    min-width: u.rem-calc(26);
+    text-align: center;
+  }
+}
+
+@mixin label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: spacing.get(size-12);
+  background-color: color.get(dark-gray-10);
+  border-radius: spacing.get(size-16);
+  padding: spacing.get(size-12) spacing.get(size-14);
+  @include typography.body-xsmall();
+  width: fit-content;
+}
+
+@mixin tab {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: color.get(dark-gray);
+  border: 1px solid color.get(light-gray);
+  background-color: color.get(light-gray);
+  border-radius: spacing.get(size-24);
+  @include typography.body-small();
+  font-weight: 300;
+  line-height: 100%;
+  padding: spacing.get(size-12) spacing.get(size-24);
+  height: spacing.get(size-40);
+  width: fit-content;
+  box-sizing: border-box;
+  transition: all 0.25s ease;
+  cursor: pointer;
+
+  &:hover {
+    color: color.get(off-white);
+    border-color: color.get(dark-gray);
+    background-color: color.get(dark-gray);
+  }
+}
+
+@mixin tab-reverse {
+  color: color.get(off-white);
+  border-color: color.get(dark-gray);
+  background-color: color.get(dark-gray);
+
+  &:hover {
+    @include mq.min(tabletlandscape) {
+      color: color.get(dark-gray);
+      border-color: color.get(light-gray);
+      background-color: color.get(light-gray);
+    }
+  }
+}
+
+@mixin tab-large {
+  height: spacing.get(size-40);
+  padding: spacing.get(size-12) spacing.get(size-24);
+}
+
+@mixin dropdown {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: color.get(dark-gray);
+  border: 1px solid color.get(text-gray);
+  background-color: color.get(off-white);
+  border-radius: spacing.get(size-24);
+  @include typography.body-xsmall();
+  box-sizing: border-box;
+  width: fit-content;
+  height: spacing.get(size-32);
+  padding: spacing.get(size-12) spacing.get(size-32) spacing.get(size-12)
+    spacing.get(size-16);
+  background-image: url('data:image/svg+xml,<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 6.2492L11.295 5.5L8 8.99628L4.705 5.5L4 6.2492L8 10.5L12 6.2492Z" fill="black"/></svg>');
+  background-position: center right spacing.get(size-14) !important;
+  background-size: spacing.get(size-16) spacing.get(size-16) !important;
+  background-repeat: no-repeat !important;
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+}
+
+@mixin qty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: color.get(dark-gray);
+  border: 1px solid color.get(text-gray);
+  background-color: color.get(off-white);
+  border-radius: spacing.get(size-24);
+  padding: 0 spacing.get(size-16);
+  height: spacing.get(size-40);
+  gap: spacing.get(size-24);
+  width: fit-content;
+
+  & button {
+    @include mixin.reset-button();
+  }
+}
+
+@mixin link {
+  cursor: pointer;
+  width: fit-content;
+  text-decoration: none;
+  text-transform: uppercase;
+  border-bottom: 1px solid color.get(dark-gray);
+  @include typography.body-xsmall();
+  padding: spacing.get(size-4) 0;
+}
+
+@mixin link-small {
+  @include typography.body-xsmall();
+}

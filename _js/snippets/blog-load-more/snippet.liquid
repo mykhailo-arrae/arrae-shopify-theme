@@ -1,0 +1,72 @@
+{% doc %}
+  Async "Load more" control for the blog article grid: progress count and a
+  button that appends the next page via the Section Rendering API.
+
+  @param {paginate} paginate - Liquid paginate object (required)
+  @param {section} section - Parent section (required)
+  @param {number} loaded_count - Articles currently shown in the grid (required)
+  @param {number} total_count - Total visible articles after exclusions (required)
+  @param {number} [native_pages] - Native paginate page count (defaults to paginate.pages)
+  @param {number} [native_page] - Current native paginate page (defaults to paginate.current_page)
+  @param {number} [per_page] - Articles revealed per "Load more" click (default: 6)
+
+  @example
+  {% render 'blog-load-more',
+    paginate: paginate,
+    section: section,
+    loaded_count: loaded_count,
+    total_count: total_count,
+    native_pages: native_pages,
+    native_page: native_page,
+    per_page: per_page
+  %}
+{% enddoc %}
+
+{% liquid
+  assign load_more_label = section.settings.load_more_label | default: 'Load more'
+  assign per_page = per_page | default: 6
+
+  if native_pages != blank
+    assign resolved_native_pages = native_pages
+  else
+    assign resolved_native_pages = paginate.pages
+  endif
+
+  if native_page != blank
+    assign resolved_native_page = native_page
+  else
+    assign resolved_native_page = paginate.current_page
+  endif
+%}
+
+<div
+  class="{# style root #} js-blog-load-more-root"
+  data-total="{{ total_count }}"
+  data-per-page="{{ per_page }}"
+  data-native-page="{{ resolved_native_page }}"
+  data-native-pages="{{ resolved_native_pages }}"
+  {% if total_count <= loaded_count %}
+    hidden
+  {% endif %}
+>
+  <p
+    class="{# style legend #} js-blog-load-more-count"
+    role="status"
+    aria-live="polite"
+  >
+    <strong class="{# style legendCount #} js-blog-load-more-count-value">{{ loaded_count }}</strong>
+    <span class="{# style legendText #}"> out of </span>
+    <strong class="{# style legendCount #} js-blog-load-more-total-value">{{ total_count }}</strong>
+    <span class="{# style legendText #}"> articles</span>
+  </p>
+
+  {% render 'core-button',
+    label: load_more_label,
+    style: 'secondary',
+    type: 'button',
+    class: '{# style button #} js-blog-load-more',
+    attributes: 'aria-busy="false"'
+  %}
+
+  <p class="{# style error #} js-blog-load-more-error" role="alert" hidden></p>
+</div>

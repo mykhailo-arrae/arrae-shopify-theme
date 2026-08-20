@@ -1,0 +1,5 @@
+vars {
+  shopify_shop: 'vaangoods-dev.myshopify.com'
+  shopify_admin_api_version: 2025-04
+  shopify_theme_access_token: xxx
+}

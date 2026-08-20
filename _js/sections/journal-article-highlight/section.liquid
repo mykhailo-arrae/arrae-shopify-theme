@@ -1,0 +1,159 @@
+{% liquid
+  assign heading = section.settings.heading | default: null
+  assign subheading = section.settings.subheading | default: null
+  assign cta_label = section.settings.cta_label | default: null
+  assign cta_url = section.settings.cta_url | default: null
+  assign articles = section.settings.articles | default: null
+  assign articles_count = section.settings.articles.count
+
+  assign show_arrows = section.settings.show_arrows | default: true, allow_false: true
+  assign show_pagination = section.settings.show_pagination | default: true, allow_false: true
+
+  assign use_filtered_carousel = false
+  if current_tags.size > 0 and articles_count > 1
+    assign use_filtered_carousel = true
+  endif
+
+  assign show_carousel = false
+  if use_filtered_carousel
+    assign show_carousel = true
+  elsif articles != blank and articles_count > 0
+    assign show_carousel = true
+  endif
+
+  render 'article-card-stylesheet'
+%}
+
+<div class="{# style container #}">
+  {% if heading != blank or subheading != blank %}
+    <div class="{# style section--header #}">
+      {% if heading != blank %}
+        <h2 class="{# style heading #}">
+          {{ heading }}
+        </h2>
+      {% endif %}
+      {% if subheading != blank %}
+        <p class="{# style subheading #}">
+          {{ subheading }}
+        </p>
+      {% endif %}
+    </div>
+  {% endif %}
+
+  {% if show_carousel %}
+    <div class="{# style section--content #}">
+      <div class="{# style carousel #} swiper">
+        <div class="swiper-wrapper">
+          {% if use_filtered_carousel %}
+            {% for article in blog.articles limit: 4 %}
+              {% if forloop.index > 1 %}
+                <div class="{# style card #} swiper-slide">
+                  {% render 'article-card', article: article %}
+                </div>
+              {% endif %}
+            {% endfor %}
+          {% else %}
+            {% for article in articles %}
+              <div class="{# style card #} swiper-slide">
+                {% render 'article-card', article: article %}
+              </div>
+            {% endfor %}
+          {% endif %}
+        </div>
+        {% if show_pagination %}
+          <div class="{# style carousel-pagination #} swiper-pagination"></div>
+        {% endif %}
+
+        {% if show_arrows %}
+          <div class="{# style carousel-nav--arrows #} swiper-navigation-arrows js-nav-arrows">
+            <button
+              type="button"
+              class="swiper-button-prev {# style arrow #}"
+              title="{{ 'accessibility.previous_slide' | t }}"
+              aria-label="{{ 'accessibility.previous_slide' | t }}"
+            >
+              <span aria-hidden="true">{%- render 'icon-arrow-left' -%}</span>
+            </button>
+
+            <button
+              type="button"
+              class="swiper-button-next {# style arrow #}"
+              title="{{ 'accessibility.next_slide' | t }}"
+              aria-label="{{ 'accessibility.next_slide' | t }}"
+            >
+              <span aria-hidden="true">{%- render 'icon-arrow-right' -%}</span>
+            </button>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  {% endif %}
+
+  {% if cta_label != blank and cta_url != blank %}
+    <div class="{# style section--footer #}">
+      {% render 'core-button', label: cta_label, url: cta_url, type: 'button', style: 'primary' %}
+    </div>
+  {% endif %}
+</div>
+
+{% schema %}
+{
+  "name": "Journal Article Highlight",
+  "class": "{# style section #} js-journal-article-highlight-section",
+  "settings": [
+    {
+      "type": "richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "<p>The Arrae Journal</p>"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Read inspirational stories inside our Journal and learn how to live your best life."
+    },
+    {
+      "type": "article_list",
+      "id": "articles",
+      "label": "Articles",
+      "limit": 3
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "CTA Label",
+      "default": "All Articles"
+    },
+    {
+      "type": "url",
+      "id": "cta_url",
+      "label": "CTA URL",
+      "default": "/"
+    },
+    {
+      "type": "header",
+      "content": "CAROUSEL"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_arrows",
+      "label": "Show Arrows",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_pagination",
+      "label": "Show Pagination",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "Journal Article Highlight",
+      "category": "Blog",
+      "settings": {}
+    }
+  ]
+}
+{% endschema %}

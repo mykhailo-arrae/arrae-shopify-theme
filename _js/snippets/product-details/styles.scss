@@ -1,0 +1,316 @@
+@use 'unit' as u;
+@use 'style-guide/media' as mq;
+@use 'style-guide/typography' as typography;
+@use 'style-guide/buttons' as buttons;
+@use 'style-guide/colors' as color;
+@use 'style-guide/spacing' as spacing;
+@use 'style-guide/sizes' as sizes;
+
+.Product {
+  &-header {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: spacing.get(size-16);
+  }
+
+  &-title {
+    @include typography.body(size-24, 600);
+    color: color.get(text);
+    line-height: 1.12;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  &-subtitle {
+    @include typography.body(size-14, 300);
+    color: color.get(text);
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+
+    a {
+      font-weight: 500;
+      color: inherit;
+    }
+
+    p {
+      margin: 0;
+
+      & + p {
+        margin-top: spacing.get(size-8);
+      }
+    }
+  }
+
+  &-description {
+    @include typography.body(size-16, 500);
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+    margin: u.rem-calc(4) 0;
+    color: color.get(text);
+
+    @include mq.min(tabletlandscape) {
+      max-width: u.rem-calc(347);
+    }
+
+    [data-layout='quickshop'] & {
+      margin: 0;
+    }
+
+    p {
+      color: color.get(text);
+
+      margin-bottom: spacing.get(size-8);
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    span {
+      color: color.get(text);
+    }
+  }
+
+  &-reviews {
+    [data-rating-count] {
+      font-size: typography.get-font-size(size-14);
+    }
+
+    & > div {
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      gap: spacing.get(size-12);
+    }
+  }
+
+  &-benefitsList {
+    @include typography.body(size-16, 300);
+    padding: u.rem-calc(18) 0;
+    color: color.get(text);
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+
+    @include mq.min(tabletlandscape) {
+      padding: spacing.get(size-20) 0;
+    }
+
+    ul {
+      margin: 0;
+      padding-left: spacing.get(size-16);
+      list-style: disc outside;
+    }
+
+    li {
+      min-height: u.rem-calc(27);
+
+      &::marker {
+        font-size: u.rem-calc(10);
+        color: color.get(text);
+      }
+    }
+  }
+
+  label {
+    text-transform: uppercase;
+  }
+}
+
+.spacer-20 {
+  height: spacing.get(size-20);
+}
+
+.ProductForm {
+  margin: u.rem-calc(8) 0;
+
+  &-error {
+    padding: u.rem-calc(8);
+    font-weight: 700;
+    text-align: center;
+    color: color.get(error);
+
+    &:empty {
+      display: none;
+    }
+  }
+
+  &-qty {
+    @at-root .ProductForm & {
+      display: none;
+    }
+  }
+
+  &-controls {
+    margin: spacing.get(size-20) 0 spacing.get(size-24) 0;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: spacing.get(size-12);
+
+    &[hidden] {
+      display: none !important;
+    }
+
+    [data-layout='quickshop'] & {
+      position: sticky;
+      bottom: 0;
+      z-index: 1;
+      padding: spacing.get(size-20) 0;
+      margin: 0;
+      background-color: color.get(off-white);
+    }
+  }
+
+  &-qtyControls {
+    margin: 0 u.rem-calc(16) u.rem-calc(20) 0;
+  }
+
+  &-submitButton {
+    @include buttons.dark();
+    width: 100%;
+    justify-content: center;
+    gap: spacing.get(size-12);
+    padding: spacing.get(size-16) spacing.get(size-24);
+    font-weight: 600;
+    letter-spacing: u.rem-calc(0.84);
+
+    &[hidden] {
+      display: none !important;
+    }
+  }
+
+  &-submitButton--notify {
+    display: none;
+    justify-content: center;
+  }
+
+  &-submitButtonLabel {
+    flex: 0 1 auto;
+    text-align: left;
+    font-weight: 400;
+  }
+
+  &-submitButtonPrices {
+    display: flex;
+    align-items: baseline;
+    justify-content: flex-end;
+    gap: spacing.get(size-8);
+    flex-shrink: 0;
+    text-align: right;
+    white-space: nowrap;
+
+    &[hidden] {
+      display: none !important;
+    }
+  }
+
+  &-submitButtonPrice {
+    font-weight: 600;
+    line-height: 1;
+  }
+
+  &-submitButtonCompareAt {
+    font-weight: 400;
+    text-decoration: line-through;
+  }
+}
+
+:global(.js-atc-submit-button.is-sold-out) {
+  justify-content: center;
+
+  :global(.js-atc-submit-button-label) {
+    flex: 0 1 auto;
+    margin-left: 0;
+    text-align: center;
+  }
+}
+
+:global(.js-product-details.show-notify-me-button) {
+  :global(.js-atc-submit-button) {
+    display: none !important;
+  }
+
+  :global(.js-notify-me-button) {
+    display: flex !important;
+  }
+}
+
+:global(.js-notify-me-button) {
+  display: none;
+}
+
+:global([data-layout='quickshop']) {
+  .Product {
+    &-header {
+      gap: u.rem-calc(16);
+    }
+  }
+
+  .ProductForm {
+    margin: u.rem-calc(4) 0 u.rem-calc(8) 0;
+  }
+}
+
+.QtyControls {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: stretch;
+  justify-content: flex-start;
+  margin: 0;
+
+  &-button {
+    display: block;
+    width: u.rem-calc(40);
+    padding: u.rem-calc(8);
+    border: u.rem-calc(1) solid color.get(text-gray);
+    border-radius: 0;
+    cursor: pointer;
+    appearance: none;
+    transition: background-color 250ms ease-out;
+
+    &:hover,
+    &:focus {
+      background-color: color.get(light-gray);
+    }
+
+    &[data-action='plus'] {
+      border-top-right-radius: u.rem-calc(4);
+      border-bottom-right-radius: u.rem-calc(4);
+    }
+
+    &[data-action='minus'] {
+      border-top-left-radius: u.rem-calc(4);
+      border-bottom-left-radius: u.rem-calc(4);
+    }
+
+    svg {
+      fill: color.get(light-gray);
+      transition: fill 250ms ease-out;
+    }
+
+    &:hover,
+    &:focus {
+      svg {
+        fill: color.get(dark-gray);
+      }
+    }
+  }
+
+  &-indicator {
+    display: inline-block;
+    position: relative;
+    vertical-align: middle;
+    width: u.rem-calc(40);
+    overflow: hidden;
+    padding: u.rem-calc(6) 0;
+    text-align: center;
+    white-space: nowrap;
+    color: color.get(dark-gray);
+    border-top: u.rem-calc(1) solid color.get(text-gray);
+    border-bottom: u.rem-calc(1) solid color.get(text-gray);
+    font-size: sizes.get(size-14);
+    align-content: center;
+  }
+}

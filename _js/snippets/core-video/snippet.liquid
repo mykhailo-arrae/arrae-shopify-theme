@@ -1,0 +1,363 @@
+{% doc %}
+  @description
+  A snippet to display a video
+  - Supports separate desktop and mobile videos
+  - Accessibility: aria-label is required for the video, with a fallback to video.alt
+  - Supports lazy loading and preloading for performance optimization
+  - Supports Largest Contentful Paint optimization
+
+  @param {string} video - The video object to render
+  @param {string} video_mobile - The mobile video object to render, if different from the main video.
+  @param {string} poster - Image placeholder to replace the default video preview image.
+  @param {string} poster_mobile - Image placeholder to replace the default video preview image for mobile.
+  @param {string} class - Adds a custom class to the video element.
+  @param {boolean} controls - If "true", displays video controls. Defaults to "false".
+  @param {boolean} loop - If "true", loops the video. Defaults to "false".
+  @param {number} loop_count - When looping, the total number of times the video plays before stopping.
+  @param {boolean} muted - If "true", mutes the video. Defaults to "false".
+  @param {boolean} autoplay - If "true", plays the video automatically. Defaults to "false".
+  @param {boolean} lazyload - If "true", lazy loads the video using the Intersection Observer API when scrolled into view.
+  @param {boolean} playsinline - Allows inline playback on mobile devices. Defaults to "false".
+  @param {string} preload - Controls video preloading behavior ('auto', 'metadata', 'none'). Defaults to 'auto'.
+  @param {boolean} preload_poster - If "true", preloads the poster image. Defaults to "false".
+  @param {string} fetchpriority - "high" or "low". Defaults to "low" (automatically set to "high" if lazyload is false).
+  @param {boolean} largest_contentful_paint - If "true", optimizes the video for Largest Contentful Paint. Defaults to "false".
+  @param {boolean} skip_focus - If "true", skips the focus on the video element. Should only be used with the core-video-controls snippet. Defaults to "false".
+  @param {boolean} merge_responsive - If "true", renders desktop and mobile sources in one video element. Defaults to "true".
+
+  @example
+  {% render 'core-video',
+    video: video,
+    video_mobile: video_mobile,
+    largest_contentful_paint: true,
+  %}
+{% enddoc %}
+
+{% liquid
+  assign video = video | default: null
+  assign video_poster = poster | default: video.preview_image | default: null
+  assign video_mobile = video_mobile | default: null
+  assign video_mobile_poster = poster_mobile | default: video_mobile.preview_image | default: null
+  assign class = class | default: ''
+  assign preload = preload | default: 'auto'
+  assign controls = controls | default: false
+  assign loop = loop | default: false
+  assign loop_count = loop_count | default: null
+  assign muted = muted | default: false
+  assign autoplay = autoplay | default: false
+  assign playsinline = playsinline | default: false
+  assign lazyload = lazyload | default: false
+  assign preload_poster = preload_poster | default: false
+  assign largest_contentful_paint = largest_contentful_paint | default: false
+  assign fetchpriority = fetchpriority | default: 'low'
+  assign classes = class
+  assign skip_focus = skip_focus | default: false
+  assign merge_responsive = merge_responsive | default: true, allow_false: true
+  assign preferred_mobile_source = null
+  assign preferred_desktop_source = null
+  assign core_video_merge_desktop_mobile = false
+
+  if video and video_mobile and merge_responsive
+    assign core_video_merge_desktop_mobile = true
+  endif
+
+  # A finite loop count opts out of the native `loop` attribute so JS can count
+  # play-throughs via the `ended` event (which never fires while `loop` is set).
+  assign loop_finite = false
+  if loop and loop_count != blank and loop_count > 0
+    assign loop_finite = true
+  endif
+
+  if lazyload
+    assign classes = classes | append: ' js-core-video-lazyload'
+  endif
+
+  if largest_contentful_paint
+    assign preload = 'metadata'
+    assign preload_poster = true
+    assign fetchpriority = 'high'
+  endif
+
+  if video_mobile
+    for source in video_mobile.sources
+      assign source_mime_type = source.mime_type | downcase
+      if source_mime_type contains 'mpegurl' or source.url contains '.m3u8'
+        assign preferred_mobile_source = source
+        break
+      endif
+    endfor
+  endif
+
+  if video
+    for source in video.sources
+      assign source_mime_type = source.mime_type | downcase
+      if source_mime_type contains 'mpegurl' or source.url contains '.m3u8'
+        assign preferred_desktop_source = source
+        break
+      endif
+    endfor
+  endif
+%}
+
+{%- comment -%} Aligned with `Video--mobile` / `Video--desktop` (mq.min(large) = 1024px). {%- endcomment -%}
+{% assign core_video_media_desktop = '(min-width: 1024px)' %}
+{% assign core_video_media_mobile = '(max-width: 1023px)' %}
+
+{% if preload_poster or video_poster %}
+  {%- if video_mobile_poster -%}
+    <link
+      rel="preload"
+      href="{{ video_mobile_poster | image_url: width: 320 }}"
+      as="image"
+      fetchpriority="{{ fetchpriority }}"
+      media="(max-width: 1023px)"
+    >
+  {%- endif -%}
+  {% if video_poster %}
+    <link
+      rel="preload"
+      href="{{ video_poster | image_url: width: 800 }}"
+      as="image"
+      fetchpriority="{{ fetchpriority }}"
+      media="(min-width: 1024px)"
+    >
+  {% endif %}
+{% endif %}
+
+{%- capture video_responsive_merged_markup -%}
+  {%- if core_video_merge_desktop_mobile -%}
+    <div class="{# style Video #}">
+      <video
+        class="{{ classes }}"
+        {% if autoplay %}autoplay{% endif %}
+        {% if loop and loop_finite == false %}loop{% endif %}
+        {% if loop_finite %}data-loop-count="{{ loop_count }}"{% endif %}
+        {% if muted %}muted{% endif %}
+        {% if controls %}controls{% endif %}
+        {% if playsinline %}playsinline{% endif %}
+        preload="{{ preload }}"
+        fetchpriority="{{ fetchpriority }}"
+        aria-label="{{ video.alt | default: video_mobile.alt }}"
+        {% if skip_focus %}tabindex="-1"{% endif %}
+        {% if video_poster and video_mobile_poster -%}
+          {%- comment -%}
+            Mobile-first `poster` avoids downloading 800w art on phones before JS runs (LCP).
+            Wider viewports swap to desktop via data-poster-* + CoreVideo.
+            With `lazyload`, a native `poster` still renders immediately; `data-poster-*` is applied on load for swaps.
+          {%- endcomment -%}
+          {%- if largest_contentful_paint -%}
+            poster="{{ video_mobile_poster | image_url: width: 320 }}"
+            data-poster-desktop="{{ video_poster | image_url: width: 800 }}"
+            data-poster-mobile="{{ video_mobile_poster | image_url: width: 320 }}"
+          {%- elsif lazyload -%}
+            poster="{{ video_mobile_poster | image_url: width: 320 }}"
+            data-poster-desktop="{{ video_poster | image_url: width: 800 }}"
+            data-poster-mobile="{{ video_mobile_poster | image_url: width: 320 }}"
+          {%- else -%}
+            poster="{{ video_mobile_poster | image_url: width: 320 }}"
+            data-poster-desktop="{{ video_poster | image_url: width: 800 }}"
+            data-poster-mobile="{{ video_mobile_poster | image_url: width: 320 }}"
+          {%- endif -%}
+        {%- elsif video_poster -%}
+          {%- if largest_contentful_paint -%}
+            poster="{{ video_poster | image_url: width: 800 }}"
+          {%- elsif lazyload -%}
+            poster="{{ video_poster | image_url: width: 800 }}"
+            data-poster="{{ video_poster | image_url: width: 800 }}"
+          {%- else -%}
+            poster="{{ video_poster | image_url: width: 800 }}"
+          {%- endif -%}
+        {%- elsif video_mobile_poster -%}
+          {%- if largest_contentful_paint -%}
+            poster="{{ video_mobile_poster | image_url: width: 320 }}"
+          {%- elsif lazyload -%}
+            poster="{{ video_mobile_poster | image_url: width: 320 }}"
+            data-poster="{{ video_mobile_poster | image_url: width: 320 }}"
+          {%- else -%}
+            poster="{{ video_mobile_poster | image_url: width: 320 }}"
+          {%- endif -%}
+        {%- endif -%}
+        width="{{ video.sources[0].width }}"
+        height="{{ video.sources[0].height }}"
+      >
+        {%- comment -%} Desktop: HLS first, then progressive (sources respect media → one viewport). {%- endcomment -%}
+        {%- if preferred_desktop_source -%}
+          <source
+            media='{{ core_video_media_desktop }}'
+            {% if lazyload %}
+              data-src="{{ preferred_desktop_source.url }}"
+            {% else %}
+              src="{{ preferred_desktop_source.url }}"
+            {% endif %}
+            type="{{ preferred_desktop_source.mime_type }}"
+          >
+        {%- endif -%}
+        {%- for source in video.sources -%}
+          {%- if preferred_desktop_source and source.url == preferred_desktop_source.url -%}
+          {%- else -%}
+            <source
+              media='{{ core_video_media_desktop }}'
+              {% if lazyload %}
+                data-src="{{ source.url }}"
+              {% else %}
+                src="{{ source.url }}"
+              {% endif %}
+              type="{{ source.mime_type }}"
+            >
+          {%- endif -%}
+        {%- endfor -%}
+        {%- comment -%} Mobile {%- endcomment -%}
+        {%- if preferred_mobile_source -%}
+          <source
+            media='{{ core_video_media_mobile }}'
+            {% if lazyload %}
+              data-src="{{ preferred_mobile_source.url }}"
+            {% else %}
+              src="{{ preferred_mobile_source.url }}"
+            {% endif %}
+            type="{{ preferred_mobile_source.mime_type }}"
+          >
+        {%- endif -%}
+        {%- for source in video_mobile.sources -%}
+          {%- unless preferred_mobile_source and source.url == preferred_mobile_source.url -%}
+            <source
+              media='{{ core_video_media_mobile }}'
+              {% if lazyload %}
+                data-src="{{ source.url }}"
+              {% else %}
+                src="{{ source.url }}"
+              {% endif %}
+              type="{{ source.mime_type }}"
+            >
+            {%- endunless -%}
+        {%- endfor -%}
+      </video>
+    </div>
+  {%- endif -%}
+{%- endcapture -%}
+
+{%- capture video_mobile_markup -%}
+  {%- if video_mobile and core_video_merge_desktop_mobile == false -%}
+    <div class="{# style Video #} {# style Video--mobile #}">
+      <video
+        class="{{ classes }}"
+        {% if autoplay %}autoplay{% endif %}
+        {% if loop and loop_finite == false %}loop{% endif %}
+        {% if loop_finite %}data-loop-count="{{ loop_count }}"{% endif %}
+        {% if muted %}muted{% endif %}
+        {% if controls %}controls{% endif %}
+        {% if playsinline %}playsinline{% endif %}
+        preload="{{ preload }}"
+        fetchpriority="{{ fetchpriority }}"
+        aria-label="{{ video_mobile.alt }}"
+        {% if skip_focus %}tabindex="-1"{% endif %}
+        {% if video_mobile_poster -%}
+          {%- if largest_contentful_paint -%}
+            poster="{{ video_mobile_poster | image_url: width: 320 }}"
+          {%- elsif lazyload -%}
+            poster="{{ video_mobile_poster | image_url: width: 320 }}"
+            data-poster="{{ video_mobile_poster | image_url: width: 320 }}"
+          {%- else -%}
+            poster="{{ video_mobile_poster | image_url: width: 320 }}"
+          {%- endif -%}
+        {%- endif %}
+        width="{{ video_mobile.sources[0].width }}"
+        height="{{ video_mobile.sources[0].height }}"
+      >
+        {%- if preferred_mobile_source -%}
+          <source
+            {% if lazyload %}
+              data-src="{{ preferred_mobile_source.url }}"
+            {% else %}
+              src="{{ preferred_mobile_source.url }}"
+            {% endif %}
+            type="{{ preferred_mobile_source.mime_type }}"
+          >
+        {%- endif -%}
+        {%- for source in video_mobile.sources -%}
+          {%- if preferred_mobile_source and source.url == preferred_mobile_source.url -%}
+          {%- else -%}
+            <source
+              {% if lazyload %}
+                data-src="{{ source.url }}"
+              {% else %}
+                src="{{ source.url }}"
+              {% endif %}
+              type="{{ source.mime_type }}"
+            >
+          {%- endif -%}
+        {%- endfor -%}
+      </video>
+    </div>
+  {%- endif -%}
+{%- endcapture -%}
+
+{%- capture video_markup -%}
+  {%- if video and core_video_merge_desktop_mobile == false -%}
+    {%- comment -%}
+      Add `Video--desktop` only when a mobile sibling is rendered alongside
+      this element — otherwise it would hide the only video below 1024px.
+    {%- endcomment -%}
+    <div class="{# style Video #}{% if video_mobile %} {# style Video--desktop #}{% endif %}">
+      <video
+        class="{{ classes }}"
+        {% if autoplay %}autoplay{% endif %}
+        {% if loop and loop_finite == false %}loop{% endif %}
+        {% if loop_finite %}data-loop-count="{{ loop_count }}"{% endif %}
+        {% if muted %}muted{% endif %}
+        {% if controls %}controls{% endif %}
+        {% if playsinline %}playsinline{% endif %}
+        preload="{{ preload }}"
+        fetchpriority="{{ fetchpriority }}"
+        aria-label="{{ video.alt }}"
+        {% if skip_focus %}tabindex="-1"{% endif %}
+        {% if video_poster -%}
+          {%- if largest_contentful_paint -%}
+            poster="{{ video_poster | image_url: width: 800 }}"
+          {%- elsif lazyload -%}
+            poster="{{ video_poster | image_url: width: 800 }}"
+            data-poster="{{ video_poster | image_url: width: 800 }}"
+          {%- else -%}
+            poster="{{ video_poster | image_url: width: 800 }}"
+          {%- endif -%}
+        {%- endif %}
+        width="{{ video.sources[0].width }}"
+        height="{{ video.sources[0].height }}"
+      >
+        {%- if preferred_desktop_source -%}
+          <source
+            {% if lazyload %}
+              data-src="{{ preferred_desktop_source.url }}"
+            {% else %}
+              src="{{ preferred_desktop_source.url }}"
+            {% endif %}
+            type="{{ preferred_desktop_source.mime_type }}"
+          >
+        {%- endif -%}
+        {%- for source in video.sources -%}
+          {%- if preferred_desktop_source and source.url == preferred_desktop_source.url -%}
+          {%- else -%}
+            <source
+              {% if lazyload %}
+                data-src="{{ source.url }}"
+              {% else %}
+                src="{{ source.url }}"
+              {% endif %}
+              type="{{ source.mime_type }}"
+            >
+          {%- endif -%}
+        {%- endfor -%}
+      </video>
+    </div>
+  {%- endif -%}
+{%- endcapture -%}
+
+{% if video or video_mobile %}
+  <core-video class="js-core-video">
+    {% if core_video_merge_desktop_mobile %}
+      {{ video_responsive_merged_markup }}
+    {% endif %}
+    {{ video_mobile_markup }}
+    {{ video_markup }}
+  </core-video>
+{% endif %}

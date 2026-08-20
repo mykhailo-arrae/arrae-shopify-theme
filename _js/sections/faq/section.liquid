@@ -1,0 +1,306 @@
+{% liquid
+  assign question_blocks = section.blocks | where: 'type', 'faq-question'
+  assign category_blocks = section.blocks | where: 'type', 'faq-category'
+  assign categories_count = category_blocks.size
+  assign questions_count = question_blocks.size
+  assign show_navigation = false
+  assign active_category = category_blocks | first
+  assign active_category_id = active_category.id
+
+  assign section_heading = section.settings.heading
+  assign section_subheading = section.settings.subheading
+
+  if categories_count > 1
+    assign show_navigation = true
+  endif
+%}
+
+{% render 'faq-accordion-stylesheet' %}
+
+{% unless questions_count == 0 %}
+  <div class="{# style faq #}">
+    <div class="{# style faq__inner #}">
+      {% if section_heading != blank or section_subheading != blank %}
+        <div class="{# style faq__header #}">
+          {% if section_heading != blank %}
+            <h2 class="{# style faq__heading #}">{{ section_heading }}</h2>
+          {% endif %}
+          {% if section_subheading != blank %}
+            <p class="{# style faq__subheading #}">{{ section_subheading }}</p>
+          {% endif %}
+        </div>
+      {% endif %}
+
+      {% if show_navigation %}
+        <div class="{# style faq__navMobile #}">
+          <div
+            class="{# style faq__navMobileScroll #}"
+            role="tablist"
+            aria-label="FAQ categories"
+          >
+            {% for category in category_blocks %}
+              {% assign category_title = category.settings.title %}
+              {% if category_title != blank %}
+                <button
+                  type="button"
+                  class="{# style faq__navTab #} js-faq-tab"
+                  role="tab"
+                  id="faq-tab-{{ category.id }}"
+                  aria-controls="faq-panel-{{ category.id }}"
+                  aria-selected="{% if category.id == active_category_id %}true{% else %}false{% endif %}"
+                  data-faq-tab="{{ category.id }}"
+                  {{ category.shopify_attributes }}
+                >
+                  {{ category_title }}
+                </button>
+              {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+
+        <div class="{# style faq__layout #}">
+          <nav class="{# style faq__navDesktop #}">
+            <ul
+              class="{# style faq__navList #}"
+              role="tablist"
+              aria-label="FAQ categories"
+            >
+              {% for category in category_blocks %}
+                {% assign category_title = category.settings.title %}
+                {% if category_title != blank %}
+                  <li class="{# style faq__navItem #}" role="presentation">
+                    <button
+                      type="button"
+                      class="{# style faq__navLink #} js-faq-tab"
+                      role="tab"
+                      id="faq-tab-desktop-{{ category.id }}"
+                      aria-controls="faq-panel-{{ category.id }}"
+                      aria-selected="{% if category.id == active_category_id %}true{% else %}false{% endif %}"
+                      data-faq-tab="{{ category.id }}"
+                    >
+                      {{ category_title }}
+                    </button>
+                  </li>
+                {% endif %}
+              {% endfor %}
+            </ul>
+          </nav>
+
+          <div class="{# style faq__content #}">
+            {% for category in category_blocks %}
+              {% liquid
+                assign category_title = category.settings.title
+                assign is_active_panel = false
+
+                if category.id == active_category_id
+                  assign is_active_panel = true
+                endif
+              %}
+              <div
+                class="{# style faq__panel #} js-faq-panel"
+                role="tabpanel"
+                id="faq-panel-{{ category.id }}"
+                {% if category_title != blank %}
+                  aria-label="{{ category_title }}"
+                {% endif %}
+                data-faq-panel="{{ category.id }}"
+                {% unless is_active_panel %}
+                  hidden
+                {% endunless %}
+                {{ category.shopify_attributes }}
+              >
+                {% if category_title != blank %}
+                  <h2 class="{# style faq__categoryTitle #}">{{ category_title }}</h2>
+                {% endif %}
+
+                <div class="{# style faq__accordion #}">
+                  {% liquid
+                    assign in_category = false
+                    assign question_index = 0
+                    assign expand_first_question = is_active_panel
+                  %}
+                  {% for block in section.blocks %}
+                    {% if block.id == category.id %}
+                      {% assign in_category = true %}
+                    {% elsif in_category %}
+                      {% if block.type == 'faq-category' %}
+                        {% break %}
+                      {% endif %}
+
+                      {% if block.type == 'faq-question' %}
+                        {% liquid
+                          assign block_title = block.settings.title
+                          assign block_content = block.settings.content
+                        %}
+
+                        {% if block_title != blank and block_content != blank %}
+                          {% liquid
+                            assign question_index = question_index | plus: 1
+                            assign expand_question = false
+
+                            if expand_first_question
+                              assign expand_question = true
+                              assign expand_first_question = false
+                            endif
+                          %}
+
+                          {% render 'faq-accordion',
+                            title: block_title,
+                            content: block_content,
+                            question_index: question_index,
+                            section_id: section.id,
+                            category_id: category.id,
+                            expanded: expand_question,
+                            shopify_attributes: block.shopify_attributes
+                          %}
+                        {% endif %}
+                      {% endif %}
+                    {% endif %}
+                  {% endfor %}
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      {% else %}
+        <div class="{# style faq__content #} {# style faq__content--single #}">
+          {% liquid
+            assign panel_category_id = 'default'
+
+            if categories_count == 1
+              assign single_category = category_blocks | first
+              assign panel_category_id = single_category.id
+              assign category_title = single_category.settings.title
+              assign category_subtitle = single_category.settings.subtitle
+            endif
+          %}
+          {% if category_title != blank %}
+            <h2 class="{# style faq__categoryTitle #}">{{ category_title }}</h2>
+          {% endif %}
+
+          {% if category_subtitle != blank %}
+            <p class="{# style faq__categorySubtitle #}">{{ category_subtitle }}</p>
+          {% endif %}
+
+          <div
+            class="{# style faq__panel #} js-faq-panel"
+            id="faq-panel-{{ panel_category_id }}"
+            data-faq-panel="{{ panel_category_id }}"
+          >
+            <div class="{# style faq__accordion #}">
+              {% liquid
+                assign in_category = false
+                assign question_index = 0
+                assign expand_first_question = true
+              %}
+
+              {% for block in section.blocks %}
+                {% if categories_count == 1 and block.id == single_category.id %}
+                  {% assign in_category = true %}
+                {% elsif categories_count == 0 and block.type == 'faq-question' %}
+                  {% assign in_category = true %}
+                {% elsif in_category and categories_count == 1 and block.type == 'faq-category' %}
+                  {% break %}
+                {% endif %}
+
+                {% if in_category and block.type == 'faq-question' %}
+                  {% liquid
+                    assign block_title = block.settings.title
+                    assign block_content = block.settings.content
+                  %}
+
+                  {% if block_title != blank and block_content != blank %}
+                    {% liquid
+                      assign question_index = question_index | plus: 1
+                      assign expand_question = false
+
+                      if expand_first_question
+                        assign expand_question = true
+                        assign expand_first_question = false
+                      endif
+                    %}
+
+                    {% render 'faq-accordion',
+                      title: block_title,
+                      content: block_content,
+                      question_index: question_index,
+                      section_id: section.id,
+                      category_id: panel_category_id,
+                      expanded: expand_question,
+                      shopify_attributes: block.shopify_attributes,
+                      element_class: '{# style FaqAccordion__item--single #}'
+                    %}
+                  {% endif %}
+                {% endif %}
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+{% endunless %}
+
+{% schema %}
+{
+  "name": "FAQ",
+  "tag": "section",
+  "class": "{# style section #} js-faq-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "faq-category",
+      "name": "Category",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Category"
+        },
+        {
+          "type": "text",
+          "id": "subtitle",
+          "label": "Subtitle",
+          "info": "This will only be shown on the single FAQ page."
+        }
+      ]
+    },
+    {
+      "type": "faq-question",
+      "name": "Question",
+      "settings": [
+        {
+          "type": "inline_richtext",
+          "id": "title",
+          "label": "Question",
+          "default": "Question title"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Answer",
+          "default": "<p>Answer content.</p>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "FAQ",
+      "category": "Page Content"
+    }
+  ]
+}
+{% endschema %}

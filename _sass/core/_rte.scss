@@ -1,0 +1,147 @@
+@use 'style-guide/media' as mq;
+@use 'style-guide/colors' as color;
+
+/// We use `em` units in these mixins intentionally.
+
+@mixin clearfix {
+  &::before,
+  &::after {
+    display: table;
+    content: ' ';
+  }
+
+  &::after {
+    clear: both;
+  }
+}
+
+@mixin rte-heading($size: 1em, $font-size-increases: true) {
+  position: relative;
+  margin: 0.5em 0 0.25em 0;
+  padding: 0;
+  font-size: $size;
+  text-transform: uppercase;
+
+  @if $font-size-increases {
+    @include mq.min(mobile) {
+      font-size: ($size * 1.25);
+    }
+  }
+}
+
+@mixin rich-text-editor-content {
+  @include clearfix();
+  overflow: hidden;
+
+  h1 {
+    @include rte-heading(1.4em);
+  }
+
+  h2 {
+    @include rte-heading(1.25em);
+  }
+
+  h3 {
+    @include rte-heading(1em);
+  }
+
+  h4 {
+    @include rte-heading($size: 1em, $font-size-increases: false);
+  }
+
+  h5,
+  h6 {
+    @include rte-heading($size: 1em, $font-size-increases: false);
+  }
+
+  img {
+    max-width: 100%;
+  }
+
+  p {
+    font-size: 1em;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  ul,
+  ol,
+  dl {
+    font-size: 1em;
+  }
+
+  ul {
+    list-style: disc outside none;
+    padding-left: 1.8em;
+    margin: 0 0 1em 0;
+
+    ul {
+      list-style: circle outside none;
+    }
+
+    li {
+      list-style: inherit;
+    }
+  }
+
+  ol {
+    list-style: decimal outside none;
+    padding-left: 1.8em;
+    margin: 0 0 1em 0;
+
+    ol {
+      list-style: decimal outside none;
+    }
+
+    li {
+      list-style: inherit;
+    }
+  }
+
+  blockquote {
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      line-height: 1.4;
+    }
+  }
+
+  a:not(:global(.o-button)) {
+    border-bottom: 0.0625rem solid color.get(dark-gray);
+
+    &:hover,
+    &:focus {
+      border-bottom-color: color.get(dark-gray);
+    }
+  }
+
+  iframe,
+  object {
+    max-width: 100%;
+  }
+
+  figure {
+    text-align: center;
+    margin: 1em 2.5em;
+  }
+
+  figcaption {
+    margin: 1em 0;
+    font-style: italic;
+  }
+
+  :global(.figure) {
+    text-align: center;
+    margin: 1em 2.5em;
+
+    & > :global(.caption) {
+      margin: 1em 0;
+      font-style: italic;
+    }
+  }
+}

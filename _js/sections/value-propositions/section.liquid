@@ -1,0 +1,329 @@
+{% liquid
+  assign desktop_image = section.settings.desktop_image | default: null
+  assign mobile_image = section.settings.mobile_image | default: null
+  assign mobile_image = mobile_image | default: desktop_image
+  assign desktop_image = desktop_image | default: mobile_image
+
+  assign text_color = section.settings.text_color | default: '#fffef7'
+  assign heading = section.settings.heading
+  assign description = section.settings.description
+  assign large_heading = section.settings.large_heading | default: false, allow_false: true
+  assign alternate_heading_placement = section.settings.alternate_heading_placement | default: false, allow_false: true
+
+  assign cta_primary_label = section.settings.cta_primary_label
+  assign cta_primary_url = section.settings.cta_primary_url
+  assign cta_secondary_label = section.settings.cta_secondary_label
+  assign cta_secondary_url = section.settings.cta_secondary_url
+
+  assign overlay_enabled = section.settings.overlay_enabled
+  assign overlay_color = section.settings.overlay_color | default: '#21180e'
+  assign overlay_opacity = section.settings.overlay_opacity | default: 50
+  assign overlay_alpha = overlay_opacity | times: 1.0 | divided_by: 100.0
+  assign overlay_desktop_fill = overlay_color | color_modify: 'alpha', overlay_alpha
+
+  assign is_first_section = false
+  if section.index == 1
+    assign is_first_section = true
+  endif
+
+  assign image_lazyload = true
+  assign image_preload = false
+  if is_first_section
+    assign image_lazyload = false
+    assign image_preload = true
+  endif
+
+  assign image_alt_text_param = heading | strip
+  if image_alt_text_param == blank
+    assign image_alt_text_param = desktop_image.alt | default: ''
+  endif
+%}
+<section
+  class="{# style section #}"
+  data-section-id="{{ section.id }}"
+  style="color: {{ text_color }};"
+>
+  <div class="{# style frame #}">
+    <div class="{# style media #}">
+      {% if desktop_image != blank %}
+        {% liquid
+          assign fetch_priority = 'low'
+          if is_first_section
+            assign fetch_priority = 'high'
+          endif
+        %}
+        {% render 'core-image',
+          image: desktop_image,
+          image_mobile: mobile_image,
+          image_alt_text: image_alt_text_param,
+          object_fit: 'cover',
+          class: '{# style picture #}',
+          fetchpriority: fetch_priority,
+          lazyload: image_lazyload,
+          preload: image_preload,
+          srcset_print_sizes: '480,640,800,960,1024,1280,1440,1600,2000',
+          mobile_srcset_print_sizes: '375,480,640,768'
+        %}
+      {% else %}
+        {{ 'lifestyle-1' | placeholder_svg_tag: '{# style picture #} {# style picture--placeholder #}' }}
+      {% endif %}
+
+      {% if overlay_enabled %}
+        <div
+          class="{# style overlay #}"
+          style="--value-propositions-overlay-desktop-fill: {{ overlay_desktop_fill }};"
+          aria-hidden="true"
+        ></div>
+      {% endif %}
+    </div>
+
+    <div class="{# style body #}{% if alternate_heading_placement %} {# style body--alternate-heading #}{% endif %}">
+      <div class="{# style main #}{% if large_heading %} {# style main--unbounded #}{% endif %}">
+        {% if heading != blank %}
+          {% if section.index == 1 %}
+            <h1 class="{# style heading #}{% if large_heading %} {# style heading--large #}{% endif %}">
+              {{ heading | newline_to_br }}
+            </h1>
+          {% else %}
+            <h2 class="{# style heading #}{% if large_heading %} {# style heading--large #}{% endif %}">
+              {{ heading | newline_to_br }}
+            </h2>
+          {% endif %}
+        {% endif %}
+
+        {% if description != blank %}
+          <p class="{# style description #}">{{ description | newline_to_br }}</p>
+        {% endif %}
+
+        {%- if cta_primary_label != blank
+          and cta_primary_url != blank
+          or cta_secondary_label != blank
+          and cta_secondary_url != blank
+        -%}
+          <div class="{# style buttons-wrapper #}">
+            {% if cta_primary_label != blank and cta_primary_url != blank %}
+              {% render 'core-button',
+                label: cta_primary_label,
+                url: cta_primary_url,
+                style: 'secondary',
+                class: '{# style button-1 #}'
+              %}
+            {% endif %}
+            {% if cta_secondary_label != blank and cta_secondary_url != blank %}
+              {% render 'core-button',
+                label: cta_secondary_label,
+                url: cta_secondary_url,
+                style: 'text-link',
+                class: '{# style button-2 #}'
+              %}
+            {% endif %}
+          </div>
+        {%- endif -%}
+      </div>
+
+      {% if section.blocks.size > 0 %}
+        <hr class="{# style divider #}">
+
+        <div class="{# style propositions-body #}">
+          <div class="{# style benefits #}">
+            <ul class="{# style benefits-list #}" role="list">
+              {% for block in section.blocks %}
+                {% if block.settings.text == blank and block.settings.icon == blank %}
+                  {% continue %}
+                {% endif %}
+                <li
+                  class="{# style benefits-item #}"
+                  {{ block.shopify_attributes }}
+                >
+                  {% if block.settings.icon != blank %}
+                    <span class="{# style benefits-icon #}" aria-hidden="true">
+                      {{
+                        block.settings.icon
+                        | image_url: width: 64
+                        | image_tag:
+                          loading: 'lazy',
+                          class: '{# style benefits-icon-img #}',
+                          widths: '24, 32, 48, 64',
+                          sizes: '(min-width: 900px) 26px, 24px'
+                      }}
+                    </span>
+                  {% endif %}
+                  {% if block.settings.text != blank %}
+                    <p class="{# style benefits-text #}">{{ block.settings.text | truncate: 80, '...' }}</p>
+                  {% endif %}
+                </li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+{% schema %}
+{
+  "name": "Value Propositions",
+  "max_blocks": 5,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Background"
+    },
+    {
+      "type": "image_picker",
+      "id": "desktop_image",
+      "label": "Desktop image"
+    },
+    {
+      "type": "image_picker",
+      "id": "mobile_image",
+      "label": "Mobile image",
+      "info": "Optional. Uses the desktop image when empty."
+    },
+    {
+      "type": "header",
+      "content": "Overlay"
+    },
+    {
+      "type": "checkbox",
+      "id": "overlay_enabled",
+      "label": "Show overlay",
+      "default": true,
+      "info": "Full-bleed tint on the background image (tablet landscape and up)."
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "Color",
+      "default": "#21180e",
+      "info": "Figma reference rgb(33, 24, 14); mapped to merchant-controlled color."
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "label": "Opacity",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "default": 50
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Content Color",
+      "default": "#fffef7"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Elevate your routine and save while you do it with our subscriptions"
+    },
+    {
+      "type": "checkbox",
+      "id": "large_heading",
+      "label": "Use large heading",
+      "default": false,
+      "info": "Increases the heading to the larger hero size on desktop."
+    },
+    {
+      "type": "checkbox",
+      "id": "alternate_heading_placement",
+      "label": "Alternate heading placement on mobile",
+      "default": false,
+      "info": "On mobile, anchors the heading and description toward the bottom of the section (above the value props) instead of the top."
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "info": "Optional. Renders below the heading."
+    },
+    {
+      "type": "text",
+      "id": "cta_primary_label",
+      "label": "Primary CTA label",
+      "default": "Shop all"
+    },
+    {
+      "type": "url",
+      "id": "cta_primary_url",
+      "label": "Primary CTA link"
+    },
+    {
+      "type": "text",
+      "id": "cta_secondary_label",
+      "label": "Secondary CTA label",
+      "default": "Shop MB-1"
+    },
+    {
+      "type": "url",
+      "id": "cta_secondary_url",
+      "label": "Secondary CTA link"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "proposition",
+      "name": "Value proposition",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "icon",
+          "label": "Icon",
+          "info": "PNG or SVG; use a transparent image for best results."
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "Save up to 25% off recurring orders"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Value Propositions",
+      "category": "Banners",
+      "blocks": [
+        {
+          "type": "proposition",
+          "settings": {
+            "text": "Save up to 25% off recurring orders"
+          }
+        },
+        {
+          "type": "proposition",
+          "settings": {
+            "text": "Free US & CA shipping on all orders"
+          }
+        },
+        {
+          "type": "proposition",
+          "settings": {
+            "text": "Arrae Cash back (2%–7%) to spend"
+          }
+        },
+        {
+          "type": "proposition",
+          "settings": {
+            "text": "Skip, pause, swap or cancel anytime"
+          }
+        },
+        {
+          "type": "proposition",
+          "settings": {
+            "text": "Exclusive rewards from other brands"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

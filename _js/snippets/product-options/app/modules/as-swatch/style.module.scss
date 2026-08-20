@@ -1,0 +1,113 @@
+@use 'unit' as u;
+@use 'style-guide/mixins' as mixin;
+@use 'style-guide/colors' as color;
+@use 'style-guide/spacing' as spacing;
+@use 'style-guide/typography' as typography;
+
+.OptionSwatches {
+  margin-bottom: spacing.get(size-12);
+
+  &-title {
+    @include typography.body(size-14, 300);
+    color: color.get(text);
+    padding-top: spacing.get(size-8);
+    padding-bottom: spacing.get(size-16);
+  }
+
+  &-titleSelection {
+    font-weight: 500;
+  }
+
+  &-titleDescription {
+    font-style: italic;
+  }
+
+  &-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: spacing.get(size-8);
+    width: 100%;
+  }
+
+  &-item {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: spacing.get(size-8);
+    height: u.rem-calc(30);
+    padding: spacing.get(size-4) spacing.get(size-8) spacing.get(size-4)
+      spacing.get(size-4);
+    border: u.rem-calc(1) solid color.get(lightest-gray);
+    border-radius: u.rem-calc(9999);
+    background-color: color.get(lightest-gray);
+    cursor: pointer;
+    transition:
+      border-color 0.2s ease,
+      background-color 0.2s ease;
+
+    &:hover:not(:disabled) {
+      border-color: color.get(dark-gray);
+    }
+
+    &--selected {
+      border-color: color.get(dark-gray);
+      background-color: color.get(lightest-gray);
+    }
+
+    &--unavailable {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    &--outOfStock {
+      opacity: 0.7;
+    }
+  }
+
+  &-itemInput {
+    @include mixin.visually-hidden();
+  }
+
+  &-indicator {
+    display: block;
+    width: spacing.get(size-16);
+    height: spacing.get(size-16);
+    border-radius: 50%;
+    flex-shrink: 0;
+    overflow: hidden;
+    background-color: color.get(light-gray);
+  }
+
+  &-indicatorImage {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  &-label {
+    @include typography.body(size-12, 400);
+    color: color.get(text);
+    line-height: 120%;
+    letter-spacing: u.rem-calc(-0.12);
+    white-space: nowrap;
+  }
+
+  &-badge {
+    position: absolute;
+    top: 0;
+    right: spacing.get(size-8);
+    transform: translateY(-50%);
+    @include typography.body-xxsmall;
+    font-weight: 600;
+    padding: spacing.get(size-2) spacing.get(size-4);
+    border: u.rem-calc(1) solid color.get(light-gray);
+    border-radius: u.rem-calc(4);
+    background-color: color.get(off-white);
+    color: color.get(text-gray);
+    text-transform: uppercase;
+    letter-spacing: u.rem-calc(0.5);
+    white-space: nowrap;
+    pointer-events: none;
+  }
+}

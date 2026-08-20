@@ -1,0 +1,78 @@
+@use 'unit' as u;
+@use 'style-guide/media' as mq;
+@use 'style-guide/spacing' as spacing;
+@use 'style-guide/colors' as color;
+@use 'style-guide/mixins' as mixin;
+@use 'style-guide/typography' as typography;
+
+.root {
+  width: 100%;
+}
+
+.breadcrumbs {
+  width: 100%;
+}
+
+.header {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  color: color.get(text);
+}
+
+.header--light {
+  color: #fff;
+}
+
+.header__media {
+  @include mixin.fill-parent();
+  z-index: 0;
+}
+
+.header__overlay {
+  @include mixin.fill-parent();
+  z-index: 1;
+}
+
+.header__inner {
+  @include mixin.container();
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: u.rem-calc(22);
+  padding: spacing.get(size-24) spacing.get(size-16);
+
+  @include mq.min(tabletlandscape) {
+    gap: u.rem-calc(20);
+    padding: spacing.get(size-48);
+    padding-bottom: u.rem-calc(40);
+  }
+}
+
+.title {
+  @include typography.heading-4();
+  line-height: 1.12;
+  letter-spacing: -0.03em;
+  color: inherit;
+
+  @include mq.min(tabletlandscape) {
+    font-size: u.rem-calc(56);
+    line-height: 0.98;
+  }
+}
+
+.subheading {
+  margin: 0;
+  @include typography.body(size-20, 500);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  color: inherit;
+
+  @include mq.min(tabletlandscape) {
+    font-size: u.rem-calc(24);
+    letter-spacing: -0.02em;
+  }
+}

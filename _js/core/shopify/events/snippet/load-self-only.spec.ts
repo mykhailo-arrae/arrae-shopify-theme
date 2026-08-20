@@ -1,0 +1,49 @@
+import test from 'ava'
+import { loadBundleIntoJsdom } from '../../../test/load-bundle-into-jsdom/index.js'
+import type * as Bundle from './index.js'
+
+test('given load self only event', async (t) => {
+  t.plan(1)
+
+  const markup = `
+    <div id="snippet-a" class="portable-snippet ProductCard" data-snippet-name="product-card">
+    </div>
+  `
+  const {
+    closeBrowserContext,
+    window: { document },
+    bundle: { emitSnippetEvent }
+  } = await loadBundleIntoJsdom<typeof Bundle>({
+    markup,
+    entrypoint: '_js/core/shopify/events/snippet/index.ts'
+  })
+
+  t.teardown(closeBrowserContext)
+
+  const snippet = document.getElementById('snippet-a')
+
+  if (snippet == null) {
+    throw new Error('Snippet element not found')
+  }
+
+  snippet.addEventListener(
+    'portable:snippet:load',
+    (evt) => {
+      if ('detail' in evt) {
+        t.deepEqual(evt.detail, {
+          snippetName: 'product-card',
+          mode: 'self-only'
+        })
+        return
+      }
+
+      t.fail('Event detail not found')
+    },
+    { once: true }
+  )
+
+  emitSnippetEvent(snippet, {
+    type: 'portable:snippet:load',
+    mode: 'self-only'
+  })
+})

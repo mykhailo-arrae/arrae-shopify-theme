@@ -1,0 +1,131 @@
+{% # DO NOT EDIT: This file is auto-generated and will be overwritten. [build-fingerprint:assets:source={_js/snippets/quickshop-media/snippet.liquid}] %}
+
+<div class="portable-snippet" data-snippet-name="quickshop-media">
+
+<style>
+.tvg_quickshop_media_EGSo4G_root{width:100%;max-width:100%;display:block}
+.tvg_quickshop_media_EGSo4G_frame{aspect-ratio:398/507;background-color:oklch(73.24% .0049 78.29);border-radius:.5rem;width:100%;max-width:100%;position:relative;overflow:hidden}
+.tvg_quickshop_media_EGSo4G_image{object-fit:cover;object-position:center;width:100%;height:100%;position:absolute;inset:0}
+</style>
+
+{% doc %}
+  @description
+  Single product image for the quickshop drawer (not a gallery).
+
+  Resolution:
+  - Bundle: first image from the initial variant's Variant Gallery Set, then
+    product-card image metafields, then native featured image
+  - SMP / simple: product-card image metafields, then native featured image
+
+  Bundle variant changes update the image via notification:selected-variant.
+
+  @param {product} product - Product to render media for
+{% enddoc %}
+
+{% liquid
+  assign product = product | default: null
+  assign collection_display = product.metafields.custom.smp_display_override.value | default: null
+  assign card_image = collection_display.image | default: product.metafields.custom.product_card_image.value | default: product.featured_image | default: null
+
+  assign is_bundle = false
+  if product.metafields.custom.pdp_options_layout.value == 'bundle'
+    assign is_bundle = true
+  endif
+
+  assign media_variant = product.selected_variant | default: null
+  if media_variant == null
+    for variant in product.variants reversed
+      assign hide_on_front_end = variant.metafields.custom.hide_on_front_end.value | default: false, allow_false: true
+      unless hide_on_front_end
+        if variant.available
+          assign media_variant = variant
+          break
+        endif
+      endunless
+    endfor
+  endif
+  if media_variant == null
+    assign media_variant = product.selected_or_first_available_variant
+  endif
+
+  assign qs_image_src = ''
+  if is_bundle and media_variant != blank
+    assign variant_gallery = media_variant.metafields.custom.variant_gallery_set.value | default: null
+    if variant_gallery != blank
+      capture bundle_src
+        render 'product-gallery-first-media', gallery_set: variant_gallery, width: 1200
+      endcapture
+      assign qs_image_src = bundle_src | strip
+    endif
+  endif
+
+  if qs_image_src == blank and card_image != blank
+    capture card_src
+      render 'product-gallery-image-src', image: card_image, width: 1200
+    endcapture
+    assign qs_image_src = card_src | strip
+  endif
+
+  assign qs_image_alt = card_image.alt | default: product.title
+%}
+
+{% capture card_image_src %}
+  {% if card_image != blank %}
+    {% render 'product-gallery-image-src', image: card_image, width: 1200 %}
+  {% endif %}
+{% endcapture %}
+{% assign card_image_src = card_image_src | strip %}
+
+{% if qs_image_src != blank %}
+  <div
+    class="js-quickshop-media tvg_quickshop_media_EGSo4G_root"
+    data-product-id="{{ product.id }}"
+  >
+    <script type="application/json" class="js-quickshop-media-props">
+      {
+        "productId": {{ product.id | json }},
+        "fallback": {
+          "src": {{ card_image_src | default: qs_image_src | json }},
+          "alt": {{ qs_image_alt | json }}
+        },
+        "variants": {
+          {%- if is_bundle -%}
+            {%- assign variant_image_first = true -%}
+            {%- for variant in product.variants -%}
+              {%- assign variant_gallery = variant.metafields.custom.variant_gallery_set.value | default: null -%}
+              {%- assign variant_src = '' -%}
+              {%- if variant_gallery != blank -%}
+                {%- capture captured_variant_src -%}
+                  {%- render 'product-gallery-first-media', gallery_set: variant_gallery, width: 1200 -%}
+                {%- endcapture -%}
+                {%- assign variant_src = captured_variant_src | strip -%}
+              {%- endif -%}
+              {%- if variant_src != blank -%}
+                {%- unless variant_image_first -%},{%- endunless -%}
+                {{ variant.id | json }}: {
+                  "src": {{ variant_src | json }},
+                  "alt": {{ product.title | json }}
+                }
+                {%- assign variant_image_first = false -%}
+              {%- endif -%}
+            {%- endfor -%}
+          {%- endif -%}
+        }
+      }
+    </script>
+
+    <div class="tvg_quickshop_media_EGSo4G_frame">
+      <img
+        class="js-quickshop-media-image tvg_quickshop_media_EGSo4G_image"
+        src="{{ qs_image_src | escape }}"
+        alt="{{ qs_image_alt | escape }}"
+        width="800"
+        height="1000"
+        loading="lazy"
+        decoding="async"
+      >
+    </div>
+  </div>
+{% endif %}
+
+</div>

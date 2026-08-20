@@ -1,0 +1,4 @@
+{% capture author %}<strong>{{ article.author }}</strong>{% endcapture %}
+{% capture date %}<time datetime="{{ article.published_at | date: '%Y-%m-%d' }}">{{ article.published_at | date: format: 'month_day_year' }}</time>{% endcapture %}
+
+{{ 'blogs.article.author_on_date_html' | t: author: author, date: date }}

@@ -1,0 +1,66 @@
+{% doc %}
+  # Product Price
+  Displays the product price with or without a compare at price.
+
+  ## Parameters
+  - `product` (product): The product object
+  - `variant` (variant): The variant object
+  - `selling_plan_id` (number): When set, uses that selling plan allocation on the variant for price & compare-at
+  - `from_prefix` (boolean): Whether to show the from price prefix, example: "From:"
+  - `compare_at_prefix` (boolean): Whether to show the compare at price prefix, example: "Before:"
+{% enddoc %}
+
+{% liquid
+  assign from_prefix = from_prefix | default: true, allow_false: true
+  assign compare_at_prefix = compare_at_prefix | default: false, allow_false: true
+  assign product = product | default: product
+  assign variant = variant | default: product.selected_or_first_available_variant
+
+  assign display_price = variant.price
+  assign show_compare_at = false
+  assign compare_at_amount = 0
+
+  if selling_plan_id != blank
+    for allocation in variant.selling_plan_allocations
+      if allocation.selling_plan.id == selling_plan_id
+        assign display_price = allocation.price
+        assign show_compare_at = false
+        break
+      endif
+    endfor
+  else
+    if variant.price < variant.compare_at_price
+      assign show_compare_at = true
+      assign compare_at_amount = variant.compare_at_price
+    endif
+  endif
+%}
+
+<span data-product-price-html>
+  {%- if variant.available -%}
+    {%- if from_prefix -%}
+      <span data-from-price-prefix>
+        {{- 'products.product.from_price_prefix' | t -}}
+      </span>
+    {%- endif -%}
+    <span data-variant-price>
+      {{- display_price | money -}}
+    </span>
+    {%- if show_compare_at -%}
+      <span data-compare-at-price-group>
+        {%- if compare_at_prefix -%}
+          <span data-compare-at-price-prefix>
+            {{- 'products.product.compare_at_price_prefix' | t -}}
+          </span>
+        {%- endif -%}
+        <del data-compare-at-price>
+          {{- compare_at_amount | money_without_trailing_zeros -}}
+        </del>
+      </span>
+    {%- endif -%}
+  {%- else -%}
+    <span data-sold-out>
+      {{- 'products.product.sold_out' | t -}}
+    </span>
+  {%- endif -%}
+</span>

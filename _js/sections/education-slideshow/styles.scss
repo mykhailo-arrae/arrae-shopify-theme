@@ -1,0 +1,171 @@
+@use 'unit' as u;
+@use 'style-guide/media' as mq;
+@use 'style-guide/spacing' as spacing;
+@use 'style-guide/colors' as color;
+@use 'style-guide/mixins' as mixin;
+
+// Homepage Figma frames use 688px at 375-wide. Apply that floor only on
+// true mobile (< tablet). From tablet to smalldesktop, height is content-
+// driven (auto) so intermediate widths don't get a tall empty stage.
+// Desktop (smalldesktop+) keeps the aspect-ratio frame.
+$mobile-slide-min-height: u.rem-calc(688);
+$desktop-slide-max-height: u.rem-calc(764);
+$desktop-slide-aspect-w: 1512;
+$desktop-slide-aspect-h: 694;
+
+.root {
+  display: block;
+  position: relative;
+  isolation: isolate;
+  width: 100%;
+  overflow: hidden;
+  background: color.get(dark-gray);
+  color: color.get(off-white);
+}
+
+.live-region {
+  @include mixin.visually-hidden();
+  margin: 0;
+}
+
+.stage {
+  position: relative;
+  width: 100%;
+
+  // Layout stacking for the "mobile" slide chrome (nav on top, etc.)
+  @include mq.max(smalldesktop) {
+    display: flex;
+    flex-direction: column;
+    height: auto;
+  }
+
+  // Vertical floor only on phone-sized screens — matches Figma 688 at 375.
+  @include mq.max(tablet) {
+    min-height: $mobile-slide-min-height;
+  }
+
+  @include mq.min(smalldesktop) {
+    height: min(
+      $desktop-slide-max-height,
+      calc(100vw * #{$desktop-slide-aspect-h} / #{$desktop-slide-aspect-w})
+    );
+    max-height: $desktop-slide-max-height;
+  }
+}
+
+.stage:has(div[data-stats-count='3']),
+.stage:has(div[data-stats-count='4']) {
+  width: 100%;
+
+  @include mq.max(smalldesktop) {
+    height: auto;
+  }
+
+  @include mq.max(tablet) {
+    min-height: $mobile-slide-min-height;
+  }
+}
+
+.viewport {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+
+  @include mq.max(smalldesktop) {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    height: auto;
+    min-height: 0;
+  }
+}
+
+.slideshow-navigation {
+  @include mixin.container();
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.root[data-has-mobile-cta='true'] {
+  @include mq.max(smalldesktop) {
+    .stage {
+      height: auto;
+    }
+
+    .viewport {
+      flex: 1 1 auto;
+      height: auto;
+    }
+
+    .track {
+      flex: 1 1 auto;
+      height: auto;
+      min-height: 100%;
+    }
+
+    .viewport :global(.swiper-slide) {
+      height: auto;
+      min-height: 100%;
+    }
+  }
+
+  @include mq.max(tablet) {
+    .stage {
+      min-height: $mobile-slide-min-height;
+    }
+  }
+}
+
+.mobile-cta {
+  @include mixin.container();
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  padding: spacing.get(size-20) spacing.get(size-16) spacing.get(size-24);
+  pointer-events: all;
+  background-color: color.get(off-white);
+
+  @include mq.min(smalldesktop) {
+    display: none;
+  }
+}
+
+.mobile-cta__button:global(.root--secondary) {
+  display: flex;
+  width: 100%;
+  max-width: 100%;
+  border-color: color.get(dark-gray);
+  color: color.get(dark-gray);
+  background-color: transparent;
+}
+
+.root[data-text-contrast='dark'] .mobile-cta__button:global(.root--secondary) {
+  border-color: color.get(dark-gray);
+  color: color.get(dark-gray);
+}
+
+.track {
+  display: flex;
+  height: 100%;
+
+  @include mq.max(smalldesktop) {
+    flex: 1 1 auto;
+    height: auto;
+    min-height: 100%;
+    align-items: stretch;
+  }
+}
+
+.viewport :global(.swiper-slide) {
+  @include mq.max(smalldesktop) {
+    height: auto;
+    min-height: 100%;
+  }
+
+  @include mq.min(smalldesktop) {
+    height: 100%;
+  }
+}

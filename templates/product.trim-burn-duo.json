@@ -1,0 +1,434 @@
+{
+  "order": [
+    "main",
+    "education_slideshow_rxqxrA",
+    "timeline_QNxyp6",
+    "ugc_section_dVM8GR",
+    "faq_iEjbWU",
+    "product_reviews_ffTL6L"
+  ],
+  "sections": {
+    "education_slideshow_rxqxrA": {
+      "block_order": [
+        "ingredients_slide_xGxcLc",
+        "ingredients_slide_8LFmgX",
+        "ingredients_slide_9EqUNz"
+      ],
+      "blocks": {
+        "ingredients_slide_8LFmgX": {
+          "settings": {
+            "disclaimers": "",
+            "heading": "Meet the 3 Powerful Ingredients Inside arrae Tone ",
+            "ingredients": ["ingredient-item-lz42aruo"],
+            "slide_title": "Slimbiotics® (Postbiotic)",
+            "subheading": "<p>A clinically studied postbiotic (derived from heat-inactivated <em>L. fermentum</em> K8) that supports healthy body composition by helping regulate fat metabolism.*</p>",
+            "text_contrast_mode": "light"
+          },
+          "type": "ingredients_slide"
+        },
+        "ingredients_slide_9EqUNz": {
+          "settings": {
+            "disclaimers": "",
+            "heading": "Meet the 3 Powerful Ingredients Inside arrae Tone ",
+            "ingredients": ["ingredient-item-fiy9u2uq"],
+            "slide_title": "Ginger Root",
+            "subheading": "<p>A powerful antioxidant and natural digestive aid that improves gut motility to reduce digestive discomforts and mitigate bloating.*</p>",
+            "text_contrast_mode": "light"
+          },
+          "type": "ingredients_slide"
+        },
+        "ingredients_slide_xGxcLc": {
+          "settings": {
+            "disclaimers": "",
+            "heading": "Meet the 3 Powerful Ingredients Inside arrae Tone ",
+            "ingredients": ["ingredient-item-2fqo84z9"],
+            "slide_title": "Creatine Monohydrate (5g Per Serving)",
+            "subheading": "<p>The most widely researched form of creatine, shown to support strength and cognition by increasing phosphocreatine stores to help the muscles and brain regenerate ATP—the body’s primary source of cellular energy.*</p>",
+            "text_contrast_mode": "light"
+          },
+          "type": "ingredients_slide"
+        }
+      },
+      "name": "Education Slideshow",
+      "settings": {
+        "autoplay": false,
+        "autoplay_speed": "6000",
+        "cta_label": "Shop All",
+        "cta_url": "",
+        "show_playback_controls": false
+      },
+      "type": "education-slideshow"
+    },
+    "faq_iEjbWU": {
+      "block_order": [
+        "faq_category_pziGUN",
+        "faq_question_nVipaJ",
+        "faq_question_PGPayU",
+        "faq_question_kzQ7YB",
+        "faq_question_LMQt48",
+        "faq_question_HFbWQL",
+        "faq_question_EeNAzF",
+        "faq_question_y6QkBj",
+        "faq_question_ngfbdp",
+        "faq_question_bTmgp4",
+        "faq_question_T86aJq",
+        "faq_question_CBicWt",
+        "faq_question_TRHXME",
+        "faq_question_z6WLKJ",
+        "faq_category_JDzPHK",
+        "faq_question_3Wq6kq",
+        "faq_question_VDBhN3",
+        "faq_question_EGac47",
+        "faq_question_txAfmM",
+        "faq_question_kDqhDi",
+        "faq_question_hdEUn7",
+        "faq_question_qxWVPi",
+        "faq_question_fBixrF",
+        "faq_question_36di6t",
+        "faq_question_zhD78G",
+        "faq_question_WWhDG8",
+        "faq_question_Qg7dem",
+        "faq_question_8Wcx6a"
+      ],
+      "blocks": {
+        "faq_category_JDzPHK": {
+          "settings": {
+            "subtitle": "",
+            "title": "Bloat Gummies"
+          },
+          "type": "faq-category"
+        },
+        "faq_category_pziGUN": {
+          "settings": {
+            "subtitle": "",
+            "title": "MB-1"
+          },
+          "type": "faq-category"
+        },
+        "faq_question_36di6t": {
+          "settings": {
+            "content": "<p>Arrae Bloat Gummies are clinically studied and designed as a multi-pathway formula to support digestion and reduce bloating in the moment for fast-acting support. Bloat gummies combine targeted herbal ingredients with a clinically studied postbiotic and a meaningful dose of prebiotic fiber (5g), working together to support digestion from multiple angles. They’re designed to work when you need them most while also supporting overall gut health over time. They’re also completely sugar-free, with 0g sugar and no sugar alcohols, all in a convenient, great-tasting Peach Lemon gummy.</p>",
+            "title": "How is this different from other digestive gummies? "
+          },
+          "type": "faq-question"
+        },
+        "faq_question_3Wq6kq": {
+          "settings": {
+            "content": "<p>Bloat Gummies are designed to work quickly to help reduce bloating, ease stomach discomfort, and support smoother digestion when you need it most. They can help with that heavy or full feeling after eating, as well as occasional gas and digestive sluggishness. What makes them unique is their combination of fast-acting herbal support, prebiotic fiber, and a clinically-studied postbiotic, so they not only help you feel better in the moment but also support overall gut health over time.</p>",
+            "title": "How do Bloat Gummies work?"
+          },
+          "type": "faq-question"
+        },
+        "faq_question_8Wcx6a": {
+          "settings": {
+            "content": "<p>Bloat Gummies were intentionally built differently. Instead of using a traditional gummy base, we chose to formulate them with 5g of short-chain prebiotic fiber- so every part of the gummy is designed to support digestion, not just the active ingredients. scFOS can help nourish beneficial gut bacteria and support a more balanced, comfortable digestive environment, making it the best possible natural foundation for our gummy. Because it’s short-chain, it’s also gentle and easy to tolerate at our dose, so it works with your body without feeling heavy. Plus, it has a subtle natural sweetness, allowing us to create a delicious gummy without any sugar or sugar alcohols.</p>",
+            "title": "Why do Bloat Gummies contain fiber?"
+          },
+          "type": "faq-question"
+        },
+        "faq_question_CBicWt": {
+          "settings": {
+            "content": "<p>If you have a medical condition or are currently on any medications, we always recommend checking with your doctor before starting a new supplement, including MB-1 Max.</p>",
+            "title": "Can I take MB-1 if I am already on a blood sugar and/ or cholesterol medication?"
+          },
+          "type": "faq-question"
+        },
+        "faq_question_EGac47": {
+          "settings": {
+            "content": "<p>If you are pregnant, conceiving, or breastfeeding, we always recommend checking with your doctor before starting a new supplement. </p>",
+            "title": "Are Bloat Gummies pregnancy safe?"
+          },
+          "type": "faq-question"
+        },
+        "faq_question_EeNAzF": {
+          "settings": {
+            "content": "<p>Rather than relying on harsh stimulants, appetite suppressants, laxatives, or quick-fix trends, </p><p>MB-1 Max takes a more comprehensive approach by combining clinically studied ingredients at  research backed dosages to support the key biological and behavioral factors that influence metabolic health. By bringing together botanicals, vitamins, minerals, and a postbiotic, MB-1 Max supports body composition, blood sugar metabolism, GLP-1 production, gut health, and calorie burning, while also supporting daily habits through cravings control, energy, mood, and motivation. The result is a more advanced approach that works with your body's natural metabolic processes to support sustainable, long-term results you can both see and feel.</p>",
+            "title": "What makes MB-1 Max different from other natural metabolic solutions?"
+          },
+          "type": "faq-question"
+        },
+        "faq_question_HFbWQL": {
+          "settings": {
+            "content": "<p>MB-1 Max was designed as a 3-month metabolic system to help build a strong foundation for long-term results. While many customers choose to continue taking MB-1 Max as part of their wellness routine, the goal is to support lasting metabolic health, both during and beyond the 3 months. Because MB-1 Max works with your body's natural metabolic processes rather than through suppression, the progress you make while taking MB-1 Max can continue to be supported through a healthy lifestyle, balanced nutrition, regular movement, quality sleep, and stress management. </p>",
+            "title": "What happens if I stop taking MB-1 Max?"
+          },
+          "type": "faq-question"
+        },
+        "faq_question_LMQt48": {
+          "settings": {
+            "content": "<p>If you are currently taking a GLP-1 or other prescription weight loss medication, we recommend consulting your healthcare provider before using MB-1 Max.</p><p>For those transitioning off a GLP-1, MB-1 Max may be incorporated into a healthy lifestyle to help support overall metabolic wellness. As always, we still recommend checking with your healthcare provider before adding any new supplement to your routine.</p>",
+            "title": "Can I take MB-1 Max if I am already on a GLP-1 or weight loss medication?"
+          },
+          "type": "faq-question"
+        },
+        "faq_question_PGPayU": {
+          "settings": {
+            "content": "<p>MB-1 Max was designed as our most advanced metabolic health formula and can be used whether you are new to the MB-1 product line or have used MB-1 or MB-1 45+ in the past. MB-1 Max may be a great next step for those looking to build on their progress or who are seeking a more comprehensive level of metabolic support, specifically for areas like body composition, cravings control, energy, mood, and motivation.</p>",
+            "title": "Should I switch to MB-1 Max if I have used MB-1 before? Will MB-1 Max work for me?"
+          },
+          "type": "faq-question"
+        },
+        "faq_question_Qg7dem": {
+          "settings": {
+            "content": "<p>Arrae Bloat Gummies contain real organic ginger root extract, which can give them a slight natural warmth or spice. Because we use the same meaningful dose found in our Bloat Capsules, you may notice it coming through in the flavor. This is completely normal and part of what helps our gummies work so well. </p>",
+            "title": "Are my Bloat Gummies supposed to taste like ginger? "
+          },
+          "type": "faq-question"
+        },
+        "faq_question_T86aJq": {
+          "settings": {
+            "content": "<p>For those that are trying to conceive, pregnant, or breastfeeding, we always recommend checking with your healthcare provider before starting a new supplement.  </p>",
+            "title": "Can I take MB-1 Max if I am pregnant or breastfeeding?"
+          },
+          "type": "faq-question"
+        },
+        "faq_question_TRHXME": {
+          "settings": {
+            "content": "<p>If you have a medical condition or are currently on any medications, we always recommend checking with your doctor before starting a new supplement, including MB-1 Max.</p>",
+            "title": "Can I take MB-1 Max if  I am diabetic?"
+          },
+          "type": "faq-question"
+        },
+        "faq_question_VDBhN3": {
+          "settings": {
+            "content": "<p>Bloat Gummies work by combining many of the same core targeted herbs found in our original Bloat Capsules with prebiotic fiber and a clinically-studied postbiotic to support digestion from multiple angles. The herbal blend helps support digestion and reduce bloating quickly, the added scFOS provides a meaningful dose of fiber, and the postbiotic helps support overall gut comfort. Together, this blend helps your body process food more comfortably and reduce bloating and gassiness fast. </p>",
+            "title": "What is HT-ES1?"
+          },
+          "type": "faq-question"
+        },
+        "faq_question_WWhDG8": {
+          "settings": {
+            "content": "<p>You can take Bloat Gummies daily or as needed. Many people use them in the moment when they feel bloated, while others incorporate them into their daily routine for ongoing digestive support. You don’t need to take them every day for them to be effective, but consistent use can help support overall gut comfort over time.</p>",
+            "title": "Can I take Bloat Gummies daily? Do I have to take bloat gummies daily for effectiveness? "
+          },
+          "type": "faq-question"
+        },
+        "faq_question_bTmgp4": {
+          "settings": {
+            "content": "<p>In most cases, yes. However, because supplement regimens can vary widely, we recommend consulting your doctor before combining MB-1 Max with other supplements, especially if they contain overlapping ingredients or are intended to support similar health goals.</p>",
+            "title": "Can I take MB-1 Max with other supplements?"
+          },
+          "type": "faq-question"
+        },
+        "faq_question_fBixrF": {
+          "settings": {
+            "content": "<p>We recommend storing your Bloat gummies in a tightly sealed container, in a cool, dry place away from sunlight or humidity. Make sure to tightly close your container between uses. </p>",
+            "title": "How should I store my Bloat gummies? "
+          },
+          "type": "faq-question"
+        },
+        "faq_question_hdEUn7": {
+          "settings": {
+            "content": "<p>No, Bloat Gummies contain 0g of sugar and no sugar alcohols. They’re instead sweetened with a blend of prebiotic fibers like scFOS and acacia fiber, along with Reb M, a zero-calorie sweetener derived from fermented rice. This allows us to create a great-tasting gummy without the need for added sugar or artificial sweeteners.</p>",
+            "title": "Do Bloat gummies contain sugar or artificial sweeteners?"
+          },
+          "type": "faq-question"
+        },
+        "faq_question_kDqhDi": {
+          "settings": {
+            "content": "<p>Bloat Gummies can generally be taken with other supplements. If you’re taking multiple digestive products, you may want to space them out to better understand how each one works for you. If you have any specific concerns or have a more complex supplement routine, it’s always a good idea to check with your doctor before starting a new supplement. </p>",
+            "title": "Can I take Bloat gummies with other supplements?"
+          },
+          "type": "faq-question"
+        },
+        "faq_question_kzQ7YB": {
+          "settings": {
+            "content": "<p>We do not recommend taking MB-1 Max alongside MB-1 or MB-1 45+, as the formulas contain overlapping ingredients and were designed to be used independently. MB-1 Max is our most comprehensive metabolic health formula and was developed to provide support across multiple aspects of metabolic wellness in a single daily protocol. If you're unsure which product is right for you, please reach out to our team and we'd be happy to help guide you.</p>",
+            "title": "Can I take MB-1 Max with my MB-1 or MB-1 45+ together?"
+          },
+          "type": "faq-question"
+        },
+        "faq_question_nVipaJ": {
+          "settings": {
+            "content": "<p>All three formulas in our MB-1 product line were designed to support metabolic health through a comprehensive 3-month system, but each was developed for different needs.</p><p>MB-1 is our original formula, designed to support healthy weight management, appetite regulation, blood sugar metabolism, and calorie burning. </p><p>MB-1 45+ builds on the foundation of MB-1 with additional support tailored to the hormonal and metabolic changes that occur during perimenopause, menopause, and beyond, including added support for estrogen balance, cortisol, and sleep. </p><p>MB-1 Max is our most advanced metabolic formula. Built on the foundation of MB-1, it features 2x the chromium, 100 mg of naturally occurring caffeine, saffron, and additional weight management ingredients to provide more comprehensive support for body composition, cravings control, energy, and mood. If you're unsure which formula is right for you, please reach out- our team is always happy to help.</p>",
+            "title": "What is the difference between MB-1, MB-1 45+, and MB-1 Max?"
+          },
+          "type": "faq-question"
+        },
+        "faq_question_ngfbdp": {
+          "settings": {
+            "content": "<p>Yes. MB-1 Max contains 100 mg of natural caffeine from sustainably and ethically sourced green coffee bean extract to help support clean energy, focus, and motivation. The formula was designed to provide metabolic support without the jitters or crash commonly associated with high-stimulant products. If you are sensitive to caffeine, we recommend assessing your tolerance before use, and making sure to take in the morning with food. </p>",
+            "title": "Does MB-1 Max contain stimulants or caffeine?"
+          },
+          "type": "faq-question"
+        },
+        "faq_question_qxWVPi": {
+          "settings": {
+            "content": "<p>We recommend taking two gummies per serving for the full effect. If you are typically sensitive to digestive supplements, you can start with one gummy and work your way up. Do not exceed a maximum of two servings per day.</p>",
+            "title": "How many gummies can I take a day?"
+          },
+          "type": "faq-question"
+        },
+        "faq_question_txAfmM": {
+          "settings": {
+            "content": "<p>Bloat Capsules and Bloat Gummies are both designed to support digestion and reduce bloating, just in different formats so you can choose what works best for you. Our original Bloat Capsules come in a traditional capsule form and provide a blend of targeted herbs and enzymes. Bloat Gummies are built around many of the same key herbal ingredients, with the addition of fiber and a clinically studied postbiotic, all in a great tasting gummy. Both are designed to be fast-acting and efficacious so it really comes down to personal preference!</p>",
+            "title": "What is the difference between Bloat gummies and Bloat capsules?"
+          },
+          "type": "faq-question"
+        },
+        "faq_question_y6QkBj": {
+          "settings": {
+            "content": "<p>Yes. MB-1 Max was developed with a science-first approach, combining clinically studied ingredients and research-backed dosages to support multiple aspects of metabolic health. The formula features ingredients like IGOB131® African Mango, CQR-300® Cissus Quadrangularis, Chromax® Chromium Picolinate, Green Coffee Bean Extract, and CaloriBurn GP® Grains of Paradise, all of which have been evaluated across numerous human clinical trials, including gold standard randomized, double blind, placebo-controlled studies. Each ingredient was carefully selected based on a strong body of scientific evidence supporting key metabolic outcomes including appetite and cravings control, body composition, blood sugar metabolism, energy, and calorie burning.</p>",
+            "title": "Are the ingredients in MB-1 Max clinically studied?"
+          },
+          "type": "faq-question"
+        },
+        "faq_question_z6WLKJ": {
+          "settings": {
+            "content": "<p>Yes. MB-1 Max was formulated for both men and women ages 18+ looking to support their metabolic health. Whether your goal is to feel more in control of cravings, support healthy weight management, maintain energy and motivation, or take a more comprehensive approach to metabolic health, MB-1 Max can help you support your goals. </p>",
+            "title": "Can men and women both take MB-1 Max?"
+          },
+          "type": "faq-question"
+        },
+        "faq_question_zhD78G": {
+          "settings": {
+            "content": "<p>Bloat gummies are dairy and allergen free. While not certified vegan, Bloat gummies do not contain any animal products and only use plant based ingredients. </p>",
+            "title": "Are Bloat Gummies vegan?"
+          },
+          "type": "faq-question"
+        }
+      },
+      "name": "FAQ",
+      "settings": {
+        "heading": "Frequently Asked Questions",
+        "subheading": "What to know before you try"
+      },
+      "type": "faq"
+    },
+    "main": {
+      "settings": {
+        "benefits_list": "",
+        "description": "<p>Trim away belly bloat and burn body fat with daily gut & metabolic support.*</p>",
+        "pdp_subtitle": "",
+        "product_accordions": [],
+        "review_summary_visibility": "show",
+        "title": "Trim & Burn Duo",
+        "upsell_info_label": "",
+        "upsell_info_text": "",
+        "upsell_products": [],
+        "upsell_title": ""
+      },
+      "type": "product-main"
+    },
+    "product_reviews_ffTL6L": {
+      "name": "Product Reviews",
+      "settings": {
+        "title": "Join Other Customers That Are Feeling The Burn"
+      },
+      "type": "product-reviews"
+    },
+    "timeline_QNxyp6": {
+      "block_order": ["step_abfKjT", "step_jFRjwt", "step_dYVbdi"],
+      "blocks": {
+        "step_abfKjT": {
+          "settings": {
+            "description": "<p>• Cravings start to reduce*</p><p>• Boosted energy levels*</p><p>• Increased daily calorie burn*</p><p>• Visible reductions in belly bloat*</p>",
+            "eyebrow": "",
+            "image_desktop": "shopify://shop_images/Frame_1171277801_6_60548329-ce2a-4f35-b3c5-b48febdbee84.png",
+            "image_mobile": "shopify://shop_images/Frame_1171277801_7.png",
+            "period": "Month",
+            "step_indicator": "1",
+            "title": "Take It as part of your daily routine"
+          },
+          "type": "step"
+        },
+        "step_dYVbdi": {
+          "settings": {
+            "description": "<p>• Up to 12% reduction in body weight*</p><p>• Enhanced fat metabolism*</p><p>• Improved metabolic biomarkers for continued results*</p><p>• Improved gut health and digestion*</p>",
+            "eyebrow": "",
+            "image_desktop": "shopify://shop_images/Frame_1171277801_10.png",
+            "image_mobile": "shopify://shop_images/Frame_1171277801_11.png",
+            "period": "MONTH",
+            "step_indicator": "3",
+            "title": "Now your internal systems start doing the heavy lifting"
+          },
+          "type": "step"
+        },
+        "step_jFRjwt": {
+          "settings": {
+            "description": "<p>• Hunger hormones are more balanced*</p><p>• Supported blood sugar & cholesterol levels§* </p><p>• Body composition starts to improve*</p><p>• Overall gut health starts to improve*</p>",
+            "eyebrow": "",
+            "image_desktop": "shopify://shop_images/Frame_1171277801_8.png",
+            "image_mobile": "shopify://shop_images/Frame_1171277801_8.png",
+            "period": "MONTH",
+            "step_indicator": "2",
+            "title": "Now your internal systems start doing the heavy lifting"
+          },
+          "type": "step"
+        }
+      },
+      "name": "Timeline",
+      "settings": {
+        "default_expanded_card_position": "2",
+        "heading": "<p>Feel the Burn, Not the Bloat</p>",
+        "subtitle": "<p>Here’s what to expect with Trim & Burn:</p>"
+      },
+      "type": "timeline"
+    },
+    "ugc_section_dVM8GR": {
+      "block_order": [
+        "ugc_card_reR8eT",
+        "ugc_card_rjjT9N",
+        "ugc_card_YrPkx3",
+        "ugc_card_3GDLYN"
+      ],
+      "blocks": {
+        "ugc_card_3GDLYN": {
+          "settings": {
+            "image_alt_text": "",
+            "main_text": "This has been really helpful for my digestion — I feel so much lighter throughout the day.",
+            "media_image": "shopify://shop_images/media_dd0fd82d-cd40-4638-9ea0-37aa74369852.jpg",
+            "media_type": "image",
+            "secondary_text": "Allison, 34",
+            "small_main_text": false,
+            "tertiary_text": ""
+          },
+          "type": "ugc_card"
+        },
+        "ugc_card_YrPkx3": {
+          "settings": {
+            "image_alt_text": "",
+            "main_text": "I finally feel like myself again, especially after struggling for so long.",
+            "media_type": "video",
+            "media_video": "shopify://files/videos/tolstoy_c9355ec1-33a0-421c-b276-111f1d3d1065.webm",
+            "secondary_text": "OLIVIA, 44",
+            "small_main_text": false,
+            "tertiary_text": ""
+          },
+          "type": "ugc_card"
+        },
+        "ugc_card_reR8eT": {
+          "settings": {
+            "image_alt_text": "",
+            "main_text": "I feel like a completely different person.",
+            "media_type": "video",
+            "media_video": "shopify://files/videos/tolstoy_efbb2f40-e964-4f82-862e-f64395ff907d.webm",
+            "secondary_text": "SARAH, 42",
+            "small_main_text": false,
+            "tertiary_text": ""
+          },
+          "type": "ugc_card"
+        },
+        "ugc_card_rjjT9N": {
+          "settings": {
+            "image_alt_text": "",
+            "main_text": "I’ve tried a lot of supplements for bloating, but Arrae MB-1 is the first one that actually made a noticeable difference.",
+            "media_image": "shopify://shop_images/media_3_8cb789f3-68b9-4d4e-b7d6-434f43675c41.png",
+            "media_type": "image",
+            "secondary_text": "IMOGEN, 49",
+            "small_main_text": false,
+            "tertiary_text": ""
+          },
+          "type": "ugc_card"
+        }
+      },
+      "name": "UGC Section",
+      "settings": {
+        "heading": "Loved by <em>Millions of Women Worldwide</em>",
+        "show_arrows": true,
+        "show_pagination": false
+      },
+      "type": "ugc-section"
+    }
+  }
+}

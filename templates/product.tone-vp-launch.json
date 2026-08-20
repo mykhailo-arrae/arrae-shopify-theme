@@ -1,0 +1,398 @@
+{
+  "order": [
+    "main",
+    "education_slideshow_rxqxrA",
+    "education_slideshow_ppAAY3",
+    "education_slideshow_xWiVY6",
+    "science_chart_bcNFYJ",
+    "timeline_QNxyp6",
+    "compare_H4NUEH",
+    "ugc_section_dVM8GR",
+    "faq_iEjbWU",
+    "product_reviews_ffTL6L"
+  ],
+  "sections": {
+    "compare_H4NUEH": {
+      "block_order": ["feature_item_pAg8qF"],
+      "blocks": {
+        "feature_item_pAg8qF": {
+          "repeater": "{{ product.metafields.custom.pdp_compare_dynamic_content.value.compare_features_list.value }}",
+          "settings": {
+            "feature_product": "{{ block.repeater.feature_product.value }}",
+            "icon_type": "{{ block.repeater.icon_type.value }}",
+            "text": "{{ block.repeater.text.value }}"
+          },
+          "type": "feature_item"
+        }
+      },
+      "name": "Compare",
+      "settings": {
+        "heading": "{{ product.metafields.custom.pdp_compare_dynamic_content.value.heading.value }}",
+        "product_a_image": "{{ product.metafields.custom.pdp_compare_dynamic_content.value.product_a_image.value }}",
+        "product_a_title": "{{ product.metafields.custom.pdp_compare_dynamic_content.value.product_a_title.value }}",
+        "product_b_image": "{{ product.metafields.custom.pdp_compare_dynamic_content.value.product_b_image.value }}",
+        "product_b_title": "{{ product.metafields.custom.pdp_compare_dynamic_content.value.product_b_title.value }}",
+        "subtitle": "{{ product.metafields.custom.pdp_compare_dynamic_content.value.subtitle.value }}"
+      },
+      "type": "compare"
+    },
+    "education_slideshow_ppAAY3": {
+      "block_order": ["percentage_slide_kmMENf"],
+      "blocks": {
+        "percentage_slide_kmMENf": {
+          "settings": {
+            "background_color": "",
+            "background_gradient": "",
+            "background_image_desktop": "shopify://shop_images/Clincal_Studies_8.png",
+            "background_image_mobile": "shopify://shop_images/Clincal_Studies_7.png",
+            "background_type": "image",
+            "disclaimers": "<p>†Based on individual ingredient research.</p>",
+            "heading": "Clinically Studied Ingredients for Science-Backed Results",
+            "slide_title": "Science",
+            "stat_items": [
+              "reduction-in-body-fat-2",
+              "reduced-waist-circumference",
+              "improvement-in-fatigue-resistance",
+              "increase-in-average-power-output"
+            ],
+            "subheading": "<p>With 5g of creatine monohydrate per serving, Slimbiotics® & gut-friendly ginger, arrae Tone elevates your every rep for <em>strength that shows</em>.</p>",
+            "wheel_color": "yellow"
+          },
+          "type": "percentage_slide"
+        }
+      },
+      "name": "Education Slideshow",
+      "settings": {
+        "autoplay": false,
+        "autoplay_speed": "6000",
+        "cta_label": "Shop All",
+        "cta_url": "",
+        "show_playback_controls": true
+      },
+      "type": "education-slideshow"
+    },
+    "education_slideshow_rxqxrA": {
+      "block_order": [
+        "ingredients_slide_xGxcLc",
+        "ingredients_slide_8LFmgX",
+        "ingredients_slide_9EqUNz"
+      ],
+      "blocks": {
+        "ingredients_slide_8LFmgX": {
+          "settings": {
+            "background_color": "",
+            "background_gradient": "",
+            "background_type": "image",
+            "disclaimers": "",
+            "heading": "Meet the 3 Powerful Ingredients Inside arrae Tone ",
+            "ingredients": ["ingredient-item-lz42aruo"],
+            "slide_title": "Slimbiotics® (Postbiotic)",
+            "subheading": "<p>A clinically studied postbiotic (derived from heat-inactivated <em>L. fermentum</em> K8) that supports healthy body composition by helping regulate fat metabolism.*</p>",
+            "text_contrast_mode": "light"
+          },
+          "type": "ingredients_slide"
+        },
+        "ingredients_slide_9EqUNz": {
+          "settings": {
+            "background_color": "",
+            "background_gradient": "",
+            "background_type": "image",
+            "disclaimers": "",
+            "heading": "Meet the 3 Powerful Ingredients Inside arrae Tone ",
+            "ingredients": ["ingredient-item-fiy9u2uq"],
+            "slide_title": "Ginger Root",
+            "subheading": "<p>A powerful antioxidant and natural digestive aid that improves gut motility to reduce digestive discomforts and mitigate bloating.*</p>",
+            "text_contrast_mode": "light"
+          },
+          "type": "ingredients_slide"
+        },
+        "ingredients_slide_xGxcLc": {
+          "settings": {
+            "background_color": "",
+            "background_gradient": "",
+            "background_type": "image",
+            "disclaimers": "",
+            "heading": "Meet the 3 Powerful Ingredients Inside arrae Tone ",
+            "ingredients": ["ingredient-item-2fqo84z9"],
+            "slide_title": "Creatine Monohydrate (5g Per Serving)",
+            "subheading": "<p>The most widely researched form of creatine, shown to support strength and cognition by increasing phosphocreatine stores to help the muscles and brain regenerate ATP—the body’s primary source of cellular energy.*</p>",
+            "text_contrast_mode": "light"
+          },
+          "type": "ingredients_slide"
+        }
+      },
+      "name": "Education Slideshow",
+      "settings": {
+        "autoplay": false,
+        "autoplay_speed": "6000",
+        "cta_label": "Shop All",
+        "cta_url": "",
+        "show_playback_controls": false
+      },
+      "type": "education-slideshow"
+    },
+    "education_slideshow_xWiVY6": {
+      "block_order": ["image_carousel_slide_j3wPUb"],
+      "blocks": {
+        "image_carousel_slide_j3wPUb": {
+          "settings": {
+            "background_color": "",
+            "background_gradient": "",
+            "background_type": "image",
+            "disclaimers": "<p>(Independent <a href=\"/\">clinical study</a>, 2 months)*</p>",
+            "heading": "Real Women. Real Tone Transformations.",
+            "image_carousel_items": ["tone-before-after"],
+            "slide_title": "Image Carousel",
+            "subheading": "<p>Join the thousands of women who have experienced transformative results since adding arrae Tone to their routines.</p>",
+            "text_contrast_mode": "light"
+          },
+          "type": "image_carousel_slide"
+        }
+      },
+      "name": "Education Slideshow",
+      "settings": {
+        "autoplay": false,
+        "autoplay_speed": "6000",
+        "cta_label": "Shop All",
+        "cta_url": "",
+        "show_playback_controls": true
+      },
+      "type": "education-slideshow"
+    },
+    "faq_iEjbWU": {
+      "block_order": [
+        "faq_question_tQ63h4",
+        "faq_question_QPDETW",
+        "faq_question_8NaUBB",
+        "faq_question_EGC9JM",
+        "faq_question_QJcG8i",
+        "faq_question_YjbMXi",
+        "faq_question_qUFAtp",
+        "faq_question_GRQ8qY"
+      ],
+      "blocks": {
+        "faq_question_8NaUBB": {
+          "settings": {
+            "content": "<p>A postbiotic is a heat-inactivated form of a probiotic, delivering all the benefits of probiotics in a stable, highly effective form your body can easily use. Tone contains a unique plant-based postbiotic to support body composition through the microbiome.</p>",
+            "title": "What is a postbiotic?"
+          },
+          "type": "faq-question"
+        },
+        "faq_question_EGC9JM": {
+          "settings": {
+            "content": "<p>Creatine supplementation is known for boosting strength, improving exercise performance, and enhancing muscle recovery. It helps your muscles produce energy during high-intensity workouts, making it easier to push harder and achieve better results. Creatine can also support body composition goals by promoting muscle growth and reducing fatigue during training.</p>",
+            "title": "What are the main benefits of creatine supplementation?"
+          },
+          "type": "faq-question"
+        },
+        "faq_question_GRQ8qY": {
+          "settings": {
+            "content": "<p>Yes, Tone gummies are vegan.</p>",
+            "title": "Are your gummies vegan/vegetarian?"
+          },
+          "type": "faq-question"
+        },
+        "faq_question_QJcG8i": {
+          "settings": {
+            "content": "<p>We recommend taking Tone daily for optimal results. While it can be taken any time of day, on days when you’re working out, taking Tone before exercise may help fuel your muscles during high-intensity workouts, while taking it after can support recovery and muscle growth.</p>",
+            "title": "When should I take Tone?"
+          },
+          "type": "faq-question"
+        },
+        "faq_question_QPDETW": {
+          "settings": {
+            "content": "<p>Creatine is a compound your body naturally makes to help fuel your muscles and brain, especially during high-energy activities. Creatine supports boosting strength, enhancing performance, and speeding up muscle recovery. Backed by thousands of clinical research studies, creatine is a safe and effective way to support your fitness goals and feel stronger.</p>",
+            "title": "What is creatine?"
+          },
+          "type": "faq-question"
+        },
+        "faq_question_YjbMXi": {
+          "settings": {
+            "content": "<p>Tone contains a small amount of organic cane sugar (1g of sugar per gummy), as sugar and carbs are important for the bioavailability of creatine and its transport to muscle cells. This enhances uptake and retention, allowing you to maximize results.</p>",
+            "title": "Why does Tone have sugar?"
+          },
+          "type": "faq-question"
+        },
+        "faq_question_qUFAtp": {
+          "settings": {
+            "content": "<p>We do not recommend Tone for individuals under the age of 18.</p>",
+            "title": "Are Tone gummies safe for children?"
+          },
+          "type": "faq-question"
+        },
+        "faq_question_tQ63h4": {
+          "settings": {
+            "content": "<p>You may receive Tone in either our original jar or our new, resealable pouch. Both are verified Arrae packaging and contain the exact same formula.</p><p>We’re in the process of updating our packaging to create a smarter, more streamlined experience. While we transition, you might see either format — but rest assured, it’s always the same product you know and trust.</p>",
+            "title": "Why did I receive my Tone in different packaging than expected?"
+          },
+          "type": "faq-question"
+        }
+      },
+      "name": "FAQ",
+      "settings": {
+        "heading": "Tone FAQs",
+        "subheading": "What to know before you try"
+      },
+      "type": "faq"
+    },
+    "main": {
+      "settings": {
+        "benefits_list": "",
+        "description": "<p>Get toned, lean & defined with our best-selling Tone gummies. 3 sour flavors, 1 crave-worthy creatine routine.</p>",
+        "pdp_subtitle": "",
+        "product_accordions": [],
+        "review_summary_visibility": "show",
+        "title": "Tone Variety Pack (1 Bag, 3 Sour Flavors)",
+        "upsell_info_label": "",
+        "upsell_info_text": "",
+        "upsell_products": [],
+        "upsell_title": ""
+      },
+      "type": "product-main"
+    },
+    "product_reviews_ffTL6L": {
+      "name": "Product Reviews",
+      "settings": {
+        "title": "Real Reviews, Real Toned Results"
+      },
+      "type": "product-reviews"
+    },
+    "science_chart_bcNFYJ": {
+      "name": "Science Chart",
+      "settings": {
+        "axis_labels": "Placebo,Slimbiotics® K8 postbiotic",
+        "axis_x_title": "",
+        "axis_y_title": "% change in body fat mass",
+        "badge_text": "",
+        "bottom_heading": "Body Fat Mass*",
+        "bottom_text": "Mean percent change from baseline in adults receiving the K8-Lb1 postbiotic or placebo. Body fat mass decreased 1.85% from baseline with the postbiotic and increased 0.41% with placebo; between-group p = 0.016. Values represent relative percent change from baseline, not percentage-point changes in body fat mass.",
+        "chart_type": "bar",
+        "color_primary": "#f8a28c",
+        "color_secondary": "#c4c0b8",
+        "disclaimer": "Papazova E, Mitschke S, Laue C, Schrezenmeir J. A Randomized, Double-Blind, Placebo-Controlled Study to Evaluate the Effect of Limosilactobacillus fermentum K8-Lb1 Postbiotic on Weight Management and Metabolic Health Outcomes. Nutrients. 2026; 18(8):1174.",
+        "heading": "Change in body fat mass after 12 weeks",
+        "primary_label": "Slimbiotics® K8 postbiotic",
+        "primary_values": ",-1.85",
+        "secondary_label": "Placebo",
+        "secondary_values": "0.41,",
+        "subheading": "In a 12 week randomized, double-blind, placebo-controlled study involving 60 adults, Slimbiotics® K8 postbiotic significantly reduced body fat mass compared with placebo.",
+        "y_max": 10,
+        "y_step": 1
+      },
+      "type": "science-chart"
+    },
+    "timeline_QNxyp6": {
+      "block_order": ["step_abfKjT", "step_jFRjwt", "step_dYVbdi"],
+      "blocks": {
+        "step_abfKjT": {
+          "settings": {
+            "description": "<p>As creatine levels begin to build, your body starts regenerating ATP more efficiently–helping you feel more energized to power through your workouts.*</p>",
+            "eyebrow": "Set the Tone",
+            "image_desktop": "shopify://shop_images/Frame_1171277801_1_4f772d13-2221-4fbf-bedb-d423b0e4cae9.png",
+            "image_mobile": "shopify://shop_images/Frame_1171277801_8d568de3-f478-4f1d-add6-665890fc7394.png",
+            "period": "Month",
+            "step_indicator": "1",
+            "title": "Take It as part of your daily routine"
+          },
+          "type": "step"
+        },
+        "step_dYVbdi": {
+          "settings": {
+            "description": "<p>Consistency starts to pay off. Stronger workouts, improved recovery, and the body composition support of Slimbiotics® come together to help reveal visible improvements.*</p>",
+            "eyebrow": "Own the Results",
+            "image_desktop": "shopify://shop_images/Frame_1171277801_2.png",
+            "image_mobile": "shopify://shop_images/Frame_1171277801_2_14c32f1a-b3a8-4e06-90bc-d5bbf048dc09.png",
+            "period": "MONTH",
+            "step_indicator": "3",
+            "title": "Now your internal systems start doing the heavy lifting"
+          },
+          "type": "step"
+        },
+        "step_jFRjwt": {
+          "settings": {
+            "description": "<p>With your muscles now fully saturated with creatine, you’ll notice greater strength, improved endurance, & faster recovery.*</p>",
+            "eyebrow": "Turn up the Strength",
+            "image_desktop": "shopify://shop_images/Frame_1171277801.png",
+            "image_mobile": "shopify://shop_images/Frame_1171277801_1_1b8105a2-3da0-47d3-a8ec-40b27e303b42.png",
+            "period": "MONTH",
+            "step_indicator": "2",
+            "title": "Now your internal systems start doing the heavy lifting"
+          },
+          "type": "step"
+        }
+      },
+      "name": "Timeline",
+      "settings": {
+        "default_expanded_card_position": "2",
+        "heading": "<p>Your 3 Month Tone Transformation </p>",
+        "subtitle": "<p>Here’s what to expect with arrae Tone:</p>"
+      },
+      "type": "timeline"
+    },
+    "ugc_section_dVM8GR": {
+      "block_order": [
+        "ugc_card_reR8eT",
+        "ugc_card_rjjT9N",
+        "ugc_card_YrPkx3",
+        "ugc_card_3GDLYN"
+      ],
+      "blocks": {
+        "ugc_card_3GDLYN": {
+          "settings": {
+            "image_alt_text": "",
+            "main_text": "This has been really helpful for my digestion — I feel so much lighter throughout the day.",
+            "media_image": "shopify://shop_images/media_dd0fd82d-cd40-4638-9ea0-37aa74369852.jpg",
+            "media_type": "image",
+            "secondary_text": "Allison, 34",
+            "small_main_text": false,
+            "tertiary_text": ""
+          },
+          "type": "ugc_card"
+        },
+        "ugc_card_YrPkx3": {
+          "settings": {
+            "image_alt_text": "",
+            "main_text": "I finally feel like myself again, especially after struggling for so long.",
+            "media_type": "video",
+            "media_video": "shopify://files/videos/tolstoy_c9355ec1-33a0-421c-b276-111f1d3d1065.webm",
+            "secondary_text": "OLIVIA, 44",
+            "small_main_text": false,
+            "tertiary_text": ""
+          },
+          "type": "ugc_card"
+        },
+        "ugc_card_reR8eT": {
+          "settings": {
+            "image_alt_text": "",
+            "main_text": "I feel like a completely different person.",
+            "media_type": "video",
+            "media_video": "shopify://files/videos/tolstoy_efbb2f40-e964-4f82-862e-f64395ff907d.webm",
+            "secondary_text": "SARAH, 42",
+            "small_main_text": false,
+            "tertiary_text": ""
+          },
+          "type": "ugc_card"
+        },
+        "ugc_card_rjjT9N": {
+          "settings": {
+            "image_alt_text": "",
+            "main_text": "I’ve tried a lot of supplements for bloating, but Arrae MB-1 is the first one that actually made a noticeable difference.",
+            "media_image": "shopify://shop_images/media_3_8cb789f3-68b9-4d4e-b7d6-434f43675c41.png",
+            "media_type": "image",
+            "secondary_text": "IMOGEN, 49",
+            "small_main_text": false,
+            "tertiary_text": ""
+          },
+          "type": "ugc_card"
+        }
+      },
+      "name": "UGC Section",
+      "settings": {
+        "heading": "Loved by <em>Millions of Women Worldwide</em>",
+        "show_arrows": true,
+        "show_pagination": false
+      },
+      "type": "ugc-section"
+    }
+  }
+}

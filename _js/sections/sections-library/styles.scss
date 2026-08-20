@@ -1,0 +1,64 @@
+@use 'unit' as u;
+@use 'style-guide/media' as mq;
+@use 'style-guide/spacing' as spacing;
+@use 'style-guide/typography' as typography;
+@use 'style-guide/buttons' as buttons;
+@use 'style-guide/colors' as color;
+@use 'style-guide/form' as form;
+
+.SectionsLibrary {
+  &__title {
+    @include typography.heading-3();
+    text-align: center;
+  }
+
+  &__container {
+    display: flex;
+    flex-flow: column;
+    gap: spacing.get(size-24);
+    max-width: u.rem-calc(1512);
+    margin: 0 auto;
+    width: 100%;
+    box-sizing: border-box;
+    padding: spacing.get(size-24) spacing.get(size-16);
+  }
+
+  &__blocks {
+    display: flex;
+    flex-flow: row wrap;
+    gap: spacing.get(size-14);
+    justify-content: center;
+  }
+
+  &Block {
+    display: flex;
+    max-width: u.rem-calc(360);
+    width: 100%;
+    background: #8080801c;
+    padding: spacing.get(size-14);
+    border-radius: u.rem-calc(10);
+    transition: transform 0.3s ease-in-out;
+    cursor: pointer;
+
+    &:hover {
+      transform: scale(0.95);
+    }
+
+    &__title {
+      @include typography.body-medium();
+      text-align: center;
+    }
+
+    &__link {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      height: 100%;
+      border-radius: u.rem-calc(10);
+      text-decoration: none;
+      color: color.get(dark-gray);
+      min-height: u.rem-calc(180);
+    }
+  }
+}

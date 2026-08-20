@@ -1,0 +1,198 @@
+{% liquid
+  assign show_breadcrumbs = section.settings.show_breadcrumbs
+  assign per_page = section.settings.products_per_view
+  assign show_filters = section.settings.show_filters
+
+  assign recommendations = section.blocks | where: 'type', 'recommended_product'
+  assign result_title = section.settings.result_title
+  assign results_title = section.settings.results_title
+
+  assign empty_results_text = section.settings.empty_results
+  assign recommendations_title = section.settings.recommendations_title
+
+  render 'product-card-stylesheet'
+  render 'product-review-ratings-stylesheet'
+%}
+
+{% capture recommendations_content %}
+  {% if recommendations.size > 0 %}
+    <div class='{# style recommendations #}'>
+      {% if recommendations_title != blank %}
+        <h2 class='{# style recommendations__title #}'>
+          {{ recommendations_title }}
+        </h2>
+      {% endif %}
+      <div class="{# style recommendations__container #}">
+        <div class='{# style recommendations__wrapper #}' data-mobile-layout="2-column">
+          {% for recommendation in recommendations %}
+            {% render 'product-card', product: recommendation.settings.product %}
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  {% endif %}
+{% endcapture %}
+
+<div class="{# style root #}">
+  {% if show_breadcrumbs %}
+    <div class="{# style breadcrumbs #}">
+      {% render 'breadcrumbs' %}
+    </div>
+  {% endif %}
+  <div class="{# style content #}">
+    {%- if search.performed -%}
+      <div class="{# style search-results-header #}">
+        <h1 class="{# style results #}">
+          {%- if search.results_count == 0 -%}
+            {{ empty_results_text }}
+            <b>"{{ search.terms }}"</b>
+          {%- elsif search.results_count == 1 -%}
+            {{ result_title }}
+            <b>"{{ search.terms }}"</b>
+          {%- else -%}
+            {{ results_title | replace: '[x]', search.results_count }}
+            <b>"{{ search.terms }}"</b>
+          {%- endif -%}
+        </h1>
+
+        {%- if search.results_count != 0 -%}
+          <div class="{# style topBar #}">
+            <div class="{# style actions #} js-actions">
+              {% if show_filters %}
+                <button
+                  class="{# style filters #} js-offcanvas-trigger"
+                  data-drawer-name="filters"
+                  data-tvg-track="button_click"
+                  data-tvg-track-label="{{ 'collections.filter.button' | t }}"
+                >
+                  <span class="{# style icon #}">
+                    {%- render 'icon-filters' -%}
+                  </span>
+                  {{ 'collections.filter.button' | t }}
+                </button>
+              {% endif %}
+            </div>
+          </div>
+        {% endif %}
+      </div>
+
+      {%- if search.results_count != 0 -%}
+        <div
+          class="{# style container #} js-search-results-container"
+          data-search-terms="{{ search.terms | escape }}"
+          {% unless request.parameters.type == 'product' %}
+            data-require-search-type-product="true"
+          {% endunless %}
+        >
+          {% paginate search.results by per_page %}
+            <div class="Grid {# style grid #} js-search-grid" data-mobile-layout="2-column">
+              {%- for item in search.results -%}
+                <div class="{# style item #}">
+                  {% render 'product-card', product: item %}
+                </div>
+              {%- endfor -%}
+            </div>
+
+            {%- render 'pagination-load-more', paginate: paginate, items_on_page: search.results.size -%}
+          {%- endpaginate -%}
+        </div>
+
+      {%- else -%}
+        {{ recommendations_content }}
+      {%- endif -%}
+    {%- else -%}
+      {{ recommendations_content }}
+    {%- endif -%}
+  </div>
+
+  {%- render 'collection-filters', filters: search.filters -%}
+</div>
+
+{% schema %}
+{
+  "name": "Search",
+  "class": "js-search-section",
+  "enabled_on": {
+    "templates": ["search"]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "empty_results",
+      "label": "Empty Results Content",
+      "default": "We could not find anything for"
+    },
+    {
+      "type": "text",
+      "id": "results_title",
+      "label": "Multiple results title",
+      "default": "Showing [x] results for"
+    },
+    {
+      "type": "text",
+      "id": "result_title",
+      "label": "1 Result Title",
+      "default": "Showing 1 result for"
+    },
+    {
+      "type": "header",
+      "content": "Grid Settings"
+    },
+    {
+      "type": "range",
+      "id": "products_per_view",
+      "label": "Products per view",
+      "min": 2,
+      "max": 36,
+      "step": 2,
+      "default": 18
+    },
+    {
+      "type": "checkbox",
+      "id": "show_breadcrumbs",
+      "label": "Show breadcrumbs",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_filters",
+      "label": "Show filters & sort",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Recommendations (No results view)"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "recommendations_title",
+      "label": "Recommendations Title",
+      "default": "These popular items might interest you"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "recommended_product",
+      "name": "Recommended Product",
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Product"
+        }
+      ],
+      "limit": 3
+    }
+  ],
+  "presets": [
+    {
+      "name": "Search",
+      "settings": {}
+    }
+  ]
+}
+{% endschema %}

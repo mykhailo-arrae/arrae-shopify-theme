@@ -1,0 +1,343 @@
+// Form
+// ===============================================
+
+@use '../unit' as u;
+@use './typography' as typography;
+@use './spacing' as spacing;
+@use './sizes' as sizes;
+@use './colors' as color;
+@use './buttons' as button;
+
+@mixin checkbox {
+  @include typography.font-proxima-nova();
+  font-size: sizes.get(size-14);
+  font-weight: 300;
+  display: flex;
+  align-items: center;
+  gap: spacing.get(size-8);
+  color: color.get(text);
+  margin-bottom: spacing.get(size-12);
+  position: relative;
+  cursor: pointer;
+
+  input[type='checkbox'] {
+    visibility: hidden;
+    position: absolute;
+    opacity: 0;
+    z-index: -1;
+  }
+
+  &::before {
+    content: '';
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: spacing.get(size-24);
+    height: spacing.get(size-24);
+    border: u.rem-calc(1) solid color.get(text);
+    border-radius: spacing.get(size-4);
+  }
+
+  &:has(input[type='checkbox']:checked)::before {
+    content: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="10" height="7" viewBox="0 0 10 7" fill="none"><path d="M8.49885 0.0988513C8.63065 -0.0329504 8.844 -0.0329504 8.9758 0.0988513C9.10761 0.230653 9.10761 0.444002 8.9758 0.575804L3.2758 6.2758C3.144 6.40761 2.93065 6.40761 2.79885 6.2758L0.0988514 3.5758C-0.0329505 3.444 -0.0329505 3.23065 0.0988514 3.09885C0.230653 2.96705 0.444003 2.96705 0.575805 3.09885L3.03733 5.56037L8.49885 0.0988513Z" fill="white"/></svg>');
+    background-color: color.get(text);
+  }
+
+  &:has(input[type='checkbox']:disabled) {
+    pointer-events: none;
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+@mixin radio {
+  @include typography.font-proxima-nova();
+  font-size: sizes.get(size-14);
+  font-weight: 300;
+  display: flex;
+  align-items: center;
+  gap: spacing.get(size-8);
+  color: color.get(text);
+  margin-bottom: spacing.get(size-12);
+  position: relative;
+  cursor: pointer;
+
+  input[type='radio'] {
+    visibility: hidden;
+    position: absolute;
+    opacity: 0;
+    z-index: -1;
+  }
+
+  &::before {
+    content: '';
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    width: spacing.get(size-24);
+    height: spacing.get(size-24);
+    border: u.rem-calc(1) solid color.get(text);
+    box-sizing: border-box;
+  }
+
+  &:has(input[type='radio']:checked)::before {
+    background-color: color.get(text);
+    border: u.rem-calc(6) solid color.get(off-white);
+    outline: u.rem-calc(1) solid color.get(text);
+  }
+
+  &:has(input[type='radio']:disabled) {
+    pointer-events: none;
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+@mixin link {
+  cursor: pointer;
+  color: color.get(dark-gray);
+  text-decoration: underline;
+  @include typography.body-xsmall();
+  text-underline-offset: spacing.get(size-8);
+  transition: all 0.3s ease-in-out;
+
+  &:hover {
+    opacity: 0.6;
+  }
+}
+
+@mixin fieldset {
+  display: flex;
+  flex-direction: column;
+  gap: spacing.get(size-8);
+  margin-top: spacing.get(size-20);
+  border: 0;
+  padding: 0;
+  position: relative;
+}
+
+@mixin base-label {
+  @include typography.font-proxima-nova();
+  color: color.get(text);
+  font-size: sizes.get(size-12);
+  font-weight: 420;
+  line-height: 98%;
+  letter-spacing: u.rem-calc(0.48);
+  text-transform: uppercase;
+}
+
+@mixin base-input {
+  @include typography.font-proxima-nova();
+  background-color: color.get(off-white);
+  color: color.get(text-gray);
+  width: 100%;
+  font-size: sizes.get(size-14);
+  font-weight: 400;
+  display: flex;
+  height: spacing.get(size-48);
+  min-height: spacing.get(size-40);
+  border-radius: spacing.get(size-8);
+  border: u.rem-calc(1) solid color.get(dark-gray-20);
+  box-sizing: border-box;
+
+  &::placeholder {
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    appearance: none !important;
+    color: color.get(text-gray);
+  }
+}
+
+@mixin label {
+  @include base-label();
+}
+
+@mixin input {
+  @include base-input();
+  padding: spacing.get(size-12);
+  line-height: 106%;
+}
+
+@mixin label-alt {
+  @include base-label();
+  position: absolute;
+  left: spacing.get(size-14);
+  top: u.rem-calc(10);
+}
+
+@mixin input-alt {
+  @include base-input();
+  padding-top: u.rem-calc(18);
+  padding-bottom: spacing.get(size-2);
+  padding-left: spacing.get(size-12);
+  padding-right: spacing.get(size-12);
+}
+
+@mixin base-select {
+  @include base-input();
+  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="7" viewBox="0 0 12 7" fill="none" style="opacity:0.75"><path fill-rule="evenodd" clip-rule="evenodd" d="M5.63106 6.17578C5.50608 6.17568 5.38821 6.15339 5.2795 6.1084C5.16726 6.06188 5.06048 5.98367 4.96016 5.87988L0.17403 0.927734C0.068367 0.818353 0.000299454 0.693206 0.000202179 0.554688C0.000202179 0.416058 0.0683031 0.291095 0.17403 0.181641C0.28389 0.0679846 0.415768 0.000756741 0.565632 0.0146484C0.69803 0.0271006 0.81291 0.0849509 0.906452 0.181641L5.33419 4.76172L5.33614 4.76367L5.63106 5.08789L5.92598 4.76367L5.92891 4.76172L10.3557 0.181641C10.4609 0.0727577 10.5844 0.000141144 10.7229 0C10.8614 4.3869e-05 10.9838 0.0727968 11.0891 0.181641C11.1994 0.2958 11.2614 0.430065 11.2482 0.580078C11.2364 0.713607 11.1825 0.831093 11.0891 0.927734L6.30196 5.87988C6.2017 5.98351 6.09576 6.06196 5.9836 6.1084C5.87474 6.15339 5.75622 6.17578 5.63106 6.17578Z" fill="black"/></svg>');
+  background-position: center right spacing.get(size-12) !important;
+  background-size: spacing.get(size-12) spacing.get(size-8) !important;
+  background-repeat: no-repeat !important;
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  appearance: none !important;
+
+  & option[disabled] {
+    color: color.get(text-gray);
+  }
+}
+
+@mixin select {
+  @include base-select();
+  padding: spacing.get(size-12);
+}
+
+@mixin select-alt {
+  @include base-select();
+  padding-top: u.rem-calc(18);
+  padding-bottom: spacing.get(size-2);
+  padding-left: spacing.get(size-12);
+  padding-right: spacing.get(size-12);
+}
+
+@mixin base-notification-message {
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  padding: spacing.get(size-12);
+  padding-right: spacing.get(size-24);
+  color: color.get(text);
+  gap: spacing.get(size-8);
+  border-radius: spacing.get(size-8);
+  @include typography.font-proxima-nova();
+  font-size: sizes.get(size-14);
+  font-weight: 400;
+  letter-spacing: initial;
+  position: relative;
+
+  &__close {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+    cursor: pointer;
+    transition: opacity 0.25s ease;
+
+    &:hover {
+      opacity: 0.6;
+    }
+  }
+}
+
+@mixin success-message {
+  @include base-notification-message();
+  background-color: color.get(success-20);
+}
+
+@mixin error-message {
+  @include base-notification-message();
+  background-color: color.get(error-20);
+}
+
+@mixin neutral-message {
+  @include base-notification-message();
+  background-color: color.get(dark-gray-20);
+}
+
+@mixin input-message {
+  color: color.get(light-gray);
+  font-size: sizes.get(size-12);
+  font-style: normal;
+}
+
+@mixin input-error {
+  color: color.get(error);
+  font-size: sizes.get(size-12);
+  font-style: normal;
+}
+
+@mixin warning {
+  color: color.get(error);
+  @include typography.body-xsmall();
+}
+
+@mixin form-input-label {
+  display: block;
+  position: absolute;
+  left: spacing.get(size-14);
+  top: spacing.get(size-14);
+  color: color.get(dark-gray);
+  text-transform: lowercase;
+  cursor: text;
+  transition:
+    top 200ms ease-in,
+    font-size 200ms ease-in;
+}
+
+@mixin select-custom-arrow($arrow-color: '%23202020') {
+  -webkit-appearance: none;
+  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M11.9996 13.5L16.5996 8.90002L17.0996 9.40002L11.9996 14.5L6.89961 9.40002L7.39961 8.90002L11.9996 13.5Z" fill="#{$arrow-color}"/></svg>');
+  background-size: 24px;
+  background-position: right 10px center;
+  background-repeat: no-repeat;
+}
+
+@mixin input-placeholder-hidden {
+  &::placeholder {
+    color: color.get(light-gray);
+    visibility: hidden;
+  }
+}
+
+@mixin form-container($max-width: 482px, $margin-bottom: 40px) {
+  max-width: u.rem-calc($max-width);
+  margin: 0 auto u.rem-calc($margin-bottom) auto;
+}
+
+@mixin form-grid($gap: spacing.get(size-14)) {
+  display: grid;
+  gap: u.rem-calc($gap);
+}
+
+@mixin form-message($type: 'error') {
+  font-size: typography.get-font-size(size-16);
+  color: if($type == 'error', color.get(error), color.get(success));
+}
+
+/**** Deprecated ****/
+
+@mixin section_link {
+  font-family: typography.get-font-family(body);
+  font-size: u.rem-calc(16);
+  font-style: normal;
+  font-weight: 400;
+  line-height: 140%;
+  text-decoration: underline;
+  transition: all 0.3s ease-in-out;
+  text-transform: uppercase;
+}
+
+@mixin regular_link {
+  font-family: typography.get-font-family(body);
+  font-size: u.rem-calc(14);
+  font-style: normal;
+  font-weight: 400;
+  line-height: u.rem-calc(20);
+  text-decoration: underline;
+  transition: all 0.3s ease-in-out;
+}
+
+@mixin textarea {
+  display: flex;
+  box-sizing: border-box;
+  padding: u.rem-calc(8) u.rem-calc(16) u.rem-calc(8) u.rem-calc(12);
+  border: u.rem-calc(0.5) solid color.get(light-gray);
+  background: color.get(off-white);
+  color: color.get(dark-gray);
+
+  &::placeholder {
+    color: color.get(dark-gray);
+  }
+}

@@ -1,0 +1,109 @@
+{% doc %}
+  @description
+  This snippet renders video controls for video(s) with the class specified in "video_class".
+  If there is more than one video with this class (such as when using the core-video snippet with mobile/desktop videos),
+  the snippet detects which video is visible and controls only that one, muting and pausing the hidden video.
+
+  Accepts:
+
+  @param {string} class - Class of the video controls container
+  @param {string} video_class - The video class of a single or multiple videos. E.g: "js-hero-video--[UID]" - ensure that this class is unique by adding a section.id or something similar
+  @param {boolean} has_mute - Renders mute/unmute buttons
+  @param {boolean} has_pause - Renders pause/play buttons
+  @param {boolean} scroll_autoplay - Autoplay the visible video(s) when it is scrolled into view.
+  @param {boolean} play_on_click_video - Toggles play/pause when the video element is clicked
+  @param {boolean} hide_button_on_play - Hides the play button on play
+  @param {boolean} pause_page_videos_on_play - Pauses all videos on the page when playing this video
+  @param [intersection_threshold] - Supports {Number | String(Number[])} - The trigger thresholds for scroll_autoplay intersection observer.
+
+  It is important to ensure that the "video_class" passed to this snippet is unique for each section or context where
+  the snippet is used.
+
+  For example, you can generate a unique class using the section ID:
+
+  @example
+  {% assign video_class = "js-hero-video--" | append: section.id %}
+  {% render 'core-video',
+    class: video_class
+    ...
+  %}
+  {% render 'core-video-controls',
+    video_class: 'js-video-class'
+    has_mute: true
+    has_pause: false
+  %}
+{% enddoc %}
+
+{% liquid
+  assign class = class | default: null
+  assign video_class = video_class | default: null
+  assign has_mute = has_mute | default: true, allow_false: true
+  assign has_pause = has_pause | default: true, allow_false: true
+  assign scroll_autoplay = scroll_autoplay | default: false, allow_false: true
+  assign play_on_click_video = play_on_click_video | default: false, allow_false: true
+  assign hide_button_on_play = hide_button_on_play | default: false, allow_false: true
+  assign pause_page_videos_on_play = pause_page_videos_on_play | default: true, allow_false: true
+  assign intersection_threshold = intersection_threshold | default: 0.5
+  if intersection_threshold contains '[' and intersection_threshold contains ']'
+    assign intersection_threshold = intersection_threshold | replace: '[', '' | replace: ']', '' | split: ','
+  endif
+%}
+
+<script type="application/json" class="js-video-controls-settings">
+  {
+    "videoClass": {{ video_class | json }},
+    "scrollAutoPlay": {{ scroll_autoplay | json }},
+    "intersectionThreshold": {{ intersection_threshold | json }},
+    "playOnClickVideo": {{ play_on_click_video | json }},
+    "hideButtonOnPlay": {{ hide_button_on_play | json }},
+    "pausePageVideosOnPlay": {{ pause_page_videos_on_play | json }}
+  }
+</script>
+
+<div class="{# style controls #} {{ class }}">
+  {% if has_pause == true %}
+    <button
+      type="button"
+      class="{# style controls__button #} js-controls-play-button"
+      aria-label="{{ "snippets.core_video_controls.play" | t }}"
+    >
+      <span
+        class="js-controls-play-icon"
+        data-aria-label="{{ 'snippets.core_video_controls.play' | t }}"
+        data-display="hide"
+      >
+        {%- render 'icon-play' -%}
+      </span>
+      <span
+        class="js-controls-pause-icon"
+        data-aria-label="{{ 'snippets.core_video_controls.pause' | t }}"
+        data-display="show"
+      >
+        {% render 'icon-pause' %}
+      </span>
+    </button>
+  {% endif %}
+
+  {% if has_mute == true %}
+    <button
+      type="button"
+      class="{# style controls__button #} js-controls-mute-button"
+      aria-label="{{ "snippets.core_video_controls.unmute" | t }}"
+    >
+      <span
+        class="js-controls-unmute-icon"
+        data-aria-label="{{ 'snippets.core_video_controls.unmute' | t }}"
+        data-display="show"
+      >
+        {% render 'icon-sound-off' %}
+      </span>
+      <span
+        class="js-controls-mute-icon"
+        data-aria-label="{{ 'snippets.core_video_controls.mute' | t }}"
+        data-display="hide"
+      >
+        {% render 'icon-sound-on' %}
+      </span>
+    </button>
+  {% endif %}
+</div>

@@ -1,0 +1,30 @@
+/// Makes an element visually hidden, but still accessible to keyboards and assistive devices.
+/// @link http://snook.ca/archives/html_and_css/hiding-content-for-accessibility Hiding Content for Accessibility
+/// @link http://hugogiraudel.com/2016/10/13/css-hide-and-seek/
+///
+/// @param {Boolean} $enforce - If `true`, use `!important` on applied properties
+@mixin element-invisible($enforce: true) {
+  $important: if($enforce, '!important', null);
+
+  position: absolute #{$important};
+  width: 1px #{$important};
+  height: 1px #{$important};
+  padding: 0 #{$important};
+  overflow: hidden #{$important};
+  clip: rect(0, 0, 0, 0) #{$important};
+  white-space: nowrap #{$important};
+  border: 0 #{$important};
+}
+
+/// Reverses the CSS output created by the `element-invisible()` mixin.
+/// @param {Boolean} $enforce - If `true`, use `!important` on applied properties
+@mixin element-invisible-off($enforce: true) {
+  $important: if($enforce, '!important', null);
+
+  position: static #{$important};
+  width: auto #{$important};
+  height: auto #{$important};
+  overflow: visible #{$important};
+  clip: auto #{$important};
+  white-space: normal #{$important};
+}

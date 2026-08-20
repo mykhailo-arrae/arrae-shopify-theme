@@ -1,0 +1,59 @@
+@use 'unit' as u;
+@use 'style-guide/media' as mq;
+@use 'style-guide/spacing' as spacing;
+@use 'style-guide/colors' as color;
+@use 'style-guide/buttons' as button;
+@use 'style-guide/typography' as typography;
+
+.root {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: spacing.get(size-12);
+  padding: spacing.get(size-24) spacing.get(size-16);
+  text-align: center;
+
+  @include mq.min(tabletlandscape) {
+    padding: spacing.get(size-40) spacing.get(size-16);
+  }
+
+  &[hidden] {
+    display: none;
+  }
+}
+
+.count {
+  @include typography.body(size-16, 400);
+  margin: 0;
+  color: color.get(text);
+}
+
+.button {
+  @include button.secondary();
+  height: u.rem-calc(38);
+  padding-inline: spacing.get(size-20);
+  font-weight: 400;
+  gap: spacing.get(size-8);
+
+  &[hidden] {
+    display: none;
+  }
+
+  &[aria-busy='true'] {
+    cursor: progress;
+  }
+}
+
+.button__label {
+  z-index: 1;
+}
+
+.error {
+  @include typography.body(size-14);
+  margin: 0;
+  color: color.get(error);
+
+  &[hidden] {
+    display: none;
+  }
+}

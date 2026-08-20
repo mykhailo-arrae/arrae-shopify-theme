@@ -1,0 +1,38 @@
+{% liquid
+  assign fullwidth_content = page.metafields.custom.legal_template_fullwidth_content.value | default: false, allow_false: true
+%}
+
+{% render 'breadcrumbs' %}
+
+<div class="{# style LegalPage #}">
+  <div class="{# style LegalPage__inner #}">
+    <header class="{# style LegalPage__header #}">
+      <h1 class="{# style LegalPage__title #}">
+        {{ page.title }}
+      </h1>
+    </header>
+
+    <div class="{# style LegalPage__content #} {% if fullwidth_content == true %}{# style LegalPage__content--fullwidth #}{% endif %}">
+      {{ page.content }}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Legal Page",
+  "tag": "section",
+  "class": "{# style section #}",
+  "enabled_on": {
+    "templates": ["page"]
+  },
+  "settings": [],
+  "presets": [
+    {
+      "name": "Legal Page",
+      "category": "Page Content",
+      "settings": {}
+    }
+  ]
+}
+{% endschema %}

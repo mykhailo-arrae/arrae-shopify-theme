@@ -1,0 +1,148 @@
+---
+description: Project build validation workflow
+globs:
+alwaysApply: true
+---
+
+# Build Validation with `./run-task ci`
+
+## Critical Rule
+
+**ALWAYS run `./run-task ci` after making code changes**
+
+## When to Run `./run-task ci`
+
+- Editing TypeScript/JavaScript files in `_js/` directory
+- Modifying build configuration or DevOps scripts
+- Converting code patterns (like Result types to custom errors)
+- Adding new dependencies or changing imports
+- Updating tests or test configurations
+- Before committing any changes
+
+## What `./run-task ci` Does
+
+Complete CI pipeline validation with automatic container detection:
+
+1. **Build** - Compiles TypeScript and processes assets
+2. **Lint** - Checks code style and catches potential issues
+3. **Test** - Runs the full test suite
+4. **Type Check** - Validates TypeScript types
+
+## Command Completion Requirements
+
+**CRITICAL: Always wait for the command to complete before proceeding**
+
+### Minimum Wait Time
+
+**ALWAYS wait at least 3 seconds after running `./run-task ci` before considering it incomplete**
+
+- Docker initialization takes time
+- Build pipeline startup requires patience
+- Never re-run immediately after seeing minimal output like `[Docker] >`
+
+### Success Indicators
+
+The command has completed successfully when you see:
+
+```
+[BB] Task finished: ci
+```
+
+### Failure Indicators
+
+The command has failed when you see:
+
+```
+Error while executing task: <ACTUAL_TASK_NAME>
+```
+
+**Note:** `<ACTUAL_TASK_NAME>` is a placeholder - actual failures will show the specific task that failed:
+
+- `Error while executing task: build`
+- `Error while executing task: lint`
+- `Error while executing task: test`
+- `Error while executing task: typecheck`
+
+### Waiting Rules
+
+1. **NEVER proceed to next steps until you see one of the completion indicators above**
+2. **ALWAYS wait for the full command output before continuing**
+3. **Wait at least 3 seconds minimum before considering a command incomplete**
+4. **If the command fails, address the errors before proceeding**
+5. **If the command succeeds, confirm success before moving on**
+
+## Workflow Pattern
+
+```bash
+# After making code changes:
+./run-task ci
+
+# Wait MINIMUM 3 seconds for completion - look for:
+# SUCCESS: "[BB] Task finished: ci"
+# FAILURE: "Error while executing task: build" (or lint, test, typecheck, etc.)
+
+# If there are issues, fix them before continuing
+# Re-run until clean:
+./run-task ci
+```
+
+## Alternative Commands
+
+If `./run-task ci` is not available, use:
+
+```bash
+# Direct command (if inside container)
+bb ci
+
+# List available tasks
+./run-task | grep ci
+```
+
+## Examples
+
+**✅ Good - Proper waiting:**
+
+```typescript
+// Made changes to cart operations
+// Run: ./run-task ci
+// Wait at least 3 seconds for Docker/build initialization
+// Wait for "[BB] Task finished: ci" output
+// Fix any issues found
+// Continue with next task
+```
+
+**❌ Bad - Too hasty:**
+
+```typescript
+// Made changes
+// Run ./run-task ci
+// See "[Docker] >" output
+// Immediately re-run without waiting 3 seconds
+// Miss the actual command execution
+```
+
+**❌ Bad - Not waiting for completion:**
+
+```typescript
+// Made changes
+// Run ./run-task ci
+// Proceed immediately without waiting for completion
+// Miss potential failures or incomplete validation
+```
+
+**❌ Bad - Forgetting validation:**
+
+```typescript
+// Made changes
+// Continued without running ./run-task ci
+// CI fails later with preventable issues
+```
+
+## Integration Notes
+
+- Use `./run-task ci` instead of individual `npm run` commands
+- Automatically detects if running inside or outside Docker container
+- This ensures consistency with the project's CI pipeline
+- Catches issues early before they reach remote CI
+- Part of the build system defined in [devops/](mdc:devops) scripts
+- See [lang-typescript.mdc](mdc:.cursor/rules/lang-typescript.mdc) for TypeScript-specific patterns

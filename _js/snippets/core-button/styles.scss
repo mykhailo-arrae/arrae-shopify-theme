@@ -1,0 +1,23 @@
+@use 'style-guide/buttons' as button;
+@use 'style-guide/spacing' as spacing;
+@use 'unit' as u;
+
+.root {
+  display: inline-block;
+
+  &--primary {
+    @include button.primary();
+  }
+
+  &--secondary {
+    @include button.secondary();
+  }
+
+  &--text-link-large {
+    @include button.text-link-large();
+  }
+
+  &--text-link {
+    @include button.text-link();
+  }
+}

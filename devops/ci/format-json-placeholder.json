@@ -1,0 +1,3 @@
+{
+  "description": "We use this file to ensure `bb format-json` command doesn't fail if the theme files are not present"
+}

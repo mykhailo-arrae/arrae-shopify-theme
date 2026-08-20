@@ -1,0 +1,112 @@
+{% doc %}
+  @description
+  Shared navigation and progress shell for the education slideshow.
+
+  @param {string} section_id - Parent section id.
+  @param {block[]} blocks - Parent section blocks.
+  @param {boolean} autoplay - Whether autoplay starts enabled.
+  @param {boolean} show_playback_controls - Whether play/pause controls are shown.
+  @param {string} cta_label - Optional CTA label shown below slide navigation.
+  @param {string} cta_url - Optional CTA link shown below slide navigation.
+
+  @example
+  {% render 'education-slide-navigation',
+    section_id: section.id,
+    blocks: section.blocks,
+    autoplay: section.settings.autoplay,
+    show_playback_controls: section.settings.show_playback_controls,
+    cta_label: section.settings.cta_label,
+    cta_url: section.settings.cta_url
+  %}
+{% enddoc %}
+
+{% liquid
+  assign section_id = section_id | default: 'education-slideshow'
+  assign autoplay = autoplay | default: false, allow_false: true
+  assign show_playback_controls = show_playback_controls | default: true, allow_false: true
+  assign cta_label = cta_label | default: blank
+  assign cta_url = cta_url | default: blank
+  assign show_cta = false
+  if cta_label != blank and cta_url != blank
+    assign show_cta = true
+  endif
+  assign nav_dense = false
+  if blocks.size > 6
+    assign nav_dense = true
+  endif
+%}
+
+<nav
+  class="{# style root #}"
+  aria-label="{{ 'accessibility.education_slideshow.nav_label' | t }}"
+  data-education-slide-navigation
+  data-progress-mode="{% if autoplay %}animated{% else %}static{% endif %}"
+  {% if nav_dense %}
+    data-nav-dense="true"
+  {% endif %}
+>
+  <div class="{# style items-scroll #}" data-education-slideshow-nav-scroll>
+    <div class="{# style items #}" data-education-slideshow-progress>
+      {% for block in blocks %}
+        {% liquid
+          assign slide_title = block.settings.slide_title | default: block.type
+          assign slide_number = forloop.index
+          assign slide_index = forloop.index0
+          assign nav_title_id = 'education-slideshow-nav-title-' | append: section_id | append: '-' | append: slide_index
+        %}
+
+        <button
+          type="button"
+          class="{# style item #}"
+          aria-labelledby="{{ nav_title_id }}"
+          aria-controls="education-slide-{{ section_id }}-{{ slide_number }}"
+          data-education-slideshow-nav-item
+          data-slide-index="{{ slide_index }}"
+        >
+          <span class="{# style title #}" id="{{ nav_title_id }}">
+            {{ slide_title }}
+          </span>
+          <span class="{# style progress-track #}" aria-hidden="true">
+            <span
+              class="{# style progress-bar #}"
+              data-education-slideshow-progress-bar
+              data-slide-index="{{ slide_index }}"
+            ></span>
+          </span>
+        </button>
+      {% endfor %}
+    </div>
+  </div>
+
+  {% if show_playback_controls or show_cta %}
+    <div class="{# style controls #}">
+      {% if show_playback_controls %}
+        <button
+          type="button"
+          class="{# style playback #}"
+          aria-label="{% if autoplay %}{{ 'accessibility.education_slideshow.pause' | t }}{% else %}{{ 'accessibility.education_slideshow.play' | t }}{% endif %}"
+          data-education-slideshow-playback
+          data-playback-status="{% if autoplay %}playing{% else %}paused{% endif %}"
+        >
+          <span data-playback-icon="play" aria-hidden="true">
+            {% render 'icon-play' %}
+          </span>
+          <span data-playback-icon="pause" aria-hidden="true">
+            {% render 'icon-pause' %}
+          </span>
+        </button>
+      {% endif %}
+
+      {% if show_cta %}
+        <div class="{# style cta #} {# style cta--desktop #}">
+          {% render 'core-button',
+            label: cta_label,
+            url: cta_url,
+            style: 'secondary',
+            class: '{# style cta__button #}'
+          %}
+        </div>
+      {% endif %}
+    </div>
+  {% endif %}
+</nav>

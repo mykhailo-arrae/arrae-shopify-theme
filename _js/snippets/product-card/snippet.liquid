@@ -1,0 +1,267 @@
+{% doc %}
+  @description
+  Render a product card with customizable options.
+
+  @param {product} product - The product to show on the card
+  @param {product} prod - Alias for product (featured-products blocks)
+  @param {string} option - The option name to show the quantity. Default is the first option of the product. Use "null" to remove.
+  @param {string} card_design_variant - The design variant of the card. Default is 'default'. Use '2-up' to show the card in a 2-up layout. Omit to use the default layout.
+
+  @example
+  {% render 'product-card', product: product, option: 'color' %}
+{% enddoc %}
+
+{% liquid
+  assign product = product | default: prod
+
+  # Product Collection Display: when a product is linked to an
+  # "smp_display_override" metaobject, the card renders that metaobject's
+  # content (image, title, description, etc.) instead of the product's own data.
+  assign collection_display = product.metafields.custom.smp_display_override.value | default: null
+  assign card_title = collection_display.title | default: product.title
+
+  # Fallback chain: collection display → metafield → product field(s) → nil (each | default: runs only if the left side is blank)
+  assign image = collection_display.image | default: product.metafields.custom.product_card_image.value | default: product.featured_image | default: null
+  assign hover_image = collection_display.image_hover | default: product.metafields.custom.product_card_image_hover.value | default: product.images[1] | default: null
+  assign mobile_image = collection_display.image_mobile_optional_ | default: null
+  assign image_alt = image.alt | default: card_title
+  assign badge = product.metafields.custom.product_card_badge.value | default: product.metafields.custom.badge.value | default: null
+  assign subtitle = collection_display.short_description | default: product.metafields.custom.product_card_marketing_copy.value | default: product.metafields.custom_fields.collection_short_description.value | default: '&nbsp;'
+  assign overlay_image = product.metafields.custom.product_card_overlay_svg.value | default: null
+  assign card_design_variant = card_design_variant | default: 'default'
+  assign option = option | default: product.options.first
+
+  # Set option to null if it is the default title (no variants)
+  if option == 'Title'
+    assign option = null
+  endif
+
+  assign option_name = option | append: 's'
+
+  if option != blank
+    assign option_option = product.options_with_values | where: 'name', option | first
+
+    if option_option
+      assign option_count = option_option.values | size
+    endif
+  endif
+
+  # SMP sibling options for product card swatches
+  assign smp_sibling_options = product.metafields.custom.smp_sibling_options.value | default: null
+
+  # Quickshop settings (Theme settings → Product → Enable Quickshop)
+  assign quickshop = settings.enable_quickshop | default: true, allow_false: true
+  assign quickshop_label = 'products.general.quickshop' | t
+  if collection_display.cta_text != blank
+    assign quickshop_label = collection_display.cta_text
+  endif
+
+  # Card / quick-add variant: first visible, available variant with a subscription
+  # allocation (lowest allocation price on that variant). Hidden variants are excluded.
+  assign card_variant = null
+  assign card_selling_plan_id = ''
+  assign min_allocation_price = ''
+
+  for v in product.variants
+    assign hide_on_front_end = v.metafields.custom.hide_on_front_end.value | default: false, allow_false: true
+    if hide_on_front_end
+      continue
+    endif
+    if v.available and v.selling_plan_allocations.size > 0
+      assign card_variant = v
+      assign min_allocation_price = ''
+      for alloc in v.selling_plan_allocations
+        if min_allocation_price == blank or alloc.price < min_allocation_price
+          assign min_allocation_price = alloc.price
+          assign card_selling_plan_id = alloc.selling_plan.id
+        endif
+      endfor
+      break
+    endif
+  endfor
+
+  if card_variant == null
+    for v in product.variants
+      assign hide_on_front_end = v.metafields.custom.hide_on_front_end.value | default: false, allow_false: true
+      unless hide_on_front_end
+        if v.available
+          assign card_variant = v
+          break
+        endif
+      endunless
+    endfor
+  endif
+
+  if card_variant == null
+    for v in product.variants
+      assign hide_on_front_end = v.metafields.custom.hide_on_front_end.value | default: false, allow_false: true
+      unless hide_on_front_end
+        assign card_variant = v
+        break
+      endunless
+    endfor
+  endif
+
+  if card_variant == null
+    assign card_variant = product.selected_or_first_available_variant
+  endif
+
+  assign product_url_with_variant = product.url | append: '?variant=' | append: card_variant.id
+
+  # Collection display can point the card at a custom destination
+  assign card_url = product_url_with_variant
+  if collection_display.cta_link != blank
+    assign card_url = collection_display.cta_link
+  endif
+
+  # Review summary visibility is controlled per-product by the
+  # `custom.hide_reviews_summary` metafield. It shows by default and is only
+  # hidden when the metafield is explicitly set to true.
+  assign hide_reviews = product.metafields.custom.hide_reviews_summary.value | default: false, allow_false: true
+%}
+
+<div class="js-product-card {# style card__wrapper #}" data-design-variant="{{ card_design_variant }}">
+  <div class="{# style image__wrapper #}" data-option="{{ option }}">
+    <a href="{{ card_url }}" class="js-product-card-image-link {# style image__container #}">
+      <div class="js-product-card-image {# style image #}">
+        {% if image != blank %}
+          {% render 'core-image',
+            image: image,
+            image_mobile: mobile_image,
+            image_alt_text: image_alt,
+            object_fit: 'cover',
+            lazyload: true,
+            srcset_print_sizes: '480,640',
+            mobile_srcset_print_sizes: '320,480'
+          %}
+        {% endif %}
+      </div>
+
+      <div
+        class="js-product-card-hover-image {# style hoverImage #}"
+        {% if hover_image == blank %}
+          hidden
+        {% endif %}
+      >
+        {% if hover_image != blank %}
+          {% render 'core-image',
+            image: hover_image,
+            object_fit: 'cover',
+            lazyload: true,
+            srcset_print_sizes: '480,640',
+            mobile_srcset_print_sizes: '320,480'
+          %}
+        {% endif %}
+      </div>
+    </a>
+
+    <div class="{# style image__overlay #}"></div>
+
+    <div
+      class="js-product-card-badge {# style badge #}"
+      {% if badge == blank %}
+        hidden
+      {% endif %}
+    >
+      {% if badge != blank %}
+        {{ badge }}
+      {% endif %}
+    </div>
+
+    <div
+      class="js-product-card-overlay-image {# style overlay-image #}"
+      {% if overlay_image == blank %}
+        hidden
+      {% endif %}
+    >
+      <span class="{# style overlay-image__text #}">{{ 'products.general.as_seen_in' | t }}</span>
+      <div class="js-product-card-overlay-image-media {# style overlay-image__image #}">
+        {% if overlay_image != blank %}
+          {% render 'core-image',
+            image: overlay_image,
+            mode: 'contain',
+            object_fit: 'cover',
+            lazyload: true,
+            srcset_print_sizes: '120,240'
+          %}
+        {% endif %}
+      </div>
+    </div>
+
+    {% if quickshop %}
+      <button
+        type="button"
+        class="js-product-card-quickshop {# style quickshop #}"
+        aria-label="{{ quickshop_label | escape }}"
+        aria-haspopup="dialog"
+        data-product-url="{{ product.url | escape }}"
+        data-product-handle="{{ product.handle | escape }}"
+        {% if card_variant.id != blank %}
+          data-variant-id="{{ card_variant.id }}"
+        {% endif %}
+      >
+        <span class="js-product-card-quickshop-label {# style quickshop__label #}" aria-hidden="true">
+          {{- quickshop_label -}}
+        </span>
+        <span class="{# style quickshop__icon #}" aria-hidden="true">
+          {% render 'icon-plus' %}
+        </span>
+      </button>
+    {% endif %}
+
+    {% comment %}
+      Compact "X Flavors Available" badge lives in the image for the 2-up variant
+      (mobile grids + desktop consumers like the search drawer).
+      Full swatches live in .content for the default / 1-up layout.
+    {% endcomment %}
+    {% if smp_sibling_options != blank %}
+      <div class="{# style flavor-swatches--compact #}">
+        {% render 'product-smp-swatches',
+          product: product,
+          smp_sibling_options: smp_sibling_options,
+          design_variant: 'compact'
+        %}
+      </div>
+    {% endif %}
+  </div>
+
+  <div class="{# style content #}">
+    {% if smp_sibling_options != blank %}
+      <div class="js-product-card-smp-swatches {# style flavor-swatches--default #}">
+        {% render 'product-smp-swatches', product: product, smp_sibling_options: smp_sibling_options %}
+      </div>
+    {% endif %}
+
+    <div class="{# style content__details #}">
+      <h3 class="{# style title #}">
+        <a class="js-product-card-title-link" href="{{ card_url }}">{{ card_title }}</a>
+      </h3>
+
+      <div class="js-product-card-subtitle {# style subtitle #}">{{ subtitle }}</div>
+    </div>
+
+    <div class="{# style content__bottom #}">
+      <div
+        class="js-product-card-reviews {# style reviews #}"
+        {% if hide_reviews %}
+          hidden
+        {% endif %}
+      >
+        {% unless hide_reviews %}
+          {% render 'product-review-ratings', product: product %}
+        {% endunless %}
+      </div>
+      <div class="js-product-card-price {# style price #}">
+        {% render 'product-price-html',
+          product: product,
+          variant: card_variant,
+          selling_plan_id: card_selling_plan_id
+        %}
+      </div>
+    </div>
+  </div>
+
+  {% if smp_sibling_options != blank %}
+    {% render 'product-card-smp-data', smp_sibling_options: smp_sibling_options %}
+  {% endif %}
+</div>

@@ -1,0 +1,184 @@
+@use 'unit' as u;
+@use 'style-guide/media' as mq;
+@use 'style-guide/spacing' as spacing;
+@use 'style-guide/colors' as color;
+@use 'style-guide/sizes' as sizes;
+@use 'style-guide/components' as components;
+@use 'style-guide/mixins' as mixin;
+
+.gallery {
+  &--carousel {
+    width: 100%;
+
+    @include mq.min(tabletlandscape) {
+      display: none;
+    }
+  }
+
+  &--carousel-outer {
+    position: relative;
+    width: 100%;
+
+    :global(.js-product-gallery-swiper) {
+      margin-left: u.rem-calc(-16);
+      margin-right: u.rem-calc(-16);
+      padding-left: u.rem-calc(16);
+    }
+  }
+
+  &--carousel-nav {
+    display: none;
+    z-index: 6;
+    position: absolute;
+    width: auto;
+    height: auto;
+    pointer-events: none;
+    inset: spacing.get(size-0) spacing.get(size-8);
+
+    :global(.swiper-button-prev),
+    :global(.swiper-button-next) {
+      top: 40%;
+    }
+
+    :global(.swiper-button-prev) {
+      left: u.rem-calc(-6);
+    }
+
+    :global(.swiper-button-next) {
+      right: u.rem-calc(26);
+    }
+  }
+
+  &--carousel-pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: spacing.get(size-8);
+    position: relative;
+    bottom: auto;
+    left: auto;
+    width: 100%;
+    transform: none;
+    padding: spacing.get(size-32) 0;
+
+    &:global(.swiper-pagination-horizontal) {
+      top: auto;
+    }
+
+    :global(.swiper-pagination-bullet) {
+      margin: unset !important;
+      width: sizes.get(size-8);
+      height: sizes.get(size-8);
+      border-radius: 50%;
+      opacity: 1;
+      background: color.get(dark-gray-20);
+      transition: background 200ms ease;
+
+      @include mixin.focus-visible-ring($ring-color: color.get(dark-gray));
+    }
+
+    :global(.swiper-pagination-bullet-active) {
+      background: color.get(dark-gray);
+    }
+  }
+
+  &--arrow {
+    @include components.carousel-arrow();
+    pointer-events: auto;
+    z-index: 4;
+
+    span {
+      width: inherit;
+      height: inherit;
+    }
+
+    &:global(.swiper-button-lock) {
+      display: none;
+    }
+
+    &::after {
+      display: none;
+    }
+
+    &[disabled] {
+      display: none;
+    }
+  }
+
+  &--slide {
+    width: 100%;
+    height: auto;
+  }
+
+  &--images {
+    display: none;
+    width: 100%;
+
+    @include mq.min(tabletlandscape) {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: spacing.get(size-16);
+    }
+  }
+
+  &--image {
+    aspect-ratio: 45/60;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border-radius: spacing.get(size-8);
+    overflow: hidden;
+
+    img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  &--featured {
+    grid-column: span 2;
+    aspect-ratio: 90 / 60;
+    position: relative;
+    width: 100%;
+    height: auto;
+    border-radius: spacing.get(size-8);
+    overflow: hidden;
+  }
+
+  &--featured-controls {
+    position: absolute;
+    bottom: spacing.get(size-12);
+    left: spacing.get(size-12);
+    z-index: 2;
+    pointer-events: auto;
+  }
+
+  &--featured-video-controls {
+    flex-shrink: 0;
+  }
+}
+
+// Narrow quickshop drawer: keep the mobile carousel at all breakpoints.
+:global([data-quickshop]) {
+  .gallery--carousel {
+    display: block;
+
+    @include mq.min(tabletlandscape) {
+      display: block;
+    }
+  }
+
+  .gallery--images {
+    display: none !important;
+  }
+
+  .gallery--carousel-outer {
+    :global(.js-product-gallery-swiper) {
+      margin-left: 0;
+      margin-right: 0;
+      padding-left: 0;
+    }
+  }
+}

@@ -1,0 +1,377 @@
+{
+  "order": [
+    "main",
+    "education_slideshow_rxqxrA",
+    "education_slideshow_ppAAY3",
+    "timeline_QNxyp6",
+    "compare_H4NUEH",
+    "ugc_section_dVM8GR",
+    "faq_iEjbWU",
+    "product_reviews_ffTL6L"
+  ],
+  "sections": {
+    "compare_H4NUEH": {
+      "block_order": ["feature_item_pAg8qF"],
+      "blocks": {
+        "feature_item_pAg8qF": {
+          "repeater": "{{ product.metafields.custom.pdp_compare_dynamic_content.value.compare_features_list.value }}",
+          "settings": {
+            "feature_product": "{{ block.repeater.feature_product.value }}",
+            "icon_type": "{{ block.repeater.icon_type.value }}",
+            "text": "{{ block.repeater.text.value }}"
+          },
+          "type": "feature_item"
+        }
+      },
+      "name": "Compare",
+      "settings": {
+        "heading": "{{ product.metafields.custom.pdp_compare_dynamic_content.value.heading.value }}",
+        "product_a_image": "{{ product.metafields.custom.pdp_compare_dynamic_content.value.product_a_image.value }}",
+        "product_a_title": "{{ product.metafields.custom.pdp_compare_dynamic_content.value.product_a_title.value }}",
+        "product_b_image": "{{ product.metafields.custom.pdp_compare_dynamic_content.value.product_b_image.value }}",
+        "product_b_title": "{{ product.metafields.custom.pdp_compare_dynamic_content.value.product_b_title.value }}",
+        "subtitle": "{{ product.metafields.custom.pdp_compare_dynamic_content.value.subtitle.value }}"
+      },
+      "type": "compare"
+    },
+    "education_slideshow_ppAAY3": {
+      "block_order": ["percentage_slide_kmMENf"],
+      "blocks": {
+        "percentage_slide_kmMENf": {
+          "settings": {
+            "background_color": "",
+            "background_gradient": "",
+            "background_image_desktop": "shopify://shop_images/Clincal_Studies_1_6756b591-f579-4fe7-a14f-e636ad93caf5.png",
+            "background_image_mobile": "shopify://shop_images/Clincal_Studies_3_c96fcbf0-1082-4ba6-bf78-e4fd3ded89f0.png",
+            "background_type": "image",
+            "disclaimers": "<p>†Based on individual ingredient research.</p>",
+            "heading": "Clinically Studied.‡ Foundational by Design.",
+            "slide_title": "Science",
+            "stat_items": [
+              "clinically-studied-inositol-ratio",
+              "more-lactoferrin-than-colostrum",
+              "improvement-in-cycle-regularity",
+              "improvement-in-skin-hair-health"
+            ],
+            "subheading": "<p>Inositol is one of the most researched nutrients in women’s hormone health.*</p>",
+            "wheel_color": "yellow"
+          },
+          "type": "percentage_slide"
+        }
+      },
+      "name": "Education Slideshow",
+      "settings": {
+        "autoplay": false,
+        "autoplay_speed": "6000",
+        "cta_label": "Shop All",
+        "cta_url": "",
+        "show_playback_controls": true
+      },
+      "type": "education-slideshow"
+    },
+    "education_slideshow_rxqxrA": {
+      "block_order": [
+        "ingredients_slide_F4GKyb",
+        "ingredients_slide_JTkaBL",
+        "ingredients_slide_3yTWXc"
+      ],
+      "blocks": {
+        "ingredients_slide_3yTWXc": {
+          "settings": {
+            "background_color": "",
+            "background_gradient": "",
+            "background_type": "image",
+            "disclaimers": "",
+            "heading": "3 Foundational Nutrients for Women’s Wellness*",
+            "ingredients": ["ingredient-item-ck8j6u3k"],
+            "slide_title": "Quatrefolic® Folate (5-MTHF)",
+            "subheading": "<p>An active form of 5-MTHF folate that the body can immediately use. It supports reproductive health, healthy cell division, red blood cell formation, and foundational cellular function.*</p>",
+            "text_contrast_mode": "light"
+          },
+          "type": "ingredients_slide"
+        },
+        "ingredients_slide_F4GKyb": {
+          "settings": {
+            "background_color": "",
+            "background_gradient": "",
+            "background_type": "image",
+            "disclaimers": "",
+            "heading": "3 Foundational Nutrients for Women’s Wellness*",
+            "ingredients": ["ingredient-item-ihpatirb"],
+            "slide_title": "Inositol (40:1 Myo-Inositol to D-Chiro-Inositol)",
+            "subheading": "<p>A clinically precise 40:1 balance of myo- and d-chiro inositol, the same ratio found in healthy ovaries, designed to support hormone signaling, insulin response, and cycle consistency at the cellular level.*</p>",
+            "text_contrast_mode": "light"
+          },
+          "type": "ingredients_slide"
+        },
+        "ingredients_slide_JTkaBL": {
+          "settings": {
+            "background_color": "",
+            "background_gradient": "",
+            "background_type": "image",
+            "disclaimers": "",
+            "heading": "3 Foundational Nutrients for Women’s Wellness*",
+            "ingredients": ["ingredient-item-bf6b2nve"],
+            "slide_title": "Effera™ Lactoferrin",
+            "subheading": "<p>The first bio-identical human lactoferrin that supports iron utilization, gut and immune balance, healthy inflammatory signaling and delivers up to 15× more active lactoferrin than colostrum-based supplements.*</p>",
+            "text_contrast_mode": "light"
+          },
+          "type": "ingredients_slide"
+        }
+      },
+      "name": "Education Slideshow",
+      "settings": {
+        "autoplay": false,
+        "autoplay_speed": "6000",
+        "cta_label": "Shop All",
+        "cta_url": "",
+        "show_playback_controls": false
+      },
+      "type": "education-slideshow"
+    },
+    "faq_iEjbWU": {
+      "block_order": [
+        "faq_question_CjYCMz",
+        "faq_question_eNKrdq",
+        "faq_question_3DyTw3",
+        "faq_question_zzdb44",
+        "faq_question_A9Gpxw",
+        "faq_question_U8QzTD",
+        "faq_question_djKTmG",
+        "faq_question_iWWAB4",
+        "faq_question_tKh9qp",
+        "faq_question_ETe6dy",
+        "faq_question_rEDQGm",
+        "faq_question_6z9EEW"
+      ],
+      "blocks": {
+        "faq_question_3DyTw3": {
+          "settings": {
+            "content": "<p>Take 1 arrae Inositol stick pack daily, with or without food. Dissolve gradually on your tongue, or mix into your favorite drink. For PCOS support, take 2 stick packs daily – ideally one in the morning and one in the evening, or as directed by your healthcare provider.</p><p>Consistent use is recommended for at least 3 months for best results.*\t</p>",
+            "title": "How and when do I take Arrae Inositol? "
+          },
+          "type": "faq-question"
+        },
+        "faq_question_6z9EEW": {
+          "settings": {
+            "content": "<p>Arrae Inositol is free of major allergens and is considered dairy-free. While most lactoferrin on the market is bovine and milk derived, Arrae Inositol uses Effera™ Lactoferrin, a bioidentical lactoferrin produced through fermentation, without the use of cows or dairy. </p>",
+            "title": "Is Arrae Inositol dairy-free? Isn't lactoferrin bovine-derived? "
+          },
+          "type": "faq-question"
+        },
+        "faq_question_A9Gpxw": {
+          "settings": {
+            "content": "<p>Yes! You do not need a diagnosis to benefit from arrae Inositol. It’s designed <strong>foundational nutrient</strong> for any woman who wants to support hormone and metabolic health daily systems that influence hormones, metabolism, energy, mood, and cycle rhythm — whether you’re responding to subtle changes or simply supporting long-term balance.</p>",
+            "title": "Can I take this even if I don't have a hormone imbalance?"
+          },
+          "type": "faq-question"
+        },
+        "faq_question_CjYCMz": {
+          "settings": {
+            "content": "<p>Inositol is a naturally-occuring, vitamin-like nutrient that helps support how your cells communicate — especially in pathways related to hormones, insulin signaling, and metabolic function. There are two main forms: <strong>myo-inositol</strong>, which supports hormone signaling, and <strong>d-chiro-inositol</strong>, which supports healthy glucose metabolism. In the body, these naturally exist in a <strong>40:1 ratio</strong>, which is considered the most physiologically appropriate and well-researched proportion. Arrae Inositol uses this clinically studied 40:1 ratio to support both hormonal and metabolic health in a more aligned way.</p>",
+            "title": "What is Inositol and what does 40:1 ratio mean? "
+          },
+          "type": "faq-question"
+        },
+        "faq_question_ETe6dy": {
+          "settings": {
+            "content": "<p>If you are taking any prescriptions such as blood sugar medications or hormonal birth control, we recommend consulting your healthcare provider before starting any new supplements. While the ingredients in Arrae Inositol are generally well tolerated, your healthcare provider can help determine whether Arrae Inositol is appropriate for you based on your individual health needs</p>",
+            "title": "Can I take Arrae Inositol if I am on birth control or other prescription medications? "
+          },
+          "type": "faq-question"
+        },
+        "faq_question_U8QzTD": {
+          "settings": {
+            "content": "<p>Yes! While 40:1 inositol is often associated with reproductive health, research shows its benefits extend into perimenopause and menopause. Particularly when taken twice daily, studies have shown it can be helpful in supporting metabolic changes that commonly occur during this stage of life including improvements in metabolic markers, insulin sensitivity and glucose metabolism. For this reason, some women in perimenopause choose to take Arrae Inositol once daily for foundational support, while others opt for twice-daily use for enhanced metabolic or hormonal support, depending on individual needs. </p>",
+            "title": "Can I take Arrae Inositol if I am in peri-menopause and/or postmenopause?"
+          },
+          "type": "faq-question"
+        },
+        "faq_question_djKTmG": {
+          "settings": {
+            "content": "<p>Arrae Inositol goes beyond a standard inositol powder by combining clinically studied inositol with additional foundational nutrients designed to support women’s health more holistically. Key differences include:</p><ul><li>Clinically studied 40:1 inositol ratio (myo-inositol to D-chiro-inositol), which reflects the balance naturally found in the body and is widely used in women’s health research.</li><li>IN401™ complex, which pairs inositol with Effera™ lactoferrin, a bio-identical precision fermented lactoferrin that supports gut health, iron regulation, and overall foundational wellness.</li><li>Bioactive folate (Quatrefolic®) instead of folic acid, for optimal absorption and reproductive support. </li><li>Fast-melt stick pack format, designed for convenience, flexibility, and consistent daily use- no capsules or bulk powders required.</li></ul>",
+            "title": "How is Arrae Inositol different from other inositol products? "
+          },
+          "type": "faq-question"
+        },
+        "faq_question_eNKrdq": {
+          "settings": {
+            "content": "<p>Lactoferrin is a naturally occurring, foundational protein in the body that supports iron regulation, immune health, and gut balance by helping the body bind and use iron more efficiently. Lactoferrin is best known as the key bioactive component of colostrum, where it plays an important role in immune and gut support. While most lactoferrin on the market is bovine-derived, arrae Inositol uses Effera™ Lactoferrin. This bio-identical, fermentation-derived form mirrors human lactoferrin for better recognition, bioavailability, and digestive tolerance — without dairy or animal sources.</p>",
+            "title": "What is lactoferrin? "
+          },
+          "type": "faq-question"
+        },
+        "faq_question_iWWAB4": {
+          "settings": {
+            "content": "<p>Folic acid is a synthetic form of vitamin B9 that must be converted by the body into its active form before it can be used. Not everyone converts folic acid efficiently, which can lead to unmet needs in some individuals. Arrae Inositol uses Quatrefolic®, a folate that is already in its active, bioavailable form, meaning it can be used directly by the body without additional conversion. This makes it a more reliable and effective option, especially for individuals with MTHFR gene variations or anyone seeking optimal folate utilization.</p>",
+            "title": "Why does Arrae Inositol use folate instead of folic acid? "
+          },
+          "type": "faq-question"
+        },
+        "faq_question_rEDQGm": {
+          "settings": {
+            "content": "<p>No. Arrae Inositol does not contain hormones. It is formulated to support the body’s natural processes involved in hormonal and metabolic balance, without supplying hormones directly.</p>",
+            "title": "Does this product contain hormones? "
+          },
+          "type": "faq-question"
+        },
+        "faq_question_tKh9qp": {
+          "settings": {
+            "content": "<p>Yes! Arrae products have been designed to work synergistically as part of a comprehensive daily wellness routine.</p>",
+            "title": "Can I take Arrae Inositol with other Arrae supplements? "
+          },
+          "type": "faq-question"
+        },
+        "faq_question_zzdb44": {
+          "settings": {
+            "content": "<p>Hormones influence how you feel day to day — from energy and mood to cravings, skin, and cycle rhythm. Some women explore hormone support when they notice changes or challenges in these areas, while others choose to support their hormones proactively as part of a long-term wellness routine. That said, some key signs your hormones need support include:</p><ul><li>Irregular or inconsistent cycles</li><li>Intense cravings, especially for sugar or carbohydrates</li><li>Unexplained weight gain or difficulty losing weight</li><li>Changes in energy levels or ongoing fatigue</li><li>Mood changes or increased emotional sensitivity and stress </li><li>Difficulty maintaining metabolic balance or blood sugar control </li><li>Monthly breakouts or skin changes</li><li>Unwanted hair growth or hair shedding</li></ul><p>If you have a medical condition or are working with a healthcare provider on a specific hormonal concern, we recommend checking with them before adding any new supplement.</p>",
+            "title": "How do I know if I need hormone support?"
+          },
+          "type": "faq-question"
+        }
+      },
+      "name": "FAQ",
+      "settings": {
+        "heading": "Inositol FAQs",
+        "subheading": "What to know before you try"
+      },
+      "type": "faq"
+    },
+    "main": {
+      "settings": {
+        "benefits_list": "",
+        "description": "<p>Delicious vanilla stick packs for hormonal & metabolic wellness — powered by clinically studied 40:1 inositol, lactoferrin & methylated folate to support*:</p>",
+        "pdp_subtitle": "",
+        "product_accordions": [],
+        "review_summary_visibility": "show",
+        "title": "Inositol (Women’s Core Nutrient*)",
+        "upsell_info_label": "",
+        "upsell_info_text": "",
+        "upsell_products": [],
+        "upsell_title": ""
+      },
+      "type": "product-main"
+    },
+    "product_reviews_ffTL6L": {
+      "name": "Product Reviews",
+      "settings": {
+        "title": "Real People, Real Reviews"
+      },
+      "type": "product-reviews"
+    },
+    "timeline_QNxyp6": {
+      "block_order": ["step_abfKjT", "step_jFRjwt", "step_dYVbdi"],
+      "blocks": {
+        "step_abfKjT": {
+          "settings": {
+            "description": "<p>As you begin taking Inositol consistently, your cells receive daily nutritional support for insulin and hormone signaling. Early shifts may feel subtle, but some people may begin noticing steadier energy, more balanced cravings, or a calmer-feeling month.*</p>",
+            "eyebrow": "Set the Signal",
+            "image_desktop": "shopify://shop_images/Frame_1171277801_2c675684-0edd-47a8-9ebc-be963e874f8b.png",
+            "image_mobile": "shopify://shop_images/Frame_1171277801_1_47bf8163-48a7-4ef1-bf3b-445ea4e43449.png",
+            "period": "Month",
+            "step_indicator": "1",
+            "title": "Take It as part of your daily routine"
+          },
+          "type": "step"
+        },
+        "step_dYVbdi": {
+          "settings": {
+            "description": "<p>Around the three-month mark—the timeframe used in many inositol studies—more meaningful changes in insulin sensitivity, hormone signaling, cycle regularity, and ovulation support may emerge.*</p>",
+            "eyebrow": "Build Lasting Balance",
+            "image_desktop": "shopify://shop_images/Frame_1171277801_4_fb4c4fe2-ff55-4dce-800b-f90d0324c080.png",
+            "image_mobile": "shopify://shop_images/Frame_1171277801_5_09a0cd41-20ea-4396-9583-593eeb4c43aa.png",
+            "period": "Months",
+            "step_indicator": "3",
+            "title": "Now your internal systems start doing the heavy lifting"
+          },
+          "type": "step"
+        },
+        "step_jFRjwt": {
+          "settings": {
+            "description": "<p>As daily support builds, changes across mood, monthly comfort, energy, and cycle predictability may become easier to notice. Your body is establishing a more consistent foundation for hormonal and metabolic communication.*</p>",
+            "eyebrow": "Find Your Rhythm",
+            "image_desktop": "shopify://shop_images/Frame_1171277801_2_7f435fe7-4b21-4a2e-9567-a65e2082b31b.png",
+            "image_mobile": "shopify://shop_images/Frame_1171277801_3_52059782-f9fd-4f37-9678-d3cd0de609e5.png",
+            "period": "MONTH",
+            "step_indicator": "2",
+            "title": "Now your internal systems start doing the heavy lifting"
+          },
+          "type": "step"
+        }
+      },
+      "name": "Timeline",
+      "settings": {
+        "default_expanded_card_position": "2",
+        "heading": "<p>Hormone Balance Is A Daily Practice, Not A Quick Fix</p>",
+        "subtitle": "<p>Inositol works by supporting foundational cellular signaling, so its benefits build through consistent daily use.*</p>"
+      },
+      "type": "timeline"
+    },
+    "ugc_section_dVM8GR": {
+      "block_order": [
+        "ugc_card_reR8eT",
+        "ugc_card_rjjT9N",
+        "ugc_card_YrPkx3",
+        "ugc_card_3GDLYN"
+      ],
+      "blocks": {
+        "ugc_card_3GDLYN": {
+          "settings": {
+            "image_alt_text": "",
+            "main_text": "This has been really helpful for my digestion — I feel so much lighter throughout the day.",
+            "media_image": "shopify://shop_images/media_dd0fd82d-cd40-4638-9ea0-37aa74369852.jpg",
+            "media_type": "image",
+            "secondary_text": "Allison, 34",
+            "small_main_text": false,
+            "tertiary_text": ""
+          },
+          "type": "ugc_card"
+        },
+        "ugc_card_YrPkx3": {
+          "settings": {
+            "image_alt_text": "",
+            "main_text": "I finally feel like myself again, especially after struggling for so long.",
+            "media_type": "video",
+            "media_video": "shopify://files/videos/tolstoy_c9355ec1-33a0-421c-b276-111f1d3d1065.webm",
+            "secondary_text": "OLIVIA, 44",
+            "small_main_text": false,
+            "tertiary_text": ""
+          },
+          "type": "ugc_card"
+        },
+        "ugc_card_reR8eT": {
+          "settings": {
+            "image_alt_text": "",
+            "main_text": "\"Inositol has been something that has helped me manage my symptoms unlike any other supplement\"",
+            "media_type": "video",
+            "media_video": "shopify://files/videos/copy_81B86870-4503-4B05-B5B6-7EFD6AD51F0A.MOV",
+            "secondary_text": "Michelle",
+            "small_main_text": false,
+            "tertiary_text": ""
+          },
+          "type": "ugc_card"
+        },
+        "ugc_card_rjjT9N": {
+          "settings": {
+            "image_alt_text": "",
+            "main_text": "\"I honestly take arrae Inositol every morning..  and I take their MB-1 as well to support\nthe metabolic side of PCOS and that combination has really leveled up my\nroutine\"",
+            "media_image": "shopify://shop_images/media_3_8cb789f3-68b9-4d4e-b7d6-434f43675c41.png",
+            "media_type": "video",
+            "media_video": "shopify://files/videos/4b4c5d12017c4c85847173e09da618f0.mov",
+            "secondary_text": "Maya",
+            "small_main_text": true,
+            "tertiary_text": ""
+          },
+          "type": "ugc_card"
+        }
+      },
+      "name": "UGC Section",
+      "settings": {
+        "heading": "Loved by <em>Millions of Women Worldwide</em>",
+        "show_arrows": true,
+        "show_pagination": false
+      },
+      "type": "ugc-section"
+    }
+  }
+}

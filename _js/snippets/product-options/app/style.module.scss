@@ -1,0 +1,34 @@
+@use 'unit' as u;
+@use 'style-guide/colors' as color;
+@use 'style-guide/spacing' as spacing;
+@use 'style-guide/typography' as typography;
+
+.sectionHeading {
+  margin-bottom: spacing.get(size-16);
+}
+
+.sectionTitle {
+  @include typography.body();
+  font-size: u.rem-calc(20);
+  font-style: normal;
+  font-weight: 600;
+  line-height: 112%;
+  letter-spacing: u.rem-calc(-0.2);
+  color: color.get(dark-gray);
+  margin: 0;
+}
+
+.sectionDivider {
+  display: block;
+  width: 100%;
+  height: 0;
+  border: 0;
+  border-top: u.rem-calc(1) solid color.get(light-gray);
+  margin: spacing.get(size-12) 0 0;
+}
+
+:global([data-quickshop]) {
+  .sectionHeading {
+    margin-bottom: spacing.get(size-12);
+  }
+}

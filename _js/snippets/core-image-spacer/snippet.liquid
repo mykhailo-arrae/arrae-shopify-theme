@@ -1,0 +1,5 @@
+{% liquid
+  assign aspect_ratio = aspect_ratio | default: image.aspect_ratio | default: 0.75
+  assign padding_bottom = 1 | divided_by: aspect_ratio | times: 100
+%}
+padding-bottom: {{ padding_bottom }}%;

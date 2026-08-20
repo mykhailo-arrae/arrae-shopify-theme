@@ -1,0 +1,149 @@
+{% doc %}
+  @description
+  Ingredients carousel for an education slide. One ingredient per Swiper slide; metaobject type `ingredient_item`.
+
+  @param {block} block - Source Shopify block.
+  @param {metaobject[]} slide_content - List of `ingredient_item` metaobjects (`image`, `heading`, `description`, `badges` list, `image_aspect_ratio`).
+  @param {boolean} has_disclaimers - When true, reserves space above the slide disclaimer on desktop.
+
+  @example
+  {% render 'slide-content-ingredients',
+    block: block,
+    slide_content: block.settings.ingredients,
+    has_disclaimers: disclaimers != blank
+  %}
+{% enddoc %}
+
+{% liquid
+  assign ingredients = slide_content | default: blank
+  assign has_disclaimers = has_disclaimers | default: false, allow_false: true
+  assign default_aspect_ratio = '700x564'
+  assign initial_aspect_ratio = default_aspect_ratio
+
+  if ingredients != blank
+    assign first_ingredient = ingredients | first
+    assign first_raw_aspect = first_ingredient.image_aspect_ratio | append: '' | strip | downcase
+    if first_raw_aspect == blank
+      assign first_raw_aspect = first_ingredient.image_aspect_ratio.value | append: '' | strip | downcase
+    endif
+
+    if first_raw_aspect == '700x668' or first_raw_aspect contains '668'
+      assign initial_aspect_ratio = '700x668'
+    endif
+  endif
+%}
+
+{% if ingredients != blank %}
+  <div class="{# style root #}" data-slide-content="ingredients">
+    <div
+      class="{# style layout #}"
+      {% if has_disclaimers %}
+        data-has-disclaimers="true"
+      {% endif %}
+    >
+      <div
+        class="{# style frame #}"
+        data-ingredient-frame
+        data-aspect-ratio="{{ initial_aspect_ratio }}"
+      >
+        <div class="{# style carousel #} swiper">
+          <div class="swiper-wrapper {# style slides #}">
+            {% for entry in ingredients %}
+              {% liquid
+                assign raw_aspect = entry.image_aspect_ratio | append: '' | strip | downcase
+
+                if raw_aspect == blank
+                  assign raw_aspect = entry.image_aspect_ratio.value | append: '' | strip | downcase
+                endif
+
+                assign slide_aspect_ratio = default_aspect_ratio
+
+                if raw_aspect == '700x668' or raw_aspect contains '668'
+                  assign slide_aspect_ratio = '700x668'
+                endif
+              %}
+              <div
+                class="swiper-slide {# style slide #}"
+                data-ingredient-aspect-ratio="{{ slide_aspect_ratio }}"
+              >
+                <div class="{# style slide-card #}">
+                  <div class="{# style slide-card__content--top #}">
+                    {% if entry.heading != blank %}
+                      <h3 class="{# style slide-card__heading #}">
+                        {{ entry.heading }}
+                      </h3>
+                    {% endif %}
+
+                    {% if entry.description != blank %}
+                      <div class="{# style slide-card__description #}">
+                        {{ entry.description }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                  <div class="{# style slide-card__content--bottom #}">
+                    {% liquid
+                      assign badges_list = entry.badges.value | default: entry.badges
+                    %}
+                    {% if badges_list != blank %}
+                      <ul class="{# style slide-card__badges #}" role="list">
+                        {% for badge in badges_list %}
+                          <li class="{# style slide-card__badge #}">
+                            {% if badge.title.value != blank %}
+                              {{ badge.title.value }}
+                            {% elsif badge.label.value != blank %}
+                              {{ badge.label.value }}
+                            {% elsif badge.value != blank %}
+                              {{ badge.value }}
+                            {% else %}
+                              {{ badge }}
+                            {% endif %}
+                          </li>
+                        {% endfor %}
+                      </ul>
+                    {% endif %}
+                  </div>
+                </div>
+
+                {% if entry.image != blank %}
+                  <div class="{# style slide-card__media #}">
+                    {% render 'core-image',
+                      image: entry.image,
+                      mode: 'cover',
+                      object_fit: 'cover',
+                      lazyload: true,
+                      sizes: '320,480,640,800',
+                      srcset_print_sizes: '320,480,640,800'
+                    %}
+                  </div>
+                {% endif %}
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+
+        {% if ingredients.size > 1 %}
+          <div class="{# style nav-arrows #} swiper-navigation-arrows js-nav-arrows">
+            <button
+              type="button"
+              class="swiper-button-prev {# style arrow #}"
+              title="{{ 'accessibility.previous_slide' | t }}"
+              aria-label="{{ 'accessibility.previous_slide' | t }}"
+            >
+              <span aria-hidden="true">{%- render 'icon-arrow-left' -%}</span>
+            </button>
+
+            <button
+              type="button"
+              class="swiper-button-next {# style arrow #}"
+              title="{{ 'accessibility.next_slide' | t }}"
+              aria-label="{{ 'accessibility.next_slide' | t }}"
+            >
+              <span aria-hidden="true">{%- render 'icon-arrow-right' -%}</span>
+            </button>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+{% endif %}

@@ -1,0 +1,52 @@
+{% doc %}
+  Card rewards are section level for Markets compatibility.
+  If project won't use markets, is recommended to move the rewards to the theme settings level.
+{% enddoc %}
+
+<div class="{# style overlay #} js-offcanvas-bg"></div>
+
+<div
+  data-section-id="{{ section.id }}"
+  data-section-name="{{ section.type }}"
+  class="js-offcanvas {# style root #}"
+  data-drawer-names="cart"
+  role="dialog"
+  aria-modal="true"
+  aria-label="{{ 'cart_wrapper' | t }}"
+  tabindex="-1"
+  inert
+  aria-hidden="true"
+>
+  <div
+    class="js-offcanvas-content {# style wrapper #}"
+  >
+    <div class="js-offcanvas-content {# style content #}">
+      <button
+        class="js-offcanvas-close {# style close #}"
+      >
+        {% render 'icon-close' %}
+        <span class="sr-only">{{ 'accessibility.icons.close' | t }}</span>
+      </button>
+
+      <div class="{# style container #}">
+        {% render 'react-cart', context: 'drawer', section_id: section.id %}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Cart Drawer",
+  "locales": {
+    "en": {
+      "cart_wrapper": "Cart"
+    }
+  },
+  "class": "js-drawer-cart",
+  "settings": [],
+  "enabled_on": {
+    "groups": ["header", "footer"]
+  }
+}
+{% endschema %}

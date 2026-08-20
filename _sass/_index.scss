@@ -1,0 +1,23 @@
+/* ===================================================== */
+/* Home Page */
+/* ===================================================== */
+
+@use 'core/unit' as u;
+
+.IndexSection {
+  margin: 0 0 u.rem-calc(50) 0;
+
+  &--flush {
+    & + & {
+      margin-top: u.rem-calc(-50);
+    }
+  }
+
+  &.BannerGrid {
+    margin: 0 0 (u.rem-calc(50) - u.rem-calc(30)) 0;
+  }
+
+  &.BannerGrid + &.BannerGrid {
+    margin-top: -1 * (u.rem-calc(50) - u.rem-calc(30));
+  }
+}

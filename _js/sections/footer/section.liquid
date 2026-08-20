@@ -1,0 +1,287 @@
+{% liquid
+  assign logo = section.settings.logo
+  assign show_logo = section.settings.show_logo | default: false
+  assign show_copyright = section.settings.show_copyright | default: false
+  assign copyright_text = section.settings.copyright_text | default: null
+  assign footer_bottom_menu = section.settings.footer_bottom_menu | default: null
+  assign newsletter_type = section.settings.newsletter_type | default: 'embedded'
+
+  assign klaviyo_embed_id = section.settings.klaviyo_embed_id | default: null
+  assign newsletter_copy = section.settings.newsletter_copy | default: null
+  assign newsletter_info = section.settings.newsletter_info | default: null
+  assign newsletter_button = section.settings.newsletter_button | default: null
+  assign newsletter_thanks_message = section.settings.newsletter_thanks_message | default: null
+  assign klaviyo_list_id = section.settings.klaviyo_list_id | default: null
+  assign klaviyo_public_api_key = section.settings.klaviyo_public_api_key | default: null
+
+  if newsletter_info != blank or newsletter_button != blank or newsletter_thanks_message != blank
+    assign show_custom_newsletter = true
+  else
+    assign show_custom_newsletter = false
+  endif
+
+  capture logo_sizes
+    render 'print-responsive-image', wide_image: logo, breakpoint: 1024
+  endcapture
+%}
+
+<div class="{# style container #}">
+  <div class="{# style footer #}">
+    <div class="{# style footer-top #}">
+      <div class="{# style footer-top--left #}">
+        <!-- Logo -->
+        {% if show_logo %}
+          <div class="{# style logo #}">
+            {% if logo != blank %}
+              <picture class="{# style logoImage #}">
+                {{ logo_sizes }}
+              </picture>
+            {% else %}
+              <div class="{# style logoIcon #}">
+                {% render 'core-brand' %}
+              </div>
+            {% endif %}
+          </div>
+        {% endif %}
+      </div>
+
+      <div class="{# style footer-top--right #}">
+        <!-- Navigation -->
+        {% if section.blocks.size > 0 %}
+          <div class="{# style navigation #}">
+            {% for block in section.blocks %}
+              {% assign accordion_menu = linklists[block.settings.menu] %}
+              {% if accordion_menu != blank %}
+                <div class="{# style item #}" {{ block.shopify_attributes }}>
+                  <button
+                    class="{# style itemTrigger #} js-accordion-trigger"
+                    type="button"
+                    aria-expanded="false"
+                    aria-controls="sect-accordion-{{ forloop.index }}"
+                    id="accordion-{{ forloop.index }}"
+                  >
+                    <span class="{# style itemTitle #}">{{ block.settings.title }}</span>
+                    <div data-icon class="{# style itemIcon #}">
+                      {% render 'icon-chevron-circle' %}
+                    </div>
+                  </button>
+                  <div
+                    class="js-accordion-content {# style itemContent #}"
+                    id="sect-accordion-{{ forloop.index }}"
+                    aria-labelledby="accordion-{{ forloop.index }}"
+                  >
+                    <nav class="{# style itemWrapper #}">
+                      <ul class="{# style menu #}">
+                        {% for accordion_link in accordion_menu.links %}
+                          <li>
+                            <a href="{{ accordion_link.url }}" class="{# style menuItem #}">
+                              {{ accordion_link.title }}
+                            </a>
+                          </li>
+                        {% endfor %}
+                      </ul>
+                    </nav>
+                  </div>
+                </div>
+              {% endif %}
+            {% endfor %}
+          </div>
+        {% endif %}
+
+        <!-- Newsletter -->
+        <div class="{# style newsletter-wrapper #}">
+          {% if newsletter_copy != blank %}
+            <div class="{# style newsletter-copy #}">
+              {{ newsletter_copy }}
+            </div>
+          {% endif %}
+
+          {% if settings.enable_klaviyo and newsletter_type == 'embedded' and klaviyo_embed_id != blank %}
+            <div class="klaviyo-form-{{klaviyo_embed_id}} {# style newsletter-embed #}"></div>
+          {% elsif newsletter_type == 'custom' and show_custom_newsletter %}
+            {% render 'newsletter-form',
+              newsletter_info: newsletter_info,
+              newsletter_button: newsletter_button,
+              newsletter_thanks_message: newsletter_thanks_message,
+              klaviyo_list_id: klaviyo_list_id,
+              klaviyo_public_api_key: klaviyo_public_api_key
+            %}
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom -->
+    <div class="{# style footer-bottom #}">
+      <!-- Footer Bottom Menu -->
+      {% if footer_bottom_menu != blank and footer_bottom_menu.links.size > 0 %}
+        <nav class="{# style bottom-menu #}">
+          <ul class="{# style bottom-menu--list #}">
+            {% for link in footer_bottom_menu.links %}
+              <li>
+                <a href="{{ link.url }}" class="{# style bottom-menu--item #}">
+                  {{ link.title }}
+                </a>
+              </li>
+            {% endfor %}
+          </ul>
+        </nav>
+      {% endif %}
+
+      <!-- Copyright -->
+      {% if show_copyright %}
+        <div class="{# style copyright #}">
+          © {{ 'footer.copyright' | t }}
+          {{ 'now' | date: '%Y' }}
+          {{ shop.name }}
+          {% if copyright_text != blank %}
+            - {{ copyright_text }}
+          {% endif %}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Footer",
+  "tag": "footer",
+  "class": "{# style section #} js-footer",
+  "enabled_on": {
+    "groups": ["footer"]
+  },
+  "max_blocks": 4,
+  "settings": [
+    {
+      "type": "header",
+      "content": "LOGO"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_logo",
+      "label": "Show Logo",
+      "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo",
+      "info": "Optional, if no image is added it will use the global svg logo used on the header"
+    },
+    {
+      "type": "header",
+      "content": "NEWSLETTER"
+    },
+    {
+      "type": "select",
+      "id": "newsletter_type",
+      "label": "Newsletter Type",
+      "options": [
+        {
+          "value": "embedded",
+          "label": "Embedded"
+        },
+        {
+          "value": "custom",
+          "label": "Custom"
+        }
+      ],
+      "default": "embedded"
+    },
+    {
+      "type": "richtext",
+      "id": "newsletter_copy",
+      "label": "Supporting Copy",
+      "default": "<p>Unlock your mystery discount. Enter your best <em>email</em> and <em>phone</em> number to get your mystery code.</p>"
+    },
+    {
+      "type": "text",
+      "id": "klaviyo_embed_id",
+      "label": "Klaviyo Embed ID",
+      "visible_if": "{{ section.settings.newsletter_type == 'embedded' }}"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_button",
+      "label": "Button Label",
+      "default": "Submit",
+      "visible_if": "{{ section.settings.newsletter_type == 'custom' }}"
+    },
+    {
+      "type": "richtext",
+      "id": "newsletter_info",
+      "label": "Info",
+      "default": "<p>By submitting, you agree to receive informational and marketing texts from Arrae (incl. autodialer). Consent isn’t required for purchase. Msg & data rates may apply. Reply STOP to unsubscribe. Privacy Policy</p>",
+      "visible_if": "{{ section.settings.newsletter_type == 'custom' }}"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "newsletter_thanks_message",
+      "label": "Thank you Message",
+      "default": "Thank you for subscribing to our newsletter!",
+      "visible_if": "{{ section.settings.newsletter_type == 'custom' }}"
+    },
+    {
+      "type": "text",
+      "id": "klaviyo_public_api_key",
+      "label": "Klaviyo Public API Key",
+      "info": "Optional to replace the general account ID set in theme settings",
+      "visible_if": "{{ section.settings.newsletter_type == 'custom' }}"
+    },
+    {
+      "type": "text",
+      "id": "klaviyo_list_id",
+      "label": "Klaviyo List ID",
+      "info": "Optional to replace the general account ID set in theme settings",
+      "visible_if": "{{ section.settings.newsletter_type == 'custom' }}"
+    },
+    {
+      "type": "header",
+      "content": "FOOTER BOTTOM"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_copyright",
+      "label": "Show Copyright",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "copyright_text",
+      "label": "Copyright Text",
+      "default": "Where Science Meets Chic - All Rights Reserved"
+    },
+    {
+      "type": "link_list",
+      "id": "footer_bottom_menu",
+      "label": "Footer Bottom Menu"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "navigation",
+      "name": "Navigation",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Menu Title",
+          "default": "Company"
+        },
+        {
+          "type": "link_list",
+          "id": "menu",
+          "label": "Menu"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Footer",
+      "category": "Footer"
+    }
+  ]
+}
+{% endschema %}

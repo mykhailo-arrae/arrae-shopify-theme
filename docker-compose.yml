@@ -1,0 +1,63 @@
+services:
+  main:
+    build:
+      context: './'
+      target: 'development'
+    volumes:
+      - './:/app:delegated'
+      - 'main_tmp:/mnt/tmp'
+      - 'main_ruby_bundle:/usr/local/bundle'
+      - 'main_xdg_cache:/home/node/.cache'
+      - 'main_xdg_config:/home/node/.config'
+    ports:
+      # Random port for SSH
+      # View assigned port with `docker compose port main 2222`
+      - '2222'
+    env_file: './.env'
+    command: ['/bin/bash']
+    stdin_open: true
+    tty: true
+
+  main_ci:
+    build:
+      context: './'
+      target: 'ci'
+    environment:
+      - CI=1
+    volumes:
+      - './:/app:delegated'
+      - '/mnt/tmp:/mnt/tmp:delegated'
+    command: ['/bin/bash', '-c', 'while true ; do wait ; done']
+
+  main_cd:
+    build:
+      context: './'
+      target: 'cd'
+    environment:
+      - CI=1
+      - SHOPIFY_FLAG_FORCE=1
+      # Compose forwards only the variables from this list
+      - DEPLOYMENT_CONTENT_OVERRIDE_PATTERNS_WORKFLOW_CONFIG
+      - DEPLOYMENT_CONTENT_OVERRIDE_PATTERNS_DISPATCH
+      - DEPLOYMENT_INITIAL_CONTENT_SOURCE
+      - DEPLOYMENT_TARGET
+      - DEVOPS_ACTOR
+      - SHOPIFY_CLI_ADMIN_AUTH_TOKEN
+      - SHOPIFY_CLI_TTY
+      - SHOPIFY_FLAG_STORE
+      - SHOPIFY_SHOP
+      - THEME_NAME
+    networks:
+      - 'cd'
+    volumes:
+      - './:/app:delegated'
+    command: ['/bin/bash', '-c', 'while true ; do wait ; done']
+
+networks:
+  cd:
+
+volumes:
+  main_tmp:
+  main_ruby_bundle:
+  main_xdg_cache:
+  main_xdg_config:

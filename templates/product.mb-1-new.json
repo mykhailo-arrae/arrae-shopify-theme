@@ -1,0 +1,515 @@
+{
+  "order": [
+    "main",
+    "education_slideshow_rxqxrA",
+    "product_toggle_section_7mj7BN",
+    "education_slideshow_xWiVY6",
+    "timeline_QNxyp6",
+    "education_slideshow_Gq6RgF",
+    "science_chart_8yGXCe",
+    "ugc_section_WQKJTQ",
+    "compare_cPrTwL",
+    "faq_iEjbWU",
+    "product_reviews_ffTL6L",
+    "1785960188b8a0bd2f"
+  ],
+  "sections": {
+    "1785960188b8a0bd2f": {
+      "block_order": ["junip_junip_product_review_MqfxhN"],
+      "blocks": {
+        "junip_junip_product_review_MqfxhN": {
+          "settings": {
+            "alignment": "",
+            "product": "{{product}}",
+            "sortOrder": "mostRecent",
+            "title": ""
+          },
+          "type": "shopify://apps/junip/blocks/junip-product-review/dc14f5a8-ed15-41b1-ad08-cfba23f9789b"
+        }
+      },
+      "settings": {},
+      "type": "apps"
+    },
+    "compare_cPrTwL": {
+      "block_order": ["feature_item_fWUDU6"],
+      "blocks": {
+        "feature_item_fWUDU6": {
+          "repeater": "{{ product.metafields.custom.pdp_compare_dynamic_content.value.compare_features_list.value }}",
+          "settings": {
+            "feature_product": "{{ block.repeater.feature_product.value }}",
+            "icon_type": "{{ block.repeater.icon_type.value }}",
+            "text": "{{ block.repeater.text.value }}"
+          },
+          "type": "feature_item"
+        }
+      },
+      "disabled": true,
+      "name": "Compare",
+      "settings": {
+        "heading": "{{ product.metafields.custom.pdp_compare_dynamic_content.value.heading.value }}",
+        "product_a_image": "{{ product.metafields.custom.pdp_compare_dynamic_content.value.product_a_image.value }}",
+        "product_a_title": "{{ product.metafields.custom.pdp_compare_dynamic_content.value.product_a_title.value }}",
+        "product_b_image": "{{ product.metafields.custom.pdp_compare_dynamic_content.value.product_b_image.value }}",
+        "product_b_title": "{{ product.metafields.custom.pdp_compare_dynamic_content.value.product_b_title.value }}",
+        "subtitle": "{{ product.metafields.custom.pdp_compare_dynamic_content.value.subtitle.value }}"
+      },
+      "type": "compare"
+    },
+    "education_slideshow_Gq6RgF": {
+      "block_order": ["image_carousel_slide_hqWa7U"],
+      "blocks": {
+        "image_carousel_slide_hqWa7U": {
+          "settings": {
+            "background_color": "",
+            "background_gradient": "",
+            "background_type": "image",
+            "disclaimers": "<p>(Independent <a href=\"/\">clinical study</a>, 2 months)*</p>",
+            "heading": "Real Women. Real MB-1 Transformations.",
+            "image_carousel_items": ["mb-1-before-after"],
+            "slide_title": "Image Carousel",
+            "subheading": "<p>See why our MB-1 formulas have become a staple in over 1M+ women’s weight management routines.</p>",
+            "text_contrast_mode": ""
+          },
+          "type": "image_carousel_slide"
+        }
+      },
+      "name": "Education Slideshow",
+      "settings": {
+        "autoplay": false,
+        "autoplay_speed": "6000",
+        "cta_label": "Shop All",
+        "cta_url": "",
+        "show_playback_controls": true
+      },
+      "type": "education-slideshow"
+    },
+    "education_slideshow_rxqxrA": {
+      "block_order": [
+        "ingredients_slide_tJdxd9",
+        "ingredients_slide_z878Mh",
+        "ingredients_slide_drXaJD",
+        "ingredients_slide_xEJAdT",
+        "ingredients_slide_PKHgFN",
+        "ingredients_slide_cfwJ9b",
+        "ingredients_slide_gUChxT"
+      ],
+      "blocks": {
+        "ingredients_slide_PKHgFN": {
+          "settings": {
+            "background_color": "",
+            "background_gradient": "",
+            "background_type": "image",
+            "disclaimers": "",
+            "heading": "7 Science-Backed Ingredientsto Supercharge Your Metabolism",
+            "ingredients": ["ingredient-item-qigehh9a"],
+            "slide_title": "Green Tea Extract",
+            "subheading": "<p>An herbal antioxidant that supports increased energy and activated AMPK. *</p>",
+            "text_contrast_mode": "light"
+          },
+          "type": "ingredients_slide"
+        },
+        "ingredients_slide_cfwJ9b": {
+          "settings": {
+            "background_color": "",
+            "background_gradient": "",
+            "background_type": "image",
+            "disclaimers": "",
+            "heading": "7 Science-Backed Ingredientsto Supercharge Your Metabolism",
+            "ingredients": ["ingredient-item-ii09jpu1"],
+            "slide_title": "Vitamin B6 (P5P)",
+            "subheading": "<p>The most bioactive form of Vitamin B6, which is essential for protein metabolism and nutrient utilization.*</p>",
+            "text_contrast_mode": "light"
+          },
+          "type": "ingredients_slide"
+        },
+        "ingredients_slide_drXaJD": {
+          "settings": {
+            "background_color": "",
+            "background_gradient": "",
+            "background_type": "image",
+            "disclaimers": "",
+            "heading": "7 Science-Backed Ingredientsto Supercharge Your Metabolism",
+            "ingredients": ["ingredient-item-djuglfsg"],
+            "slide_title": "CaloriBurn GP® (Grains of Paradise)",
+            "subheading": "<p>An ancient West African spice that's been clinically studied to increase resting metabolic rate, daily calorie burn & energy expenditure.*</p>",
+            "text_contrast_mode": "light"
+          },
+          "type": "ingredients_slide"
+        },
+        "ingredients_slide_gUChxT": {
+          "settings": {
+            "background_color": "",
+            "background_gradient": "",
+            "background_type": "image",
+            "disclaimers": "",
+            "heading": "7 Science-Backed Ingredientsto Supercharge Your Metabolism",
+            "ingredients": ["ingredient-item-ysqc8hcj"],
+            "slide_title": "Chromium Picolinate",
+            "subheading": "<p>A trace mineral that supports healthy blood sugar maintenance§ which can help with cravings*</p>",
+            "text_contrast_mode": "light"
+          },
+          "type": "ingredients_slide"
+        },
+        "ingredients_slide_tJdxd9": {
+          "settings": {
+            "background_color": "",
+            "background_gradient": "",
+            "background_type": "image",
+            "disclaimers": "",
+            "heading": "7 Science-Backed Ingredientsto Supercharge Your Metabolism",
+            "ingredients": ["ingredient-item-vfsnyg8v"],
+            "slide_title": "IGOB131® (African Mango Seed)",
+            "subheading": "<p>A clinically studied ingredient derived from African mango seeds that supports healthy weight management, decreased body fat, and balanced hunger hormones.*</p>",
+            "text_contrast_mode": "light"
+          },
+          "type": "ingredients_slide"
+        },
+        "ingredients_slide_xEJAdT": {
+          "settings": {
+            "background_color": "",
+            "background_gradient": "",
+            "background_type": "image",
+            "disclaimers": "",
+            "heading": "7 Science-Backed Ingredientsto Supercharge Your Metabolism",
+            "ingredients": ["ingredient-item-fkefsc8h"],
+            "slide_title": "Probiotic B420 (Bifodobacterium Lactis)",
+            "subheading": "<p>An ancient West African spice that's been clinically studied to increase resting metabolic rate, daily calorie burn & energy expenditure.*</p>",
+            "text_contrast_mode": "light"
+          },
+          "type": "ingredients_slide"
+        },
+        "ingredients_slide_z878Mh": {
+          "settings": {
+            "background_color": "",
+            "background_gradient": "",
+            "background_type": "image",
+            "disclaimers": "",
+            "heading": "7 Science-Backed Ingredientsto Supercharge Your Metabolism",
+            "ingredients": ["citrus-extract"],
+            "slide_title": "CQR-300® (Cissus Extract)",
+            "subheading": "<p>An extract from tropical Cissus vine that's been clinically studied to support healthy weight management, reduced waist circumference & your body’s natural GLP-1 function*</p>",
+            "text_contrast_mode": "light"
+          },
+          "type": "ingredients_slide"
+        }
+      },
+      "name": "Education Slideshow",
+      "settings": {
+        "autoplay": false,
+        "autoplay_speed": "6000",
+        "cta_label": "Shop All",
+        "cta_url": "",
+        "show_playback_controls": false
+      },
+      "type": "education-slideshow"
+    },
+    "education_slideshow_xWiVY6": {
+      "block_order": ["percentage_slide_M8cycX"],
+      "blocks": {
+        "percentage_slide_M8cycX": {
+          "settings": {
+            "background_color": "",
+            "background_gradient": "",
+            "background_image_desktop": "shopify://shop_images/Clincal_Studies.png",
+            "background_image_mobile": "shopify://shop_images/Clincal_Studies_1.png",
+            "background_type": "image",
+            "disclaimers": "<p>†Based on individual ingredient research.</p>",
+            "heading": "Clinically Studied Ingredients for Science-Backed Results",
+            "slide_title": "MB-1",
+            "stat_items": [
+              "reduction-in-body-weight",
+              "decrease-in-blood-glucose-levels",
+              "reduction-in-waist-circumference-1",
+              "more-calories-burned-per-day-1"
+            ],
+            "subheading": "<p>MB-1's clinically studied ingredients deliver results you can see and feel.</p>",
+            "wheel_color": "yellow"
+          },
+          "type": "percentage_slide"
+        }
+      },
+      "name": "Education Slideshow",
+      "settings": {
+        "autoplay": false,
+        "autoplay_speed": "6000",
+        "cta_label": "Shop All",
+        "cta_url": "",
+        "show_playback_controls": true
+      },
+      "type": "education-slideshow"
+    },
+    "faq_iEjbWU": {
+      "block_order": [
+        "faq_question_gpCYaF",
+        "faq_question_tVeDhD",
+        "faq_question_dgiGw9",
+        "faq_question_PAxNUn",
+        "faq_question_tXNHwJ",
+        "faq_question_w6RL6w",
+        "faq_question_FCHfrh",
+        "faq_question_kXCcU3"
+      ],
+      "blocks": {
+        "faq_question_FCHfrh": {
+          "settings": {
+            "content": "<p>We designed MB-1 to be the #1 solution for all of your metabolic health needs. Whether you’re looking to optimize for calorie burn, cravings, weight management,  healthy blood glucose or cholesterol levels, MB-1 targets it all. </p>",
+            "title": "How is this different from other natural metabolism solutions?"
+          },
+          "type": "faq-question"
+        },
+        "faq_question_PAxNUn": {
+          "settings": {
+            "content": "<p>Though we are not aware of any interactions, we recommend consulting with your physician before combining any of our supplements with other medications.</p>",
+            "title": "Can I take MB-1 if I am already on a blood sugar and/ or cholesterol medication?"
+          },
+          "type": "faq-question"
+        },
+        "faq_question_dgiGw9": {
+          "settings": {
+            "content": "<p>Though we are not aware of any interactions, we recommend consulting with your physician before combining any of our supplements with other medications.</p>",
+            "title": "Can I take this product if I am already on a weight management medication or GLP-1 drug?"
+          },
+          "type": "faq-question"
+        },
+        "faq_question_gpCYaF": {
+          "settings": {
+            "content": "<p>† Based on a randomized, double-blind, placebo-controlled study involving 72 obese or overweight participants published in Lipids in Health and Disease 2008. <br/><br/>* This statement has not been evaluated by the Food and Drug Administration. This product is not intended to diagnose, treat, cure, or prevent any disease.</p><p>Information provided on this site is for informational purposes only and is not intended to substitute for medical advice from a healthcare professional.</p><p>*This statement has not been evaluated by the Food and Drug Administration. This product is not intended to diagnose, treat, cure, or prevent any disease. This product is not a treatment for obesity, type 2 diabetes or other metabolic diseases. This product is not intended for individuals 18 years old or under. This product is not intended for those pregnant, trying to become pregnant, or breastfeeding. MB-1 has not been studied in combination with prescription medications or other supplements, if you have any concern about potential interactions, we recommend consulting a medical professional before taking MB-1. If you have any pre-existing health conditions, we recommend consulting a medical professional before taking MB-1.</p>",
+            "title": "Resources & Disclaimers"
+          },
+          "type": "faq-question"
+        },
+        "faq_question_kXCcU3": {
+          "settings": {
+            "content": "<p>While medications like Ozempic and Wegovy work by mimicking the effects of GLP-1, a hormone your body produces to help regulate satiety and blood sugar, it can also slow digestion leading to uncomfortable GI side effects in some patients. <br/>MB-1 is an all natural solution, working through multiple different pathways to target 360 metabolic health.</p>",
+            "title": "How is this different from GLP-1 drugs?"
+          },
+          "type": "faq-question"
+        },
+        "faq_question_tVeDhD": {
+          "settings": {
+            "content": "<p>We recommend taking 2 MB-1 capsules either in the morning or pre-workout. MB-1 can really be taken at any time of day but it was formulated to boost energy levels, so we don’t recommend taking it close to bedtime. </p>",
+            "title": "What is the best way to take MB-1?"
+          },
+          "type": "faq-question"
+        },
+        "faq_question_tXNHwJ": {
+          "settings": {
+            "content": "<p>MB-1 contains about half a cup of coffee in terms of its caffeine content. The caffeine is all natural, sourced from green tea for sustained energy without any jitters. </p>",
+            "title": "Does MB-1 contain caffeine?"
+          },
+          "type": "faq-question"
+        },
+        "faq_question_w6RL6w": {
+          "settings": {
+            "content": "<p>MB-1 was designed to be taken daily and we recommend taking the product consistently for 3 months to see results. That said, you should feel the product beginning to kick in as early as month 1. </p>",
+            "title": "When can I expect to see results from MB-1?"
+          },
+          "type": "faq-question"
+        }
+      },
+      "name": "FAQ",
+      "settings": {
+        "heading": "MB-1 FAQs",
+        "subheading": "What to know before you try"
+      },
+      "type": "faq"
+    },
+    "main": {
+      "settings": {
+        "benefits_list": "",
+        "description": "<p>Support healthy weight management with science-backed metabolism support* — featuring clinically studied ingredients that support:</p>",
+        "pdp_subtitle": "",
+        "product_accordions": [],
+        "review_summary_visibility": "default",
+        "title": "MB-1 (METABOLIC BURN)",
+        "upsell_info_label": "",
+        "upsell_info_text": "",
+        "upsell_products": [],
+        "upsell_title": ""
+      },
+      "type": "product-main"
+    },
+    "product_reviews_ffTL6L": {
+      "disabled": true,
+      "name": "Product Reviews",
+      "settings": {
+        "title": "Join the 1M+ Customers Who Trust arrae MB-1"
+      },
+      "type": "product-reviews"
+    },
+    "product_toggle_section_7mj7BN": {
+      "name": "Product Toggle Section",
+      "settings": {
+        "body_1": "<p>Best For: <strong>Daily metabolic support for ages 18-45</strong></p><p>MB-1 is our foundational metabolic formula for anyone looking to support healthy weight management, balanced appetite, calorie burn, and improved metabolic health markers. If you're just beginning your metabolic journey—this is where to start.</p>",
+        "body_2": "<p>Best for: <strong>Extra strength‡ metabolic support for ages 18-45</strong></p><p>Built on the same clinically studied foundation as our original MB-1, MB-1 Max offers comprehensive, immediate-felt support with extra strength‡ cravings control, 100mg of natural caffeine, and mood & motivational support. Whether you're looking to accelerate your progress, break through a plateau, or simply feel more in control of your appetite and cravings–MB-1 Max can help.*</p>",
+        "bottom_link_text_1": "Go to MB-1 45+",
+        "bottom_link_text_2": "Go to MB-1 45+",
+        "bottom_link_url_1": "shopify://products/mb-1-45",
+        "bottom_link_url_2": "shopify://products/mb-1-45",
+        "bottom_text_1": "Over 45+?",
+        "bottom_text_2": "Over 45+?",
+        "button_1_label": "18–44 yrs.",
+        "button_2_label": "Extra Strength",
+        "heading": "Which MB-1 is right for you",
+        "image_alt_1": "",
+        "image_alt_2": "",
+        "image_desktop_1": "shopify://shop_images/media.png",
+        "image_desktop_2": "shopify://shop_images/Frame_1538238912_2.png"
+      },
+      "type": "product-toggle-section"
+    },
+    "science_chart_8yGXCe": {
+      "name": "Science Chart",
+      "settings": {
+        "axis_labels": "Baseline,Week 4,Week 8,Week 10",
+        "axis_x_title": "Week",
+        "axis_y_title": "Body Weight (kg)",
+        "badge_text": "12%",
+        "bottom_heading": "Body Weight Reduction",
+        "bottom_text": "Mean body weight (kg) over 10 weeks with CQR-300® + IGOB131® vs. placebo. Asterisks / p-values and the on-chart 12% reduction bracket from the study figure are not shown.",
+        "chart_type": "line",
+        "color_primary": "#f8a28c",
+        "color_secondary": "#c4c0b8",
+        "disclaimer": "",
+        "heading": "Science-Backed Formulations: CQR-300® + IGOB131®",
+        "primary_label": "CQR-300® + IGOB131®",
+        "primary_values": "99.79,95.77,90.91,87.95",
+        "secondary_label": "Placebo",
+        "secondary_values": "98.05,98.76,96.74,95.99",
+        "subheading": "A 10-week, randomized, double-blind, placebo-controlled study in 72 adults found that supplementation with CQR-300® and IGOB131® supported an average reduction in body weight of approximately 12% compared with baseline.",
+        "y_max": 100,
+        "y_step": 2
+      },
+      "type": "science-chart"
+    },
+    "timeline_QNxyp6": {
+      "block_order": ["step_gFfzTL", "step_FipNAT", "step_phVG7L"],
+      "blocks": {
+        "step_FipNAT": {
+          "settings": {
+            "description": "<p>• Hunger hormones are more balanced*</p><p>• Supported blood sugar & cholesterol levels§* </p><p>• Body composition starts to improve*</p>",
+            "eyebrow": "Feel the Change",
+            "image_desktop": "shopify://shop_images/Frame_1171277801_1_a19fa8d5-cedc-416f-9a78-52a32019b84e.png",
+            "image_mobile": "shopify://shop_images/Frame_1171277801_3_3638558b-9c5d-4f6f-ac3c-59490f2baccf.png",
+            "period": "Months",
+            "step_indicator": "2",
+            "title": "Now your internal systems start doing the heavy lifting"
+          },
+          "type": "step"
+        },
+        "step_gFfzTL": {
+          "settings": {
+            "description": "<p>• Cravings start to reduce*</p><p>• Boosted energy levels*</p><p>• ncreased daily calorie burn*</p>",
+            "eyebrow": "Start the Change",
+            "image_desktop": "shopify://shop_images/Frame_1171277801_c34827b9-53e5-4c81-b55a-8f2dc81ffb35.png",
+            "image_mobile": "shopify://shop_images/Frame_1171277801_3_ec9c50ab-036b-445c-8ab5-6d2ff7e2a5de.png",
+            "period": "Months",
+            "step_indicator": "1",
+            "title": "Take It as part of your daily routine"
+          },
+          "type": "step"
+        },
+        "step_phVG7L": {
+          "settings": {
+            "description": "<p>• Up to 12% reduction in body weight*</p><p>• Enhanced fat metabolism*</p><p>• Improved metabolic biomarkers for lasting results*</p>",
+            "eyebrow": "See the Change",
+            "image_desktop": "shopify://shop_images/Frame_1171277801_4.png",
+            "image_mobile": "shopify://shop_images/Frame_1171277801_2_5a0b0828-0e5e-4f21-a8d5-749096b7745f.png",
+            "period": "Months",
+            "step_indicator": "3",
+            "title": "Now your internal systems start doing the heavy lifting"
+          },
+          "type": "step"
+        }
+      },
+      "name": "Timeline",
+      "settings": {
+        "default_expanded_card_position": "2",
+        "heading": "<p>Transform Your Metabolic Health</p><p>with Benefits That Build, Month Over Month</p>",
+        "subtitle": "<p>Here’s what to expect with MB-1:</p>"
+      },
+      "type": "timeline"
+    },
+    "ugc_section_WQKJTQ": {
+      "block_order": [
+        "ugc_card_dkRGKB",
+        "ugc_card_CwLWiK",
+        "ugc_card_QxtkFa",
+        "ugc_card_mB4k7m",
+        "ugc_card_WKAnJh"
+      ],
+      "blocks": {
+        "ugc_card_CwLWiK": {
+          "settings": {
+            "image_alt_text": "",
+            "main_text": "\"These capsules in the morning has really been a game changer\"",
+            "media_image": "shopify://shop_images/media_3_8cb789f3-68b9-4d4e-b7d6-434f43675c41.png",
+            "media_type": "video",
+            "media_video": "shopify://files/videos/Laura Monk.mp4",
+            "secondary_text": "Laura",
+            "small_main_text": false,
+            "tertiary_text": ""
+          },
+          "type": "ugc_card"
+        },
+        "ugc_card_QxtkFa": {
+          "settings": {
+            "image_alt_text": "",
+            "main_text": "\"I've noticed that it really helps me give me that extra energy boost i need for my workouts and allows me to push a little bit harder\"",
+            "media_type": "video",
+            "media_video": "shopify://files/videos/Sofia Bianco Video 1.MOV",
+            "secondary_text": "Sofia",
+            "small_main_text": false,
+            "tertiary_text": ""
+          },
+          "type": "ugc_card"
+        },
+        "ugc_card_WKAnJh": {
+          "settings": {
+            "image_alt_text": "",
+            "main_text": "\"Even though I would find things that were temporary fixes I never really felt like I had something that I could incorporate every single day that was actually going to be a long-term solution\"",
+            "media_image": "shopify://shop_images/media_dd0fd82d-cd40-4638-9ea0-37aa74369852.jpg",
+            "media_type": "video",
+            "media_video": "shopify://files/videos/MB1 Meg Chahl.mov",
+            "secondary_text": "Meg",
+            "small_main_text": false,
+            "tertiary_text": ""
+          },
+          "type": "ugc_card"
+        },
+        "ugc_card_dkRGKB": {
+          "settings": {
+            "image_alt_text": "",
+            "main_text": "\"After two months of taking the MB-1 supplement I really see a difference in my lifestyle\"",
+            "media_type": "video",
+            "media_video": "shopify://files/videos/Kitty He.mov",
+            "secondary_text": "Kitty",
+            "small_main_text": false,
+            "tertiary_text": ""
+          },
+          "type": "ugc_card"
+        },
+        "ugc_card_mB4k7m": {
+          "settings": {
+            "image_alt_text": "",
+            "main_text": "\"Even though I would find things that were temporary fixes I never really felt like I had something that I could incorporate every single day that was actually going to be a long-term solution\"",
+            "media_image": "shopify://shop_images/media_dd0fd82d-cd40-4638-9ea0-37aa74369852.jpg",
+            "media_type": "video",
+            "media_video": "shopify://files/videos/MB1 Meg Chahl.mov",
+            "secondary_text": "Meg",
+            "small_main_text": false,
+            "tertiary_text": ""
+          },
+          "type": "ugc_card"
+        }
+      },
+      "name": "UGC Section",
+      "settings": {
+        "heading": "Loved by <em>Millions of Women Worldwide</em>",
+        "show_arrows": true,
+        "show_pagination": false
+      },
+      "type": "ugc-section"
+    }
+  }
+}

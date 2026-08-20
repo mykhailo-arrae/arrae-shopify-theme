@@ -1,0 +1,289 @@
+{% # DO NOT EDIT: This file is auto-generated and will be overwritten. [build-fingerprint:assets:source={_js/sections/compare/section.liquid}] %}
+
+<style>
+.tvg_compare_W3JOuW_root{background-color:oklch(96.19% .011 63.36);border-radius:.5rem;width:100%;padding:0;display:block}
+.tvg_compare_W3JOuW_inner{flex-direction:column;gap:2.5rem;width:100%;max-width:94.5rem;margin-inline:auto;padding-block:1.5rem 2.25rem;padding-inline:1.5rem;display:flex}
+.tvg_compare_W3JOuW_intro{text-align:center;flex-direction:column;align-items:center;gap:1.5rem;display:flex}
+.tvg_compare_W3JOuW_heading{letter-spacing:-.045rem;color:oklch(21.71% .0232 69.07);text-wrap:balance;margin:0;font-family:Cardinal Fruit,Georgia,Book Antiqua,Times New Roman,serif;font-size:2rem;font-weight:400;line-height:98%}
+.tvg_compare_W3JOuW_subtitle{color:oklch(34.85% 0 0);max-width:22.5rem;margin:0;font-family:proxima-nova,-apple-system,blinkmacsystemfont,Segoe UI,roboto,oxygen-sans,ubuntu,cantarell,Helvetica Neue,sans-serif;font-size:1rem;font-weight:300;line-height:120%}
+.tvg_compare_W3JOuW_table{flex-direction:column;gap:1.5rem;display:flex}
+.tvg_compare_W3JOuW_grid{grid-template-columns:repeat(2,minmax(0,1fr));align-items:end;column-gap:1rem;display:grid}
+.tvg_compare_W3JOuW_col-title{color:oklch(21.71% .0232 69.07);text-transform:uppercase;letter-spacing:.0675rem;border-bottom:1px solid oklch(88.04% .0315 48.34);width:100%;margin:0;padding-bottom:.5rem;font-family:proxima-nova,-apple-system,blinkmacsystemfont,Segoe UI,roboto,oxygen-sans,ubuntu,cantarell,Helvetica Neue,sans-serif;font-size:1rem;font-weight:600;line-height:120%;display:block}
+.tvg_compare_W3JOuW_media-cell{justify-content:flex-start;align-items:flex-end;display:flex}
+.tvg_compare_W3JOuW_media-frame{width:100%;max-width:8.8125rem;max-height:7.875rem;position:relative;overflow:hidden}
+.tvg_compare_W3JOuW_media-img{object-fit:contain}
+.tvg_compare_W3JOuW_features{align-items:start;margin-top:1.25rem}
+.tvg_compare_W3JOuW_feature-list{flex-direction:column;row-gap:.75rem;margin:0;padding:0;list-style:none;display:flex}
+.tvg_compare_W3JOuW_feature{text-align:left;align-items:flex-start;gap:.5rem;display:flex}
+.tvg_compare_W3JOuW_text{color:oklch(21.71% .0232 69.07);text-wrap:pretty;font-family:proxima-nova,-apple-system,blinkmacsystemfont,Segoe UI,roboto,oxygen-sans,ubuntu,cantarell,Helvetica Neue,sans-serif;font-size:.875rem;font-weight:300;line-height:120%}
+.tvg_compare_W3JOuW_feature--product-a .tvg_compare_W3JOuW_text{font-weight:400}
+.tvg_compare_W3JOuW_icon-container{color:oklch(34.85% 0 0);background-color:oklch(88.04% .0315 48.34);border-radius:50%;flex-shrink:0;justify-content:center;align-items:center;width:1.25rem;height:1.25rem;display:inline-flex;overflow:hidden}
+.tvg_compare_W3JOuW_icon-container--checkmark{color:oklch(94.31% 0 0);background-color:oklch(31.71% .0299 64.29)}
+.tvg_compare_W3JOuW_question-mark{font-weight:200}
+@media print,screen and (width>=64em){.tvg_compare_W3JOuW_root{padding:1.5rem}
+.tvg_compare_W3JOuW_inner{border-radius:.75rem;grid-template-columns:minmax(0,1fr) minmax(0,2fr);align-items:start;gap:3rem;padding:3.5rem 3rem;display:grid}
+.tvg_compare_W3JOuW_intro{text-align:left;align-items:flex-start}
+.tvg_compare_W3JOuW_heading{letter-spacing:-.075rem;font-family:Cardinal Fruit,Georgia,Book Antiqua,Times New Roman,serif;font-size:2.5rem;font-weight:400;line-height:112%}
+.tvg_compare_W3JOuW_subtitle{font-size:1.125rem}
+.tvg_compare_W3JOuW_table{gap:2.5rem}
+.tvg_compare_W3JOuW_col-title{letter-spacing:.075rem;font-size:1.25rem}
+.tvg_compare_W3JOuW_media-frame{max-width:14.875rem;max-height:13.5625rem}
+.tvg_compare_W3JOuW_features{margin-top:0}
+.tvg_compare_W3JOuW_feature-list{row-gap:1.125rem}
+.tvg_compare_W3JOuW_text{font-size:1.25rem}
+.tvg_compare_W3JOuW_icon-container{width:1.5rem;height:1.5rem}
+}
+</style>
+
+{% liquid
+  assign heading = section.settings.heading
+  assign subtitle = section.settings.subtitle
+  assign product_a_title = section.settings.product_a_title
+  assign product_a_image = section.settings.product_a_image
+  assign product_b_title = section.settings.product_b_title
+  assign product_b_image = section.settings.product_b_image
+  assign product_a_image_alt = product_a_image.alt | default: product_a_title
+  assign product_b_image_alt = product_b_image.alt | default: product_b_title
+
+  assign feature_blocks = section.blocks | where: 'type', 'feature_item'
+  assign has_features = false
+  if feature_blocks.size > 0
+    assign has_features = true
+  endif
+%}
+
+{% unless heading == blank and subtitle == blank and has_features == false %}
+  <div class="tvg_compare_W3JOuW_root">
+    <div class="tvg_compare_W3JOuW_inner">
+      <div class="tvg_compare_W3JOuW_intro">
+        {% if heading != blank %}
+          <h2 class="tvg_compare_W3JOuW_heading">{{ heading }}</h2>
+        {% endif %}
+
+        {% if subtitle != blank %}
+          <p class="tvg_compare_W3JOuW_subtitle">{{ subtitle }}</p>
+        {% endif %}
+      </div>
+
+      <div class="tvg_compare_W3JOuW_table">
+        <div class="tvg_compare_W3JOuW_grid ">
+          <div class="">
+            <h3 class="tvg_compare_W3JOuW_col-title">{{ product_a_title }}</h3>
+          </div>
+          <div class="">
+            <h3 class="tvg_compare_W3JOuW_col-title">{{ product_b_title }}</h3>
+          </div>
+        </div>
+
+        <div class="tvg_compare_W3JOuW_grid ">
+          <div class="tvg_compare_W3JOuW_media-cell">
+            {% if product_a_image != blank %}
+              <div class="tvg_compare_W3JOuW_media-frame">
+                {% render 'core-image',
+                  image: product_a_image,
+                  image_alt_text: product_a_image_alt,
+                  mode: 'contain',
+                  object_fit: 'contain',
+                  class: 'tvg_compare_W3JOuW_media-img',
+                  sizes: '(min-width: 1024px) 238px, 141px',
+                  srcset_print_sizes: '240,360,480,720'
+                %}
+              </div>
+            {% endif %}
+          </div>
+          <div class="tvg_compare_W3JOuW_media-cell">
+            {% if product_b_image != blank %}
+              <div class="tvg_compare_W3JOuW_media-frame">
+                {% render 'core-image',
+                  image: product_b_image,
+                  image_alt_text: product_b_image_alt,
+                  mode: 'contain',
+                  object_fit: 'contain',
+                  class: 'tvg_compare_W3JOuW_media-img',
+                  sizes: '(min-width: 1024px) 224px, 130px',
+                  srcset_print_sizes: '240,360,480,720'
+                %}
+              </div>
+            {% endif %}
+          </div>
+        </div>
+
+        {% if has_features %}
+          <div class="tvg_compare_W3JOuW_grid tvg_compare_W3JOuW_features">
+            <ul class="tvg_compare_W3JOuW_feature-list" role="list">
+              {% for block in section.blocks %}
+                {% if block.type != 'feature_item' %}
+                  {% continue %}
+                {% endif %}
+
+                {% liquid
+                  assign feature_product_handle = block.settings.feature_product | handle
+                  unless feature_product_handle == 'product-a' or feature_product_handle == 'a'
+                    continue
+                  endunless
+
+                  assign icon_handle = block.settings.icon_type | handle
+                  assign icon_type = icon_handle
+                  if icon_handle == 'check' or icon_handle == 'checkmark'
+                    assign icon_type = 'checkmark'
+                  elsif icon_handle == 'cross' or icon_handle == 'x' or icon_handle == 'close'
+                    assign icon_type = 'cross'
+                  elsif icon_handle == 'question' or icon_handle == 'question-mark'
+                    assign icon_type = 'question'
+                  endif
+                %}
+                <li
+                  class="tvg_compare_W3JOuW_feature tvg_compare_W3JOuW_feature--product-a"
+                  {{- block.shopify_attributes -}}
+                >
+                  <div
+                    data-icon-type="{{ icon_type }}"
+                    class="tvg_compare_W3JOuW_icon-container {% if icon_type == 'checkmark' %} tvg_compare_W3JOuW_icon-container--checkmark {% endif %}"
+                  >
+                    {% if icon_type == 'checkmark' %}
+                      {% render 'icon-check' %}
+                    {% elsif icon_type == 'cross' %}
+                      {% render 'icon-close' %}
+                    {% elsif icon_type == 'question' %}
+                      <span class="tvg_compare_W3JOuW_question-mark">?</span>
+                    {% endif %}
+                  </div>
+                  <span class="tvg_compare_W3JOuW_text">{{ block.settings.text }}</span>
+                </li>
+              {% endfor %}
+            </ul>
+
+            <ul class="tvg_compare_W3JOuW_feature-list" role="list">
+              {% for block in section.blocks %}
+                {% if block.type != 'feature_item' %}
+                  {% continue %}
+                {% endif %}
+
+                {% liquid
+                  assign feature_product_handle = block.settings.feature_product | handle
+                  unless feature_product_handle == 'product-b' or feature_product_handle == 'b'
+                    continue
+                  endunless
+
+                  assign icon_handle = block.settings.icon_type | handle
+                  assign icon_type = icon_handle
+                  if icon_handle == 'check' or icon_handle == 'checkmark'
+                    assign icon_type = 'checkmark'
+                  elsif icon_handle == 'cross' or icon_handle == 'x' or icon_handle == 'close'
+                    assign icon_type = 'cross'
+                  elsif icon_handle == 'question' or icon_handle == 'question-mark'
+                    assign icon_type = 'question'
+                  endif
+                %}
+                <li
+                  class="tvg_compare_W3JOuW_feature "
+                  {{- block.shopify_attributes -}}
+                >
+                  <div
+                    data-icon-type="{{ icon_type }}"
+                    class="tvg_compare_W3JOuW_icon-container {% if icon_type == 'checkmark' %} tvg_compare_W3JOuW_icon-container--checkmark {% endif %}"
+                  >
+                    {% if icon_type == 'checkmark' %}
+                      {% render 'icon-check' %}
+                    {% elsif icon_type == 'cross' %}
+                      {% render 'icon-close' %}
+                    {% elsif icon_type == 'question' %}
+                      <span class="tvg_compare_W3JOuW_question-mark">?</span>
+                    {% endif %}
+                  </div>
+                  <span class="tvg_compare_W3JOuW_text">{{ block.settings.text }}</span>
+                </li>
+              {% endfor %}
+            </ul>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+{% endunless %}
+
+{% schema %}
+{
+  "name": "Compare",
+  "tag": "section",
+  "class": "js-compare",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle"
+    },
+    {
+      "type": "header",
+      "content": "Product A"
+    },
+    {
+      "type": "text",
+      "id": "product_a_title",
+      "label": "Product A Title"
+    },
+    {
+      "type": "image_picker",
+      "id": "product_a_image",
+      "label": "Product A Image"
+    },
+    {
+      "type": "header",
+      "content": "Product B"
+    },
+    {
+      "type": "text",
+      "id": "product_b_title",
+      "label": "Product B Title"
+    },
+    {
+      "type": "image_picker",
+      "id": "product_b_image",
+      "label": "Product B Image"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "feature_item",
+      "name": "Feature Item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "feature_product",
+          "label": "Feature Product",
+          "default": "product_a",
+          "info": "Use product_a or product_b. Connect to your metaobject choice list field for dynamic content."
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text"
+        },
+        {
+          "type": "text",
+          "id": "icon_type",
+          "label": "Icon Type",
+          "default": "checkmark",
+          "info": "Use checkmark, question, or cross. Connect to your metaobject choice list field for dynamic content."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Compare",
+      "category": "Product",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}

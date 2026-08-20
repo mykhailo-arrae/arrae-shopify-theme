@@ -1,0 +1,36 @@
+/* DO NOT EDIT: This file is auto-generated and will be overwritten. [build-fingerprint:codegen] */
+export const style = {
+  "atc": "tvg_routine_results_I8XR6W_atc",
+  "atc__button": "tvg_routine_results_I8XR6W_atc__button",
+  "close": "tvg_routine_results_I8XR6W_close",
+  "content": "tvg_routine_results_I8XR6W_content",
+  "error": "tvg_routine_results_I8XR6W_error",
+  "header": "tvg_routine_results_I8XR6W_header",
+  "heading": "tvg_routine_results_I8XR6W_heading",
+  "list": "tvg_routine_results_I8XR6W_list",
+  "media": "tvg_routine_results_I8XR6W_media",
+  "panel": "tvg_routine_results_I8XR6W_panel",
+  "product": "tvg_routine_results_I8XR6W_product",
+  "product__atc": "tvg_routine_results_I8XR6W_product__atc",
+  "product__atc_desktop": "tvg_routine_results_I8XR6W_product__atc_desktop",
+  "product__atc_mobile": "tvg_routine_results_I8XR6W_product__atc_mobile",
+  "product__content": "tvg_routine_results_I8XR6W_product__content",
+  "product__description": "tvg_routine_results_I8XR6W_product__description",
+  "product__heading": "tvg_routine_results_I8XR6W_product__heading",
+  "product__image": "tvg_routine_results_I8XR6W_product__image",
+  "product__link": "tvg_routine_results_I8XR6W_product__link",
+  "product__media": "tvg_routine_results_I8XR6W_product__media",
+  "product__price": "tvg_routine_results_I8XR6W_product__price",
+  "product__reviews": "tvg_routine_results_I8XR6W_product__reviews",
+  "product__row": "tvg_routine_results_I8XR6W_product__row",
+  "product__subheading": "tvg_routine_results_I8XR6W_product__subheading",
+  "product__title": "tvg_routine_results_I8XR6W_product__title",
+  "products": "tvg_routine_results_I8XR6W_products",
+  "root": "tvg_routine_results_I8XR6W_root",
+  "row": "tvg_routine_results_I8XR6W_row",
+  "snippet": "tvg_routine_results_I8XR6W_snippet",
+  "subheading": "tvg_routine_results_I8XR6W_subheading",
+  "title": "tvg_routine_results_I8XR6W_title"
+} as const
+export type ClassNames = keyof typeof style
+export default style

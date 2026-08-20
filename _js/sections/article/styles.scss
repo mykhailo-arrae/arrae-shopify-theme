@@ -1,0 +1,172 @@
+@use 'unit' as u;
+@use 'style-guide/spacing' as spacing;
+@use 'style-guide/sizes' as sizes;
+@use 'style-guide/typography' as typography;
+@use 'style-guide/colors' as color;
+@use 'style-guide/mixins' as mixin;
+@use 'style-guide/media' as mq;
+
+.section {
+  @include mixin.container();
+  display: block;
+  padding-inline: spacing.get(size-14);
+  margin-top: spacing.get(size-48);
+  margin-bottom: spacing.get(size-40);
+
+  @include mq.min(tablet) {
+    padding-inline: spacing.get(size-48);
+  }
+}
+
+.layout {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+  @include mq.min(tabletlandscape) {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+}
+
+.main {
+  width: 100%;
+
+  @include mq.min(tabletlandscape) {
+    width: 50%;
+    flex-shrink: 0;
+  }
+}
+
+.content {
+  position: relative;
+  width: 100%;
+
+  @include mq.min(tabletlandscape) {
+    padding-right: spacing.get(size-16);
+  }
+}
+
+.content__rte {
+  @include typography.body(size-16, 300);
+  margin-bottom: spacing.get(size-36);
+  font-weight: 300;
+  color: color.get(text);
+  line-height: 120%;
+  letter-spacing: u.rem-calc(-0.16);
+
+  @include mq.min(tabletlandscape) {
+    @include typography.body(size-20, 300);
+    font-size: sizes.get(size-20) !important;
+    margin-bottom: spacing.get(size-48);
+    letter-spacing: u.rem-calc(-0.2);
+  }
+
+  strong {
+    font-weight: 500;
+  }
+
+  :global(img) {
+    width: 100%;
+    height: auto;
+
+    @include mq.min(mobile) {
+      width: auto;
+    }
+  }
+
+  // Embedded players (podcast / video embed codes authored in the RTE).
+  // Keep them within the column and respect their aspect ratio.
+  :global(iframe) {
+    max-width: 100%;
+    border: 0;
+  }
+
+  // Video embeds (YouTube): full-width, responsive 16:9 box.
+  // Exclude the article-media snippet's own iframe so its .media wrapper
+  // (including portrait Shorts) controls the aspect ratio.
+  :global(iframe[src*='youtube']:not(.js-article-media-embed)),
+  :global(iframe[src*='youtu.be']:not(.js-article-media-embed)) {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    border-radius: spacing.get(size-8);
+  }
+
+  // Podcast players: full-width, keep their natural height.
+  :global(iframe[src*='spotify']),
+  :global(iframe[src*='podcast']) {
+    width: 100%;
+    border-radius: spacing.get(size-12);
+  }
+}
+
+.sidebar {
+  width: 100%;
+  min-width: 0;
+
+  @include mq.min(tabletlandscape) {
+    position: sticky;
+    top: spacing.get(size-24);
+    width: 50%;
+    margin-left: auto;
+    flex-shrink: 0;
+    align-self: flex-start;
+    max-width: 343px;
+  }
+}
+
+.productCard {
+  width: 100%;
+  display: block;
+  overflow: hidden;
+  position: relative;
+  flex-shrink: 0;
+  height: auto;
+
+  :global(.portable-snippet) {
+    height: 100%;
+  }
+}
+
+.productsTitle {
+  @include typography.font-cardinal-fruit();
+  margin: 0 0 spacing.get(size-16);
+  color: color.get(text);
+  font-size: sizes.get(size-24);
+  line-height: 120%;
+  letter-spacing: u.rem-calc(-0.72);
+
+  @include mq.min(tabletlandscape) {
+    margin-bottom: spacing.get(size-24);
+    text-wrap: balance;
+  }
+}
+
+.productsList {
+  display: flex;
+  flex-direction: column;
+  gap: spacing.get(size-16);
+  margin-bottom: spacing.get(size-24);
+
+  @include mq.min(tabletlandscape) {
+    gap: spacing.get(size-32);
+    margin-bottom: spacing.get(size-48);
+  }
+}
+
+.back {
+  margin-top: spacing.get(size-24);
+  margin-bottom: spacing.get(size-24);
+  margin-inline: auto;
+  width: fit-content;
+
+  @include mq.min(tabletlandscape) {
+    margin-top: spacing.get(size-40);
+    margin-bottom: spacing.get(size-40);
+  }
+
+  a {
+    padding: spacing.get(size-12) spacing.get(size-20);
+  }
+}

@@ -1,0 +1,105 @@
+@use './core/style-guide/colors' as color;
+@use './core/style-guide/buttons' as button;
+@use './core/style-guide/mixins' as mixin;
+
+/* ===================================================== */
+/* Inline CSS styles
+/* ===================================================== */
+
+@font-face {
+  font-family: 'Cardinal Fruit';
+  src: url('{{ "CardinalFruit-Regular.woff2" | asset_url }}') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Cardinal Fruit';
+  src: url('{{ "CardinalFruit-Italic.woff2" | asset_url }}') format('woff2');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Cardinal Fruit';
+  src: url('{{ "CardinalFruit-Medium.woff2" | asset_url }}') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Cardinal Fruit';
+  src: url('{{ "CardinalFruit-MediumItalic.woff2" | asset_url }}')
+    format('woff2');
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Cardinal Fruit';
+  src: url('{{ "CardinalFruit-SemiBold.woff2" | asset_url }}') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Cardinal Fruit';
+  src: url('{{ "CardinalFruit-SemiBoldItalic.woff2" | asset_url }}')
+    format('woff2');
+  font-weight: 600;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Cardinal Fruit';
+  src: url('{{ "CardinalFruit-Bold.woff2" | asset_url }}') format('woff2');
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Cardinal Fruit';
+  src: url('{{ "CardinalFruit-BoldItalic.woff2" | asset_url }}') format('woff2');
+  font-weight: 800;
+  font-style: italic;
+  font-display: swap;
+}
+
+body,
+html {
+  font-family: 'proxima-nova', sans-serif;
+  background-color: color.get(background);
+}
+
+a:not(
+  [class*='core_button'],
+  [class*='logo__link'],
+  [class*='product_card'],
+  [class*='article_card'],
+  [class*='tag-pill']
+) {
+  color: inherit;
+
+  &:hover {
+    opacity: 0.6;
+  }
+}
+
+a,
+button,
+input,
+select,
+textarea,
+summary,
+[role='button'],
+[role='link'],
+[tabindex]:not([tabindex='-1']) {
+  @include mixin.focus-visible-ring();
+}

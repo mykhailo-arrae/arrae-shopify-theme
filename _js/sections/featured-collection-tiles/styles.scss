@@ -1,0 +1,44 @@
+@use 'unit' as u;
+@use 'style-guide/spacing' as spacing;
+@use 'style-guide/sizes' as sizes;
+@use 'style-guide/colors' as color;
+@use 'style-guide/media' as mq;
+@use 'style-guide/mixins' as mixin;
+
+.root {
+  width: 100%;
+  box-sizing: border-box;
+  background: color.get(background);
+  padding-block: spacing.get(size-48);
+  padding-inline: spacing.get(size-24);
+  margin-inline: auto;
+  max-width: u.rem-calc(1512);
+
+  @include mq.min(tabletlandscape) {
+    padding: spacing.get(size-48);
+  }
+}
+
+.inner {
+  @include mixin.container();
+  box-sizing: border-box;
+}
+
+.grid {
+  display: grid;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: sizes.get(size-16);
+  align-items: start;
+
+  @include mq.min(tabletlandscape) {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.item {
+  min-width: 0;
+  display: block;
+}

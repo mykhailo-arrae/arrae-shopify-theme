@@ -1,0 +1,200 @@
+{% liquid
+  assign heading = section.settings.heading
+  assign show_arrows = section.settings.show_arrows | default: true, allow_false: true
+  assign show_pagination = section.settings.show_pagination | default: true, allow_false: true
+
+  render 'ugc-card-stylesheet'
+%}
+
+<div class="{# style root #}">
+  <div class="{# style container #}">
+    {% if heading != blank %}
+      <h2 class="{# style heading #}">
+        {{ heading }}
+      </h2>
+    {% endif %}
+
+    <div class="{# style carousel #} swiper">
+      <div class="swiper-wrapper">
+        {% for block in section.blocks %}
+          {% if block.settings.media_image != blank
+            or block.settings.media_video != blank
+            or block.settings.main_text != blank
+            or block.settings.secondary_text != blank
+            or block.settings.tertiary_text != blank
+          %}
+            <div class="{# style card #} swiper-slide" {{ block.shopify_attributes }}>
+              {%
+                render 'ugc-card',
+                main_text: block.settings.main_text | default: null,
+                secondary_text: block.settings.secondary_text | default: null,
+                tertiary_text: block.settings.tertiary_text | default: null,
+                small_main_text: block.settings.small_main_text,
+                media_type: block.settings.media_type,
+                media_image: block.settings.media_image,
+                media_video: block.settings.media_video,
+                image_alt_text: block.settings.image_alt_text | default: null,
+                video_uid: block.id,
+              %}
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+      {% if show_pagination %}
+        <div class="{# style carousel-pagination #} swiper-pagination"></div>
+      {% endif %}
+    </div>
+
+    {% if section.blocks.size > 1 and show_arrows %}
+      <div class="{# style carousel-nav--arrows #} swiper-navigation-arrows js-nav-arrows">
+        <button
+          type="button"
+          class="swiper-button-prev {# style arrow #}"
+          title="{{ 'accessibility.previous_slide' | t }}"
+          aria-label="{{ 'accessibility.previous_slide' | t }}"
+        >
+          <span aria-hidden="true">{%- render 'icon-arrow-left' -%}</span>
+        </button>
+
+        <button
+          type="button"
+          class="swiper-button-next {# style arrow #}"
+          title="{{ 'accessibility.next_slide' | t }}"
+          aria-label="{{ 'accessibility.next_slide' | t }}"
+        >
+          <span aria-hidden="true">{%- render 'icon-arrow-right' -%}</span>
+        </button>
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "UGC Section",
+  "class": "{# style section #} js-ugc-section",
+  "settings": [
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Section title"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_arrows",
+      "label": "Show Arrows",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_pagination",
+      "label": "Show Pagination",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "ugc_card",
+      "name": "UGC Card",
+      "limit": 8,
+      "settings": [
+        {
+          "type": "header",
+          "content": "Content"
+        },
+        {
+          "type": "textarea",
+          "id": "main_text",
+          "label": "Main Text",
+          "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor."
+        },
+        {
+          "type": "text",
+          "id": "secondary_text",
+          "label": "Secondary Text",
+          "default": "Small byline text."
+        },
+        {
+          "type": "text",
+          "id": "tertiary_text",
+          "label": "Tertiary Text",
+          "info": "Optional. Renders below the secondary text (e.g. \"PhD in Nutritional Sciences\")."
+        },
+        {
+          "type": "checkbox",
+          "id": "small_main_text",
+          "label": "Use smaller main text",
+          "default": false,
+          "info": "Reduces the main text size."
+        },
+        {
+          "type": "header",
+          "content": "Background"
+        },
+        {
+          "type": "select",
+          "id": "media_type",
+          "label": "Media Type",
+          "options": [
+            {
+              "value": "image",
+              "label": "Image"
+            },
+            {
+              "value": "video",
+              "label": "Video"
+            }
+          ],
+          "default": "image"
+        },
+        {
+          "type": "image_picker",
+          "id": "media_image",
+          "label": "Media Image",
+          "visible_if": "{{ block.settings.media_type == 'image' }}"
+        },
+        {
+          "type": "text",
+          "id": "image_alt_text",
+          "label": "Image alt text",
+          "info": "Describe the image for screen readers. Falls back to the image alt in the media library, then the secondary text.",
+          "visible_if": "{{ block.settings.media_type == 'image' }}"
+        },
+        {
+          "type": "video",
+          "id": "media_video",
+          "label": "Media Video",
+          "visible_if": "{{ block.settings.media_type == 'video' }}"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "UGC Section",
+      "category": "Carousels",
+      "settings": {},
+      "blocks": [
+        {
+          "type": "ugc_card"
+        },
+        {
+          "type": "ugc_card"
+        },
+        {
+          "type": "ugc_card"
+        },
+        {
+          "type": "ugc_card"
+        },
+        {
+          "type": "ugc_card"
+        },
+        {
+          "type": "ugc_card"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,253 @@
+{% liquid
+  assign blocks = section.blocks
+  assign block_count = blocks.size
+  assign heading = section.settings.heading
+
+  assign default_position_raw = section.settings.default_expanded_card_position
+  assign default_active = 0
+  if default_position_raw != blank
+    assign default_position = default_position_raw | plus: 0
+    if default_position >= 1 and default_position <= block_count
+      assign default_active = default_position | minus: 1
+    endif
+  endif
+%}
+
+{% unless heading == blank %}
+  <div
+    class="{# style root #}"
+    data-timeline
+    data-default-active="{{ default_active }}"
+  >
+    <div class="{# style intro #}">
+      <div class="{# style heading #}" role="heading" aria-level="2">
+        {{ heading }}
+      </div>
+      {% if section.settings.subtitle != blank %}
+        <div class="{# style subtitle #}">{{ section.settings.subtitle }}</div>
+      {% endif %}
+    </div>
+
+    <div
+      class="{# style timeline #}"
+      data-timeline-track
+      data-stack="false"
+      data-card-count="{{ block_count }}"
+    >
+      {% for block in blocks %}
+        {% liquid
+          assign is_active = false
+          if forloop.index0 == default_active
+            assign is_active = true
+          endif
+
+          assign desktop_image = block.settings.image_desktop
+          assign mobile_image = block.settings.image_mobile
+          assign hover_image = block.settings.image_hover
+
+          assign has_image = false
+          if desktop_image != blank or mobile_image != blank
+            assign has_image = true
+          endif
+        %}
+
+        <div
+          class="{# style card #}"
+          data-timeline-card
+          data-index="{{ forloop.index0 }}"
+          {% if is_active %}
+            data-active="true"
+          {% endif %}
+          {{ block.shopify_attributes }}
+        >
+          <h3 class="{# style card-heading #}">
+            <div class="{# style trigger #}">
+              <span class="{# style header-row #}">
+                <span class="{# style step-group #}">
+                  {% if block.settings.step_indicator != blank %}
+                    <span class="{# style step-indicator #}" aria-hidden="true">
+                      {{- block.settings.step_indicator -}}
+                    </span>
+                  {% endif %}
+                  {% if block.settings.period != blank %}
+                    <span class="{# style period #}">{{ block.settings.period }}</span>
+                  {% endif %}
+                </span>
+                {% if block.settings.eyebrow != blank %}
+                  <span class="{# style eyebrow #}">{{ block.settings.eyebrow }}</span>
+                {% endif %}
+              </span>
+            </div>
+          </h3>
+
+          <div class="{# style panel #}">
+            <div class="{# style panel-inner #}">
+              {% if has_image %}
+                <div
+                  class="{# style image #}"
+                  {% if hover_image != blank %}
+                    data-has-hover="true"
+                  {% endif %}
+                >
+                  {% render 'core-image',
+                    image: desktop_image,
+                    image_mobile: mobile_image,
+                    mode: 'cover',
+                    object_fit: 'cover',
+                    lazyload: true,
+                    sizes: '(min-width: 1280px) 30vw, 90vw',
+                    srcset_print_sizes: '320,480,640',
+                    mobile_srcset_print_sizes: '320,480,640'
+                  %}
+
+                  {% if hover_image != blank %}
+                    <span class="{# style image-hover #}" aria-hidden="true">
+                      {% render 'core-image',
+                        image: hover_image,
+                        mode: 'cover',
+                        object_fit: 'cover',
+                        lazyload: true,
+                        sizes: '(min-width: 1280px) 30vw, 90vw',
+                        srcset_print_sizes: '320,480,640'
+                      %}
+                    </span>
+                  {% endif %}
+                </div>
+              {% endif %}
+
+              <div class="{# style body #}">
+                {% if block.settings.title != blank %}
+                  <p class="{# style title #}">{{ block.settings.title }}</p>
+                {% endif %}
+                {% if block.settings.description != blank %}
+                  <div class="{# style description #}">{{ block.settings.description }}</div>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+      <div class="{# style runway #}" data-timeline-runway aria-hidden="true"></div>
+    </div>
+  </div>
+{% endunless %}
+
+{% schema %}
+{
+  "name": "Timeline",
+  "tag": "section",
+  "class": "{# style section #} js-timeline",
+  "max_blocks": 4,
+  "settings": [
+    {
+      "type": "richtext",
+      "id": "heading",
+      "label": "Heading"
+    },
+    {
+      "type": "richtext",
+      "id": "subtitle",
+      "label": "Subtitle"
+    },
+    {
+      "type": "text",
+      "id": "default_expanded_card_position",
+      "label": "Default Expanded Card Position",
+      "info": "The position of the card expanded when the section loads.",
+      "default": "2"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "step",
+      "name": "Step",
+      "settings": [
+        {
+          "type": "text",
+          "id": "step_indicator",
+          "label": "Step Indicator",
+          "info": "The circular number shown in the timeline. Intended for a single character."
+        },
+        {
+          "type": "text",
+          "id": "period",
+          "label": "Period",
+          "info": "Optional. e.g. MONTH, MONTHS, WEEKS."
+        },
+        {
+          "type": "text",
+          "id": "eyebrow",
+          "label": "Eyebrow",
+          "info": "Optional. e.g. Metabolism Kicks In."
+        },
+        {
+          "type": "image_picker",
+          "id": "image_desktop",
+          "label": "Image Desktop",
+          "info": "Optional. Displayed inside the card. The card renders without an image when left empty."
+        },
+        {
+          "type": "image_picker",
+          "id": "image_mobile",
+          "label": "Image Mobile",
+          "info": "Optional. Used only on mobile. Falls back to the desktop image when empty."
+        },
+        {
+          "type": "image_picker",
+          "id": "image_hover",
+          "label": "Image Hover",
+          "info": "Optional. On desktop, hovering the image cross-fades to this one."
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },
+        {
+          "type": "richtext",
+          "id": "description",
+          "label": "Description"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Timeline",
+      "category": "Content",
+      "blocks": [
+        {
+          "type": "step",
+          "settings": {
+            "step_indicator": "",
+            "period": "",
+            "eyebrow": "",
+            "title": "",
+            "description": ""
+          }
+        },
+        {
+          "type": "step",
+          "settings": {
+            "step_indicator": "",
+            "period": "",
+            "eyebrow": "",
+            "title": "",
+            "description": ""
+          }
+        },
+        {
+          "type": "step",
+          "settings": {
+            "step_indicator": "",
+            "period": "",
+            "eyebrow": "",
+            "title": "",
+            "description": ""
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

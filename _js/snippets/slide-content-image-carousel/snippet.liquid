@@ -1,0 +1,167 @@
+{% doc %}
+  @description
+  Image carousel slide -- for general use, but the populated example is for before/after image comparisons.
+
+  @param {block} block - Source Shopify block.
+  @param {metaobject[]} slide_content - List of `image_carousel_item` metaobjects (`carousel_images`, `carousel_images_mobile`).
+
+  @example
+  {% render 'slide-content-image-carousel', block: block, slide_content: block.settings.image_carousel_items %}
+{% enddoc %}
+
+{% liquid
+  assign image_carousel_items = slide_content | default: blank
+  assign total_desktop_slides = 0
+  assign total_mobile_slides = 0
+  assign has_mobile_carousel = false
+
+  if image_carousel_items != blank
+    for entry in image_carousel_items
+      if entry.carousel_images.value != blank
+        for desktop_image in entry.carousel_images.value
+          assign total_desktop_slides = total_desktop_slides | plus: 1
+        endfor
+      endif
+
+      if entry.carousel_images_mobile.value != blank
+        assign has_mobile_carousel = true
+        for mobile_image in entry.carousel_images_mobile.value
+          assign total_mobile_slides = total_mobile_slides | plus: 1
+        endfor
+      elsif entry.carousel_images.value != blank
+        for desktop_image in entry.carousel_images.value
+          assign total_mobile_slides = total_mobile_slides | plus: 1
+        endfor
+      endif
+    endfor
+  endif
+%}
+
+{% if total_desktop_slides > 0 %}
+  <div
+    class="{# style root #}{% if has_mobile_carousel %} {# style root--split-carousel #}{% endif %}"
+    data-slide-content="image-carousel"
+  >
+    <div class="{# style frame #}">
+      <div class="{# style carousel-viewport #} {# style carousel-viewport--desktop #}">
+        <div class="{# style carousel #} swiper" data-image-carousel="desktop">
+          <div class="swiper-wrapper {# style slides #}">
+            {% for entry in image_carousel_items %}
+              {% if entry.carousel_images.value != blank %}
+                {% for desktop_image in entry.carousel_images.value %}
+                  {% assign image_alt = entry.carousel_name | default: 'Before and after image' | escape %}
+
+                  <div class="swiper-slide {# style slide #}">
+                    <div class="{# style slide-card__media #}">
+                      {% render 'core-image',
+                        image: desktop_image,
+                        image_alt_text: image_alt,
+                        mode: 'cover',
+                        object_fit: 'cover',
+                        lazyload: true,
+                        sizes: '320,480,640,800',
+                        srcset_print_sizes: '320,480,640,800'
+                      %}
+                    </div>
+                  </div>
+                {% endfor %}
+              {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+
+        {% if total_desktop_slides > 1 %}
+          <div class="{# style nav-arrows #} swiper-navigation-arrows js-nav-arrows">
+            <button
+              type="button"
+              class="swiper-button-prev {# style arrow #}"
+              title="{{ 'accessibility.previous_slide' | t }}"
+              aria-label="{{ 'accessibility.previous_slide' | t }}"
+            >
+              <span aria-hidden="true">{%- render 'icon-arrow-left' -%}</span>
+            </button>
+
+            <button
+              type="button"
+              class="swiper-button-next {# style arrow #}"
+              title="{{ 'accessibility.next_slide' | t }}"
+              aria-label="{{ 'accessibility.next_slide' | t }}"
+            >
+              <span aria-hidden="true">{%- render 'icon-arrow-right' -%}</span>
+            </button>
+          </div>
+        {% endif %}
+      </div>
+
+      {% if has_mobile_carousel %}
+        <div class="{# style carousel-viewport #} {# style carousel-viewport--mobile #}">
+          <div class="{# style carousel #} swiper" data-image-carousel="mobile">
+            <div class="swiper-wrapper {# style slides #}">
+              {% for entry in image_carousel_items %}
+                {% if entry.carousel_images_mobile.value != blank %}
+                  {% for mobile_image in entry.carousel_images_mobile.value %}
+                    {% assign image_alt = entry.carousel_name | default: 'Before and after image' | escape %}
+
+                    <div class="swiper-slide {# style slide #}">
+                      <div class="{# style slide-card__media #}">
+                        {% render 'core-image',
+                          image: mobile_image,
+                          image_alt_text: image_alt,
+                          mode: 'cover',
+                          object_fit: 'cover',
+                          lazyload: true,
+                          sizes: '320,480,640,800',
+                          srcset_print_sizes: '320,480,640,800'
+                        %}
+                      </div>
+                    </div>
+                  {% endfor %}
+                {% elsif entry.carousel_images.value != blank %}
+                  {% for desktop_image in entry.carousel_images.value %}
+                    {% assign image_alt = entry.carousel_name | default: 'Before and after image' | escape %}
+
+                    <div class="swiper-slide {# style slide #}">
+                      <div class="{# style slide-card__media #}">
+                        {% render 'core-image',
+                          image: desktop_image,
+                          image_alt_text: image_alt,
+                          mode: 'cover',
+                          object_fit: 'cover',
+                          lazyload: true,
+                          sizes: '320,480,640,800',
+                          srcset_print_sizes: '320,480,640,800'
+                        %}
+                      </div>
+                    </div>
+                  {% endfor %}
+                {% endif %}
+              {% endfor %}
+            </div>
+          </div>
+
+          {% if total_mobile_slides > 1 %}
+            <div class="{# style nav-arrows #} swiper-navigation-arrows js-nav-arrows">
+              <button
+                type="button"
+                class="swiper-button-prev {# style arrow #}"
+                title="{{ 'accessibility.previous_slide' | t }}"
+                aria-label="{{ 'accessibility.previous_slide' | t }}"
+              >
+                <span aria-hidden="true">{%- render 'icon-arrow-left' -%}</span>
+              </button>
+
+              <button
+                type="button"
+                class="swiper-button-next {# style arrow #}"
+                title="{{ 'accessibility.next_slide' | t }}"
+                aria-label="{{ 'accessibility.next_slide' | t }}"
+              >
+                <span aria-hidden="true">{%- render 'icon-arrow-right' -%}</span>
+              </button>
+            </div>
+          {% endif %}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+{% endif %}

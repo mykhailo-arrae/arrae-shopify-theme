@@ -1,0 +1,36 @@
+{
+  "$schema": "http://json.schemastore.org/prettierrc",
+  "arrowParens": "always",
+  "bracketSpacing": true,
+  "htmlWhitespaceSensitivity": "css",
+  "insertPragma": false,
+  "jsxSingleQuote": false,
+  "printWidth": 80,
+  "proseWrap": "preserve",
+  "requirePragma": false,
+  "semi": false,
+  "singleQuote": true,
+  "tabWidth": 2,
+  "trailingComma": "none",
+  "useTabs": false,
+  "plugins": ["@shopify/prettier-plugin-liquid"],
+  "overrides": [
+    {
+      "files": "*.scss",
+      "options": {
+        "parser": "scss",
+        "singleQuote": true
+      }
+    },
+    {
+      "files": "*.liquid",
+      "options": {
+        "embeddedSingleQuote": true,
+        "indentSchema": false,
+        "liquidSingleQuote": true,
+        "printWidth": 120,
+        "singleQuote": false
+      }
+    }
+  ]
+}

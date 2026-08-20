@@ -1,0 +1,131 @@
+@use 'unit' as u;
+@use 'style-guide/media' as mq;
+@use 'style-guide/spacing' as spacing;
+@use 'style-guide/sizes' as sizes;
+@use 'style-guide/colors' as color;
+@use 'style-guide/buttons' as button;
+@use 'style-guide/mixins' as mixin;
+@use 'style-guide/typography' as typography;
+
+.card {
+  overflow: hidden;
+  position: relative;
+  text-decoration: none;
+  border-radius: spacing.get(size-8);
+  display: flex;
+  flex-direction: column;
+  gap: spacing.get(size-24);
+  height: 100%;
+
+  &__media {
+    width: 100%;
+    flex-shrink: 0;
+    overflow: hidden;
+    position: relative;
+    aspect-ratio: 342 / 428;
+    border-radius: spacing.get(size-8);
+
+    &__placeholder {
+      @include mixin.fill-parent();
+      background-color: color.get(dark-gray-20);
+      border-radius: spacing.get(size-8);
+    }
+  }
+
+  &__media__initial {
+    @include mixin.fill-parent();
+    pointer-events: none;
+
+    :global(*) {
+      pointer-events: none;
+    }
+
+    @include mq.max(tablet) {
+      :global(video) {
+        pointer-events: auto;
+      }
+    }
+  }
+
+  &__content {
+    width: 100%;
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    box-sizing: border-box;
+
+    blockquote {
+      margin: unset;
+      padding: unset;
+      display: grid;
+      flex: 1;
+      grid-template-rows: auto 1fr;
+      min-height: 0;
+      min-width: 0;
+    }
+  }
+
+  &__main_text {
+    @include typography.font-cardinal-fruit();
+    font-size: sizes.get(size-20);
+    font-weight: 500;
+    letter-spacing: -0.03em;
+    color: color.get(text);
+    line-height: 1.2;
+    grid-row: 1;
+
+    @include mq.min(smalldesktop) {
+      font-size: sizes.get(size-24);
+    }
+
+    &--small {
+      font-size: sizes.get(size-20);
+      font-weight: 400;
+
+      @include mq.min(smalldesktop) {
+        font-size: sizes.get(size-20);
+      }
+    }
+  }
+
+  &__attribution {
+    display: flex;
+    flex-direction: column;
+    gap: spacing.get(size-2);
+    align-self: end;
+    grid-row: 2;
+    padding-top: spacing.get(size-20);
+  }
+
+  &__secondary_text {
+    @include typography.body(size-12, 500);
+    color: color.get(text);
+    text-transform: uppercase;
+    font-style: normal;
+    display: block;
+    letter-spacing: u.rem-calc(0.48);
+  }
+
+  &__tertiary_text {
+    @include typography.body(size-12, 300);
+    color: color.get(text);
+    font-style: normal;
+    display: block;
+    letter-spacing: u.rem-calc(-0.12);
+  }
+}
+
+.video-controls {
+  position: absolute;
+  bottom: spacing.get(size-16);
+  left: spacing.get(size-16);
+  z-index: 2;
+  pointer-events: auto;
+}
+
+.videoControls {
+  flex-shrink: 0;
+  gap: spacing.get(size-16);
+}

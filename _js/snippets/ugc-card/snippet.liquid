@@ -1,0 +1,118 @@
+{% comment %}
+  Example(s):
+  {% render 'ugc-card',
+    main_text: 'Sample UGC Card Main Text',
+    secondary_text: 'Small Secondary Text',
+    media_type: 'image',
+    media_image: image_object,
+    media_video: video_object,
+    video_uid: 'unique-id',
+  %}
+
+  Parameters:
+  - main_text {String} - The main text displayed on the card
+  - secondary_text {String} - The secondary text displayed on the card
+  - tertiary_text {String} - Optional third line (e.g. a credential) shown below the secondary text
+  - small_main_text {Boolean} - When true, renders the main text at the smaller size. Defaults to false.
+  - media_type {String} - The type of the media ('image' or 'video'). Defaults to 'image'.
+  - media_image {Shopify Image} - The Shopify image object for the media
+  - media_video {Shopify Video} - The Shopify video object for the media
+  - image_alt_text {String} - Optional alt text for the media image
+  - video_uid {String} - Stable unique id for this card instance (e.g. block.id). Required when multiple cards appear in one section so video controls bind to the correct video.
+{% endcomment %}
+
+{% liquid
+  assign main_text = main_text | default: null
+  assign secondary_text = secondary_text | default: null
+  assign tertiary_text = tertiary_text | default: null
+  assign small_main_text = small_main_text | default: false, allow_false: true
+  assign media_type = media_type | default: 'image'
+  assign media_image = media_image | default: null
+  assign media_video = media_video | default: null
+  assign image_alt_text = image_alt_text | default: null
+  assign video_uid = video_uid | default: section.id
+  assign video_id = 'js-ugc-card-video-' | append: video_uid
+
+  assign resolved_image_alt = image_alt_text
+  if resolved_image_alt == blank and media_image != blank
+    assign resolved_image_alt = media_image.alt
+  endif
+  if resolved_image_alt == blank
+    assign resolved_image_alt = secondary_text
+  endif
+%}
+
+<div class="{# style card #} js-ugc-card">
+  <div class="{# style card__media #}">
+    <div class="{# style card__media__initial #}">
+      {% if media_type == 'image' %}
+        {% if media_image != blank %}
+          {% render 'core-image',
+            image: media_image,
+            image_alt_text: resolved_image_alt,
+            mode: 'cover',
+            object_fit: 'cover',
+            lazyload: true,
+            srcset_print_sizes: '320,480,640'
+          %}
+        {% else %}
+          <div class="{# style card__media__placeholder #}"></div>
+        {% endif %}
+
+      {% else %}
+        {% if media_video != blank %}
+          {% render 'core-video',
+            video: media_video,
+            class: video_id,
+            autoplay: false,
+            muted: true,
+            loop: true,
+            controls: false,
+            lazyload: true,
+            playsinline: true
+          %}
+        {% else %}
+          <div class="{# style card__media__placeholder #}"></div>
+        {% endif %}
+      {% endif %}
+    </div>
+    {% if media_type == 'video' %}
+      <div class="{# style video-controls #}">
+        {% render 'core-video-controls',
+          class: '{# style videoControls #}',
+          has_pause: true,
+          has_mute: true,
+          video_class: video_id,
+          scroll_autoplay: false,
+          play_on_click_video: true
+        %}
+      </div>
+    {% endif %}
+  </div>
+
+  <div class="{# style card__content #}">
+    <blockquote>
+      {% if main_text != blank %}
+        <h3 class="{# style card__main_text #}{% if small_main_text %} {# style card__main_text--small #}{% endif %}">
+          {{ main_text }}
+        </h3>
+      {% endif %}
+
+      {% if secondary_text != blank or tertiary_text != blank %}
+        <footer class="{# style card__attribution #}">
+          {% if secondary_text != blank %}
+            <cite class="{# style card__secondary_text #}">
+              {{ secondary_text }}
+            </cite>
+          {% endif %}
+
+          {% if tertiary_text != blank %}
+            <span class="{# style card__tertiary_text #}">
+              {{ tertiary_text }}
+            </span>
+          {% endif %}
+        </footer>
+      {% endif %}
+    </blockquote>
+  </div>
+</div>

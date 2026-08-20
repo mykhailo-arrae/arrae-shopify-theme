@@ -1,0 +1,68 @@
+@use 'unit' as u;
+@use 'style-guide/typography' as typography;
+@use 'style-guide/mixins' as mixin;
+@use 'style-guide/spacing' as spacing;
+@use 'style-guide/colors' as color;
+@use 'nav-modes' as nav;
+
+.tile {
+  display: block;
+  min-width: 0;
+
+  @include nav.drawer {
+    &:first-child {
+      padding-top: spacing.get(size-20);
+    }
+    &:last-child {
+      padding-bottom: u.rem-calc(28);
+    }
+
+    &:not(:global([data-disable-outer-accordion='true']) *) {
+      padding-left: spacing.get(size-12);
+    }
+  }
+}
+
+.slot {
+  display: block;
+  width: 100%;
+}
+
+.desktop {
+  display: none;
+
+  @include nav.inline {
+    display: block;
+  }
+}
+
+.mobile-link {
+  display: none;
+
+  @include nav.drawer {
+    display: inline-block;
+    text-decoration: none;
+
+    &:focus-visible {
+      outline-offset: u.rem-calc(2);
+    }
+
+    &:is(a) {
+      color: color.get(text-gray);
+    }
+  }
+}
+
+.mobile-link__text {
+  @include typography.body(size-20, 300);
+  line-height: 1.2;
+  letter-spacing: 0.02em;
+  display: inline-block;
+  @include mixin.animated-underline();
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mobile-link__text::before {
+    transition: none;
+  }
+}

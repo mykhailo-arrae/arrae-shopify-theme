@@ -1,0 +1,21 @@
+#!/bin/bash
+
+set -Eeuo pipefail
+
+cd "$(dirname "${BASH_SOURCE[0]}")"
+
+if [ ! -f .env ]; then
+  echo 'ERROR: `.env` file missing.' >&2
+  echo "Please create one, e.g., by copying .env.template" >&2
+  exit 1
+fi
+
+export DOCKER_BUILDKIT=1
+export COMPOSE_BAKE=1
+export COMPOSE_DOCKER_CLI_BUILD=1
+
+docker compose build main && docker compose up -d main
+
+INFERRED_PROJECT_NAME=$(docker compose ps --format '{{.Project}}' main)
+
+docker compose exec -e INFERRED_PROJECT_NAME="$INFERRED_PROJECT_NAME" main ./docker-entrypoint.sh /usr/bin/fish

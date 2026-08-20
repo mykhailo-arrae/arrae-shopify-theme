@@ -1,0 +1,34 @@
+@use 'style-guide/spacing' as spacing;
+@use 'style-guide/colors' as color;
+@use 'style-guide/mixins' as mixin;
+@use 'style-guide/typography' as typography;
+
+.root {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: flex-start;
+  gap: spacing.get(size-4);
+  color: color.get(text);
+}
+
+.sr-summary {
+  @include mixin.visually-hidden();
+  margin: 0;
+}
+
+.rating-stars {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  gap: spacing.get(size-2);
+}
+
+.rating-count {
+  @include typography.body(size-12, 400);
+  color: color.get(text);
+  white-space: nowrap;
+}

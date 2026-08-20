@@ -1,0 +1,207 @@
+{% liquid
+  # Mirror product-gallery initial resolution for the images-column gate.
+  assign gallery_initial_variant = product.selected_variant | default: null
+
+  if gallery_initial_variant == null
+    for variant in product.variants reversed
+      assign hide_on_front_end = variant.metafields.custom.hide_on_front_end.value | default: false, allow_false: true
+      unless hide_on_front_end
+        if variant.available
+          assign gallery_initial_variant = variant
+          break
+        endif
+      endunless
+    endfor
+  endif
+
+  if gallery_initial_variant == null
+    assign gallery_initial_variant = product.selected_or_first_available_variant
+  endif
+
+  assign gallery_default_images = product.metafields.custom.pdp_gallery_images.value
+
+  if gallery_default_images == blank
+    assign gallery_default_images = product.images
+  endif
+
+  assign gallery_initial_override = null
+  if gallery_initial_variant != blank
+    assign gallery_initial_override = gallery_initial_variant.metafields.custom.variant_gallery_set.value | default: null
+  endif
+
+  assign product_gallery_has_media = false
+  if gallery_initial_override != blank or gallery_default_images.size > 0 or product.metafields.custom.pdp_gallery_featured_media.value != blank
+    assign product_gallery_has_media = true
+  endif
+
+  # Buy-box overrides: section settings win when non-blank; else product / metafield.
+  # Defaults are not wired via product.json dynamic sources — several setting types
+  # (metaobject_list, nested metaobject fields) reject those bindings.
+  assign resolved_title = section.settings.title | default: product.title
+
+  assign resolved_description = product.description
+  if section.settings.description != blank and section.settings.description != '<p></p>'
+    assign resolved_description = section.settings.description
+  endif
+
+  assign resolved_pdp_subtitle = blank
+  if section.settings.pdp_subtitle != blank and section.settings.pdp_subtitle != '<p></p>'
+    assign resolved_pdp_subtitle = section.settings.pdp_subtitle
+  elsif product.metafields.custom.pdp_subtitle != blank
+    assign resolved_pdp_subtitle = product.metafields.custom.pdp_subtitle | metafield_tag
+  endif
+
+  assign resolved_hide_reviews = product.metafields.custom.hide_reviews_summary.value | default: false, allow_false: true
+  if section.settings.review_summary_visibility == 'show'
+    assign resolved_hide_reviews = false
+  elsif section.settings.review_summary_visibility == 'hide'
+    assign resolved_hide_reviews = true
+  endif
+
+  assign resolved_benefits = null
+  if section.settings.benefits_list != blank
+    assign resolved_benefits = section.settings.benefits_list | newline_to_br | split: '<br />'
+  else
+    assign resolved_benefits = product.metafields.custom.pdp_benefits_list.value | default: null
+  endif
+
+  assign resolved_accordions = section.settings.product_accordions | default: product.metafields.custom.pdp_product_accordions
+
+  assign resolved_upsell_title = section.settings.upsell_title | default: blank
+  if resolved_upsell_title == '<p></p>'
+    assign resolved_upsell_title = blank
+  endif
+  assign resolved_upsell_products = section.settings.upsell_products | default: blank
+  assign resolved_upsell_info_label = section.settings.upsell_info_label | default: blank
+  assign resolved_upsell_info_text = section.settings.upsell_info_text | default: blank
+%}
+
+<div class="{# style Product-container #}">
+  <div class="{# style Product-sections #} {% unless product_gallery_has_media %} {# style Product-sections--noImages #} {% endunless %}">
+    {% if product_gallery_has_media %}
+      <section class="{# style Product-section #} {# style Product-section--images #}">
+        {% render 'product-gallery' %}
+      </section>
+    {% endif %}
+
+    <section class="{# style Product-section #} {# style Product-section--details #}">
+      {% render 'product-details',
+        title: resolved_title,
+        description: resolved_description,
+        pdp_subtitle: resolved_pdp_subtitle,
+        hide_reviews: resolved_hide_reviews,
+        benefits_list: resolved_benefits
+      %}
+      {% render 'product-accordion', items: resolved_accordions %}
+      {% render 'product-upsells',
+        title: resolved_upsell_title,
+        products: resolved_upsell_products,
+        info_label: resolved_upsell_info_label,
+        info_text: resolved_upsell_info_text,
+        content: product.metafields.custom.pdp_product_upsells
+      %}
+    </section>
+  </div>
+</div>
+
+{%- schema %}
+{
+  "name": "Product Main",
+  "tag": "section",
+  "class": "js-product-main Product",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Buy box content"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "info": "Overrides product.title when set. When blank, uses the product title."
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description",
+      "info": "Overrides product.description when set. Supports line breaks, lists, and links. When blank, uses the product description."
+    },
+    {
+      "type": "richtext",
+      "id": "pdp_subtitle",
+      "label": "PDP Subtitle",
+      "info": "Optional rich text below the title (supports links). Overrides custom.pdp_subtitle when set. When blank, uses the product metafield."
+    },
+    {
+      "type": "select",
+      "id": "review_summary_visibility",
+      "label": "Review summary",
+      "options": [
+        {
+          "value": "default",
+          "label": "Use product setting"
+        },
+        {
+          "value": "show",
+          "label": "Show"
+        },
+        {
+          "value": "hide",
+          "label": "Hide"
+        }
+      ],
+      "default": "default",
+      "info": "Overrides custom.hide_reviews_summary when set to Show or Hide."
+    },
+    {
+      "type": "textarea",
+      "id": "benefits_list",
+      "label": "Benefits list",
+      "info": "One benefit per line. When blank, uses the product metafield custom.pdp_benefits_list."
+    },
+    {
+      "type": "metaobject_list",
+      "id": "product_accordions",
+      "label": "Product accordions",
+      "metaobject_type": "pdp_product_accordion",
+      "info": "Overrides custom.pdp_product_accordions when set. When blank, uses the product metafield. Confirm metaobject_type matches the Admin type handle."
+    },
+    {
+      "type": "header",
+      "content": "Product upsells"
+    },
+    {
+      "type": "richtext",
+      "id": "upsell_title",
+      "label": "Upsells heading",
+      "info": "Overrides the product metafield upsell title when set. When blank, uses custom.pdp_product_upsells."
+    },
+    {
+      "type": "product_list",
+      "id": "upsell_products",
+      "label": "Upsell products",
+      "limit": 6,
+      "info": "Overrides the product metafield upsell products when set. When blank, uses custom.pdp_product_upsells."
+    },
+    {
+      "type": "text",
+      "id": "upsell_info_label",
+      "label": "Upsells info label",
+      "info": "Overrides the product metafield info label when set. When blank, uses custom.pdp_product_upsells."
+    },
+    {
+      "type": "textarea",
+      "id": "upsell_info_text",
+      "label": "Upsells info text",
+      "info": "Overrides the product metafield info text when set. When blank, uses custom.pdp_product_upsells."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Main",
+      "category": "Product",
+      "settings": {}
+    }
+  ]
+}
+{%- endschema %}

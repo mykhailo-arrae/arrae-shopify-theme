@@ -1,0 +1,6 @@
+{
+  "version": "1",
+  "name": "vaango",
+  "type": "collection",
+  "ignore": ["node_modules", ".git"]
+}

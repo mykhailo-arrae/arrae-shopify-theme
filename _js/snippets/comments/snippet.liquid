@@ -1,0 +1,100 @@
+{% assign number_of_comments = article.comments_count %}
+
+{% comment %}
+  If a comment was just submitted and it has no blank fields,
+  we have an extra comment to count.
+{% endcomment %}
+{% if comment and comment.created_at %}
+  {% assign number_of_comments = article.comments_count | plus: 1 %}
+{% endif %}
+
+{% paginate article.comments by 5 %}
+{% comment %}
+  #comments is required, it is used as an anchor link by Shopify.
+{% endcomment %}
+<aside id="comments" class="{# style Comments #}">
+  {% render 'comments-stylesheet' %}
+
+  <h3 class="{# style Comments-title #} {% if number_of_comments == 0 %}u-vhide{% endif %}">
+    {{ 'blogs.comments.with_count' | t: count: number_of_comments }}
+  </h3>
+
+  {% if comment and comment.created_at %}
+    <p class="o-formSuccess">
+      {% if blog.moderated? %}
+        {{ 'blogs.comments.success_moderated' | t }}
+      {% else %}
+        {{ 'blogs.comments.success' | t }}
+      {% endif %}
+    </p>
+  {% endif %}
+
+  {% if number_of_comments > 0 %}
+    <ul class="{# style Comments-items #}">
+      {% comment %}
+        If a comment was just submitted with no blank field, show it.
+      {% endcomment %}
+      {% if comment and comment.created_at %}
+        <li id="{{ comment.id }}" class="{# style Comments-item #}">
+          {% render 'comment', comment: comment %}
+        </li>
+      {% endif %}
+
+      {% comment %}
+        Showing the rest of the comments.
+      {% endcomment %}
+      {% for other_comment in article.comments %}
+        {% unless other_comment.id == comment.id %}
+          <li id="{{ other_comment.id }}" class="{# style Comments-item #}">
+            {% render 'comment', comment: other_comment %}
+          </li>
+        {% endunless %}
+      {% endfor %}
+    </ul>
+
+    {% render 'pagination', paginate: paginate %}
+  {% endif %}
+
+  <div class="{# style Comments-form #}">
+    {% form 'new_comment', article %}
+      <h4 class="{# style Comments-formTitle #}">
+        {{ 'blogs.comments.title' | t }}
+      </h4>
+
+      {% if form.errors %}
+        <div class="o-formErrors">
+          {{ form.errors | default_errors }}
+        </div>
+      {% endif %}
+
+      <label for="CommentAuthor" class="u-vhide">
+        {{ 'blogs.comments.name' | t }}
+      </label>
+      <input type="text" id="CommentAuthor" name="comment[author]" placeholder="{{ 'blogs.comments.name' | t }}" value="{{ form.author }}" autocapitalize="words" required>
+
+      <label for="CommentEmail" class="u-vhide">
+        {{ 'blogs.comments.email' | t }}
+      </label>
+      <input type="email" id="CommentEmail" name="comment[email]" placeholder="{{ 'blogs.comments.email' | t }}" value="{{ form.email }}" autocorrect="off" autocapitalize="off" required>
+
+      <label for="CommentBody" class="u-vhide">
+        {{ 'blogs.comments.message' | t }}
+      </label>
+      <textarea id="CommentBody" name="comment[body]" placeholder="{{ 'blogs.comments.message' | t }}" rows="4">{{ form.body }}</textarea>
+
+      {% if blog.moderated? %}
+        <p class="{# style Comments-formNote #}">
+          {{ 'blogs.comments.moderated' | t }}
+        </p>
+      {% endif %}
+
+      <div class="{# style Comments-buttonContainer #}">
+        <button type="submit" class="o-button">
+          {{ 'blogs.comments.post' | t }}
+        </button>
+      </div>
+    {% endform %}
+  </div>
+
+</aside>
+{% endpaginate %}

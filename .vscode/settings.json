@@ -1,0 +1,64 @@
+{
+  "[javascript]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
+  "[javascriptreact]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[liquid]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[scss]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "biomejs.biome",
+    "editor.detectIndentation": false,
+    "editor.insertSpaces": true,
+    "editor.tabSize": 2
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "biomejs.biome",
+    "editor.detectIndentation": false,
+    "editor.insertSpaces": true,
+    "editor.tabSize": 2
+  },
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "explorer.excludeGitIgnore": true,
+  "files.associations": {
+    "*.liquid": "liquid"
+  },
+  "files.insertFinalNewline": true,
+  "files.trimTrailingWhitespace": true,
+  "github.copilot.chat.codeGeneration.useInstructionFiles": true,
+  "github.copilot.chat.codeGeneration.instructions": [
+    {
+      "file": "docs/_conventions/jsdoc.md"
+    },
+    {
+      "file": "docs/_conventions/sass.md"
+    },
+    {
+      "file": "docs/_conventions/typescript.md"
+    }
+  ],
+  "javascript.preferences.importModuleSpecifier": "relative",
+  "search.exclude": {
+    "**/assets": true
+  },
+  "search.useIgnoreFiles": true,
+  "somesass.scss.completion.suggestFromUseOnly": true,
+  "somesass.workspace.loadPaths": ["_sass/core"],
+  "stylelint.validate": ["scss"],
+  "themeCheck.checkOnChange": false,
+  "themeCheck.checkOnOpen": false,
+  "themeCheck.checkOnSave": false,
+  "typescript.preferences.importModuleSpecifier": "relative",
+  "typescript.preferences.jsxAttributeCompletionStyle": "braces"
+}

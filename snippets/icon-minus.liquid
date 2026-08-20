@@ -1,0 +1,20 @@
+{% liquid
+  assign width = width | default: 40
+  assign height = height | default: 40
+  assign fill = fill | default: 'currentColor'
+
+  assign title_fallback = 'accessibility.icons.minus' | t
+  assign title = title | default: title_fallback
+%}
+
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="{{ width }}"
+  height="{{ height }}"
+  viewBox="0 0 40 40"
+  fill="none"
+  aria-labelledby="minus"
+>
+  <title id="minus">{{ title }}</title>
+  <path d="M27.2568 19.875C27.533 19.875 27.7568 20.0989 27.7568 20.375C27.7568 20.6511 27.533 20.875 27.2568 20.875H13.0068C12.7307 20.875 12.5068 20.6511 12.5068 20.375C12.5068 20.0989 12.7307 19.875 13.0068 19.875H27.2568Z" fill="{{ fill }}"/>
+</svg>

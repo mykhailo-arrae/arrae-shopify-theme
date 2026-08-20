@@ -1,0 +1,42 @@
+{% liquid
+  assign label = block.settings.label
+  assign url = block.settings.url
+%}
+
+{% if url != blank %}
+  <a href="{{ url }}" class="{# style link #}">
+    <span class="{# style link__text #}">{{ label }}</span>
+  </a>
+{% else %}
+  <span class="{# style link #}">
+    <span class="{# style link__text #}">{{ label }}</span>
+  </span>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Quick Link",
+  "tag": "li",
+  "class": "{# style item #}",
+  "settings": [
+    {
+      "type": "text",
+      "id": "label",
+      "label": "Label"
+    },
+    {
+      "type": "url",
+      "id": "url",
+      "label": "Link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Quick Link",
+      "settings": {
+        "label": "Shop best sellers"
+      }
+    }
+  ]
+}
+{% endschema %}

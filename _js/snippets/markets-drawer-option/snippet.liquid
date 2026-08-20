@@ -1,0 +1,60 @@
+{% doc %}
+  One radio row for the markets/currency selector. Owns the row styling so the
+  parent `markets-drawer` only manages the popover, form, and lists. Renders a
+  country row (flag + `CURRENCY (symbol)`), the synthetic EUR row (EU flag +
+  `EUR (€)`), or a plain language row.
+
+  @param {string} input_name - Radio group name: 'country_code' or 'language_code'.
+  @param {string} value - Submitted value (ISO code).
+  @param {boolean} checked - Whether this row starts selected.
+  @param {object} country - Optional country drop; renders its flag + currency label.
+  @param {boolean} eur - Optional. Renders the shared EU flag + EUR label.
+  @param {string} eur_symbol - Currency symbol used in the EUR label.
+  @param {string} label - Fallback label text (used for languages).
+
+  @example
+  {% render 'markets-drawer-option', input_name: 'country_code', value: country.iso_code, checked: true, country: country %}
+{% enddoc %}
+
+{% liquid
+  assign option_eur = eur | default: false
+%}
+
+<li class="{# style item #}">
+  <label class="{# style option #}">
+    <input
+      type="radio"
+      name="{{ input_name }}"
+      value="{{ value }}"
+      {% if checked %}
+        checked
+      {% endif %}
+      class="{# style option__input #}"
+    >
+    {%- if country != blank -%}
+      {{
+        country
+        | image_url: width: 24
+        | image_tag: class: '{# style option__flag #}', loading: 'lazy', alt: country.name
+      }}
+    {%- elsif option_eur -%}
+      <img
+        src="{{ 'eur-flag.png' | asset_url }}"
+        alt="{{ 'snippets.markets-drawer.european_union' | t }}"
+        class="{# style option__flag #} {# style option__flag--eur #}"
+        width="26"
+        height="15"
+        loading="lazy"
+      >
+    {%- endif -%}
+    <span class="{# style option__label #}">
+      {%- if country != blank -%}
+        {{ country.currency.iso_code }} ({{ country.currency.symbol }})
+      {%- elsif option_eur -%}
+        EUR ({{ eur_symbol }})
+      {%- else -%}
+        {{ label }}
+      {%- endif -%}
+    </span>
+  </label>
+</li>

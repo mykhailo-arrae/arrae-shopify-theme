@@ -1,0 +1,97 @@
+{% # DO NOT EDIT: This file is auto-generated and will be overwritten. [build-fingerprint:assets:source={_js/blocks/nav-quick-links/block.liquid}] %}
+
+<style>
+.tvg_nav_quick_links_OFlaMW_col{flex:0 auto;min-width:11.25rem}
+.tvg_nav_quick_links_OFlaMW_root{flex-direction:column;align-items:stretch;gap:1rem;display:flex}
+.tvg_nav_quick_links_OFlaMW_list{flex-direction:column;gap:1rem;margin:0;padding:0;list-style:none;display:flex}
+.tvg_nav_quick_links_OFlaMW_cta{display:none}
+.tvg_nav_quick_links_OFlaMW_cta__label{display:block}
+@media print,screen and (width>=64em){.js-mobile-drawer[data-drawer-mode-on-desktop=true] .tvg_nav_quick_links_OFlaMW_col{order:1;width:100%;min-width:0}
+.js-mobile-drawer:not([data-drawer-mode-on-desktop=true]) .tvg_nav_quick_links_OFlaMW_col{grid-column:span 1;min-width:0}
+.js-mobile-drawer:not([data-drawer-mode-on-desktop=true]) .tvg_nav_quick_links_OFlaMW_root{align-items:flex-start}
+.js-mobile-drawer[data-drawer-mode-on-desktop=true] .tvg_nav_quick_links_OFlaMW_root{margin-bottom:.25rem}
+[data-disable-outer-accordion=true] .js-mobile-drawer[data-drawer-mode-on-desktop=true] .tvg_nav_quick_links_OFlaMW_root{margin-bottom:2.5rem}
+.js-mobile-drawer[data-drawer-mode-on-desktop=true] .tvg_nav_quick_links_OFlaMW_root.quick-links-secondary{margin-bottom:0}
+.js-mobile-drawer[data-drawer-mode-on-desktop=true] .tvg_nav_quick_links_OFlaMW_list:not([data-disable-outer-accordion=true] *){gap:1.25rem;padding-top:1rem;padding-left:.75rem}
+.js-mobile-drawer:not([data-drawer-mode-on-desktop=true]) .tvg_nav_quick_links_OFlaMW_cta{letter-spacing:.0525rem;text-transform:uppercase;background-color:oklch(21.71% .0232 69.07);border-radius:9999px;justify-content:center;align-items:center;width:auto;padding:.75rem 1.5rem;font-family:proxima-nova,-apple-system,blinkmacsystemfont,Segoe UI,roboto,oxygen-sans,ubuntu,cantarell,Helvetica Neue,sans-serif;font-size:.875rem;font-weight:400;line-height:1.06;text-decoration:none;transition:opacity .2s;display:inline-flex;color:oklch(99.59% .0093 99.98)!important}
+:is(.js-mobile-drawer:not([data-drawer-mode-on-desktop=true]) .tvg_nav_quick_links_OFlaMW_cta:hover,.js-mobile-drawer:not([data-drawer-mode-on-desktop=true]) .tvg_nav_quick_links_OFlaMW_cta:focus-visible){opacity:.85}
+}
+@media print,screen and (width<64em){.tvg_nav_quick_links_OFlaMW_col{order:1;width:100%;min-width:0}
+.tvg_nav_quick_links_OFlaMW_root{margin-bottom:.25rem}
+[data-disable-outer-accordion=true] .tvg_nav_quick_links_OFlaMW_root{margin-bottom:2.5rem}
+.tvg_nav_quick_links_OFlaMW_root.quick-links-secondary{margin-bottom:0}
+.tvg_nav_quick_links_OFlaMW_list:not([data-disable-outer-accordion=true] *){gap:1.25rem;padding-top:1rem;padding-left:.75rem}
+}
+@media print,screen and (width>=64em) and (width>=80em){.js-mobile-drawer:not([data-drawer-mode-on-desktop=true]) .tvg_nav_quick_links_OFlaMW_cta{font-size:.75rem}
+}
+@media print,screen and (width>=64em) and (width>=90em){.js-mobile-drawer:not([data-drawer-mode-on-desktop=true]) .tvg_nav_quick_links_OFlaMW_cta{font-size:.875rem}
+}
+@media (prefers-reduced-motion:reduce){.tvg_nav_quick_links_OFlaMW_cta{transition:none}
+}
+</style>
+
+{% liquid
+  assign cta_label = block.settings.cta_label
+  assign cta_url = block.settings.cta_url
+  assign use_capital_case = block.settings.use_capital_case | default: false, allow_false: true
+
+  assign show_cta = false
+  if cta_label != blank and cta_url != blank
+    assign show_cta = true
+  endif
+%}
+
+<div
+  class="tvg_nav_quick_links_OFlaMW_root {% if use_capital_case %}quick-links-secondary{% endif %}"
+>
+  <ul class="tvg_nav_quick_links_OFlaMW_list" role="list">
+    {% content_for 'blocks' %}
+  </ul>
+
+  {% if show_cta %}
+    <a href="{{ cta_url }}" class="tvg_nav_quick_links_OFlaMW_cta">
+      <span class="tvg_nav_quick_links_OFlaMW_cta__label">{{ cta_label }}</span>
+    </a>
+  {% endif %}
+</div>
+
+{% schema %}
+{
+  "name": "Quick Links",
+  "class": "tvg_nav_quick_links_OFlaMW_col",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "use_capital_case",
+      "label": "Use Capital Case",
+      "info": "When enabled, link labels render in Capital Case (e.g. \"Shop Best Sellers\") instead of the default UPPERCASE.",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Call to action"
+    },
+    {
+      "type": "paragraph",
+      "content": "Desktop only. Mobile mega menus configure their CTA from the parent Navigation Item."
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "CTA label",
+      "info": "Optional. e.g. \"Shop Spring Sale\""
+    },
+    {
+      "type": "url",
+      "id": "cta_url",
+      "label": "CTA link"
+    }
+  ],
+  "blocks": [{ "type": "nav-quick-link" }],
+  "presets": [
+    {
+      "name": "Quick Links"
+    }
+  ]
+}
+{% endschema %}

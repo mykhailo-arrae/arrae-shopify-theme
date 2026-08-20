@@ -1,0 +1,226 @@
+{% liquid
+  render 'product-card-stylesheet'
+  render 'product-review-ratings-stylesheet'
+
+  assign title = section.settings.title
+  assign cta_label = section.settings.cta_label
+  assign cta_link = section.settings.cta_link
+  assign show_arrows = section.settings.show_arrows | default: true
+  assign show_pagination = section.settings.show_pagination | default: false
+
+  assign tabs = section.blocks | where: 'type', 'tab'
+  assign tabs_count = tabs | size
+  assign products_qty = 9
+%}
+
+<div
+  class="{# style container #} js-featured-collection-a11y-context"
+  data-a11y-prev-slide="{{ 'accessibility.previous_slide' | t | escape }}"
+  data-a11y-next-slide="{{ 'accessibility.next_slide' | t | escape }}"
+>
+  {% if title != blank %}
+    <div class="{# style title-row #}">
+      <h2 class="{# style title #}">{{ title }}</h2>
+    </div>
+  {% endif %}
+
+  <div class="{# style header #}">
+    <div class="{# style tabs-strip #} {% if tabs_count <= 1%}{# style tabs-strip--single #}{% endif %}">
+      <div
+        class="{# style tabs #}"
+        role="tablist"
+        aria-label="{{ 'accessibility.featured_collections_tablist' | t }}"
+      >
+        {% for tab in tabs %}
+          {% liquid
+            assign label = tab.settings.tab_label
+            assign id = label | handleize
+          %}
+          {% if label != blank and id != blank %}
+            <button
+              class="js-tab {# style tab #}"
+              role="tab"
+              id="tab-{{ id }}"
+              aria-controls="panel-{{ id }}"
+              aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+              data-tab="{{ id }}"
+            >
+              {{ label }}
+            </button>
+          {% endif %}
+        {% endfor %}
+      </div>
+      {% if cta_label != blank and cta_link != blank %}
+        <div class="{# style header-cta #}">
+          {% render 'core-button', label: cta_label, url: cta_link, style: 'primary', class: '{# style cta #}' %}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="{# style carousel-outer-wrapper #}">
+    {% if tabs_count > 0 %}
+      {% for tab in tabs %}
+        {% liquid
+          assign label = tab.settings.tab_label
+          assign id = label | handleize
+
+          assign cards_collection = tab.settings.collection
+          assign cards_products = tab.settings.products
+
+          if cards_products != blank
+            assign cards = cards_products
+          else
+            assign cards = cards_collection.products
+          endif
+        %}
+
+        <div
+          class="js-panel {# style panel #}"
+          role="tabpanel"
+          id="panel-{{ id }}"
+          aria-labelledby="tab-{{ id }}"
+          {% unless forloop.first %}
+            hidden
+          {% endunless %}
+        >
+          <div class="{# style cards #} swiper">
+            <div class="swiper-wrapper">
+              {% for card in cards limit: products_qty %}
+                <div class="{# style card #} swiper-slide js-product-card">
+                  {% render 'product-card', product: card %}
+                </div>
+              {% endfor %}
+            </div>
+            {% if show_pagination %}
+              <div class="{# style carousel-pagination #} swiper-pagination"></div>
+            {% endif %}
+          </div>
+        </div>
+      {% endfor %}
+    {% endif %}
+
+    {% if show_arrows %}
+      <div class="{# style carousel-nav--arrows #} swiper-navigation-arrows js-nav-arrows">
+        <button
+          type="button"
+          class="swiper-button-prev {# style arrow #}"
+          title="{{ 'accessibility.previous_slide' | t }}"
+          aria-label="{{ 'accessibility.previous_slide' | t }}"
+        >
+          <span aria-hidden="true">{%- render 'icon-arrow-left' -%}</span>
+        </button>
+
+        <button
+          type="button"
+          class="swiper-button-next {# style arrow #}"
+          title="{{ 'accessibility.next_slide' | t }}"
+          aria-label="{{ 'accessibility.next_slide' | t }}"
+        >
+          <span aria-hidden="true">{%- render 'icon-arrow-right' -%}</span>
+        </button>
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Featured Collections",
+  "tag": "section",
+  "class": "{# style section #} js-featured-collection",
+  "max_blocks": 6,
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Featured Products and Collections Title"
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "Call to action",
+      "default": "Shop All"
+    },
+    {
+      "type": "url",
+      "id": "cta_link",
+      "label": "Call to action URL",
+      "default": "/"
+    },
+    {
+      "type": "header",
+      "content": "CAROUSEL"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_arrows",
+      "label": "Show Arrows",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_pagination",
+      "label": "Show Pagination",
+      "default": false
+    }
+  ],
+  "blocks": [
+    {
+      "name": "Tab",
+      "type": "tab",
+      "settings": [
+        {
+          "type": "text",
+          "id": "tab_label",
+          "label": "Label"
+        },
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection",
+          "info": "Select a collection to display in the carousel"
+        },
+        {
+          "type": "product_list",
+          "id": "products",
+          "label": "Products",
+          "limit": 9,
+          "info": "Select the products to display in the carousel. It will replace the collection."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured Collections",
+      "category": "Carousels",
+      "settings": {},
+      "blocks": [
+        {
+          "type": "tab",
+          "settings": {
+            "tab_label": "Best Sellers",
+            "collection": "all"
+          }
+        },
+        {
+          "type": "tab",
+          "settings": {
+            "tab_label": "New Arrivals",
+            "collection": "new-arrivals"
+          }
+        },
+        {
+          "type": "tab",
+          "settings": {
+            "tab_label": "Featured",
+            "collection": "homepage"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

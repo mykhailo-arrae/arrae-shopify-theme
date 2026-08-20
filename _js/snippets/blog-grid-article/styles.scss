@@ -1,0 +1,123 @@
+@use 'unit' as u;
+@use 'style-guide/media' as mq;
+@use 'style-guide/spacing' as spacing;
+@use 'style-guide/colors' as color;
+@use 'style-guide/mixins' as mixin;
+@use 'style-guide/typography' as typography;
+
+.card {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  width: 100%;
+  min-width: 0;
+  gap: spacing.get(size-16);
+}
+
+.media {
+  position: relative;
+  flex: 0 0 50%;
+  width: 50%;
+  min-width: 0;
+  border-radius: spacing.get(size-8);
+  background-color: color.get(light-gray);
+  overflow: hidden;
+  aspect-ratio: 1;
+
+  @include mq.min(tabletlandscape) {
+    max-width: u.rem-calc(224);
+  }
+}
+
+.mediaLink {
+  @include mixin.fill-parent();
+  display: block;
+  text-decoration: none;
+}
+
+.mediaPlaceholder {
+  @include mixin.fill-parent();
+  background-color: color.get(light-gray);
+}
+
+.content {
+  display: flex;
+  flex: 0 0 50%;
+  width: 50%;
+  min-width: 0;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: spacing.get(size-4);
+}
+
+.title {
+  @include typography.font-cardinal-fruit();
+  margin: 0;
+  color: color.get(text);
+  font-size: u.rem-calc(20);
+  font-weight: 400;
+  line-height: 120%;
+  letter-spacing: u.rem-calc(-0.6);
+  text-decoration: none;
+
+  @include mq.min(tabletlandscape) {
+    font-size: u.rem-calc(24);
+    letter-spacing: u.rem-calc(-0.72);
+  }
+
+  &:hover,
+  &:focus-visible {
+    opacity: 0.7;
+  }
+}
+
+.content-bottom {
+  display: flex;
+  flex-direction: column;
+  margin-top: auto;
+}
+
+.author {
+  @include typography.font-proxima-nova();
+  color: color.get(text);
+  font-size: u.rem-calc(12);
+  font-weight: 400;
+  line-height: 110%;
+  letter-spacing: u.rem-calc(0.72);
+  text-transform: uppercase;
+}
+
+.date {
+  @include typography.font-proxima-nova();
+  color: color.get(text);
+  font-size: u.rem-calc(12);
+  font-weight: 300;
+  line-height: 120%;
+  letter-spacing: u.rem-calc(-0.12);
+
+  @include mq.min(tabletlandscape) {
+    font-weight: 400;
+  }
+}
+
+.tag {
+  @include typography.font-proxima-nova();
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  margin-top: spacing.get(size-16);
+  padding: u.rem-calc(10) spacing.get(size-12);
+  border-radius: spacing.get(size-8);
+  background-color: color.get(dark-gray-10);
+  color: color.get(text);
+  font-size: u.rem-calc(14);
+  font-weight: 500;
+  line-height: 106%;
+  letter-spacing: u.rem-calc(0.56);
+  text-transform: uppercase;
+
+  @include mq.min(tabletlandscape) {
+    margin-top: u.rem-calc(28);
+  }
+}

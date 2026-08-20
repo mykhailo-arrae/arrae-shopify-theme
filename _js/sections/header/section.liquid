@@ -1,0 +1,341 @@
+{% liquid
+  assign logo_light = section.settings.logo_light
+  assign logo_dark = section.settings.logo_dark
+  assign has_logo = false
+  if logo_light != blank or logo_dark != blank
+    assign has_logo = true
+  endif
+  assign swap_logos = false
+  if logo_light != blank and logo_dark != blank
+    assign swap_logos = true
+  endif
+  assign show_account_button = section.settings.show_account_button | default: null
+  assign show_markets_selector = section.settings.show_markets_selector | default: null
+  assign use_drawer_mode_on_desktop = section.settings.use_drawer_mode_on_desktop | default: false
+
+  assign current_currency = localization.country.currency.iso_code | upcase
+  assign current_country = localization.country
+
+  assign transparent_header_paths = settings.transparent_header_paths | split: ','
+  assign is_transparent = false
+  if template == 'index' or transparent_header_paths contains request.path
+    assign is_transparent = true
+  endif
+
+  assign cart_count = cart.item_count
+  assign markets_label = 'sections.header.markets' | t: currency: current_currency
+
+  assign show_drawer_markets = false
+  if show_markets_selector and current_country
+    assign show_drawer_markets = true
+  endif
+
+  assign show_drawer_account = false
+  if shop.customer_accounts_enabled
+    assign show_drawer_account = true
+  endif
+
+  assign show_drawer_extras = false
+  if show_drawer_account or show_drawer_markets
+    assign show_drawer_extras = true
+  endif
+%}
+
+{% render 'nav-banner-card-stylesheet' %}
+
+{% unless is_transparent %}
+  <div class="{# style spacer #}" aria-hidden="true"></div>
+{% endunless %}
+
+{% comment %}
+  Backdrop renders behind any open mega menu panel, blurring the page below
+  while keeping the header bar and panel itself crisp.
+{% endcomment %}
+<div class="{# style megamenu-backdrop #} js-megamenu-backdrop" aria-hidden="true"></div>
+
+<div
+  class="{# style container #}"
+  data-transparent="{% if is_transparent %}true{% else %}false{% endif %}"
+>
+  {% comment %}
+    Backdrop for the mobile mega menu drawer. Sits behind the drawer panel
+    and absorbs taps to close. Lives INSIDE `.container` (which is the
+    nearest fixed-position stacking-context ancestor of `.menu`) so the
+    drawer's `z-index` competes against the backdrop in the same stacking
+    context — otherwise the backdrop's `backdrop-filter` would paint over
+    the drawer and blur its contents.
+  {% endcomment %}
+  <div
+    class="{# style mobile-drawer-bg #} js-mobile-drawer-bg"
+    aria-hidden="true"
+  ></div>
+
+  <div class="{# style wrapper #}">
+    <div class="{# style logo #}">
+      <a href="/" class="{# style logo__link #}" aria-label="{{ 'sections.header.home' | t }}">
+        {% if has_logo %}
+          <span class="{# style logo__wrapper #} {% if swap_logos %}{# style logo__wrapper--swap #}{% endif %}">
+            {% if logo_light != blank %}
+              {{
+                logo_light
+                | image_url: width: 320
+                | image_tag:
+                  loading: 'eager',
+                  fetchpriority: 'high',
+                  class: '{# style logo__image #} {# style logo__image--light #}',
+                  widths: '120, 160, 240, 320, 480',
+                  sizes: '(min-width: 1024px) 104px, 80px',
+                  alt: ''
+              }}
+            {% endif %}
+            {% if logo_dark != blank %}
+              {{
+                logo_dark
+                | image_url: width: 320
+                | image_tag:
+                  loading: 'eager',
+                  fetchpriority: 'high',
+                  class: '{# style logo__image #} {# style logo__image--dark #}',
+                  widths: '120, 160, 240, 320, 480',
+                  sizes: '(min-width: 1024px) 104px, 80px',
+                  alt: ''
+              }}
+            {% endif %}
+          </span>
+          <span class="{# style logo__text #}">{{ shop.name }}</span>
+        {% else %}
+          <span class="{# style logo__text #} {# style logo__text--fallback #}">{{ shop.name }}</span>
+        {% endif %}
+      </a>
+    </div>
+
+    {% comment %}
+      Inline trigger strip rendered next to the logo in drawer-mode-on-desktop
+    {% endcomment %}
+    {% if use_drawer_mode_on_desktop %}
+      <div class="{# style drawer-triggers #} js-drawer-triggers"></div>
+    {% endif %}
+
+    {% if section.blocks.size > 0 %}
+      <nav
+        class="{# style menu #} js-header-nav js-mobile-drawer"
+        aria-label="{{ 'sections.header.primary_menu' | t }}"
+        data-mobile-drawer-open="false"
+        data-drawer-mode-on-desktop="{% if use_drawer_mode_on_desktop %}true{% else %}false{% endif %}"
+      >
+        <div class="{# style mobile-drawer-header #}">
+          <button
+            type="button"
+            class="{# style mobile-drawer-close #} js-mobile-drawer-close"
+            aria-label="{{ 'sections.header.close_menu' | t }}"
+          >
+            {% render 'icon-close', width: 32, height: 32 %}
+          </button>
+        </div>
+
+        <ul
+          class="{# style menu__list #}"
+          role="list"
+          data-mobile-accordion-group="true"
+        >
+          {% content_for 'blocks' %}
+
+          {% comment %}
+            Account link and currency selector at the bottom of the
+            scrollable drawer list. Hidden when the nav is inline on desktop.
+          {% endcomment %}
+          {% if show_drawer_extras %}
+            <li class="{# style drawer-extras #}">
+              {% if show_drawer_account %}
+                <a
+                  href="{{ routes.account_url }}"
+                  class="{# style drawer-extras__link #}"
+                >
+                  {{ 'sections.header.account' | t }}
+                </a>
+              {% endif %}
+
+              {% if show_drawer_markets %}
+                {% comment %}
+                  Mobile wrap for the markets dropdown. Anchors the popover
+                  *above* the chip via `data-markets-position='above'`.
+                {% endcomment %}
+                <div
+                  class="{# style drawer-extras__markets-wrap #} js-markets-wrap"
+                  data-markets-position="above"
+                >
+                  <button
+                    type="button"
+                    class="{# style drawer-extras__currency #} js-markets-trigger"
+                    aria-haspopup="dialog"
+                    aria-expanded="false"
+                    aria-label="{{ markets_label }}"
+                  >
+                    <span class="{# style drawer-extras__currency-label #}">
+                      {{ current_currency }}
+                    </span>
+                    <span
+                      class="{# style drawer-extras__currency-chevron #}"
+                      aria-hidden="true"
+                    >
+                      {% render 'icon-chevron-bottom', width: 16, height: 16 %}
+                    </span>
+                  </button>
+                  {% render 'markets-drawer', allowed_countries: section.settings.markets_allowed_countries %}
+                </div>
+              {% endif %}
+            </li>
+          {% endif %}
+        </ul>
+      </nav>
+    {% endif %}
+
+    <div class="{# style actions #}">
+      {% if show_markets_selector and current_country %}
+        {% comment %}
+          Desktop wrap for the markets dropdown. Anchors the popover *below*
+          the trigger via `data-markets-position='below'`.
+        {% endcomment %}
+        <div
+          class="{# style markets-wrap #} js-markets-wrap"
+          data-markets-position="below"
+        >
+          <button
+            type="button"
+            class="{# style markets #} js-markets-trigger"
+            aria-label="{{ markets_label }}"
+            aria-haspopup="dialog"
+            aria-expanded="false"
+          >
+            <span>{{ current_currency }}</span>
+            <span class="{# style markets__chevron #}" aria-hidden="true">
+              {% render 'icon-chevron-bottom', width: 18, height: 18 %}
+            </span>
+          </button>
+          {% render 'markets-drawer', allowed_countries: section.settings.markets_allowed_countries %}
+        </div>
+      {% endif %}
+
+      <button
+        type="button"
+        class="{# style actions__icon #} {# style actions__icon--search #} js-offcanvas-trigger"
+        data-drawer-name="search"
+        aria-label="{{ 'sections.header.search' | t }}"
+        aria-haspopup="dialog"
+      >
+        {% render 'icon-search', width: 28, height: 28 %}
+      </button>
+
+      {% if shop.customer_accounts_enabled and show_account_button %}
+        <a
+          href="{{ routes.account_url }}"
+          class="{# style actions__icon #} {# style actions__icon--account #}"
+          aria-label="{{ 'sections.header.account' | t }}"
+        >
+          {% render 'icon-account', width: 28, height: 28 %}
+        </a>
+      {% endif %}
+
+      <button
+        type="button"
+        class="{# style actions__icon #} {# style cart #} js-offcanvas-trigger"
+        data-drawer-name="cart"
+        aria-label="{{ 'sections.header.cart' | t }}"
+        aria-haspopup="dialog"
+      >
+        {% render 'icon-shopping-bag', width: 28, height: 28 %}
+        <span
+          class="{# style cart__count #} js-cart-item-count"
+          data-item-count="{{ cart_count }}"
+          aria-hidden="true"
+        >
+          {{ cart_count }}
+        </span>
+        <span class="{# style cart__sr #}">
+          {{ 'sections.header.cart_count' | t: count: cart_count }}
+        </span>
+      </button>
+
+      {% comment %}
+        Hamburger toggles the mobile mega menu drawer rendered above
+      {% endcomment %}
+      <button
+        type="button"
+        class="{# style hamburger #} js-mobile-drawer-trigger"
+        aria-label="{{ 'sections.header.toggle_menu' | t }}"
+        aria-haspopup="menu"
+        aria-expanded="false"
+      >
+        {% render 'icon-menu', width: 28, height: 28 %}
+      </button>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Header",
+  "tag": "header",
+  "enabled_on": {
+    "groups": ["header"]
+  },
+  "class": "js-header {# style root #}",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Note: Sticky header functionality (color change on scroll) is disabled in design mode for better performance."
+    },
+    {
+      "type": "header",
+      "content": "Branding"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo_light",
+      "label": "Logo light",
+      "info": "Shown when the header background is transparent (e.g. at the top of the homepage)."
+    },
+    {
+      "type": "image_picker",
+      "id": "logo_dark",
+      "label": "Logo dark",
+      "info": "Shown when the header background is solid white (e.g. after scrolling or on inner pages)."
+    },
+    {
+      "type": "header",
+      "content": "Actions"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_markets_selector",
+      "label": "Show Markets Selector",
+      "default": true
+    },
+    {
+      "type": "textarea",
+      "id": "markets_allowed_countries",
+      "label": "Countries to show in selector",
+      "info": "Comma- or newline-separated ISO country codes in display order (e.g. US, EUR, GB). Use ISO codes (GB, not UK). Add EUR for one EU-flag euro option (hides other euro countries). If the shopper's current market isn't in the list, it's appended at the end so a selection is always visible. Leave blank to show all available countries. Configure markets in Settings → Markets."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_account_button",
+      "label": "Show Account Button",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Navigation"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_drawer_mode_on_desktop",
+      "label": "Use drawer mode on Desktop",
+      "info": "When enabled, it replaces the desktop mega menu navigation with the same drawer navigation used on mobile.",
+      "default": false
+    }
+  ],
+  "blocks": [{ "type": "nav-item" }],
+  "max_blocks": 8
+}
+{% endschema %}

@@ -1,0 +1,129 @@
+@use 'unit' as u;
+@use 'style-guide/media' as mq;
+@use 'style-guide/spacing' as spacing;
+@use 'style-guide/sizes' as sizes;
+@use 'style-guide/colors' as color;
+@use 'style-guide/buttons' as button;
+@use 'style-guide/mixins' as mixin;
+@use 'style-guide/typography' as typography;
+@use 'style-guide/components' as components;
+
+.card {
+  overflow: hidden;
+  position: relative;
+  text-decoration: none;
+  border-radius: spacing.get(size-8);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+
+  &__media {
+    width: 100%;
+    flex-shrink: 0;
+    overflow: hidden;
+    position: relative;
+    aspect-ratio: 4 / 5;
+    border-radius: spacing.get(size-8);
+
+    &__placeholder {
+      @include mixin.fill-parent();
+      background-color: color.get(dark-gray-20);
+      border-radius: spacing.get(size-8);
+      aspect-ratio: 4 / 5;
+    }
+  }
+
+  &__badge {
+    display: flex;
+    height: 32px;
+    padding: 0 u.rem-calc(10);
+    justify-content: center;
+    align-items: center;
+    gap: spacing.get(size-8);
+    border-radius: spacing.get(size-8);
+    background: color.get(dark-gray-10);
+
+    &--label {
+      @include typography.body(size-14, 500);
+      color: color.get(text);
+      line-height: 106%;
+      letter-spacing: u.rem-calc(0.56);
+      text-transform: uppercase;
+    }
+  }
+
+  &__media__initial {
+    @include mixin.fill-parent();
+  }
+
+  &__content {
+    width: 100%;
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    box-sizing: border-box;
+  }
+
+  &__title {
+    @include typography.font-cardinal-fruit();
+    font-size: sizes.get(size-20);
+    text-decoration: none;
+    font-weight: 400;
+    color: color.get(text);
+    padding: spacing.get(size-20) 0 spacing.get(size-14) 0;
+    line-height: 120%;
+    letter-spacing: u.rem-calc(-0.6);
+
+    @include mq.min(tabletlandscape) {
+      font-size: sizes.get(size-24);
+      letter-spacing: u.rem-calc(-0.72);
+      padding: spacing.get(size-20) 0;
+    }
+
+    &__first {
+      display: block;
+    }
+
+    &__second {
+      display: block;
+      font-style: italic;
+    }
+
+    &:hover {
+      opacity: 0.6;
+    }
+  }
+
+  &__footer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: spacing.get(size-4);
+    width: 100%;
+  }
+
+  &__byline {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    color: color.get(text);
+  }
+
+  &__author {
+    @include typography.body(size-12, 400);
+    text-transform: uppercase;
+    line-height: 106%;
+    letter-spacing: u.rem-calc(0.48);
+  }
+
+  &__date {
+    @include typography.body(size-12, 300);
+    line-height: 120%;
+    letter-spacing: u.rem-calc(-0.12);
+  }
+}

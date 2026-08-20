@@ -1,0 +1,14 @@
+@use './colors' as c with (
+  $_deprecated_colors: (
+    link: oklch(25% 0 0deg)
+  ),
+  $_all_colors: (
+    link: oklch(25% 0 0deg),
+    white: oklch(100% 0 0deg)
+  )
+);
+
+.container {
+  color: c.get(link);
+  background-color: c.get(white);
+}

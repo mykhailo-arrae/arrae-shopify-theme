@@ -1,0 +1,81 @@
+{% liquid
+  assign heading = block.settings.heading
+  assign single_row = block.settings.single_row | default: false, allow_false: true
+
+  assign mobile_trigger_id = 'nav-collection-tiles-trigger-' | append: block.id
+  assign mobile_content_id = 'nav-collection-tiles-content-' | append: block.id
+
+  assign has_heading = false
+  if heading != blank
+    assign has_heading = true
+  endif
+%}
+
+{% render 'tile-card-stylesheet' %}
+
+<div
+  class="{# style root #}"
+  data-single-row="{{ single_row }}"
+  data-heading="{{ has_heading }}"
+>
+  {% if has_heading %}
+    <h3 class="{# style heading #}">{{ heading }}</h3>
+    <button
+      type="button"
+      id="{{ mobile_trigger_id }}"
+      class="{# style mobile-trigger #} js-mobile-accordion-trigger"
+      aria-expanded="false"
+      aria-controls="{{ mobile_content_id }}"
+    >
+      <span class="{# style mobile-trigger__label #}">{{ heading }}</span>
+      <span class="{# style mobile-trigger__icon #}" aria-hidden="true">
+        {% render 'icon-chevron-bottom', width: 24, height: 24 %}
+      </span>
+    </button>
+  {% endif %}
+
+  <div
+    class="{# style content #}"
+    {% if has_heading %}
+      id="{{ mobile_content_id }}"
+      aria-labelledby="{{ mobile_trigger_id }}"
+      aria-hidden="true"
+    {% endif %}
+  >
+    <div class="{# style tiles #}">
+      {% content_for 'blocks' %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Collection Tiles",
+  "class": "{# style col #}",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "info": "Optional. e.g. \"Shop by Goal\". On mobile, the heading is used as the accordion trigger; lists without a heading render flat."
+    },
+    {
+      "type": "checkbox",
+      "id": "single_row",
+      "label": "Tiles span full width",
+      "info": "When enabled, tiles take the full width of the panel and additional blocks render below on a new row. Desktop only.",
+      "default": true
+    }
+  ],
+  "blocks": [{ "type": "nav-collection-tile" }],
+  "presets": [
+    {
+      "name": "Collection Tiles",
+      "settings": {
+        "heading": "Shop by Goal",
+        "single_row": true
+      }
+    }
+  ]
+}
+{% endschema %}

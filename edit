@@ -1,0 +1,207 @@
+#!/usr/bin/env bash
+
+set -Eeuo pipefail
+
+echoerr() { printf "%s\n" "$*" >&2; }
+
+workdir='/app'
+
+compose_services=()
+while read -r line; do
+  compose_services+=("$line")
+done < <(docker compose ps --format '{{.Service}}' | sort -h)
+
+if [ ${#compose_services[@]} -eq 0 ]; then
+  echo 'No running Compose services found'
+  exit 1
+fi
+
+echo 'Starting IDE in remote editing mode'
+
+editors=("cursor" "code" "zed" "webstorm")
+
+PS3='Please select an IDE to launch: '
+select selected_editor in "${editors[@]}"; do
+  [[ $REPLY =~ ^[0-9]+$ ]] || {
+    echo "Invalid selection. Enter a number."
+    continue
+  }
+
+  if [[ -n "$selected_editor" ]]; then
+    break
+  else
+    echo "Invalid selection."
+  fi
+done
+
+if [[ -z "${selected_editor:-}" ]]; then
+  echo "No editor selected."
+  exit 1
+fi
+
+# webstorm only prints SSH params — no local binary needed
+case "$selected_editor" in
+cursor | code | zed)
+  command -v "$selected_editor" >/dev/null 2>&1 || {
+    echo "Editor '$selected_editor' not found in PATH."
+    exit 1
+  }
+  ;;
+webstorm) echoerr "Skipping PATH check for '$selected_editor'" ;;
+*)
+  echoerr "Warning: no PATH check defined for '$selected_editor'"
+  ;;
+esac
+
+echo "Selected editor: '$selected_editor'"
+
+compose_project=$(docker compose config | grep -m1 'name:' | awk '{print $2}')
+
+PS3="[${compose_project}] Please select a container: "
+echo "Running containers:"
+select compose_service in "${compose_services[@]}"; do
+  [[ $REPLY =~ ^[0-9]+$ ]] || {
+    echo "Invalid selection. Enter a number."
+    continue
+  }
+
+  if [[ -n "$compose_service" ]]; then
+    break
+  else
+    echo "Invalid selection."
+  fi
+done
+
+if [[ -z "${compose_service:-}" ]]; then
+  echo "No container selected."
+  exit 1
+fi
+
+# NR==1: a scaled service may have multiple containers
+container_name=$(docker compose ps --format '{{.Name}}' "${compose_service}" | awk 'NR==1')
+
+### Docker attach editors (cursor, code)
+
+open_via_docker_attach() {
+  local editor="$1"
+  local name="$2"
+  local payload hex directive context
+
+  context=$(docker context show)
+
+  if [ "$editor" = "code" ]; then
+    payload=$(printf '{ "containerName": "/%s", "settings": { "context": "%s" } }' "$name" "$context")
+    directive='attached-container'
+  elif [ "$editor" = "cursor" ]; then
+    payload=$(printf '{ "settingType":"container", "containerId":"%s", "settings": { "context": "%s" } }' "$name" "$context")
+    directive='dev-container'
+  else
+    echoerr "Unknown docker-attach editor: $editor"
+    exit 1
+  fi
+
+  hex=$(printf '%s' "$payload" | od -A n -t x1 | tr -d ' \n')
+
+  echo 'Starting the editor'
+  "$editor" --folder-uri="vscode-remote://${directive}+${hex}${workdir}"
+}
+
+### SSH-based editors (zed, webstorm)
+
+_ssh_alias=''
+
+setup_ssh() {
+  local service="$1"
+  local name="$2"
+  local port key_path ssh_alias
+
+  port=$(docker compose port "$service" 2222 | awk -F: '{print $NF}')
+  if [[ -z "$port" ]]; then
+    echoerr "Container '$name' does not expose port 2222. SSH editors require an SSH-enabled container."
+    exit 1
+  fi
+  key_path="/tmp/${name}-key"
+  ssh_alias="docker-compose-${name}"
+
+  docker cp "${name}:/home/node/.ssh/id_ed25519" "${key_path}"
+  chmod 600 "${key_path}"
+
+  # Remove stale SSH config entry
+  if [[ -f ~/.ssh/config ]]; then
+    local tmp_config
+    tmp_config=$(mktemp)
+    sed -e "/# DOCKER-COMPOSE:$ssh_alias$/,/# DOCKER-COMPOSE:$ssh_alias:END$/d" ~/.ssh/config >"$tmp_config"
+    mv "$tmp_config" ~/.ssh/config
+  fi
+
+  # Add SSH config entry
+  mkdir -p ~/.ssh
+  cat >>~/.ssh/config <<EOF
+
+# DOCKER-COMPOSE:$ssh_alias
+Host $ssh_alias
+    HostName localhost
+    User node
+    Port $port
+    IdentityFile $key_path
+    IdentitiesOnly yes
+    StrictHostKeyChecking no
+    UserKnownHostsFile /dev/null
+    LogLevel ERROR
+EOF
+  echo "# DOCKER-COMPOSE:$ssh_alias:END" >>~/.ssh/config
+  echoerr "Added ssh alias $ssh_alias"
+
+  # Smoke test
+  # -n: don't consume local stdin (needed to preserve the script's select prompts)
+  # -t: force remote PTY for proper output buffering
+  # Manual testing: ssh "$ssh_alias" -t "cd /app && exec \$SHELL"
+  if ! ssh -n -t -o ConnectTimeout=10 "$ssh_alias" -- \
+    "cd /app && echo 'Remote Node version:' && node --version && echo 'Smoke test complete'" >&2; then
+    echoerr 'Smoke test failed. Cannot proceed with editor setup.'
+    echoerr 'Verify the container is running and SSH is accessible on port '"$port"
+    exit 1
+  fi
+
+  _ssh_alias="$ssh_alias"
+}
+
+open_via_ssh() {
+  local editor="$1"
+  local service="$2"
+  local name="$3"
+
+  setup_ssh "$service" "$name"
+  local ssh_alias="$_ssh_alias"
+
+  case "$editor" in
+  zed)
+    echo "Connecting to Zed..."
+    zed "ssh://${ssh_alias}${workdir}"
+    ;;
+  webstorm)
+    echo ""
+    echo "WebStorm Remote Development Parameters:"
+    echo "----------------------------------------"
+    echo "SSH Alias: ${ssh_alias}"
+    echo "Workdir:   ${workdir}"
+    echo ""
+    echo "Use these values in your WebStorm Remote Development setup."
+    ;;
+  esac
+}
+
+### Launch
+
+case "$selected_editor" in
+cursor | code)
+  open_via_docker_attach "$selected_editor" "$container_name"
+  ;;
+zed | webstorm)
+  open_via_ssh "$selected_editor" "$compose_service" "$container_name"
+  ;;
+*)
+  echoerr "Error: no launch handler for '$selected_editor'"
+  exit 1
+  ;;
+esac

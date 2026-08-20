@@ -1,0 +1,219 @@
+@use 'unit' as u;
+@use 'style-guide/media' as mq;
+@use 'style-guide/spacing' as spacing;
+@use 'style-guide/sizes' as sizes;
+@use 'style-guide/colors' as color;
+@use 'style-guide/buttons' as button;
+@use 'style-guide/mixins' as mixin;
+@use 'style-guide/typography' as typography;
+@use 'style-guide/form' as form;
+
+.root {
+  width: 100%;
+  position: relative;
+
+  :global(.hidden) {
+    @include mixin.visually-hidden();
+  }
+}
+
+.content {
+  width: 100%;
+  position: relative;
+  @include mixin.container();
+  overflow: hidden;
+  z-index: 1;
+  padding: 0 spacing.get(size-16);
+
+  @include mq.min(tabletlandscape) {
+    padding: 0 spacing.get(size-48);
+  }
+}
+
+.search-results-header {
+  display: flex;
+  flex-direction: row;
+  gap: spacing.get(size-16);
+  align-items: center;
+  justify-content: space-between;
+  padding: spacing.get(size-8);
+
+  @include mq.min(tabletlandscape) {
+    padding: spacing.get(size-8) 0;
+  }
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: spacing.get(size-40);
+  padding-top: spacing.get(size-16);
+  padding-bottom: spacing.get(size-20);
+
+  @include mq.min(tabletlandscape) {
+    padding-top: spacing.get(size-24);
+    padding-bottom: spacing.get(size-32);
+  }
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: spacing.get(size-12);
+  justify-content: flex-end;
+  flex-shrink: 0;
+}
+
+.grid {
+  display: grid;
+  gap: spacing.get(size-14);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+
+  @include mq.min(tabletlandscape) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: spacing.get(size-24) spacing.get(size-12);
+  }
+
+  &[data-layout='1-column'] {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    @include mq.min(tabletlandscape) {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+}
+
+.item {
+  z-index: 1;
+  width: 100%;
+  display: block;
+}
+
+.filters {
+  @include mixin.reset-button();
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  gap: spacing.get(size-12);
+  height: spacing.get(size-40);
+  border-radius: spacing.get(size-24);
+  @include typography.body-xsmall();
+  justify-content: center;
+  padding: 0 spacing.get(size-40);
+  text-transform: uppercase;
+  color: color.get(text);
+  border: 1px solid color.get(text);
+  background-color: color.get(off-white);
+  transition:
+    color 0.3s ease-in-out,
+    background-color 0.3s ease-in-out,
+    border-color 0.3s ease-in-out;
+
+  @media (hover: hover) {
+    &:hover {
+      color: color.get(off-white);
+      border-color: color.get(text);
+      background-color: color.get(text);
+
+      .filters__qty {
+        background-color: color.get(dark-gray);
+        color: color.get(off-white);
+      }
+    }
+  }
+
+  &__qty {
+    border-radius: 100%;
+    color: color.get(dark-gray);
+    background-color: color.get(off-white);
+    min-width: spacing.get(size-20);
+    height: spacing.get(size-20);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 spacing.get(size-8);
+    font-size: u.rem-calc(12);
+    transition:
+      color 0.3s ease-in-out,
+      background-color 0.3s ease-in-out;
+  }
+}
+
+.results {
+  @include typography.body(size-14, 300);
+  color: color.get(text-gray);
+
+  b {
+    font-weight: 500;
+  }
+}
+
+.empty {
+  text-align: center;
+  padding-top: spacing.get(size-24);
+  @include typography.body-regular();
+  @include mq.min(tabletlandscape) {
+    @include typography.body-medium();
+  }
+
+  a {
+    position: relative;
+    display: inline-block;
+    @include mixin.animated-underline-reverse();
+    text-decoration: none;
+    color: currentColor;
+  }
+}
+
+.recommendations {
+  display: flex;
+  flex-direction: column;
+
+  &__title {
+    width: 100%;
+    @include typography.font-cardinal-fruit();
+    font-size: sizes.get(size-24);
+    line-height: 120%;
+    letter-spacing: u.rem-calc(-0.72);
+    color: color.get(text);
+    padding: spacing.get(size-8) 0;
+  }
+
+  &__container {
+    width: 100%;
+    position: relative;
+    padding-top: spacing.get(size-16);
+    padding-bottom: spacing.get(size-20);
+
+    @include mq.min(tabletlandscape) {
+      padding-top: spacing.get(size-32);
+      padding-bottom: spacing.get(size-40);
+    }
+  }
+
+  &__wrapper {
+    display: grid;
+    gap: spacing.get(size-14);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    @include mq.min(tabletlandscape) {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: spacing.get(size-24) spacing.get(size-12);
+    }
+
+    &[data-mobile-layout='1-column'] {
+      grid-template-columns: repeat(1, minmax(0, 1fr));
+      @include mq.min(tabletlandscape) {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+    }
+  }
+
+  &__navigation {
+    width: 100%;
+    padding: spacing.get(size-24) spacing.get(size-16) 0 spacing.get(size-16);
+    @include mq.min(tabletlandscape) {
+      padding: spacing.get(size-40) 0 0 0;
+    }
+  }
+}

@@ -1,0 +1,231 @@
+@use 'unit' as u;
+@use 'style-guide/media' as mq;
+@use 'style-guide/spacing' as spacing;
+@use 'style-guide/sizes' as sizes;
+@use 'style-guide/colors' as color;
+@use 'style-guide/buttons' as button;
+@use 'style-guide/mixins' as mixin;
+@use 'style-guide/typography' as typography;
+@use 'style-guide/components' as components;
+
+.section {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+
+  &--header {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: spacing.get(size-12);
+
+    @include mq.min(tabletlandscape) {
+      gap: spacing.get(size-20);
+    }
+  }
+
+  &--content {
+    display: block;
+    width: 100%;
+
+    @include mq.min(tabletlandscape) {
+      padding-top: spacing.get(size-32);
+    }
+  }
+
+  &--footer {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: spacing.get(size-16);
+    padding-top: spacing.get(size-32);
+  }
+}
+
+.container {
+  @include mixin.container();
+  position: relative;
+  display: block;
+  padding: spacing.get(size-48) spacing.get(size-16);
+
+  @include mq.min(tabletlandscape) {
+    padding: spacing.get(size-48);
+  }
+}
+
+.heading {
+  @include typography.heading-3();
+  font-weight: 500;
+
+  @include mq.min(tabletlandscape) {
+    @include typography.heading-2();
+    font-weight: 500;
+  }
+}
+
+.subheading {
+  @include typography.body(size-16, 300);
+  line-height: 120%;
+  max-width: unset;
+
+  @include mq.min(tabletlandscape) {
+    @include typography.body();
+    font-weight: 300;
+    font-size: u.rem-calc(18);
+    max-width: spacing.get(columns-4);
+    text-wrap: pretty;
+  }
+}
+
+.carousel {
+  width: 100vw;
+  display: block;
+  position: relative;
+  box-sizing: border-box;
+  margin-left: u.rem-calc(-16);
+  margin-right: u.rem-calc(-16);
+  padding-left: u.rem-calc(16);
+
+  @include mq.min(tabletlandscape) {
+    width: 100%;
+    margin-left: unset;
+    margin-right: unset;
+    padding-left: unset;
+  }
+
+  :global(.swiper-slide) {
+    height: stretch;
+    width: min(u.rem-calc(300), calc(100vw - u.rem-calc(32)));
+
+    @include mq.min(tabletlandscape) {
+      width: auto;
+    }
+
+    [data-snippet-name='article-card'] {
+      height: 100%;
+    }
+  }
+
+  &:not(:global(.swiper-initialized)) {
+    :global(.swiper-wrapper) {
+      gap: 16px;
+
+      @include mq.min(tabletlandscape) {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: spacing.get(size-16);
+      }
+    }
+
+    .card {
+      display: none;
+
+      &:nth-child(1),
+      &:nth-child(2),
+      &:nth-child(3) {
+        display: block;
+        max-width: 80vw;
+      }
+    }
+  }
+
+  :global(.swiper-wrapper) {
+    display: flex;
+  }
+}
+
+.carousel-pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: spacing.get(size-8);
+  position: relative;
+  bottom: auto;
+  left: auto;
+  padding-top: spacing.get(size-32);
+  width: 100%;
+  transform: none;
+
+  &:empty {
+    display: none;
+  }
+
+  @include mq.min(tabletlandscape) {
+    display: none;
+  }
+
+  &:global(.swiper-pagination-horizontal) {
+    top: auto;
+  }
+
+  :global(.swiper-pagination-bullet) {
+    margin: 0 !important;
+    width: sizes.get(size-8);
+    height: sizes.get(size-8);
+    border-radius: 50%;
+    opacity: 1;
+    background: color.get(dark-gray-20);
+    transition: background 200ms ease;
+
+    &:focus-visible {
+      outline: 2px solid color.get(dark-gray);
+      outline-offset: 2px;
+    }
+  }
+
+  :global(.swiper-pagination-bullet-active) {
+    background: color.get(dark-gray);
+  }
+}
+
+.carousel-nav--arrows {
+  display: none;
+  z-index: 6;
+  position: absolute;
+  top: 0;
+  right: u.rem-calc(24);
+  left: u.rem-calc(24);
+  height: min(u.rem-calc(375), calc(125vw - u.rem-calc(40)));
+  pointer-events: none;
+
+  :global(.swiper-button-prev),
+  :global(.swiper-button-next) {
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  :global(.swiper-button-prev) {
+    left: 0;
+  }
+
+  :global(.swiper-button-next) {
+    right: 0;
+  }
+
+  @include mq.min(tabletlandscape) {
+    height: calc(41.6667% - u.rem-calc(13.333));
+  }
+}
+
+.arrow {
+  @include components.carousel-arrow();
+  pointer-events: auto;
+  z-index: 4;
+
+  span {
+    width: inherit;
+    height: inherit;
+  }
+
+  &:global(.swiper-button-lock) {
+    display: none;
+  }
+
+  &::after {
+    display: none;
+  }
+
+  &[disabled] {
+    display: none;
+  }
+}

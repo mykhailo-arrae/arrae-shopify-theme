@@ -1,0 +1,87 @@
+@use 'unit' as u;
+@use 'style-guide/spacing' as spacing;
+@use 'style-guide/typography' as typography;
+@use 'style-guide/buttons' as buttons;
+@use 'style-guide/colors' as color;
+@use 'style-guide/form' as form;
+@use 'style-guide/mixins' as mixins;
+@use 'style-guide/media' as mq;
+
+.section {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-height: 90svh;
+  background-color: color.get(off-white);
+  aspect-ratio: 9 / 16;
+
+  @include mq.min(tabletlandscape) {
+    aspect-ratio: 16 / 9;
+  }
+}
+
+.container {
+  position: relative;
+  height: stretch;
+}
+
+.background {
+  z-index: 1;
+  @include mixins.fill-parent();
+}
+
+.content {
+  @include mixins.container();
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-end;
+  padding: spacing.get(size-24);
+  text-align: left;
+
+  @include mq.min(tabletlandscape) {
+    padding: spacing.get(size-48);
+  }
+}
+
+.inner {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  max-width: u.rem-calc(640);
+}
+
+.title {
+  margin-bottom: spacing.get(size-8);
+  color: color.get(dark-gray);
+  @include typography.heading-2();
+  letter-spacing: u.rem-calc(-1.68);
+  text-wrap: balance;
+
+  @include mq.min(tabletlandscape) {
+    margin-bottom: spacing.get(size-24);
+    @include typography.heading-1();
+    line-height: 98%;
+    letter-spacing: u.rem-calc(-1.68);
+  }
+}
+
+.subtext {
+  margin-bottom: spacing.get(size-24);
+  color: color.get(dark-gray);
+  @include typography.body-regular();
+  font-size: u.rem-calc(18);
+  letter-spacing: u.rem-calc(-0.56);
+  text-wrap: balance;
+}
+
+a.button {
+  width: fit-content;
+  padding: spacing.get(size-12) spacing.get(size-32);
+  font-weight: 400;
+  background-color: color.get(dark-gray);
+}

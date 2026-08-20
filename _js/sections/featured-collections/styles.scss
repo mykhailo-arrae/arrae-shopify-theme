@@ -1,0 +1,309 @@
+@use 'unit' as u;
+@use 'style-guide/media' as mq;
+@use 'style-guide/colors' as color;
+@use 'style-guide/spacing' as spacing;
+@use 'style-guide/sizes' as sizes;
+@use 'style-guide/typography' as typography;
+@use 'style-guide/components' as components;
+@use 'style-guide/buttons' as button;
+@use 'style-guide/mixins' as mixin;
+@use 'style-guide/form' as form;
+
+.section {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+}
+
+.container {
+  @include mixin.container();
+  position: relative;
+  display: block;
+  padding-top: spacing.get(size-48);
+  padding-bottom: spacing.get(size-0);
+}
+
+.header {
+  width: 100%;
+  padding-bottom: spacing.get(size-32);
+
+  @include mq.min(tabletlandscape) {
+    display: flex;
+    justify-content: center;
+  }
+}
+
+// One horizontal row: tab buttons (tablist) + CTA at the end, scroll together on small screens.
+.tabs-strip {
+  @include mixin.hide-native-scrollbar();
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: spacing.get(size-40);
+  width: 100%;
+  overflow-x: auto;
+  padding-left: spacing.get(size-16);
+  padding-right: spacing.get(size-16);
+
+  &--single {
+    justify-content: center;
+  }
+
+  @include mq.min(tabletlandscape) {
+    width: auto;
+    max-width: 100%;
+    overflow-x: visible;
+    justify-content: center;
+    padding-left: unset;
+    padding-right: unset;
+  }
+}
+
+.header-cta {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+
+  .cta {
+    padding: spacing.get(size-8) spacing.get(size-32);
+    text-wrap: nowrap;
+  }
+}
+
+.title-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: spacing.get(size-24);
+
+  @include mq.min(tabletlandscape) {
+    padding-bottom: spacing.get(size-32);
+  }
+}
+
+.title {
+  flex-shrink: 0;
+  text-align: center;
+  @include typography.heading-4();
+  line-height: 112%;
+  letter-spacing: u.rem-calc(-0.96);
+  padding-inline: spacing.get(size-16);
+  color: color.get(dark-gray);
+  text-wrap: balance;
+  width: 100%;
+
+  @include mq.min(tabletlandscape) {
+    @include typography.heading-3();
+    line-height: 98%;
+    max-width: spacing.get(columns-8);
+    padding: 0;
+  }
+}
+
+.tabs {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: flex-start;
+  gap: spacing.get(size-40);
+
+  @include mq.min(tabletlandscape) {
+    justify-content: center;
+  }
+}
+
+.tab {
+  @include button.tab-link();
+}
+
+.panel {
+  position: relative;
+  overflow: hidden;
+  padding-bottom: spacing.get(size-24);
+  padding-inline: spacing.get(size-16);
+
+  @include mq.min(tabletlandscape) {
+    padding-inline: spacing.get(size-40);
+  }
+}
+
+.card {
+  width: 100%;
+  display: block;
+  overflow: hidden;
+  position: relative;
+  text-decoration: none;
+  flex-shrink: 0;
+  height: auto;
+
+  :global(.portable-snippet) {
+    height: 100%;
+  }
+
+  // Mobile Figma card is 300×460 (taller than shared product-card 4:5).
+  // CSS Modules hashes custom properties per component, so override the
+  // image wrapper aspect-ratio directly instead of using a shared var.
+  @include mq.max(tabletlandscape) {
+    :global([data-snippet-name='product-card'] [class*='_image__wrapper']) {
+      aspect-ratio: 300 / 460;
+    }
+  }
+}
+
+.cards {
+  width: 100vw;
+  display: block;
+  position: relative;
+  transition: opacity 300ms ease-in-out;
+  overflow: hidden;
+  margin-left: u.rem-calc(-16);
+  margin-right: u.rem-calc(-16);
+  padding-left: spacing.get(size-16);
+
+  @include mq.min(tabletlandscape) {
+    margin-left: unset;
+    margin-right: unset;
+    padding-left: unset;
+    width: 100%;
+  }
+
+  &:not(:global(.swiper-initialized)) {
+    :global(.swiper-wrapper) {
+      gap: 16px;
+
+      @include mq.min(tabletlandscape) {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: spacing.get(size-16);
+      }
+    }
+
+    .card {
+      display: none;
+
+      &:nth-child(1),
+      &:nth-child(2),
+      &:nth-child(3) {
+        display: block;
+        max-width: 80vw;
+      }
+    }
+  }
+
+  :global(.swiper-wrapper) {
+    display: flex;
+  }
+
+  .carousel-pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: spacing.get(size-8);
+    position: relative;
+    bottom: auto;
+    left: auto;
+    padding-top: spacing.get(size-32);
+    width: 100%;
+    transform: none;
+
+    @include mq.min(tabletlandscape) {
+      display: none;
+    }
+
+    &:global(.swiper-pagination-horizontal) {
+      top: auto;
+    }
+
+    :global(.swiper-pagination-bullet) {
+      margin: 0;
+      width: sizes.get(size-8);
+      height: sizes.get(size-8);
+      border-radius: 50%;
+      opacity: 1;
+      background: color.get(dark-gray-20);
+      transition: background 200ms ease;
+
+      &:focus-visible {
+        outline: 2px solid color.get(dark-gray);
+        outline-offset: 2px;
+      }
+    }
+
+    :global(.swiper-pagination-bullet-active) {
+      background: color.get(dark-gray);
+    }
+  }
+}
+
+.carousel-outer-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.carousel-nav--arrows {
+  display: none;
+  z-index: 6;
+  position: absolute;
+  width: auto;
+  height: auto;
+  pointer-events: none;
+  inset: spacing.get(size-0) spacing.get(size-8);
+
+  :global(.swiper-button-prev),
+  :global(.swiper-button-next) {
+    top: 40%;
+  }
+
+  :global(.swiper-button-prev) {
+    left: u.rem-calc(-6);
+  }
+
+  :global(.swiper-button-next) {
+    right: u.rem-calc(26);
+  }
+
+  @include mq.min(tabletlandscape) {
+    inset: spacing.get(size-0) spacing.get(size-40);
+
+    :global(.swiper-button-prev) {
+      left: u.rem-calc(-20);
+    }
+
+    :global(.swiper-button-next) {
+      right: u.rem-calc(-20);
+    }
+  }
+}
+
+.arrow {
+  @include components.carousel-arrow();
+  pointer-events: auto;
+  z-index: 4;
+
+  span {
+    width: inherit;
+    height: inherit;
+  }
+
+  &:global(.swiper-button-lock) {
+    display: none;
+  }
+
+  &::after {
+    display: none;
+  }
+
+  &[disabled] {
+    display: none;
+  }
+}
+
+:global(.swiper-button-prev),
+:global(.swiper-button-next) {
+  top: 40%;
+}

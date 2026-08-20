@@ -1,0 +1,458 @@
+@use 'unit' as u;
+@use 'style-guide/media' as mq;
+@use 'style-guide/spacing' as spacing;
+@use 'style-guide/colors' as color;
+@use 'style-guide/buttons' as button;
+@use 'style-guide/mixins' as mixin;
+@use 'style-guide/typography' as typography;
+
+.section {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  aspect-ratio: 375 / 680;
+
+  @include mq.min(tablet) {
+    aspect-ratio: 1512 / 850;
+    min-height: u.rem-calc(760);
+    max-height: 100vh;
+  }
+}
+
+.container {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 100%;
+  height: 100%;
+  color: color.get(off-white);
+}
+
+.outer-wrapper {
+  width: 100%;
+  min-height: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.backgroundControls {
+  position: absolute;
+  bottom: spacing.get(size-24);
+  right: spacing.get(size-24);
+  // Sibling of content — must sit above content's stacking context
+  z-index: 2;
+
+  @include mq.min(tabletlandscape) {
+    bottom: spacing.get(size-48);
+    right: spacing.get(size-48);
+  }
+
+  &[data-mobile-position='bottom-right'],
+  &[data-mobile-position='center-right'],
+  &[data-mobile-position='top-right'] {
+    bottom: spacing.get(size-24);
+    left: spacing.get(size-24);
+    right: unset;
+  }
+
+  &[data-desktop-position='bottom-right'],
+  &[data-desktop-position='center-right'],
+  &[data-desktop-position='top-right'] {
+    @include mq.min(tabletlandscape) {
+      bottom: spacing.get(size-48);
+      left: spacing.get(size-48);
+      right: unset;
+    }
+  }
+}
+
+.background {
+  z-index: 0;
+  @include mixin.fill-parent();
+  min-width: 100%;
+  min-height: 100%;
+  background: color.get(light-gray);
+}
+
+.videoControls {
+  position: relative;
+
+  & button {
+    background-color: color.get(off-white-60);
+  }
+}
+
+.overlay {
+  z-index: 1;
+  @include mixin.fill-parent();
+}
+
+.heading {
+  @include typography.heading-2();
+  text-wrap: balance;
+
+  @include mq.min(tabletlandscape) {
+    @include typography.heading-1();
+  }
+}
+
+.subheading {
+  @include typography.body();
+  font-weight: 300;
+  font-size: u.rem-calc(18);
+  letter-spacing: u.rem-calc(-0.18);
+  line-height: 120%;
+  text-wrap: balance;
+  width: 100%;
+  max-width: 80vw;
+
+  @include mq.min(tabletlandscape) {
+    max-width: unset;
+  }
+}
+
+.content-wrapper {
+  @include mixin.container();
+  width: 100%;
+  height: 100%;
+  position: relative;
+  // Isolate .inner's z-index so it can't escape above video controls
+  z-index: 1;
+  // Empty content areas shouldn't steal clicks from controls underneath
+  pointer-events: none;
+
+  a,
+  button,
+  :global(.portable-snippet) {
+    pointer-events: auto;
+  }
+}
+
+.content {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  padding: spacing.get(size-24);
+
+  @include mq.min(tabletlandscape) {
+    padding: spacing.get(size-48);
+  }
+
+  .inner .buttons {
+    display: flex;
+    flex-direction: column;
+    gap: spacing.get(size-8);
+    max-width: spacing.get(columns-2);
+
+    @include mq.min(tabletlandscape) {
+      margin-top: spacing.get(size-8);
+      flex-direction: row;
+      gap: spacing.get(size-8);
+      max-width: unset;
+    }
+  }
+
+  .inner .button-1 {
+    padding: spacing.get(size-8) spacing.get(size-24);
+    border: u.rem-calc(1) solid color.get(off-white);
+
+    &:hover {
+      border-color: color.get(text);
+    }
+
+    @include mq.min(tabletlandscape) {
+      padding: spacing.get(size-8) spacing.get(size-32);
+    }
+  }
+
+  .inner .button-2 {
+    padding: spacing.get(size-8) spacing.get(size-24);
+
+    @include mq.min(tabletlandscape) {
+      padding: spacing.get(size-8) spacing.get(size-32);
+    }
+  }
+
+  // Mobile content position styles
+  &[data-mobile-position='top-left'] {
+    align-items: flex-start;
+    justify-content: flex-start;
+    text-align: left;
+
+    .buttons {
+      margin-right: auto;
+      margin-left: unset;
+    }
+  }
+
+  &[data-mobile-position='top-center'] {
+    align-items: flex-start;
+    justify-content: center;
+    text-align: center;
+
+    .inner {
+      align-items: center;
+    }
+
+    .buttons {
+      margin-left: auto;
+      margin-right: auto;
+    }
+  }
+
+  &[data-mobile-position='top-right'] {
+    align-items: flex-start;
+    justify-content: flex-end;
+    text-align: right;
+
+    .inner {
+      align-items: flex-end;
+    }
+
+    .buttons {
+      margin-left: auto;
+      margin-right: unset;
+    }
+  }
+
+  &[data-mobile-position='center-left'] {
+    align-items: center;
+    justify-content: flex-start;
+    text-align: left;
+
+    .buttons {
+      margin-right: auto;
+      margin-left: unset;
+    }
+  }
+
+  &[data-mobile-position='center-center'] {
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+
+    .inner {
+      align-items: center;
+    }
+
+    .buttons {
+      margin-left: auto;
+      margin-right: auto;
+    }
+  }
+
+  &[data-mobile-position='center-right'] {
+    align-items: center;
+    justify-content: flex-end;
+    text-align: right;
+
+    .inner {
+      align-items: flex-end;
+    }
+
+    .buttons {
+      margin-left: auto;
+      margin-right: unset;
+    }
+  }
+
+  &[data-mobile-position='bottom-left'] {
+    align-items: flex-end;
+    justify-content: flex-start;
+    text-align: left;
+
+    .buttons {
+      margin-right: auto;
+      margin-left: unset;
+    }
+  }
+
+  &[data-mobile-position='bottom-center'] {
+    align-items: flex-end;
+    justify-content: center;
+    text-align: center;
+
+    .inner {
+      align-items: center;
+    }
+
+    .buttons {
+      margin-left: auto;
+      margin-right: auto;
+    }
+  }
+
+  &[data-mobile-position='bottom-right'] {
+    align-items: flex-end;
+    justify-content: flex-end;
+    text-align: right;
+
+    .inner {
+      align-items: flex-end;
+    }
+
+    .buttons {
+      margin-left: auto;
+      margin-right: unset;
+    }
+  }
+
+  &[data-desktop-position='top-left'] {
+    @include mq.min(tabletlandscape) {
+      align-items: flex-start;
+      justify-content: flex-start;
+      text-align: left;
+
+      .buttons {
+        margin-left: unset;
+        margin-right: auto;
+      }
+    }
+  }
+
+  &[data-desktop-position='top-center'] {
+    @include mq.min(tabletlandscape) {
+      align-items: flex-start;
+      justify-content: center;
+      text-align: center;
+
+      .buttons {
+        margin-left: auto;
+        margin-right: auto;
+      }
+    }
+  }
+
+  &[data-desktop-position='top-right'] {
+    @include mq.min(tabletlandscape) {
+      align-items: flex-start;
+      justify-content: flex-end;
+      text-align: right;
+
+      .buttons {
+        margin-left: auto;
+        margin-right: 0;
+      }
+    }
+  }
+
+  &[data-desktop-position='center-left'] {
+    @include mq.min(tabletlandscape) {
+      align-items: center;
+      justify-content: flex-start;
+      text-align: left;
+
+      .buttons {
+        margin-right: auto;
+        margin-left: unset;
+      }
+    }
+  }
+
+  &[data-desktop-position='center-center'] {
+    @include mq.min(tabletlandscape) {
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+
+      .buttons {
+        margin-left: auto;
+        margin-right: auto;
+      }
+    }
+  }
+
+  &[data-desktop-position='center-right'] {
+    @include mq.min(tabletlandscape) {
+      align-items: center;
+      justify-content: flex-end;
+      text-align: right;
+
+      .buttons {
+        margin-left: auto;
+        margin-right: 0;
+      }
+    }
+  }
+
+  &[data-desktop-position='bottom-left'] {
+    @include mq.min(tabletlandscape) {
+      align-items: flex-end;
+      justify-content: flex-start;
+      text-align: left;
+
+      .buttons {
+        margin-right: auto;
+        margin-left: unset;
+      }
+    }
+  }
+
+  &[data-desktop-position='bottom-center'] {
+    @include mq.min(tabletlandscape) {
+      align-items: flex-end;
+      justify-content: center;
+      text-align: center;
+
+      .buttons {
+        margin-left: auto;
+        margin-right: auto;
+      }
+    }
+  }
+
+  &[data-desktop-position='bottom-right'] {
+    @include mq.min(tabletlandscape) {
+      align-items: flex-end;
+      justify-content: flex-end;
+      text-align: right;
+
+      .buttons {
+        margin-left: auto;
+        margin-right: unset;
+      }
+    }
+  }
+}
+
+.inner {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: spacing.get(size-16);
+  width: 100%;
+
+  @include mq.min(tabletlandscape) {
+    max-width: u.rem-calc(490);
+  }
+
+  :global(.portable-snippet[data-snippet-name='core-button']) {
+    width: 100%;
+
+    @include mq.min(tabletlandscape) {
+      width: auto;
+    }
+  }
+
+  .outer-wrapper[data-spacing='true'] [data-mobile-position='top-left'] &,
+  .outer-wrapper[data-spacing='true'] [data-mobile-position='top-center'] &,
+  .outer-wrapper[data-spacing='true'] [data-mobile-position='top-right'] & {
+    padding-top: spacing.get(size-64);
+
+    @include mq.min(tabletlandscape) {
+      padding-top: 0;
+    }
+  }
+
+  .outer-wrapper[data-spacing='true'] [data-desktop-position='top-left'] &,
+  .outer-wrapper[data-spacing='true'] [data-desktop-position='top-center'] &,
+  .outer-wrapper[data-spacing='true'] [data-desktop-position='top-right'] & {
+    @include mq.min(tabletlandscape) {
+      padding-top: spacing.get(size-56);
+    }
+  }
+}

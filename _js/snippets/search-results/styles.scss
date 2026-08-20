@@ -1,0 +1,72 @@
+@use 'unit' as u;
+@use 'style-guide/media' as mq;
+@use 'style-guide/spacing' as spacing;
+@use 'style-guide/typography' as typography;
+@use 'style-guide/buttons' as buttons;
+@use 'style-guide/colors' as color;
+@use 'style-guide/form' as form;
+
+.SearchResult {
+  padding: u.rem-calc(16);
+  margin: 0 0 u.rem-calc(16) 0;
+  text-align: center;
+
+  @at-root .SearchResults &:not(:last-child) {
+    border-bottom: 1px solid color.get(light-gray);
+  }
+
+  @include mq.min(tabletlandscape) {
+    text-align: left;
+  }
+
+  &-image {
+    display: inline-block;
+    vertical-align: middle;
+    width: 100%;
+    padding: 0 u.rem-calc(16);
+    max-width: u.rem-calc(80);
+
+    @include mq.min(tabletlandscape) {
+      width: 30%;
+    }
+  }
+
+  &-imageLink {
+    display: block;
+  }
+
+  &-info {
+    display: inline-block;
+    vertical-align: middle;
+    width: 100%;
+    text-align: center;
+
+    @include mq.min(tabletlandscape) {
+      text-align: left;
+    }
+
+    @at-root .SearchResult-image + & {
+      @include mq.min(mobile) {
+        width: 70%;
+      }
+    }
+  }
+
+  &-title {
+    margin: 0 0 0.25em 0;
+    font-size: typography.get-font-size(size-16);
+    font-weight: 700;
+
+    & a {
+      color: color.get(dark-gray);
+    }
+
+    @at-root .SearchResult-info &:only-child {
+      margin: 0;
+    }
+  }
+
+  &-excerpt {
+    font-size: typography.get-font-size(size-16);
+  }
+}

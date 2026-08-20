@@ -1,0 +1,100 @@
+{% liquid
+  assign subtitle = article.metafields.custom.subtitle.value | default: null
+  assign tag = article.tags | first | default: null
+  assign title_split = article.title | split: '|'
+  assign title_first = title_split[0]
+  assign title_second = title_split[1] | default: null
+
+  if article.excerpt != blank
+    assign excerpt = article.excerpt
+  endif
+%}
+
+<div class="{# style breadcrumbs #}">
+  {% render 'breadcrumbs' %}
+</div>
+
+<div class="{# style section #}">
+  <div class="{# style container #}">
+    {% if article.image != blank %}
+      <div class="{# style media #}">
+        {% render 'core-image',
+          image: article.image,
+          mode: 'cover',
+          object_fit: 'cover',
+          preload: true,
+          lazyload: false,
+          class: '{# style image #}',
+          srcset_print_sizes: '480,640,800,960,1024,1280,1440',
+          mobile_srcset_print_sizes: '320,480,640'
+        %}
+      </div>
+    {% endif %}
+
+    <div class="{# style content #}">
+      {% if article.title != blank %}
+        <h1 class="{# style title #}">
+          {{ title_first }}
+          {% if title_second != blank %}
+            <span class="{# style title__second #}">
+              {{ title_second }}
+            </span>
+          {% endif %}
+        </h1>
+      {% endif %}
+
+      {% if subtitle != blank %}
+        <p class="{# style subtitle #}">
+          {{ subtitle }}
+        </p>
+      {% endif %}
+
+      {% if excerpt != blank %}
+        <div class="{# style excerpt #}">
+          {{ excerpt }}
+        </div>
+      {% endif %}
+
+      <div class="{# style meta #}">
+        <div class="{# style metaAuthorDate #}">
+          {% if article.author != blank %}
+            <p class="{# style author #}">
+              {{ article.author }}
+            </p>
+          {% endif %}
+
+          <time
+            class="{# style date #}"
+            datetime="{{ article.published_at | date: '%Y-%m-%d' }}"
+          >
+            {{ article.published_at | date: format: 'month_day_year' }}
+          </time>
+        </div>
+
+        {% if tag != blank %}
+          <span class="{# style tag #}" data-tag="{{ tag }}">
+            {{ tag }}
+          </span>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Article Headline",
+  "tag": "section",
+  "enabled_on": {
+    "templates": ["article"]
+  },
+  "settings": [],
+  "presets": [
+    {
+      "name": "Article Headline",
+      "category": "Blog",
+      "settings": {}
+    }
+  ]
+}
+{% endschema %}

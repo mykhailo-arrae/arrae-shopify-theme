@@ -1,0 +1,119 @@
+{
+  "order": [
+    "main",
+    "department-ecommerce",
+    "department-product",
+    "department-social",
+    "department-marketing"
+  ],
+  "sections": {
+    "department-ecommerce": {
+      "block_order": ["job-1", "job-2", "job_CwpaTm", "job_FzzKFV"],
+      "blocks": {
+        "job-1": {
+          "settings": {
+            "apply_url": "shopify://pages/director-of-amazon",
+            "tags": "Remote/Hybrid | Full Time",
+            "title": "Director of Amazon Marketplace"
+          },
+          "type": "job"
+        },
+        "job-2": {
+          "settings": {
+            "apply_url": "shopify://pages/senior-retention-manager",
+            "tags": "Remote/Hybrid | Full Time",
+            "title": "Senior Retention Manager"
+          },
+          "type": "job"
+        },
+        "job_CwpaTm": {
+          "settings": {
+            "apply_url": "shopify://pages/ui-ux-designer",
+            "tags": "Remote/Hybrid | Full Time",
+            "title": "UX/UI Designer"
+          },
+          "type": "job"
+        },
+        "job_FzzKFV": {
+          "settings": {
+            "apply_url": "shopify://pages/e-commerce-systems-integrations-manager",
+            "tags": "Remote/Hybrid | Full Time",
+            "title": "E-Commerce Systems & Integrations Manager"
+          },
+          "type": "job"
+        }
+      },
+      "settings": {
+        "default_open": true,
+        "department": "E-Commerce/Digital"
+      },
+      "type": "careers-department"
+    },
+    "department-marketing": {
+      "block_order": ["job-1"],
+      "blocks": {
+        "job-1": {
+          "settings": {
+            "apply_url": "shopify://pages/head-of-customer-experience",
+            "tags": "Remote | Part Time",
+            "title": "Head of Customer Experience"
+          },
+          "type": "job"
+        }
+      },
+      "settings": {
+        "default_open": false,
+        "department": "Customer Experience"
+      },
+      "type": "careers-department"
+    },
+    "department-product": {
+      "block_order": ["job-2"],
+      "blocks": {
+        "job-2": {
+          "settings": {
+            "apply_url": "https://www.arrae.com/pages/copy-creative-strategy-coordinator",
+            "tags": "Los Angeles (Hybrid), or Remote | Full Time",
+            "title": "Creative Strategist"
+          },
+          "type": "job"
+        }
+      },
+      "settings": {
+        "default_open": false,
+        "department": "Copy & Creative"
+      },
+      "type": "careers-department"
+    },
+    "department-social": {
+      "block_order": ["job-2"],
+      "blocks": {
+        "job-2": {
+          "settings": {
+            "apply_url": "shopify://pages/senior-formulations-manager",
+            "tags": "Los Angeles, CA (In Person/Hybrid) | Full Time",
+            "title": "Senior Formulations Manager"
+          },
+          "type": "job"
+        }
+      },
+      "settings": {
+        "default_open": false,
+        "department": "Product Development"
+      },
+      "type": "careers-department"
+    },
+    "main": {
+      "settings": {
+        "body": "Our team members have a shared passion for wellness and have thirst and creativity to make Arrae the top wellness brand in the world. We’re committed to bringing holistic wellness and optimized health to everyone, and work with the most talented people to make that happen.",
+        "heading": "Join Our Growing Team",
+        "image": "shopify://shop_images/col_1_2_78a5ea4a-6107-4cee-be5b-2d589a882587.png",
+        "image_mobile": "shopify://shop_images/media_349b660b-95e2-4f08-9f63-74fc045f2f43.png",
+        "roles_title": "Open roles by department",
+        "subheading": "If You Share Our Company Vision"
+      },
+      "type": "page-careers"
+    }
+  },
+  "wrapper": "main.CareersPage[role='main']"
+}

@@ -1,0 +1,96 @@
+@use 'unit' as u;
+@use 'style-guide/media' as mq;
+@use 'style-guide/mixins' as mixin;
+@use 'style-guide/spacing' as spacing;
+@use 'style-guide/colors' as color;
+@use 'style-guide/typography' as typography;
+
+.chart {
+  display: flex;
+  flex-direction: column;
+  gap: spacing.get(size-16);
+  width: 100%;
+  margin: 0;
+  color: color.get(text);
+}
+
+.caption {
+  display: block;
+}
+
+.title {
+  @include typography.body(size-24, 500);
+  margin-bottom: spacing.get(size-40);
+}
+
+.footnote {
+  @include typography.body(size-14, 400);
+}
+
+.buttons {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: spacing.get(size-24);
+
+  @include mq.min(tabletlandscape) {
+    justify-content: flex-start;
+    padding-left: spacing.get(size-36);
+  }
+}
+
+.button {
+  @include typography.body(size-16, 500);
+  display: inline-flex;
+  align-items: center;
+  gap: spacing.get(size-8);
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  line-height: 1.1;
+  letter-spacing: u.rem-calc(0.96);
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+
+  &:focus-visible {
+    outline: u.rem-calc(2) solid currentColor;
+    outline-offset: u.rem-calc(2);
+  }
+
+  &[aria-pressed='false'] {
+    opacity: 0.4;
+    text-decoration: line-through;
+  }
+}
+
+.button__dot {
+  display: inline-block;
+  flex-shrink: 0;
+  width: u.rem-calc(16);
+  height: u.rem-calc(16);
+  border-radius: 50%;
+}
+
+.canvas-wrap {
+  position: relative;
+  width: 100%;
+  height: u.rem-calc(512);
+
+  @include mq.min(tabletlandscape) {
+    height: u.rem-calc(554);
+  }
+}
+
+.canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.sr-table {
+  @include mixin.visually-hidden();
+}

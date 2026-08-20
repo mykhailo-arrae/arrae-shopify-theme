@@ -1,0 +1,335 @@
+{% doc %}
+  @description
+  Renders SMP sibling product swatches for product cards. The compact variant shows
+  overlapping swatches with the total number of available options.
+
+  The current card product is always rendered first and shows the selected pill
+  state. All selectable swatches (including the current flavor) are buttons;
+  clicking a swatch selects that sibling on the product card (updates quickshop
+  target and card content). Compact swatches are circles only but use the same
+  card-select behavior.
+
+  Visible swatch limits:
+  - default (1-up mobile / desktop): max 5, then a +X overflow label
+  - compact (2-up): max 3, with the full "X Flavors Available" count
+
+  @param {product} product - Product used to determine the active sibling option.
+  @param {array} smp_sibling_options - SMP option metaobjects to render.
+  @param {string} design_variant - Visual variant. Use "compact" for the count badge.
+
+  @example
+  {% render 'product-smp-swatches', product: product, smp_sibling_options: smp_sibling_options, design_variant: 'compact' %}
+{% enddoc %}
+
+{% liquid
+  assign product = product | default: null
+  assign smp_sibling_options = smp_sibling_options | default: null
+  assign design_variant = design_variant | default: 'default'
+  assign is_compact = false
+
+  if design_variant == 'compact'
+    assign is_compact = true
+  endif
+
+  assign max_visible = 5
+  if is_compact
+    assign max_visible = 3
+  endif
+
+  assign total_options = 0
+  if smp_sibling_options != blank
+    for entry in smp_sibling_options
+      if entry.product.value != blank
+        assign total_options = total_options | plus: 1
+      endif
+    endfor
+  endif
+
+  assign overflow_count = 0
+  if total_options > max_visible
+    assign overflow_count = total_options | minus: max_visible
+  endif
+
+  assign rendered_count = 0
+%}
+
+{% if total_options > 0 %}
+  <div class="{# style root #} {% if is_compact %}{# style root--compact #}{% endif %}">
+    {% comment %}
+      Two passes keep the card's current product first, then remaining siblings
+      in metafield order. Compact skips non-current here and renders them below.
+    {% endcomment %}
+    {% for pass in (1..2) %}
+      {% for entry in smp_sibling_options %}
+        {% liquid
+          if rendered_count >= max_visible
+            break
+          endif
+
+          assign entry_product = entry.product.value
+          if entry_product == blank
+            continue
+          endif
+
+          assign entry_product_id = entry_product.id | default: 0
+          assign entry_is_current = false
+          if product.id == entry_product_id
+            assign entry_is_current = true
+          endif
+
+          assign include_entry = false
+          if pass == 1 and entry_is_current
+            assign include_entry = true
+          elsif pass == 2 and entry_is_current == false
+            assign include_entry = true
+          endif
+
+          if is_compact and entry_is_current == false
+            assign include_entry = false
+          endif
+        %}
+
+        {% if include_entry %}
+          {% liquid
+            assign entry_url = entry_product.url | default: ''
+            assign entry_handle = entry_product.handle | default: ''
+            assign entry_label = entry.display_label | default: entry.display_name | default: ''
+            assign entry_image = entry.swatch_image.value | default: entry.swatch_image | default: entry.image
+            assign entry_swatch_hex = entry.swatch_hex.value | default: entry.swatch_hex | default: null
+
+            assign show_swatch_image = false
+            if entry_swatch_hex == blank and entry_image != blank
+              assign show_swatch_image = true
+            endif
+
+            # Card / quick-add variant for this sibling (same rules as product-card)
+            assign entry_variant = null
+
+            for v in entry_product.variants
+              assign hide_on_front_end = v.metafields.custom.hide_on_front_end.value | default: false, allow_false: true
+              if hide_on_front_end
+                continue
+              endif
+              if v.available and v.selling_plan_allocations.size > 0
+                assign entry_variant = v
+                break
+              endif
+            endfor
+
+            if entry_variant == null
+              for v in entry_product.variants
+                assign hide_on_front_end = v.metafields.custom.hide_on_front_end.value | default: false, allow_false: true
+                unless hide_on_front_end
+                  if v.available
+                    assign entry_variant = v
+                    break
+                  endif
+                endunless
+              endfor
+            endif
+
+            if entry_variant == null
+              for v in entry_product.variants
+                assign hide_on_front_end = v.metafields.custom.hide_on_front_end.value | default: false, allow_false: true
+                unless hide_on_front_end
+                  assign entry_variant = v
+                  break
+                endunless
+              endfor
+            endif
+
+            if entry_variant == null
+              assign entry_variant = entry_product.selected_or_first_available_variant
+            endif
+
+            assign rendered_count = rendered_count | plus: 1
+          %}
+
+          {% capture swatch_indicator %}
+            <div
+              class="{# style option-image #}"
+              {% if entry_swatch_hex != blank %}
+                style="background-color: {{ entry_swatch_hex | escape }};"
+              {% endif %}
+              aria-hidden="true"
+            >
+              {% if show_swatch_image %}
+                {% render 'core-image',
+                  image: entry_image,
+                  mode: 'contain',
+                  object_fit: 'cover',
+                  lazyload: true,
+                  srcset_print_sizes: '30,60'
+                %}
+              {% endif %}
+            </div>
+            {% unless is_compact %}
+              <span class="{# style option-name #}" aria-hidden="true">
+                {{ entry_label }}
+              </span>
+            {% endunless %}
+          {% endcapture %}
+
+          {% if entry_url != blank or entry_is_current %}
+            <button
+              type="button"
+              class="js-product-card-smp-swatch {# style option #} {% if entry_is_current and is_compact == false %}{# style option--active #}{% endif %}"
+              data-product-id="{{ entry_product_id }}"
+              data-product-url="{{ entry_url | escape }}"
+              data-product-handle="{{ entry_handle | escape }}"
+              {% if entry_variant.id != blank %}
+                data-variant-id="{{ entry_variant.id }}"
+              {% endif %}
+              aria-label="{{ entry_label | default: 'Select flavor' | escape }}"
+              {% if entry_label != blank %}
+                title="{{ entry_label | escape }}"
+              {% endif %}
+              {% if entry_is_current %}
+                aria-current="true"
+              {% endif %}
+            >
+              {{ swatch_indicator }}
+            </button>
+          {% else %}
+            <div class="{# style option #}">
+              {{ swatch_indicator }}
+            </div>
+          {% endif %}
+        {% endif %}
+      {% endfor %}
+    {% endfor %}
+
+    {% if is_compact %}
+      {% for entry in smp_sibling_options %}
+        {% liquid
+          if rendered_count >= max_visible
+            break
+          endif
+
+          assign entry_product = entry.product.value
+          if entry_product == blank
+            continue
+          endif
+
+          assign entry_product_id = entry_product.id | default: 0
+          if product.id == entry_product_id
+            continue
+          endif
+
+          assign entry_url = entry_product.url | default: ''
+          assign entry_handle = entry_product.handle | default: ''
+          assign entry_label = entry.display_label | default: entry.display_name | default: ''
+          assign entry_image = entry.swatch_image.value | default: entry.swatch_image | default: entry.image
+          assign entry_swatch_hex = entry.swatch_hex.value | default: entry.swatch_hex | default: null
+          assign show_swatch_image = false
+          if entry_swatch_hex == blank and entry_image != blank
+            assign show_swatch_image = true
+          endif
+
+          assign entry_variant = null
+          for v in entry_product.variants
+            assign hide_on_front_end = v.metafields.custom.hide_on_front_end.value | default: false, allow_false: true
+            if hide_on_front_end
+              continue
+            endif
+            if v.available and v.selling_plan_allocations.size > 0
+              assign entry_variant = v
+              break
+            endif
+          endfor
+
+          if entry_variant == null
+            for v in entry_product.variants
+              assign hide_on_front_end = v.metafields.custom.hide_on_front_end.value | default: false, allow_false: true
+              unless hide_on_front_end
+                if v.available
+                  assign entry_variant = v
+                  break
+                endif
+              endunless
+            endfor
+          endif
+
+          if entry_variant == null
+            for v in entry_product.variants
+              assign hide_on_front_end = v.metafields.custom.hide_on_front_end.value | default: false, allow_false: true
+              unless hide_on_front_end
+                assign entry_variant = v
+                break
+              endunless
+            endfor
+          endif
+
+          if entry_variant == null
+            assign entry_variant = entry_product.selected_or_first_available_variant
+          endif
+
+          assign rendered_count = rendered_count | plus: 1
+        %}
+        {% capture compact_indicator %}
+          <div
+            class="{# style option-image #}"
+            {% if entry_swatch_hex != blank %}
+              style="background-color: {{ entry_swatch_hex | escape }};"
+            {% endif %}
+            aria-hidden="true"
+          >
+            {% if show_swatch_image %}
+              {% render 'core-image',
+                image: entry_image,
+                mode: 'contain',
+                object_fit: 'cover',
+                lazyload: true,
+                srcset_print_sizes: '30,60'
+              %}
+            {% endif %}
+          </div>
+        {% endcapture %}
+
+        {% if entry_url != blank %}
+          <button
+            type="button"
+            class="js-product-card-smp-swatch {# style option #}"
+            data-product-id="{{ entry_product_id }}"
+            data-product-url="{{ entry_url | escape }}"
+            data-product-handle="{{ entry_handle | escape }}"
+            {% if entry_variant.id != blank %}
+              data-variant-id="{{ entry_variant.id }}"
+            {% endif %}
+            aria-label="{{ entry_label | default: 'Select flavor' | escape }}"
+            {% if entry_label != blank %}
+              title="{{ entry_label | escape }}"
+            {% endif %}
+          >
+            {{ compact_indicator }}
+          </button>
+        {% else %}
+          <div class="{# style option #}">
+            {{ compact_indicator }}
+          </div>
+        {% endif %}
+      {% endfor %}
+
+      {% liquid
+        assign option_count_label = 'products.general.flavors_available' | t
+
+        if total_options == 1
+          assign option_count_label = 'products.general.flavor_available' | t
+        endif
+      %}
+      <span class="{# style option-count #}">
+        {{ total_options }}
+        {{ option_count_label }}
+      </span>
+    {% elsif overflow_count > 0 %}
+      <span
+        class="{# style option-overflow #}"
+        aria-label="{{ 'products.general.more_swatches_sr' | t: count: overflow_count }}"
+      >
+        <span aria-hidden="true">
+          {{- 'products.general.more_swatches' | t: count: overflow_count -}}
+        </span>
+      </span>
+    {% endif %}
+  </div>
+{% endif %}

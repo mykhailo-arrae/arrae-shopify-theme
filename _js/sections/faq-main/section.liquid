@@ -1,0 +1,42 @@
+{%- liquid
+  assign show_breadcrumbs = section.settings.show_breadcrumbs
+  assign show_content = section.settings.show_content
+
+  if show_breadcrumbs
+    render 'breadcrumbs'
+  endif
+-%}
+
+{% if page.content != blank and show_content %}
+  <div class="{# style content #}">
+    {{ page.content }}
+  </div>
+{% endif %}
+
+{% schema %}
+{
+  "name": "FAQ Main",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_breadcrumbs",
+      "label": "Show breadcrumbs",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_content",
+      "label": "Show content",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "FAQ Main",
+      "category": "Page Content",
+      "settings": {}
+    }
+  ]
+}
+{% endschema %}

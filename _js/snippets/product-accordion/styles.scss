@@ -1,0 +1,134 @@
+@use 'unit' as u;
+@use 'style-guide/spacing' as spacing;
+@use 'style-guide/typography' as typography;
+@use 'style-guide/colors' as color;
+@use 'style-guide/mixins' as mixins;
+@use 'style-guide/media' as mq;
+
+.root {
+  display: block;
+  width: 100%;
+}
+
+.list {
+  display: block;
+}
+
+.item {
+  border-bottom: 1px solid color.get(light-brown);
+  color: color.get(text);
+}
+
+.itemTitle {
+  margin: 0;
+}
+
+.trigger {
+  @include mixins.reset-button();
+  @include mixins.focus-visible-ring();
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: spacing.get(size-16);
+  width: 100%;
+  padding: spacing.get(size-12) spacing.get(size-8) spacing.get(size-12) 0;
+  text-align: left;
+  cursor: pointer;
+
+  * {
+    pointer-events: none;
+  }
+
+  &:focus:not(:focus-visible) {
+    outline: none;
+  }
+}
+
+.label {
+  @include typography.body(size-16, 600);
+
+  flex: 1 1 auto;
+  color: color.get(brown);
+  font-size: u.rem-calc(13);
+  line-height: 130%;
+  letter-spacing: u.rem-calc(1);
+  text-transform: uppercase;
+
+  @include mq.min(tabletlandscape) {
+    font-size: u.rem-calc(14);
+  }
+}
+
+.icon {
+  display: block;
+  flex: 0 0 auto;
+  width: spacing.get(size-16);
+  height: spacing.get(size-16);
+  color: color.get(text);
+
+  svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    fill: color.get(text);
+  }
+
+  .trigger[aria-expanded='true'] & {
+    transform: rotate(180deg);
+  }
+}
+
+$collapse-duration: 0.22s;
+
+.panel {
+  display: grid;
+  grid-template-rows: 1fr;
+  opacity: 1;
+  visibility: visible;
+  transition:
+    grid-template-rows $collapse-duration ease,
+    opacity #{$collapse-duration * 0.8} ease,
+    visibility 0s;
+
+  &[hidden] {
+    grid-template-rows: 0fr;
+    opacity: 0;
+    visibility: hidden;
+    transition:
+      grid-template-rows $collapse-duration ease,
+      opacity #{$collapse-duration * 0.8} ease,
+      visibility 0s linear $collapse-duration;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    &,
+    &[hidden] {
+      transition: none;
+    }
+  }
+}
+
+.description {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.descriptionBody {
+  @include typography.body(size-16, 300);
+
+  padding-bottom: spacing.get(size-24);
+  color: color.get(text);
+  line-height: 150%;
+  letter-spacing: u.rem-calc(-0.32);
+
+  p:last-child {
+    margin-bottom: 0;
+  }
+
+  a:not(:global(.o-button)) {
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: u.rem-calc(2);
+  }
+}

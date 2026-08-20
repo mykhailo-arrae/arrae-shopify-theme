@@ -1,0 +1,194 @@
+// Buttons
+// ===============================================
+
+@use './colors' as color;
+@use './spacing' as spacing;
+@use './sizes' as sizes;
+@use './typography' as typography;
+@use './media' as mq;
+@use '../unit' as u;
+@use './mixins' as mixin;
+
+$_global-transition: 0.25s ease;
+
+@mixin button(
+  $txt-color,
+  $txt-color-hover,
+  $bg-color,
+  $bg-color-hover,
+  $border-color,
+  $border-color-hover,
+  $disable-bg,
+  $disable-txt
+) {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: spacing.get(size-16);
+  min-height: u.rem-calc(38);
+  text-align: center;
+  box-sizing: border-box;
+  text-decoration: none;
+  color: $txt-color;
+  background-color: $bg-color;
+  border: u.rem-calc(1) solid $border-color;
+  border-radius: spacing.get(size-48);
+  padding: spacing.get(size-8) spacing.get(size-48);
+  line-height: 106%;
+  text-transform: uppercase;
+  letter-spacing: u.rem-calc(0.56);
+  font-weight: 400;
+  font-size: sizes.get(size-14);
+  transition: $_global-transition;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  @include typography.font-proxima-nova();
+
+  & svg {
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    width: spacing.get(size-24);
+    height: spacing.get(size-24);
+  }
+
+  span {
+    z-index: 1;
+  }
+
+  &:hover {
+    color: $txt-color-hover;
+    background-color: $bg-color-hover;
+    border-color: $border-color-hover;
+  }
+
+  &:disabled {
+    color: $disable-txt;
+    background-color: $disable-bg;
+    border-color: $disable-txt !important;
+    border-width: u.rem-calc(1) !important;
+    cursor: not-allowed;
+  }
+}
+
+@mixin primary {
+  @include button(
+    color.get(off-white),
+    color.get(text),
+    color.get(text),
+    color.get(background),
+    color.get(text),
+    color.get(text),
+    color.get(light-gray),
+    color.get(off-white)
+  );
+}
+
+@mixin secondary {
+  @include button(
+    color.get(text),
+    color.get(off-white),
+    color.get(background),
+    color.get(text),
+    color.get(text),
+    color.get(text),
+    color.get(background),
+    color.get(light-gray)
+  );
+}
+
+@mixin dark {
+  @include button(
+    color.get(off-white),
+    color.get(off-white),
+    color.get(dark-gray),
+    color.get(text),
+    color.get(dark-gray),
+    color.get(text),
+    color.get(light-gray),
+    color.get(off-white)
+  );
+}
+
+@mixin text-link-large-animated {
+  @include mixin.animated-underline-secondary();
+  text-transform: uppercase;
+  font-size: sizes.get(size-14);
+  color: inherit;
+}
+
+@mixin text-link-large($underline-color: color.get(text)) {
+  @include typography.font-proxima-nova();
+  font-size: sizes.get(size-14);
+  font-weight: 400;
+  line-height: 140%;
+  text-transform: uppercase;
+  color: color.get(text);
+  text-decoration: none;
+  background-image:
+    linear-gradient(90deg, color.get(background), color.get(background)),
+    linear-gradient(90deg, color.get(background), color.get(background));
+  background-size:
+    spacing.get(size-48) u.rem-calc(1),
+    100% u.rem-calc(1);
+  background-repeat: no-repeat;
+  background-position-x: u.rem-calc(-48), 0%;
+  background-position-y: 100%;
+  transition: background-position-x 1s cubic-bezier(0.16, 1, 0.3, 1);
+
+  &:hover {
+    background-image:
+      linear-gradient(90deg, color.get(background), color.get(background)),
+      linear-gradient(90deg, $underline-color, $underline-color);
+    background-position-x: calc(100% + spacing.get(size-48)), 0%;
+    transition: background-position-x 1s cubic-bezier(0.16, 1, 0.3, 1) 150ms;
+  }
+}
+
+// Underlined tab/link shared by the Featured Collections tabs and the
+// collection PLP category tags. Animated underline on hover, plus a solid
+// underline + bold weight on the active (`aria-selected`) and focus states.
+@mixin tab-link($underline-color: color.get(text-gray)) {
+  @include mixin.reset-button();
+  @include text-link-large($underline-color);
+  cursor: pointer;
+  text-wrap: nowrap;
+  height: fit-content;
+  font-weight: 400;
+  letter-spacing: u.rem-calc(0.84);
+  color: color.get(text-gray);
+
+  &[aria-selected='true'],
+  &[aria-current='page'],
+  &:focus-visible {
+    font-weight: 600;
+    color: color.get(text);
+    background-image:
+      linear-gradient(90deg, color.get(background), color.get(background)),
+      linear-gradient(90deg, color.get(text), color.get(text));
+  }
+}
+
+@mixin text-link {
+  @include typography.font-proxima-nova();
+  color: color.get(text);
+  font-weight: 400;
+  line-height: 106%;
+  letter-spacing: u.rem-calc(-0.16);
+  text-decoration: underline;
+  text-decoration-style: solid;
+  text-decoration-skip-ink: auto;
+  text-decoration-thickness: 5%;
+  text-underline-offset: 20%; /* 3.2px */
+  text-underline-position: from-font;
+  opacity: 1;
+  transition: opacity $_global-transition;
+  cursor: pointer;
+
+  &:hover {
+    opacity: 0.6;
+  }
+}

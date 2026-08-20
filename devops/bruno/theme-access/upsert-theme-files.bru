@@ -1,0 +1,49 @@
+meta {
+  name: upsertThemeFiles
+  type: graphql
+  seq: 2
+}
+
+post {
+  url: https://theme-kit-access.shopifyapps.com/cli/admin/api/{{shopify_admin_api_version}}/graphql.json
+  body: graphql
+  auth: none
+}
+
+headers {
+  X-Shopify-Shop: {{shopify_shop}}
+  X-Shopify-Access-Token: {{shopify_theme_access_token}}
+}
+
+body:graphql {
+  mutation upsertThemeFiles($files: [OnlineStoreThemeFilesUpsertFileInput!]!, $themeId: ID!) {
+    themeFilesUpsert(files: $files, themeId: $themeId) {
+      upsertedThemeFiles {
+        filename
+        checksumMd5
+      }
+      userErrors {
+        __typename
+        code
+        field
+        filename
+        message
+      }
+    }
+  }
+}
+
+body:graphql:vars {
+  {
+    "themeId": "gid://shopify/OnlineStoreTheme/131832381511",
+    "files": [
+      {
+        "filename": "snippets/test.liquid",
+        "body": {
+          "type": "BASE64",
+          "value": "PCEtLSBURVNUIC0tPg=="
+        }
+      }
+    ]
+  }
+}

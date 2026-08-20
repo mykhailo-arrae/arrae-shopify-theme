@@ -1,0 +1,81 @@
+{% liquid
+  render 'product-card-stylesheet'
+  render 'product-review-ratings-stylesheet'
+
+  assign products = article.metafields.custom.products.value | default: null
+  assign products_title = article.metafields.custom.products_title.value | default: null
+  assign back_label = 'back_to_journal' | t
+
+  capture article_video_markup
+    render 'article-media', uid: 'article'
+  endcapture
+
+  assign article_content = article.content | replace: '[article-media-block]', article_video_markup
+%}
+
+{% paginate article.comments by 100 %}
+  <div class="{# style layout #}">
+    <div class="{# style main #}">
+      <div class="{# style content #}">
+        <div class="o-rte {# style content__rte #}">
+          {{ article_content }}
+        </div>
+
+        {% comment %} {% render 'social-sharing' %} {% endcomment %}
+      </div>
+
+      {% comment %}
+        {% if blog.comments_enabled? %}
+          {% render 'comments' %}
+        {% endif %}
+      {% endcomment %}
+    </div>
+
+    {% if products != blank %}
+      <aside class="{# style sidebar #}">
+        {% if products_title != blank %}
+          <h2 class="{# style productsTitle #}">
+            {{ products_title }}
+          </h2>
+        {% endif %}
+
+        <div class="{# style productsList #}">
+          {% for sidebar_product in products %}
+            <div class="{# style productCard #}">
+              {% render 'product-card', product: sidebar_product %}
+            </div>
+          {% endfor %}
+        </div>
+      </aside>
+    {% endif %}
+  </div>
+
+  <div class="{# style back #}">
+    {% render 'core-button', url: blog.url, label: back_label, style: 'secondary' %}
+  </div>
+{% endpaginate %}
+
+{% schema %}
+{
+  "name": "Article",
+  "tag": "article",
+  "class": "{# style section #}",
+  "enabled_on": {
+    "templates": ["article"]
+  },
+  "locales": {
+    "en": {
+      "back_to_journal": "BACK TO JOURNAL",
+      "read_more": "Continue reading"
+    }
+  },
+  "settings": [],
+  "presets": [
+    {
+      "name": "Article",
+      "category": "Blog",
+      "settings": {}
+    }
+  ]
+}
+{% endschema %}

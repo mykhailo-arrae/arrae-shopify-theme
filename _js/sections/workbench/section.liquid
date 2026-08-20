@@ -1,0 +1,50 @@
+{% render 'workbench-manifest' %}
+
+{% liquid
+  assign inferred_template_suffix = ''
+  if template.name == 'product'
+    assign inferred_template_suffix = product.template_suffix
+  elsif template.name == 'collection'
+    assign inferred_template_suffix = collection.template_suffix
+  elsif template.name == 'page'
+    unless page.template_suffix == 'page'
+      assign inferred_template_suffix = page.template_suffix
+    endunless
+  endif
+%}
+
+<div
+  class="{# style container #}"
+>
+  {% if request.design_mode %}
+    <p class="{# style warning #}">
+      The workbench doesn't work inside Theme Editor
+      <br>
+      Please use direct preview
+    </p>
+  {% endif %}
+  <h2 class="{# style title #}">Workbench</h2>
+  <p class="{# style path #}">{{ request.path }}</p>
+  <div
+    class="js-app-container"
+    data-default-template-name="{{ template.name }}"
+    data-default-template-view="{{ inferred_template_suffix }}"
+  >
+    <p>Loading...</p>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Workbench",
+  "tag": "footer",
+  "class": "js-workbench {# style root #}",
+  "settings": [],
+  "presets": [
+    {
+      "name": "Workbench",
+      "category": "Internal (Do not use)"
+    }
+  ]
+}
+{% endschema %}

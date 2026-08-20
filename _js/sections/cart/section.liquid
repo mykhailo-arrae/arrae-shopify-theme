@@ -1,0 +1,53 @@
+{% doc %}
+  Card rewards are section level for Markets compatibility.
+  If project won't use markets, is recommended to move the rewards to the theme settings level.
+{% enddoc %}
+
+{% liquid
+  assign show_breadcrumbs = section.settings.show_breadcrumbs
+  assign cart_breadcrumbs_title = section.settings.cart_breadcrumbs_title
+%}
+
+<section
+  data-section-id="{{ section.id }}"
+  data-section-name="{{ section.type }}"
+>
+  {% if show_breadcrumbs %}
+    <div class="{# style breadcrumbs #}">
+      {% render 'breadcrumbs', breadcrumbs_title: cart_breadcrumbs_title %}
+    </div>
+  {% endif %}
+  <div class="{# style root #}">
+    {% render 'react-cart', context: 'page', section_id: section.id %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Cart",
+  "class": "Cart-section",
+  "enabled_on": {
+    "templates": ["cart"]
+  },
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_breadcrumbs",
+      "label": "Show breadcrumbs",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "cart_breadcrumbs_title",
+      "label": "Cart breadcrumbs title",
+      "default": "Shopping Cart"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Cart",
+      "settings": {}
+    }
+  ]
+}
+{% endschema %}

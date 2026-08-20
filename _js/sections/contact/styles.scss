@@ -1,0 +1,163 @@
+@use 'unit' as u;
+@use 'style-guide/spacing' as spacing;
+@use 'style-guide/typography' as typography;
+@use 'style-guide/colors' as color;
+@use 'style-guide/mixins' as mixins;
+@use 'style-guide/media' as mq;
+
+/* ===================================================== */
+/* Contact Page */
+/* ===================================================== */
+
+.section {
+  width: 100%;
+  background-color: color.get(off-white);
+}
+
+.breadcrumbs {
+  width: 100%;
+}
+
+.content {
+  @include mixins.container();
+  padding-block: spacing.get(size-24) spacing.get(size-32);
+  padding-inline: spacing.get(size-16);
+
+  @include mq.min(tabletlandscape) {
+    padding-block: spacing.get(size-48);
+    padding-inline: spacing.get(size-48);
+  }
+}
+
+.layout {
+  display: flex;
+  flex-direction: column;
+  gap: spacing.get(size-16);
+
+  @include mq.min(tabletlandscape) {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    align-items: start;
+    min-height: u.rem-calc(361);
+    padding-top: u.rem-calc(63);
+  }
+
+  @include mq.min(smalldesktop) {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.headline {
+  @include typography.heading-4;
+  line-height: 1.12;
+  letter-spacing: -0.03em;
+  color: color.get(dark-gray);
+
+  @include mq.min(tabletlandscape) {
+    font-size: u.rem-calc(56);
+    line-height: 0.98;
+  }
+}
+
+.col {
+  display: flex;
+  flex-direction: column;
+  gap: spacing.get(size-20);
+
+  @include mq.min(tabletlandscape) {
+    gap: u.rem-calc(27);
+    padding-top: u.rem-calc(14);
+  }
+}
+
+.body {
+  padding-right: u.rem-calc(10);
+  @include typography.body-regular;
+  color: color.get(dark-gray);
+  letter-spacing: -0.01em;
+
+  @include mq.min(tabletlandscape) {
+    padding-right: 0;
+    max-width: u.rem-calc(550);
+    font-size: u.rem-calc(18);
+  }
+
+  > * + * {
+    margin-top: spacing.get(size-12);
+  }
+}
+
+/* Contact options */
+
+.options {
+  @include mixins.reset-ul;
+  display: flex;
+  flex-direction: column;
+  gap: u.rem-calc(10);
+
+  @include mq.min(tabletlandscape) {
+    gap: spacing.get(size-8);
+  }
+}
+
+.option {
+  display: flex;
+  align-items: center;
+  gap: spacing.get(size-4);
+  color: color.get(dark-gray);
+
+  @include mq.min(tabletlandscape) {
+    min-height: u.rem-calc(30);
+  }
+}
+
+.optionIcon {
+  display: inline-flex;
+  flex-shrink: 0;
+  width: u.rem-calc(32);
+  height: u.rem-calc(32);
+
+  @include mq.min(tabletlandscape) {
+    width: u.rem-calc(34);
+    height: u.rem-calc(34);
+  }
+
+  svg {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.optionText {
+  @include typography.body(size-16, 400);
+  margin: 0;
+  letter-spacing: u.rem-calc(-0.18);
+
+  @include mq.min(tabletlandscape) {
+    font-size: u.rem-calc(18);
+  }
+}
+
+.link {
+  display: inline;
+  padding: 0;
+  border: 0;
+  margin: 0;
+  background: transparent;
+  font: inherit;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: inherit;
+  text-align: inherit;
+  text-decoration: underline;
+  text-underline-position: from-font;
+  transition: opacity 200ms ease-in-out;
+
+  cursor: pointer;
+
+  &:hover {
+    opacity: 0.7;
+  }
+
+  @include mixins.focus-visible-ring;
+}

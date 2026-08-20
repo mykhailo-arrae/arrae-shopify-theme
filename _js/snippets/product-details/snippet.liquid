@@ -1,0 +1,250 @@
+{% doc %}
+  Product Details
+
+  Buy-box header, benefits, and purchase form. Title, description, PDP subtitle,
+  review visibility, and benefits can be overridden by the parent product-main section.
+
+  @param {string} [title] - Override for product.title
+  @param {string} [description] - Override for product.description (HTML preserved)
+  @param {string} [pdp_subtitle] - Rich text HTML for subtitle below title
+  @param {boolean} [hide_reviews] - Override for custom.hide_reviews_summary
+  @param {string[]} [benefits_list] - Override for custom.pdp_benefits_list
+  @param {string} [layout] - Use "quickshop" for title → reviews → description
+
+  (no rich-text subtitle or benefits list)
+
+  @example
+  {% render 'product-details' %}
+  {% render 'product-details',
+    title: section.settings.title,
+    description: section.settings.description,
+    pdp_subtitle: resolved_pdp_subtitle,
+    hide_reviews: section.settings.hide_review_summary,
+    benefits_list: resolved_benefits
+  %}
+  {% render 'product-details', layout: 'quickshop', description: short_copy %}
+{% enddoc %}
+
+{% liquid
+  assign current_variant = product.selected_variant | default: null
+  assign layout = layout | default: 'default'
+  assign is_quickshop_layout = false
+  if layout == 'quickshop'
+    assign is_quickshop_layout = true
+  endif
+
+  if current_variant == null
+    for variant in product.variants reversed
+      assign hide_on_front_end = variant.metafields.custom.hide_on_front_end.value | default: false, allow_false: true
+      unless hide_on_front_end
+        if variant.available
+          assign current_variant = variant
+          break
+        endif
+      endunless
+    endfor
+  endif
+
+  if current_variant == null
+    assign current_variant = product.selected_or_first_available_variant
+  endif
+
+  assign title = title | default: product.title
+  assign description = description | default: product.description
+  if description == '<p></p>'
+    assign description = blank
+  endif
+  assign hide_reviews = hide_reviews | default: product.metafields.custom.hide_reviews_summary.value | default: false, allow_false: true
+
+  if is_quickshop_layout
+    assign pdp_subtitle = blank
+    assign benefits_list = null
+  else
+    assign benefits_list = benefits_list | default: product.metafields.custom.pdp_benefits_list.value | default: null
+
+    if pdp_subtitle == blank and product.metafields.custom.pdp_subtitle != blank
+      assign pdp_subtitle = product.metafields.custom.pdp_subtitle | metafield_tag
+    endif
+  endif
+
+  assign atc_price = current_variant.price
+  assign atc_compare_at = null
+
+  if current_variant.selling_plan_allocations.size > 0
+    assign first_allocation = current_variant.selling_plan_allocations.first
+    if first_allocation.price != blank
+      assign atc_price = first_allocation.price
+    endif
+    if current_variant.price > atc_price
+      assign atc_compare_at = current_variant.price
+    endif
+  elsif current_variant.compare_at_price != blank and current_variant.compare_at_price > current_variant.price
+    assign atc_compare_at = current_variant.compare_at_price
+  endif
+%}
+
+<div
+  class="js-product-details {# style Product-details #}"
+  data-product-available="{{ product.available }}"
+  {% if is_quickshop_layout %}
+    data-layout="quickshop"
+  {% endif %}
+>
+  <script type="application/json">
+    {
+      "currencyCode": {{ cart.currency.iso_code | json }},
+      "moneyFormat": {{ shop.money_format | json }}
+    }
+  </script>
+
+  <div class="{# style Product-header #}">
+    <!-- PRODUCT TITLE -->
+    {% if title != blank %}
+      <h1 class="{# style Product-title #}">
+        {{ title }}
+      </h1>
+    {% endif %}
+
+    {% if is_quickshop_layout %}
+      <!-- PRODUCT REVIEWS (quickshop: before description) -->
+      {% if hide_reviews == false %}
+        <div class="{# style Product-reviews #}">
+          {% render 'product-review-ratings', product: product %}
+        </div>
+      {% endif %}
+
+      <!-- PRODUCT DESCRIPTION -->
+      {% if description != blank %}
+        <div class="{# style Product-description #} o-rte">
+          {{ description }}
+        </div>
+      {% endif %}
+    {% else %}
+      <!-- PDP SUBTITLE -->
+      {% if pdp_subtitle != blank %}
+        <div class="{# style Product-subtitle #} o-rte">
+          {{ pdp_subtitle }}
+        </div>
+      {% endif %}
+
+      <!-- PRODUCT DESCRIPTION -->
+      {% if description != blank %}
+        <div class="{# style Product-description #} o-rte">
+          {{ description }}
+        </div>
+      {% endif %}
+
+      <!-- PRODUCT REVIEWS -->
+      {% if hide_reviews == false %}
+        <div class="{# style Product-reviews #}">
+          {% render 'product-review-ratings', product: product %}
+        </div>
+      {% endif %}
+    {% endif %}
+  </div>
+
+  <!-- PRODUCT BENEFITS LIST -->
+  {% if is_quickshop_layout %}
+    <div class="{# style spacer-20 #}"></div>
+  {% elsif benefits_list != blank %}
+    <div class="{# style Product-benefitsList #}">
+      <ul>
+        {% for benefit in benefits_list %}
+          {% assign benefit_text = benefit | strip %}
+          {% if benefit_text != blank %}
+            <li>{{ benefit_text }}</li>
+          {% endif %}
+        {% endfor %}
+      </ul>
+    </div>
+  {% else %}
+    <div class="{# style spacer-20 #}"></div>
+  {% endif %}
+
+  {% if product.variants.size > 0 %}
+    <form
+      action="/cart/add"
+      method="post"
+      class="{# style ProductForm #}"
+      data-product-id="{{ product.id }}"
+    >
+      {% comment %}TODO: Trigger change event with Preact side-effect{% endcomment %}
+      <input
+        type="hidden"
+        name="variant_selector_dummy"
+        class="js-variant-selector-dummy single-option-selector"
+        data-product-id="{{ product.id }}"
+        value="{{ current_variant.id }}"
+      >
+
+      {% render 'product-options', product: product %}
+
+      <input type="hidden" name="quantity" value="1">
+
+      <div class="js-product-form-error ProductForm-error"></div>
+
+      {% comment %}
+        Hidden until product-options hydrates so the CTA does not sit enabled
+        next to the title while options are still loading (slow networks / SMP swaps).
+      {% endcomment %}
+      <div class="{# style ProductForm-controls #} js-product-form-controls" hidden>
+        <button
+          type="submit"
+          class="{# style ProductForm-submitButton #} js-atc-submit-button{% unless current_variant.available %} is-sold-out{% endunless %}"
+          name="add"
+          data-add-to-cart-label="{{ 'products.product.add_to_cart' | t | escape }}"
+          {% unless current_variant.available %}
+            disabled
+          {% endunless %}
+        >
+          <span class="{# style ProductForm-submitButtonLabel #} js-atc-submit-button-label">
+            {% if current_variant.available %}
+              {{ 'products.product.add_to_cart' | t }}
+            {% else %}
+              {{ 'products.product.sold_out' | t }}
+            {% endif %}
+          </span>
+          <span
+            class="{# style ProductForm-submitButtonPrices #} js-atc-submit-button-prices"
+            {% unless current_variant.available %}
+              hidden
+            {% endunless %}
+          >
+            <span class="{# style ProductForm-submitButtonPrice #} js-atc-price">
+              {{ atc_price | money }}
+            </span>
+            {% if atc_compare_at != blank and atc_compare_at > atc_price %}
+              <s class="{# style ProductForm-submitButtonCompareAt #} js-atc-compare-at">
+                {{ atc_compare_at | money }}
+              </s>
+            {% else %}
+              <s
+                class="{# style ProductForm-submitButtonCompareAt #} js-atc-compare-at"
+                hidden
+              ></s>
+            {% endif %}
+          </span>
+        </button>
+
+        {% if settings.enable_klaviyo %}
+          <button
+            type="button"
+            class="{# style ProductForm-submitButton #} js-notify-me-button"
+            data-product-id="{{ product.id }}"
+            data-variant-id="{{ current_variant.id }}"
+          >
+            <span class="{# style ProductForm-submitButtonLabel #}">
+              {% if settings.notify_me_main_cta_text != blank %}
+                {{ settings.notify_me_main_cta_text }}
+              {% else %}
+                {{ 'products.product.notify_me' | t }}
+              {% endif %}
+            </span>
+          </button>
+        {% endif %}
+      </div>
+
+      {% render 'notify-me', product: product %}
+    </form>
+  {% endif %}
+</div>

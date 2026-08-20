@@ -1,0 +1,670 @@
+---
+description: Coding conventions and best practices for Sass/SCSS
+globs: **/*.scss, **/*.module.scss
+alwaysApply: false
+---
+
+# SCSS Development Rules
+
+## Core Principles
+
+- Use BEM-like methodology for class naming (block\_\_element--modifier)
+- Prefer `@use` and `@forward` over `@import` (Dart Sass)
+- Maximum nesting depth: 3 levels
+- Keep selectors under 4 compound selectors
+- Use meaningful variable names: `$color-primary-brand` not `$blue`
+- Leverage CSS custom properties for runtime theming
+- Minimize specificity - prefer single class selectors
+
+## BEM Naming Convention
+
+**Structure: `block__element--modifier`**
+
+### ✅ Good BEM Patterns
+
+```scss
+// Block: standalone component
+.product-card {
+  display: flex;
+  flex-direction: column;
+}
+
+// Element: part of the block (double underscore)
+.product-card__image {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+}
+
+.product-card__title {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+}
+
+.product-card__price {
+  color: var(--color-text-primary);
+}
+
+// Modifier: variant of block or element (double dash)
+.product-card--featured {
+  border: 2px solid var(--color-primary);
+}
+
+.product-card__title--truncated {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// Multiple modifiers
+.product-card--featured.product-card--large {
+  padding: var(--spacing-lg);
+}
+```
+
+### ❌ Common BEM Mistakes
+
+```scss
+// Bad: Too many elements (no grandchildren in BEM)
+.product-card__body__title__text {
+  // This violates BEM - max 2 levels (block__element)
+}
+
+// Good: Flatten the hierarchy
+.product-card__title-text {
+  // Treat as single element name
+}
+
+// Bad: Element modifier without element
+.product-card--title-large {
+  // Modifier should be on the element itself
+}
+
+// Good: Modifier on the element
+.product-card__title--large {
+  font-size: var(--font-size-xl);
+}
+
+// Bad: Mixing BEM with descendant selectors
+.product-card .title.large {
+  // Not BEM, creates specificity issues
+}
+
+// Good: Pure BEM
+.product-card__title--large {
+  font-size: var(--font-size-xl);
+}
+```
+
+## Property Organization (Optional)
+
+**Note: Property ordering is optional and based on team preference. The key is consistency within your codebase.**
+
+Some teams prefer grouping related properties (positioning, box model, typography, visual, misc) for easier scanning, while others organize alphabetically or by frequency of use. Choose what works for your team and apply it consistently.
+
+## Nesting and Specificity
+
+### ✅ Good Nesting (Max 3 Levels)
+
+```scss
+// Level 1: Block
+.product-card {
+  padding: var(--spacing-md);
+
+  // Level 2: Element
+  &__image {
+    aspect-ratio: 1 / 1;
+
+    // Level 3: State (max depth)
+    &:hover {
+      opacity: 0.9;
+    }
+  }
+
+  // Level 2: Element with modifier
+  &__title {
+    font-size: var(--font-size-lg);
+
+    &--featured {
+      color: var(--color-primary);
+    }
+  }
+
+  // Level 2: Block modifier affects children
+  &--compact {
+    padding: var(--spacing-sm);
+
+    // Use direct child selector to reset at level 2
+    .product-card__title {
+      font-size: var(--font-size-base);
+    }
+  }
+}
+```
+
+### ❌ Bad Nesting (Too Deep)
+
+```scss
+// Bad: 5+ levels of nesting
+.product-card {
+  .card-body {
+    .card-content {
+      .card-title {
+        span {
+          a {
+            // Way too deep! Specificity nightmare
+            color: blue;
+          }
+        }
+      }
+    }
+  }
+}
+
+// Compiled output (very specific):
+// .product-card .card-body .card-content .card-title span a { color: blue; }
+
+// Good: Flatten with BEM
+.product-card__title-link {
+  color: var(--color-link);
+}
+```
+
+### ⚠️ Specificity Traps
+
+```scss
+// Bad: ID selector (specificity 0,1,0,0)
+#product-card {
+  padding: 20px; // Very hard to override
+}
+
+// Bad: Multiple classes chained
+.product.card.featured.large {
+  // Specificity: 0,0,4,0 - unnecessarily high
+}
+
+// Bad: !important (nuclear option)
+.product-card {
+  padding: 20px !important; // Avoid unless overriding third-party
+}
+
+// Good: Single class with modifier
+.product-card--large {
+  // Specificity: 0,0,1,0 - easy to work with
+  padding: var(--spacing-lg);
+}
+
+// Good: CSS custom properties for overrides
+.product-card {
+  padding: var(--product-card-padding, var(--spacing-md));
+}
+
+.product-card--large {
+  --product-card-padding: var(--spacing-lg);
+}
+```
+
+## Modern Sass: @use and @forward
+
+### ✅ Good Module System
+
+```scss
+// _sass/core/_variables.scss
+$color-primary: #007bff;
+$spacing-base: 1rem;
+
+// _sass/core/_mixins.scss
+@mixin button-base {
+  padding: var(--spacing-sm);
+  border-radius: var(--radius-base);
+  border: none;
+  cursor: pointer;
+}
+
+// _sass/core/_index.scss (barrel file)
+@forward 'variables';
+@forward 'mixins';
+
+// Your component file
+@use '../core' as core;
+@use '../core/mixins' as *; // Import all mixins directly
+
+.button {
+  @include button-base; // From mixins
+  background: core.$color-primary; // Namespaced variable
+}
+
+// Good: @use with namespace
+@use 'sass:math';
+@use 'sass:color';
+
+.element {
+  width: math.div(100%, 3); // 33.333%
+  background: color.scale(#007bff, $lightness: 20%);
+}
+```
+
+### ❌ Old @import (Deprecated)
+
+```scss
+// Bad: @import creates global namespace pollution
+@import 'variables';
+@import 'mixins';
+@import 'functions';
+
+// All variables are now global - potential conflicts
+// Can't tell where $color-primary comes from
+.button {
+  background: $color-primary;
+}
+```
+
+## CSS Modules vs Global Styles
+
+**Location determines behavior in this project:**
+
+### CSS Modules (Scoped)
+
+```scss
+// _js/sections/product-card/styles.scss
+// Automatically becomes CSS module
+
+.card {
+  // Compiled to: .product-card_card_xj2k9
+  padding: var(--spacing-md);
+}
+
+.title {
+  // Compiled to: .product-card_title_ak3j2
+  font-size: var(--font-size-lg);
+}
+
+// Use :global() to escape CSS modules
+:global {
+  .global-utility-class {
+    // Not scoped - remains as-is
+  }
+}
+
+// Or inline global
+.card :global(.global-class) {
+  // .product-card_card_xj2k9 .global-class
+}
+```
+
+```typescript
+// index.ts - Import CSS module
+import styles from './styles.scss.js'
+
+element.classList.add(styles.card, styles.title)
+// Adds: product-card_card_xj2k9 product-card_title_ak3j2
+```
+
+### Global Styles
+
+```scss
+// _sass/master.scss or any file in _sass/
+// These are global, not modules
+
+.page-width {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--spacing-md);
+}
+
+// Use BEM strictly for global styles to prevent conflicts
+```
+
+## Variables and Custom Properties
+
+### ✅ When to Use Each
+
+```scss
+// Use Sass variables for:
+// - Values used during compilation
+// - Values that don't change at runtime
+
+$breakpoint-tablet: 768px;
+$grid-columns: 12;
+
+// Use CSS custom properties for:
+// - Runtime theming
+// - Component-level customization
+// - Values that change with user settings
+
+.product-card {
+  // Default values with fallbacks
+  padding: var(--product-card-padding, var(--spacing-md));
+  border-radius: var(--product-card-radius, var(--radius-base));
+
+  // Component can be themed
+  color: var(--product-card-text-color, var(--color-text-primary));
+  background: var(--product-card-bg, var(--color-background-card));
+}
+
+// Sass variable compiled at build time
+@media (min-width: $breakpoint-tablet) {
+  .product-card {
+    // CSS variable evaluated at runtime
+    --product-card-padding: var(--spacing-lg);
+  }
+}
+```
+
+### ⚠️ Variable Naming Convention
+
+```scss
+// Bad: Unclear, not descriptive
+$blue: #007bff;
+$font1: 'Arial', sans-serif;
+$spacing: 20px;
+
+// Good: Semantic, hierarchical
+$color-primary-brand: #007bff;
+$color-primary-brand-hover: #0056b3;
+$color-text-primary: #333;
+$color-text-secondary: #666;
+$font-family-base:
+  'Inter',
+  -apple-system,
+  sans-serif;
+$spacing-sm: 0.5rem;
+$spacing-md: 1rem;
+$spacing-lg: 2rem;
+```
+
+## Avoid @extend (Use Mixins Instead)
+
+### ❌ Bad: @extend Creates Bloat
+
+```scss
+// Bad: @extend creates unpredictable selector groups
+.button {
+  padding: 10px 20px;
+  border-radius: 4px;
+}
+
+.button-primary {
+  @extend .button; // Creates grouped selector
+  background: blue;
+}
+
+.button-secondary {
+  @extend .button; // Adds to the group
+  background: gray;
+}
+
+// Compiled output (bloated):
+// .button, .button-primary, .button-secondary {
+//   padding: 10px 20px;
+//   border-radius: 4px;
+// }
+// .button-primary { background: blue; }
+// .button-secondary { background: gray; }
+```
+
+### ✅ Good: Mixins Are Explicit
+
+```scss
+// Good: Mixin creates predictable output
+@mixin button-base {
+  padding: 10px 20px;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.2s ease;
+}
+
+.button-primary {
+  @include button-base;
+  background: var(--color-primary);
+  color: white;
+
+  &:hover {
+    background: var(--color-primary-hover);
+  }
+}
+
+.button-secondary {
+  @include button-base;
+  background: var(--color-secondary);
+  color: var(--color-text);
+}
+
+// Compiled output is clear and maintainable
+```
+
+## Performance Patterns
+
+### ✅ Efficient Selectors
+
+```scss
+// Good: Direct class selectors
+.product-card {
+}
+.product-card__image {
+}
+
+// Good: Minimal descendant selectors
+.product-card > .product-card__body {
+}
+
+// Bad: Universal selector
+.product-card * {
+} // Checks every descendant
+
+// Bad: Attribute selectors (slower)
+[class*='product-'] {
+} // Substring match is slow
+
+// Good: Direct class
+.product-card,
+.product-list,
+.product-grid {
+  // Explicit is better
+}
+```
+
+### ✅ Container Queries for Responsive Components
+
+```scss
+// Good: Component responds to its container, not viewport
+.product-card {
+  container-type: inline-size;
+  container-name: product-card;
+}
+
+.product-card__body {
+  display: flex;
+  flex-direction: column;
+
+  // Respond to container width, not viewport
+  @container product-card (min-width: 300px) {
+    flex-direction: row;
+  }
+}
+
+// Still use @media for layout-level changes
+@media (min-width: 768px) {
+  .product-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+```
+
+## Common AI Agent Mistakes
+
+### 1. Over-nesting
+
+```scss
+// ❌ AI agents often create this
+.section {
+  .container {
+    .product-grid {
+      .product-card {
+        .card-body {
+          .card-title {
+            // 6 levels deep!
+          }
+        }
+      }
+    }
+  }
+}
+
+// ✅ Flatten with BEM
+.product-card__title {
+  font-size: var(--font-size-lg);
+}
+```
+
+### 2. Hardcoding Values
+
+```scss
+// ❌ Bad: Magic numbers
+.product-card {
+  padding: 24px;
+  margin-bottom: 32px;
+  border-radius: 8px;
+  color: #333333;
+}
+
+// ✅ Good: Use design tokens
+.product-card {
+  padding: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
+  border-radius: var(--radius-base);
+  color: var(--color-text-primary);
+}
+```
+
+### 3. Mixing Units Inconsistently
+
+```scss
+// ❌ Bad: px, em, rem mixed randomly
+.product-card {
+  padding: 16px;
+  margin: 1em;
+  font-size: 1.2rem;
+  width: 300px;
+}
+
+// ✅ Good: Consistent unit strategy
+// - rem for spacing and typography (respects user preferences)
+// - px for borders and small fixed values
+// - % for layout
+.product-card {
+  width: 100%;
+  max-width: 400px; // Fixed max
+  padding: var(--spacing-md); // rem-based
+  border: 1px solid var(--color-border); // px for precision
+  font-size: var(--font-size-base); // rem-based
+}
+```
+
+### 4. Not Using Pseudo-element Content Properly
+
+```scss
+// ❌ Bad: Missing content property
+.product-card::before {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.1);
+  // Won't render without content!
+}
+
+// ✅ Good: Always set content
+.product-card::before {
+  content: ''; // Required!
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.1);
+}
+```
+
+### 5. Selector Performance Anti-patterns
+
+```scss
+// ❌ Bad: Expensive selectors
+.product-card * {
+} // Universal selector
+[class^='product-'] {
+} // Starts-with attribute
+div[class*='card'] {
+} // Contains attribute + element
+
+// ✅ Good: Direct class selectors
+.product-card {
+}
+.product-card__element {
+}
+```
+
+## Accessibility Considerations
+
+```scss
+// Always include focus states
+.button {
+  padding: var(--spacing-sm);
+  border: 2px solid var(--color-primary);
+
+  &:hover {
+    background: var(--color-primary-hover);
+  }
+
+  // Visible focus indicator
+  &:focus-visible {
+    outline: 3px solid var(--color-focus);
+    outline-offset: 2px;
+  }
+
+  // Remove focus outline for mouse users
+  &:focus:not(:focus-visible) {
+    outline: none;
+  }
+}
+
+// Respect user preferences
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+// Ensure sufficient color contrast
+.button-primary {
+  // Minimum contrast ratio 4.5:1 for text
+  background: var(--color-primary); // #007bff
+  color: white; // Sufficient contrast
+}
+
+// Hide visually but keep for screen readers
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+```
+
+## Code Generation Preferences
+
+- Generate complete, working code snippets with comments
+- Always include BEM class structure
+- Use CSS custom properties with fallbacks
+- Include hover and focus states for interactive elements
+- Add accessibility considerations in comments
+- Use meaningful variable names from design system
+
+## Cross-References
+
+- See [project-structure.mdc](mdc:.cursor/rules/project-structure.mdc) for portable component structure
+- See [theme-sections.mdc](mdc:.cursor/rules/theme-sections.mdc) for section-specific styles
+- See [theme-snippets.mdc](mdc:.cursor/rules/theme-snippets.mdc) for snippet styling patterns

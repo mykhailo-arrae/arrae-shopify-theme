@@ -1,0 +1,71 @@
+name: 'Track themes'
+
+on:
+  push:
+    branches:
+      - 'devops/track-themes'
+  schedule:
+    # Run every 4 hours, e.g., 00:05, 04:05, etc.
+    - cron: '5 */4 * * *'
+    # Run every 10 minutes
+    # - cron: '*/10 * * * *'
+  workflow_dispatch:
+
+jobs:
+  track-themes:
+    runs-on: 'ubuntu-latest'
+    strategy:
+      fail-fast: false
+      max-parallel: 1
+      matrix:
+        environment: ['arrae-staging', 'arrae-wellness']
+        # TODO Track other themes as well, not only live theme
+    environment:
+      name: ${{ matrix.environment }}
+    concurrency:
+      group: 'track-themes-${{ matrix.environment }}'
+      cancel-in-progress: true
+    env:
+      COMPOSE_BAKE: 1
+      COMPOSE_DOCKER_CLI_BUILD: 1
+      DOCKER_BUILDKIT: 1
+      SHOPIFY_CLI_ADMIN_AUTH_TOKEN: ${{ secrets.SHOPIFY_ADMIN_API_TOKEN }}
+      SHOPIFY_CLI_TTY: 0
+      SHOPIFY_SHOP: '${{ matrix.environment }}.myshopify.com'
+    steps:
+      - name: Set Docker Compose project name
+        run: |
+          matrixHash=$(printf '%s' '${{ matrix.environment }}' | sha256sum | awk '{ print $1 }')
+          echo "COMPOSE_PROJECT_NAME=track-${matrixHash}" >> $GITHUB_ENV
+
+      - name: 'Checkout everything'
+        uses: 'actions/checkout@v4'
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.CHECKOUT_ACTION_PAT }}
+
+      - name: 'Init git config'
+        run: |
+          ./devops/ci/init-git-config.sh
+        # Workaround for No TTY issue
+        shell: 'script -qec "bash {0}"'
+
+      - name: 'Build and start `main_cd` container'
+        run: |
+          ./devops/ci/start-cd-container.sh
+        shell: 'script -qec "bash {0}"'
+
+      - name: 'Track theme'
+        run: |
+          ./devops/ci/run-in-cd-container.sh ./devops/track-theme.sh
+        shell: 'script -qec "bash {0}"'
+
+      - name: 'Push changes'
+        run: |
+          git push --all origin
+        shell: 'script -qec "bash {0}"'
+
+      - name: 'Shutdown containers'
+        run: |
+          ./devops/ci/shutdown-cd-container.sh
+        shell: 'script -qec "bash {0}"'

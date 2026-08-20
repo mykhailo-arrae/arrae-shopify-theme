@@ -1,0 +1,313 @@
+@use 'unit' as u;
+@use 'style-guide/media' as mq;
+@use 'style-guide/mixins' as mixin;
+@use 'style-guide/spacing' as spacing;
+@use 'style-guide/colors' as color;
+@use 'style-guide/typography' as typography;
+@use 'style-guide/sizes' as sizes;
+@use 'style-guide/buttons' as buttons;
+
+.section {
+  position: relative;
+  width: 100%;
+  color: color.get(off-white);
+}
+
+.frame {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  aspect-ratio: 375 / 712;
+  max-height: u.rem-calc(
+    680+32
+  ); // 32px to account for the announcement bar, because the design is inconsistent
+
+  @include mq.min(tabletlandscape) {
+    aspect-ratio: 1512 / 760;
+    min-height: u.rem-calc(
+      760+32
+    ); // 32px to account for the announcement bar, because the design is inconsistent
+    max-height: 100vh;
+  }
+}
+
+.media {
+  @include mixin.fill-parent();
+  z-index: 0;
+  overflow: hidden;
+  background: color.get(light-gray);
+
+  :is(img, svg) {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.picture {
+  &--placeholder {
+    object-fit: cover;
+  }
+}
+
+.overlay {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  background: var(--value-propositions-overlay-desktop-fill from global);
+  pointer-events: none;
+}
+
+.propositions-body {
+  position: relative;
+  width: 100%;
+  margin-top: auto;
+
+  @include mq.min(tabletlandscape) {
+    margin-top: 0;
+  }
+}
+
+.body {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  justify-content: space-between;
+  height: 100%;
+  min-height: 100%;
+  padding: spacing.get(size-24);
+  @include mixin.container();
+
+  @include mq.min(tabletlandscape) {
+    gap: 0;
+    justify-content: flex-end;
+    padding: 0 spacing.get(size-48) spacing.get(size-48);
+  }
+
+  &--alternate-heading {
+    justify-content: flex-end;
+
+    .main {
+      align-items: flex-start;
+      text-align: left;
+    }
+
+    .heading,
+    .description {
+      text-align: left;
+    }
+
+    .buttons-wrapper {
+      justify-content: flex-start;
+    }
+
+    .propositions-body {
+      margin-top: u.rem-calc(22);
+    }
+
+    @include mq.min(tabletlandscape) {
+      .propositions-body {
+        margin-top: 0;
+      }
+    }
+  }
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: spacing.get(size-16);
+  text-align: center;
+
+  @include mq.min(tabletlandscape) {
+    gap: spacing.get(size-20);
+    align-items: flex-start;
+    max-width: u.rem-calc(575);
+    padding-bottom: spacing.get(size-32);
+    text-align: left;
+  }
+
+  &--unbounded {
+    @include mq.min(tabletlandscape) {
+      max-width: none;
+    }
+  }
+}
+
+.heading {
+  @include typography.heading-4();
+  margin: 0;
+  max-width: u.rem-calc(270);
+  line-height: 1.12;
+  text-align: center;
+  letter-spacing: -0.03em;
+
+  @include mq.min(tabletlandscape) {
+    @include typography.heading-3();
+    letter-spacing: -0.03em;
+    line-height: 0.98;
+    max-width: none;
+    text-align: left;
+  }
+
+  &--large {
+    @include mq.min(tabletlandscape) {
+      @include typography.heading-2();
+      letter-spacing: -0.03em;
+    }
+  }
+}
+
+.description {
+  @include typography.body-regular();
+  margin: 0;
+  max-width: u.rem-calc(320);
+  letter-spacing: -0.01em;
+  text-align: center;
+  text-wrap: balance;
+
+  @include mq.min(tabletlandscape) {
+    max-width: u.rem-calc(580);
+    font-size: u.rem-calc(18);
+    text-align: left;
+  }
+}
+
+.buttons-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: spacing.get(size-20);
+
+  @include mq.min(tabletlandscape) {
+    gap: spacing.get(size-32);
+    justify-content: flex-start;
+  }
+
+  .button-1 {
+    padding: spacing.get(size-8) spacing.get(size-24);
+    border: u.rem-calc(1) solid color.get(off-white);
+
+    &:hover {
+      border-color: color.get(text);
+    }
+
+    @include mq.min(tabletlandscape) {
+      padding: spacing.get(size-8) spacing.get(size-32);
+    }
+  }
+
+  .button-2 {
+    @include buttons.text-link-large-animated;
+    @include mixin.focus-visible-ring($ring-color: color.get(off-white));
+    color: inherit;
+
+    @include mq.min(tabletlandscape) {
+      &:hover {
+        opacity: 1;
+      }
+    }
+  }
+}
+
+.divider {
+  display: none;
+  width: 100%;
+  height: 0;
+  margin: 0;
+  border: 0;
+  border-top: u.rem-calc(1) solid color.get(off-white);
+  opacity: 0.45;
+
+  @include mq.min(tabletlandscape) {
+    display: block;
+    margin-top: 0;
+  }
+}
+
+.benefits {
+  display: flex;
+  flex-direction: column;
+  gap: spacing.get(size-16);
+  width: 100%;
+
+  @include mq.min(tabletlandscape) {
+    gap: spacing.get(size-4);
+    padding-top: spacing.get(size-40);
+    padding-bottom: spacing.get(size-12);
+  }
+
+  &-list {
+    @include mixin.reset-ul;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+
+    @include mq.min(tabletlandscape) {
+      flex-flow: row nowrap;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: spacing.get(size-16) spacing.get(size-24);
+    }
+  }
+
+  &-item {
+    display: flex;
+    gap: spacing.get(size-4);
+    align-items: center;
+    padding-block: u.rem-calc(5) u.rem-calc(6);
+    border-bottom: u.rem-calc(0.5) solid color.get(off-white-60);
+    text-wrap: balance;
+
+    @include mq.min(tabletlandscape) {
+      flex-flow: row nowrap;
+      align-items: flex-start;
+      gap: spacing.get(size-8);
+      padding: 0;
+      border-bottom: 0;
+    }
+  }
+
+  &-icon {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: spacing.get(size-24);
+    height: spacing.get(size-24);
+
+    @include mq.min(tabletlandscape) {
+      width: u.rem-calc(26);
+      height: u.rem-calc(26);
+    }
+  }
+
+  &-icon-img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  &-text {
+    @include typography.body-xsmall();
+    overflow-wrap: anywhere;
+    flex: 1;
+    margin: 0;
+    font-weight: 400;
+    line-height: 1.1;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+
+    @include mq.min(tabletlandscape) {
+      font-size: sizes.get(size-16);
+    }
+  }
+}

@@ -1,0 +1,104 @@
+@use 'unit' as u;
+@use 'style-guide/mixins' as mixin;
+@use 'style-guide/colors' as color;
+@use 'style-guide/spacing' as spacing;
+
+$_popover-transition: 200ms ease;
+$_popover-width: u.rem-calc(199);
+$_popover-max-height: u.rem-calc(275);
+$_popover-gap: spacing.get(size-8);
+
+.root {
+  position: absolute;
+  z-index: 20;
+  box-sizing: border-box;
+  display: none;
+  flex-direction: column;
+  width: $_popover-width;
+  max-height: $_popover-max-height;
+  padding-block: spacing.get(size-12);
+  background-color: color.get(off-white);
+  border: u.rem-calc(0.5) solid color.get(dark-gray-20);
+  border-radius: u.rem-calc(10);
+  box-shadow: 0 u.rem-calc(8) u.rem-calc(24) rgb(0 0 0 / 8%);
+  opacity: 0;
+  transform: translateY(u.rem-calc(-4));
+  transition:
+    opacity $_popover-transition,
+    transform $_popover-transition,
+    display $_popover-transition allow-discrete;
+  top: calc(100% + #{$_popover-gap});
+  right: 0;
+
+  :global([data-markets-position='above']) & {
+    top: auto;
+    right: auto;
+    bottom: calc(100% + #{$_popover-gap});
+    left: 0;
+    transform: translateY(u.rem-calc(4));
+  }
+
+  :global(.js-markets-wrap[data-markets-open='true']) & {
+    display: flex;
+    opacity: 1;
+    transform: translateY(0);
+
+    @starting-style {
+      opacity: 0;
+      transform: translateY(u.rem-calc(-4));
+    }
+  }
+
+  :global(
+      [data-markets-position='above'].js-markets-wrap[data-markets-open='true']
+    )
+    & {
+    @starting-style {
+      transform: translateY(u.rem-calc(4));
+    }
+  }
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: color.get(dark-gray-20) transparent;
+
+  &::-webkit-scrollbar {
+    width: u.rem-calc(6);
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+    margin-block: spacing.get(size-4);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: color.get(dark-gray-20);
+    background-clip: padding-box;
+    border: u.rem-calc(1) solid transparent;
+    border-radius: 9999px;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background-color: color.get(dark-gray);
+  }
+}
+
+.list {
+  @include mixin.reset-ul();
+  display: flex;
+  flex-direction: column;
+
+  &--divided {
+    margin-top: spacing.get(size-12);
+    padding-top: spacing.get(size-12);
+    border-top: u.rem-calc(0.5) solid color.get(dark-gray-20);
+  }
+}

@@ -1,0 +1,304 @@
+{% liquid
+  assign show_section = false
+
+  assign heading = section.settings.heading
+  assign button_1_label = section.settings.button_1_label
+  assign button_2_label = section.settings.button_2_label
+
+  assign body_1 = section.settings.body_1
+  assign body_2 = section.settings.body_2
+
+  assign image_desktop_1 = section.settings.image_desktop_1
+  assign image_mobile_1 = section.settings.image_mobile_1
+  assign image_alt_1 = section.settings.image_alt_1 | default: button_1_label
+  assign image_desktop_2 = section.settings.image_desktop_2
+  assign image_mobile_2 = section.settings.image_mobile_2
+  assign image_alt_2 = section.settings.image_alt_2 | default: button_2_label
+
+  assign bottom_text_1 = section.settings.bottom_text_1
+  assign bottom_link_text_1 = section.settings.bottom_link_text_1
+  assign bottom_link_url_1 = section.settings.bottom_link_url_1
+  assign bottom_text_2 = section.settings.bottom_text_2
+  assign bottom_link_text_2 = section.settings.bottom_link_text_2
+  assign bottom_link_url_2 = section.settings.bottom_link_url_2
+
+  if button_1_label != blank and button_2_label != blank
+    assign show_section = true
+  endif
+
+  assign tab_1_id = 'product-toggle-tab-1-' | append: section.id
+  assign tab_2_id = 'product-toggle-tab-2-' | append: section.id
+  assign panel_1_id = 'product-toggle-panel-1-' | append: section.id
+  assign panel_2_id = 'product-toggle-panel-2-' | append: section.id
+%}
+
+{% if show_section %}
+  <div class="{# style container #}">
+    <div class="{# style media #}" aria-live="polite">
+      <div
+        class="{# style media-panel #} js-product-toggle-media"
+        data-product-toggle-panel="1"
+        data-active="true"
+        aria-hidden="false"
+      >
+        {% if image_desktop_1 != blank or image_mobile_1 != blank %}
+          {% render 'core-image',
+            image: image_desktop_1,
+            image_mobile: image_mobile_1,
+            image_alt_text: image_alt_1,
+            image_mobile_alt_text: image_alt_1,
+            object_fit: 'cover',
+            class: '{# style image #}',
+            srcset_print_sizes: '480,640,800,960,1280,1600',
+            mobile_srcset_print_sizes: '320,480,640,768'
+          %}
+        {% else %}
+          {{ 'lifestyle-1' | placeholder_svg_tag: '{# style placeholder #}' }}
+        {% endif %}
+      </div>
+
+      <div
+        class="{# style media-panel #} js-product-toggle-media"
+        data-product-toggle-panel="2"
+        data-active="false"
+        aria-hidden="true"
+      >
+        {% if image_desktop_2 != blank or image_mobile_2 != blank %}
+          {% render 'core-image',
+            image: image_desktop_2,
+            image_mobile: image_mobile_2,
+            image_alt_text: image_alt_2,
+            image_mobile_alt_text: image_alt_2,
+            object_fit: 'cover',
+            class: '{# style image #}',
+            srcset_print_sizes: '480,640,800,960,1280,1600',
+            mobile_srcset_print_sizes: '320,480,640,768'
+          %}
+        {% else %}
+          {{ 'lifestyle-2' | placeholder_svg_tag: '{# style placeholder #}' }}
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="{# style content #}">
+      {% if heading != blank %}
+        <h2 class="{# style heading #}">{{ heading }}</h2>
+      {% endif %}
+
+      <div
+        class="{# style tabs #}"
+        role="tablist"
+        aria-label="{{ 'tabs_label' | t }}"
+      >
+        <button
+          class="{# style tab #} js-product-toggle-tab"
+          type="button"
+          id="{{ tab_1_id }}"
+          role="tab"
+          aria-selected="true"
+          aria-controls="{{ panel_1_id }}"
+          tabindex="0"
+          data-product-toggle-tab="1"
+        >
+          {{ button_1_label }}
+        </button>
+        <button
+          class="{# style tab #} {# style tab--strong #} js-product-toggle-tab"
+          type="button"
+          id="{{ tab_2_id }}"
+          role="tab"
+          aria-selected="false"
+          aria-controls="{{ panel_2_id }}"
+          tabindex="-1"
+          data-product-toggle-tab="2"
+        >
+          {{ button_2_label }}
+        </button>
+      </div>
+
+      <div class="{# style panels #}">
+        <div
+          class="{# style panel #} js-product-toggle-panel"
+          id="{{ panel_1_id }}"
+          role="tabpanel"
+          aria-labelledby="{{ tab_1_id }}"
+          data-product-toggle-panel="1"
+          data-active="true"
+          aria-hidden="false"
+        >
+          {% if body_1 != blank %}
+            <div class="{# style body #}">
+              {{ body_1 }}
+            </div>
+          {% endif %}
+
+          <div class="{# style bottom-content #}">
+            {% if bottom_text_1 != blank %}
+              <span class="{# style bottom-content-text #}">
+                {{ bottom_text_1 }}
+              </span>
+            {% endif %}
+
+            {% if bottom_link_text_1 != blank and bottom_link_url_1 != blank %}
+              <a class="{# style bottom-content-link #}" href="{{ bottom_link_url_1 }}">
+                {{ bottom_link_text_1 }}
+              </a>
+            {% endif %}
+          </div>
+        </div>
+
+        <div
+          class="{# style panel #} js-product-toggle-panel"
+          id="{{ panel_2_id }}"
+          role="tabpanel"
+          aria-labelledby="{{ tab_2_id }}"
+          data-product-toggle-panel="2"
+          data-active="false"
+          aria-hidden="true"
+        >
+          {% if body_2 != blank %}
+            <div class="{# style body #}">
+              {{ body_2 }}
+            </div>
+          {% endif %}
+
+          <div class="{# style bottom-content #}">
+            {% if bottom_text_2 != blank %}
+              <span class="{# style bottom-content-text #}">
+                {{ bottom_text_2 }}
+              </span>
+            {% endif %}
+
+            {% if bottom_link_text_2 != blank and bottom_link_url_2 != blank %}
+              <a class="{# style bottom-content-link #}" href="{{ bottom_link_url_2 }}">
+                {{ bottom_link_text_2 }}
+              </a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Product Toggle Section",
+  "tag": "section",
+  "class": "js-product-toggle-section {# style root #}",
+  "locales": {
+    "en": {
+      "tabs_label": "Product recommendation options"
+    }
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading"
+    },
+    {
+      "type": "header",
+      "content": "Toggle Labels"
+    },
+    {
+      "type": "text",
+      "id": "button_1_label",
+      "label": "Button 1 Label"
+    },
+    {
+      "type": "text",
+      "id": "button_2_label",
+      "label": "Button 2 Label"
+    },
+    {
+      "type": "header",
+      "content": "Option 1"
+    },
+    {
+      "type": "richtext",
+      "id": "body_1",
+      "label": "Body"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_desktop_1",
+      "label": "Desktop Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_mobile_1",
+      "label": "Mobile Image"
+    },
+    {
+      "type": "text",
+      "id": "image_alt_1",
+      "label": "Image alt text"
+    },
+    {
+      "type": "text",
+      "id": "bottom_text_1",
+      "label": "Bottom Text"
+    },
+    {
+      "type": "text",
+      "id": "bottom_link_text_1",
+      "label": "Bottom Link Text"
+    },
+    {
+      "type": "url",
+      "id": "bottom_link_url_1",
+      "label": "Bottom Link URL"
+    },
+    {
+      "type": "header",
+      "content": "Option 2"
+    },
+    {
+      "type": "richtext",
+      "id": "body_2",
+      "label": "Body"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_desktop_2",
+      "label": "Desktop Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_mobile_2",
+      "label": "Mobile Image"
+    },
+    {
+      "type": "text",
+      "id": "image_alt_2",
+      "label": "Image Alt Text"
+    },
+    {
+      "type": "text",
+      "id": "bottom_text_2",
+      "label": "Bottom Text"
+    },
+    {
+      "type": "text",
+      "id": "bottom_link_text_2",
+      "label": "Bottom Link Text"
+    },
+    {
+      "type": "url",
+      "id": "bottom_link_url_2",
+      "label": "Bottom Link URL 2"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Toggle Section",
+      "category": "Product"
+    }
+  ]
+}
+{% endschema %}

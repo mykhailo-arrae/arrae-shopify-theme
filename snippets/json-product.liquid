@@ -1,0 +1,29 @@
+{% liquid
+  assign json_product = json_product | default: product
+  assign has_only_default_variant = json_product.has_only_default_variant | default: false
+  assign selected_or_first_available_variant = json_product.selected_or_first_available_variant | default: null
+  assign product_card_marketing_copy = json_product.metafields.custom.product_card_marketing_copy.value | default: json_product.metafields.custom_fields.collection_short_description.value | default: null
+%}
+
+{ "product": {{ json_product | json }}, "metafields": { "has_only_default_variant":
+{{ has_only_default_variant | json }}, "selected_or_first_available_variant":
+{{ selected_or_first_available_variant | json }}, "product_card_marketing_copy":
+{{ product_card_marketing_copy | json }}, "options_with_values": [
+{%- for option in json_product.options_with_values -%}
+  { "name": {{ option.name | json }}, "position": {{ option.position | json }}, "selected_value":
+  {{ option.selected_value | json }}, "values": [
+  {%- for value in option.values -%}
+    { "available": {{ value.available | json }}, "id": {{ value.id | json }}, "name": {{ value.name | json }},
+    "product_url": {{ value.product_url | json }}, "selected": {{ value.selected | json }}, "variant":
+    {{ value.variant | json }} }
+    {%- unless forloop.last -%},{%- endunless -%}
+  {%- endfor -%}
+  ] }
+  {%- unless forloop.last -%},{%- endunless -%}
+{%- endfor -%}
+] }, "variants": [
+{%- for variant in json_product.variants -%}
+  {%- render 'json-product-variant', variant: variant, product: json_product -%}
+  {% unless forloop.last -%},{%- endunless %}
+{%- endfor -%}
+] }

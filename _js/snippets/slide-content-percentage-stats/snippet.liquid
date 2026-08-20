@@ -1,0 +1,158 @@
+{% doc %}
+  @description
+  Percentage “wheel” stats for an education slide (metaobject type `percentage_stat_item`).
+
+  The wheel color setting drives the SVG gradient only: enter "yellow" (case
+  insensitive) for the gold 4-stop wheel; any other value uses the default blue
+  3-stop wheel. Layout is driven by
+  stat count — 1–2 items use a vertical wheel-over-text layout; 3+ items use
+  horizontal wheel-plus-text rows. A static-text variant renders
+  the text inside a CSS-bordered circle (no animated wheel) when a stat item
+  provides `static_stat_text` instead of `percent_integer`.
+
+  @param {block} block - Source Shopify block (settings + unique SVG gradient ids).
+  @param {metaobject[]} slide_content - List of `percentage_stat_item` metaobject entries (`entry.percent_integer`, `entry.static_stat_text`, `entry.description`).
+
+  @example
+  {% render 'slide-content-percentage-stats', block: block, slide_content: slide_content %}
+{% enddoc %}
+
+{% liquid
+  assign stats_items = slide_content | default: blank
+  assign wheel_color_input = block.settings.wheel_color | default: '' | downcase | strip
+  assign wheel_color = 'default'
+  assign wheel_track_stroke_color = block.settings.wheel_track_stroke_color | default: '#672f45'
+
+  if wheel_color_input == 'yellow'
+    assign wheel_color = 'yellow'
+  endif
+%}
+
+{% if stats_items != blank %}
+  {% liquid
+    assign stat_count = stats_items.size
+    if stat_count > 4
+      assign stat_count = 4
+    endif
+  %}
+
+  <div
+    class="{# style root #}"
+    data-slide-content="percentage-stats"
+    data-stats-count="{{ stat_count }}"
+    data-wheel-color="{{ wheel_color | escape }}"
+  >
+    <ul class="{# style grid #}" role="list">
+      {% for entry in stats_items limit: 4 %}
+        {% liquid
+          assign static_text = entry.static_stat_text.value | default: entry.static_stat_text | default: blank
+          assign has_static_text = false
+          if static_text != blank
+            assign has_static_text = true
+          endif
+
+          assign raw_pct = entry.percent_integer.value | default: entry.percent_integer | default: 0
+          if raw_pct == 0
+            assign raw_pct = entry.percent_decimal.value | default: entry.percent_decimal | default: 0
+          endif
+
+          # Clamp first so whole-number ".0" values (e.g. 150.0) can't skip the range.
+          assign pct = raw_pct | plus: 0 | at_least: 0 | at_most: 100
+          assign parts = pct | split: '.'
+          if parts.last == '0'
+            assign pct = parts.first
+          endif
+          assign pct_dash_end = 100 | minus: pct
+          assign grad_id = 'pct-wheel-grad-' | append: block.id | append: '-' | append: forloop.index0
+          assign percent_prefix = entry.percent_prefix.value | default: null
+        %}
+        <li class="{# style item #}">
+          {% if has_static_text %}
+            <div class="{# style item__wheel-wrap #}" data-static-content="{{ has_static_text | escape }}">
+              <div class="{# style item__static-circle #}">
+                <span class="{# style item__static-value #}">{{ static_text }}</span>
+              </div>
+            </div>
+          {% else %}
+            <div class="{# style item__wheel-wrap #}">
+              <svg
+                class="{# style item__svg #}"
+                viewBox="-1 -1 102 102"
+                aria-hidden="true"
+                focusable="false"
+              >
+                <defs>
+                  <linearGradient
+                    id="{{ grad_id }}"
+                    gradientUnits="userSpaceOnUse"
+                    {% if wheel_color == 'yellow' %}
+                      x2="94.540833333" y1="50" x1="32" y2="50"
+                    {% else %}
+                      x1="94.065282" y1="50" x2="5.934718" y2="50"
+                    {% endif %}
+                  >
+                    {% if wheel_color == 'yellow' %}
+                      <stop offset="0.206731" class="{# style item__grad-stop-1 #}"></stop>
+                      <stop offset="0.610577" class="{# style item__grad-stop-2 #}"></stop>
+                      <stop offset="0.764423" class="{# style item__grad-stop-3 #}"></stop>
+                      <stop offset="1" class="{# style item__grad-stop-4 #}"></stop>
+                    {% else %}
+                      <stop class="{# style item__grad-stop-a #}"></stop>
+                      <stop offset="0.5" class="{# style item__grad-stop-b #}"></stop>
+                      <stop offset="1" class="{# style item__grad-stop-c #}"></stop>
+                    {% endif %}
+                  </linearGradient>
+                </defs>
+                <g class="{# style item__wheel-rot #}" transform="rotate(-90 50 50)">
+                  <circle
+                    class="{# style item__track #}"
+                    pathLength="100"
+                    cx="50"
+                    cy="50"
+                    r="41"
+                    stroke="{{ wheel_track_stroke_color }}"
+                    fill="none"
+                  ></circle>
+                  <circle
+                    class="{# style item__arc #}"
+                    data-pct-arc
+                    data-pct-dash-end="{{ pct_dash_end }}"
+                    pathLength="100"
+                    cx="50"
+                    cy="50"
+                    r="41"
+                    fill="none"
+                    stroke="url(#{{ grad_id }})"
+                  ></circle>
+                </g>
+              </svg>
+              <span class="{# style item__value #}">
+                {% if percent_prefix != blank %}
+                  <span class="{# style item__value-prefix #}">{{ percent_prefix }}</span>
+                {% endif %}
+                <span>
+                  <span class="{# style item__value-number #}">{{ pct }}</span
+                  ><span class="{# style item__value-suffix #}">%</span>
+                </span>
+              </span>
+            </div>
+          {% endif %}
+          {% if entry.title != blank or entry.description != blank %}
+            <div class="{# style item__text #}">
+              {% if entry.title != blank %}
+                <div class="{# style item__title rte #}">
+                  {{ entry.title | metafield_tag }}
+                </div>
+              {% endif %}
+              {% if entry.description != blank %}
+                <div class="{# style item__description rte #}">
+                  {{ entry.description | metafield_tag }}
+                </div>
+              {% endif %}
+            </div>
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+{% endif %}

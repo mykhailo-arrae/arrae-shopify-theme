@@ -1,0 +1,65 @@
+{% liquid
+  assign cta_label = block.settings.cta_label
+  assign cta_url = block.settings.cta_url
+  assign use_capital_case = block.settings.use_capital_case | default: false, allow_false: true
+
+  assign show_cta = false
+  if cta_label != blank and cta_url != blank
+    assign show_cta = true
+  endif
+%}
+
+<div
+  class="{# style root #} {% if use_capital_case %}quick-links-secondary{% endif %}"
+>
+  <ul class="{# style list #}" role="list">
+    {% content_for 'blocks' %}
+  </ul>
+
+  {% if show_cta %}
+    <a href="{{ cta_url }}" class="{# style cta #}">
+      <span class="{# style cta__label #}">{{ cta_label }}</span>
+    </a>
+  {% endif %}
+</div>
+
+{% schema %}
+{
+  "name": "Quick Links",
+  "class": "{# style col #}",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "use_capital_case",
+      "label": "Use Capital Case",
+      "info": "When enabled, link labels render in Capital Case (e.g. \"Shop Best Sellers\") instead of the default UPPERCASE.",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Call to action"
+    },
+    {
+      "type": "paragraph",
+      "content": "Desktop only. Mobile mega menus configure their CTA from the parent Navigation Item."
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "CTA label",
+      "info": "Optional. e.g. \"Shop Spring Sale\""
+    },
+    {
+      "type": "url",
+      "id": "cta_url",
+      "label": "CTA link"
+    }
+  ],
+  "blocks": [{ "type": "nav-quick-link" }],
+  "presets": [
+    {
+      "name": "Quick Links"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,53 @@
+// Spacing
+// ===============================================
+
+@use 'unit' as u;
+@use 'sass:meta';
+@use 'sass:map' as sassmap;
+@use '../stdlib/map' as map;
+
+$_spacings: (
+  size-0: u.rem-calc(0),
+  size-2: u.rem-calc(2),
+  size-4: u.rem-calc(4),
+  size-8: u.rem-calc(8),
+  size-12: u.rem-calc(12),
+  size-14: u.rem-calc(14),
+  size-16: u.rem-calc(16),
+  size-20: u.rem-calc(20),
+  size-24: u.rem-calc(24),
+  size-32: u.rem-calc(32),
+  size-36: u.rem-calc(36),
+  size-40: u.rem-calc(40),
+  size-48: u.rem-calc(48),
+  size-56: u.rem-calc(56),
+  size-64: u.rem-calc(64),
+  size-72: u.rem-calc(72),
+  size-80: u.rem-calc(80),
+  size-88: u.rem-calc(88),
+  size-96: u.rem-calc(96),
+  size-112: u.rem-calc(112),
+  size-120: u.rem-calc(120),
+  columns-1: u.rem-calc(104),
+  columns-2: u.rem-calc(222),
+  columns-3: u.rem-calc(342),
+  columns-4: u.rem-calc(462),
+  columns-8: u.rem-calc(938)
+) !default;
+
+$_deprecated-spacings: (
+  // Spacings that get deprecated are added here
+) !default;
+
+$_all-spacings: sassmap.merge($_deprecated-spacings, $_spacings) !default;
+
+/// Retrieve the spacing value associated with the provided size name.
+/// @param {String} $size-name - pre-defined spacing size name.
+/// @example spacing.get(size-24) // returns 24px
+@function get($size-name) {
+  @if sassmap.has-key($_deprecated-spacings, $size-name) {
+    @warn 'Spacing #{$size-name} is deprecated';
+  }
+
+  @return map.get-strict($_all-spacings, $size-name);
+}

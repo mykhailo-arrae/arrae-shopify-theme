@@ -1,0 +1,367 @@
+@use 'unit' as u;
+@use 'style-guide/spacing' as spacing;
+@use 'style-guide/typography' as typography;
+@use 'style-guide/buttons' as buttons;
+@use 'style-guide/mixins' as mixin;
+@use 'style-guide/colors' as color;
+@use 'style-guide/form' as form;
+@use 'style-guide/media' as mq;
+
+.overlay {
+  @include mixin.offcanvas-overlay();
+}
+
+:global(.has-open-offcanvas[data-offcanvas='filters']) {
+  overflow: hidden !important;
+
+  .overlay {
+    visibility: visible;
+    opacity: 1;
+  }
+}
+
+.root {
+  @include mixin.offcanvas-content();
+
+  @include mq.min(tabletlandscape) {
+    max-width: u.rem-calc(510);
+  }
+}
+
+.container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  flex-shrink: 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: spacing.get(size-24);
+  padding: spacing.get(size-40) spacing.get(size-16) 0;
+}
+
+.title {
+  width: 100%;
+  color: color.get(text);
+  @include typography.heading-4();
+}
+
+.close {
+  flex-shrink: 0;
+  @include mixin.reset-button();
+  height: u.rem-calc(44);
+  width: u.rem-calc(44);
+  color: currentcolor;
+  cursor: pointer;
+
+  svg {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.form {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  gap: spacing.get(size-40);
+  padding: spacing.get(size-40) spacing.get(size-16);
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: color.get(light-gray) color.get(off-white);
+}
+
+// A filter group or the sort group. Reset the native fieldset chrome.
+.group {
+  min-inline-size: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  display: flex;
+  flex-direction: column;
+  gap: spacing.get(size-16);
+
+  &__title {
+    display: block;
+    width: 100%;
+    padding: 0;
+    margin-bottom: spacing.get(size-16);
+    color: color.get(text);
+    text-transform: uppercase;
+    letter-spacing: u.rem-calc(0.72);
+    @include typography.body(size-12);
+  }
+}
+
+/* ===== Sort by (radio list) ===== */
+.sort {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: spacing.get(size-16);
+
+  &__option {
+    display: flex;
+    align-items: center;
+  }
+
+  &__input {
+    appearance: none;
+    margin: 0;
+    flex-shrink: 0;
+    width: spacing.get(size-16);
+    height: spacing.get(size-16);
+    border-radius: 50%;
+    border: 1px solid color.get(text-gray);
+    background: transparent;
+    cursor: pointer;
+    position: relative;
+    transition: border-color 0.2s ease-in-out;
+
+    &:checked {
+      border-color: color.get(text);
+
+      &::after {
+        content: '';
+        position: absolute;
+        inset: u.rem-calc(2);
+        border-radius: 50%;
+        background: color.get(text);
+      }
+    }
+
+    &:focus-visible {
+      outline: 2px solid color.get(text);
+      outline-offset: 2px;
+    }
+
+    &:hover {
+      @include mq.min(tabletlandscape) {
+        border-color: color.get(text);
+      }
+    }
+  }
+
+  &__label {
+    cursor: pointer;
+    color: color.get(text);
+    letter-spacing: u.rem-calc(-0.16);
+    @include typography.body(size-16, 500);
+    margin-left: spacing.get(size-8);
+  }
+}
+
+/* ===== Filter groups (pill toggles) ===== */
+.filter__container {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: spacing.get(size-12) spacing.get(size-16);
+
+  &--product-type {
+    gap: spacing.get(size-12) spacing.get(size-20);
+  }
+}
+
+.facet {
+  margin: 0;
+
+  &__input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  &__pill {
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+    padding: spacing.get(size-8) spacing.get(size-12);
+    border: 1px solid color.get(on-white);
+    border-radius: u.rem-calc(9999);
+    background: transparent;
+    color: color.get(text);
+    letter-spacing: u.rem-calc(-0.16);
+    transition:
+      background-color 0.2s ease-in-out,
+      border-color 0.2s ease-in-out;
+    @include typography.body(size-16, 500);
+
+    &--product-type {
+      justify-content: center;
+      height: u.rem-calc(52);
+      flex: 1 1 calc(50% - #{u.rem-calc(10)});
+      border-radius: spacing.get(size-16);
+      gap: spacing.get(size-12);
+    }
+
+    &--has-icon {
+      min-width: u.rem-calc(148);
+    }
+
+    &:hover {
+      @include mq.min(tabletlandscape) {
+        border-color: color.get(text);
+      }
+    }
+  }
+
+  &__icon {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: u.rem-calc(45);
+    height: 100%;
+    max-height: u.rem-calc(34);
+
+    :is(img, picture) {
+      display: block;
+      width: auto;
+      max-width: 100%;
+      height: auto;
+      max-height: 100%;
+      object-fit: contain;
+    }
+  }
+
+  &__label {
+    min-width: 0;
+  }
+
+  &__input:checked + &__pill {
+    background-color: color.get(light-brown);
+    border-color: color.get(text);
+  }
+
+  &__input:disabled + &__pill {
+    opacity: 0.4;
+    pointer-events: none;
+    cursor: not-allowed;
+  }
+
+  &__input:focus-visible + &__pill {
+    outline: 2px solid color.get(text);
+    outline-offset: 2px;
+  }
+}
+
+/* ===== Price range (kept for parity with Search & Discovery configs) ===== */
+.price {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-start;
+  align-items: flex-end;
+  gap: spacing.get(size-14);
+
+  &__label {
+    display: block;
+    margin-bottom: spacing.get(size-8);
+    @include typography.body(size-12);
+  }
+
+  &__from input[type='number'],
+  &__to input[type='number'] {
+    min-width: u.rem-calc(110);
+    padding: spacing.get(size-12);
+    border: 1px solid color.get(text-gray);
+    border-radius: 0;
+    @include typography.body(size-12);
+  }
+}
+
+/* ===== Footer ===== */
+@mixin footer-pill {
+  @include mixin.reset-button();
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: spacing.get(size-8);
+  min-height: u.rem-calc(38);
+  padding: spacing.get(size-4) spacing.get(size-16);
+  border: 1px solid transparent;
+  border-radius: u.rem-calc(64);
+  text-transform: uppercase;
+  letter-spacing: u.rem-calc(0.84);
+  text-decoration: none;
+  cursor: pointer;
+  @include typography.body(size-14, 400);
+  transition:
+    color 0.3s ease-in-out,
+    background-color 0.3s ease-in-out,
+    border-color 0.3s ease-in-out;
+}
+
+.footer {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: u.rem-calc(18);
+  padding: spacing.get(size-24) spacing.get(size-16);
+  margin-top: auto;
+  flex-shrink: 0;
+  border-top: 1px solid color.get(text);
+  background: color.get(off-white);
+}
+
+.submit {
+  @include footer-pill();
+  flex: 0 0 calc(50% - #{u.rem-calc(9)});
+  margin-left: auto;
+  color: color.get(off-white);
+  background-color: color.get(dark-gray);
+  border-color: color.get(dark-gray);
+
+  @media (hover: hover) {
+    &:not(:disabled):hover {
+      color: color.get(dark-gray);
+      background-color: color.get(off-white);
+    }
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  @include mq.min(mobile) {
+    flex: 0 0 auto;
+    margin: 0;
+    min-width: u.rem-calc(152);
+  }
+}
+
+.reset {
+  @include footer-pill();
+  flex: 1 1 0;
+  color: color.get(text);
+  background-color: color.get(light-brown);
+  border-color: color.get(light-brown);
+
+  @media (hover: hover) {
+    &:not(:disabled):hover {
+      border-color: color.get(text);
+    }
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  @include mq.min(mobile) {
+    flex: 0 0 auto;
+    min-width: u.rem-calc(152);
+  }
+}

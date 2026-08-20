@@ -1,0 +1,410 @@
+{:min-bb-version "1.3.190"
+ :tasks
+ {:enter
+  (binding [*out* *err*]
+    (do (swap! task-start-times assoc (:name (current-task)) (System/currentTimeMillis))
+        (when (should-print-task-messages?)
+          (let [{:keys [name doc]} (current-task)
+                max-args-to-show 5
+                args             *command-line-args*
+                arg-count        (count args)
+                format-args      (fn [args]
+                                   (if (>= arg-count max-args-to-show)
+                                     (format "%s (+%d more)"
+                                             (clojure.string/join " " (take max-args-to-show args))
+                                             (- arg-count max-args-to-show))
+                                     (clojure.string/join " " args)))
+                clean-doc        (fn [doc]
+                                   (-> doc
+                                       (clojure.string/replace "[Essentials]" "")
+                                       clojure.string/trim))]
+            (->> [(format "Task started: %s" name) (when doc (format "-- %s" (clean-doc doc)))
+                  (when (seq args) (format "Task arguments: %s" (format-args args)))]
+                 (remove nil?)
+                 (clojure.string/join "\n")
+                 lodge)))))
+  :init
+  (do (defn print-in-color
+        "Print multiline text, colorize each line with dimmed cyan"
+        [& args]
+        (let [text  (clojure.string/join " " args)
+              lines (clojure.string/split-lines text)]
+          (binding [*out* *err*]
+            (doseq [[idx line] (map-indexed vector lines)]
+              (let [trimmed (clojure.string/trim line)]
+                (if (zero? idx)
+                  (println (str "\u001b[2;36m" line "\u001b[0m"))
+                  (println (str "\u001b[2;36m  " trimmed "\u001b[0m"))))))))
+      (def ^:private time-formatter (java.time.format.DateTimeFormatter/ofPattern "HH:mm:ss"))
+      (defn lodge
+        "Print timestamped log message with INF level"
+        [& args]
+        (let [timestamp (.format (java.time.LocalTime/now) time-formatter)]
+          (->> (clojure.string/join " " args)
+               (format "[%s] INF (bb) %s" timestamp)
+               print-in-color)))
+      (defn shelly
+        "Wrapper for shell that adds error reporting with task context"
+        [& args]
+        (let [;; Capture task name at function call time
+              task-name     (:name (current-task))
+              ;; Parse args to separate options map from command args
+              has-opts?     (map? (first args))
+              opts          (if has-opts? (first args) {})
+              cmd-args      (if has-opts? (rest args) args)
+              ;; Build command string for display
+              cmd-string    (clojure.string/join " " cmd-args)
+              ;; Create enhanced options with exit-fn
+              enhanced-opts (assoc opts
+                                   :exit-fn
+                                   (fn [{:keys [exit proc cmd]}]
+                                     (when (not= exit 0)
+                                       (binding [*out* *err*]
+                                         (println)
+                                         (println "[BB] Command failed:")
+                                         (println "     Task:" task-name)
+                                         (println "     Command:" cmd-string)
+                                         (println "     Exit code:" exit)
+                                         (println)))
+                                     ;; Call original exit-fn if provided
+                                     (when-let [original-exit-fn (:exit-fn opts)]
+                                       (original-exit-fn {:exit exit :proc proc :cmd cmd}))))]
+          ;; Call shell with enhanced options
+          (apply shell enhanced-opts cmd-args)))
+      (defn print-alias-warning
+        []
+        (println "[BB] Deprecation:" (str "\"" (:name (current-task)) "\"")
+                 "is an alias for"   (str "\"" (first (:depends (current-task))) "\"")))
+      (def task-start-times (atom {}))
+      (defn format-duration
+        [ms]
+        (cond (< ms 1000)  (str ms "ms")
+              (< ms 60000) (str (format "%.1f" (/ ms 1000.0)) "s")
+              :else        (let [seconds (/ ms 1000.0)
+                                 minutes (int (/ seconds 60))
+                                 remaining-seconds (mod seconds 60)]
+                             (str minutes "m " (format "%.1f" remaining-seconds) "s"))))
+      (defn should-print-task-messages?
+        "Check if task start/finish messages should be printed"
+        []
+        (let [doc (or (:doc (current-task)) "")]
+          (not (or (clojure.string/starts-with? doc "Alias")
+                   (clojure.string/starts-with? doc "Shortcut")
+                   (clojure.string/includes? doc "[Silent]")))))
+      (defn get-changed-files-for-task
+        [task-name]
+        (let [result (-> (shelly {:out :string}
+                                 "bun"
+                                 "run"    "devops/src/print-changed-files-for-task.ts"
+                                 "--task" task-name)
+                         :out
+                         clojure.string/trim)]
+          (if (clojure.string/blank? result) [] (clojure.string/split result (re-pattern "\\s+")))))
+      (defn run-task-with-changed-files
+        [base-task-name file-description]
+        (let [changed-files (get-changed-files-for-task base-task-name)]
+          (if (seq changed-files)
+            (apply shell "bb" base-task-name (concat changed-files *command-line-args*))
+            (lodge (str "Task skipped: "
+                        (:name (current-task))
+                        " - "
+                        file-description
+                        " (0 files changed)")))))
+      (defn run-task-if-changed
+        [base-task-name file-description]
+        (let [changed-files (get-changed-files-for-task base-task-name)]
+          (cond (and (= 1 (count changed-files)) (= "RUN_TASK" (first changed-files)))
+                (shell "bb" base-task-name)
+                :else (lodge (str "Task skipped: "
+                                  (:name (current-task))
+                                  " - "
+                                  file-description
+                                  " (0 files changed)"))))))
+  :leave (when (should-print-task-messages?)
+           (let [task-name  (:name (current-task))
+                 start-time (get (deref task-start-times) task-name)
+                 duration   (when start-time (- (System/currentTimeMillis) start-time))]
+             (->> (when (and duration (> duration 5)) (str " (" (format-duration duration) ")"))
+                  (str "Task finished: " task-name)
+                  lodge)
+             (swap! task-start-times dissoc task-name)))
+  build {:depends [compile-ts]
+         :doc     "Build project [Essentials]"
+         :task    (do (shelly "gulp" "build") (shelly "node" "./devops/lib/webpack/run.js"))}
+  ca {:depends [commit-assets] :doc "Shortcut for commit-assets"}
+  ci {:doc  "Run all CI checks [Essentials]"
+      :task (binding [*command-line-args* []]
+              (do (run 'lint-fs)
+                  (run 'format-json-changed)
+                  (run 'devops-codemod-qa)
+                  (run 'codegen)
+                  (run 'organize-imports-changed)
+                  (run 'prettify)
+                  (run 'prettify-liquid-changed)
+                  (run 'typecheck-changed)
+                  (run 'lint-changed)
+                  (run 'test-changed)
+                  (run 'stylelint-changed)
+                  (run 'build)
+                  (run 'codegen-ignorefiles)
+                  (run 'commit-assets)
+                  (run 'themecheck-changed)))}
+  ci-full {:doc  "Run exhaustive CI checks [Slow]"
+           :task (binding [*command-line-args* []]
+                   (do (run 'devops-build-ci-scripts)
+                       (run 'lint-fs)
+                       (run 'format-json)
+                       (run 'devops-codemod-qa)
+                       (run 'codegen)
+                       (run 'organize-imports)
+                       (run 'prettify)
+                       ; You should run 'prettify-liquid directly
+                       ; if you want to do bulk changes
+                       (run 'prettify-liquid-changed)
+                       (run 'typecheck)
+                       (run 'lint)
+                       (run 'test)
+                       (run 'stylelint-changed)
+                       (run 'build)
+                       (run 'codegen-ignorefiles)
+                       (run 'themecheck)))}
+  codegen {:depends [devops-prepare]
+           :doc     "Run code generation tasks"
+           :task    (do (shelly "./devops/codegen-portable-styles.sh") (shelly "gulp" "codegen"))}
+  codegen-diagrams {:doc  "Generate diagram for the Cart engine"
+                    :task (shelly "./devops/codegen/generate-diagrams.sh")}
+  codegen-ignorefiles {:doc  "Generate ignore files"
+                       :task (shelly "bun" "./devops/src/codegen/ignorefiles/index.ts")}
+  commit-assets {:doc  "Commit build assets and codegen artefacts [Essentials]"
+                 :task (shelly "./devops/ci/commit-assets.sh")}
+  compile-ts {:depends [devops-prepare]
+              :doc     "Compile TypeScript files"
+              :task    (shelly "./devops/bin/compile-ts.sh")}
+  compile:ts {:depends [compile-ts] :doc "Alias" :task (print-alias-warning)}
+  copilot-lint-liquid {:doc "[Copilot] Run Liquid lint checks" :task (do (run 'themecheck-changed))}
+  copilot-lint-styles {:doc  "[Copilot] Run style lint checks"
+                       :task (do (run 'codegen) (run 'prettify) (run 'stylelint))}
+  copilot-lint-ts {:doc  "[Copilot] Run TS/JS lint checks"
+                   :task (do (run 'codegen)
+                             (run 'prettify)
+                             (binding [*command-line-args* (concat ["--fix" "--quiet"]
+                                                                   *command-line-args*)]
+                               (run 'lint)))}
+  deploy {:depends [build]
+          :doc     "Deploy theme to Shopify with interactive target selection [Essentials]"
+          :task    (apply shelly "shopify" "theme" "push" *command-line-args*)}
+  deploy-dev {:depends [build]
+              :doc     "Deploy to your virtual (development) theme [Essentials]"
+              :task    (apply shelly "shopify" "theme" "push" "-d" *command-line-args*)}
+  deploy-new {:depends [build]
+              :doc     "Create a new draft theme [Essentials]"
+              :task    (apply shelly "shopify" "theme" "push" "-u" *command-line-args*)}
+  deploy:dev {:depends [deploy-dev] :doc "Alias" :task (print-alias-warning)}
+  deploy:new {:depends [deploy-new] :doc "Alias" :task (print-alias-warning)}
+  detect-unused-files {:depends [compile-ts]
+                       :doc     "Detect unused source files and exports"
+                       :task    (do (apply shelly
+                                           "knip"
+                                           "--config=./devops/src/knip.config.ts"
+                                           "--fix-type=files,exports,types"
+                                           "--allow-remove-files" "--no-progress"
+                                           "--no-exit-code"       *command-line-args*))}
+  dev {:depends [deploy-dev]
+       :doc     "Watch and rebuild project files [Essentials]"
+       :task    (shelly "hivemind"
+                        "--no-prefix" "--timeout=10"
+                        "--root=/app" "./devops/watch.Procfile")}
+  devops-build-ci-scripts {:doc  "Build Bun script bundles for direct usage in CI environment"
+                           :task (do (shelly "bun" "./devops/src/build-ci-scripts.ts"))}
+  devops-codemod {:doc  "Run all codemods"
+                  :task (do (run 'devops-codemod-qa) (run 'devops-codemod-milestone))}
+  devops-codemod-milestone {:doc  "Run milestone codemods"
+                            :task (do (shelly
+                                       "./devops/codemods/update-style-entrypoint-names.sh"))}
+  devops-codemod-qa {:doc  "Run QA codemods"
+                     :task (do (shelly "./devops/codemods/update-portable-liquid-syntax.sh"))}
+  devops-daemons-inspect {:doc  "Inspect running user daemons"
+                          :task (apply shell "pm2" "monit" *command-line-args*)}
+  devops-daemons-list {:doc "List running user daemons" :task (shell "pm2" "list")}
+  devops-daemons-start
+  {:doc  "Start user daemons"
+   :task (apply shell "pm2" "start" "./devops/pm2.config.json" *command-line-args*)}
+  devops-deploy-to-shopify
+  {:depends [compile-ts]
+   :doc     "Deploy to Shopify. Specify deployment target, e.g., '--environment dev-testing'"
+   :task    (apply shelly
+                   {:extra-env {"SHOPIFY_CLI_TTY" "0"}}
+                   "node"
+                   "./devops/lib/deploy-to-shopify/index.js"
+                   *command-line-args*)}
+  devops-prepare {:doc  "Run preparation tasks for devops"
+                  :task (shelly "./devops/bin/predevops.sh")}
+  devops-svgo {:doc  "Optimize SVG file with SVGO"
+               :task (apply shelly
+                            "svgo"     "--multipass"
+                            "--pretty" "--indent=2"
+                            "--disable=removeViewBox" "--enable=removeDimensions"
+                            "-f"       *command-line-args*)}
+  devops-sync-translations {:depends [compile-ts]
+                            :doc     "Syncronize translations with the live theme"
+                            :task    (shelly "node"
+                                             "./devops/lib/sync-theme-translations/index.js")}
+  devops-zip {:depends [compile-ts]
+              :doc     "Package theme into a zip archive"
+              :task    (shelly "./devops/package-theme.sh")}
+  fetch {:doc  "Download theme files from Shopify [Essentials]"
+         :task (let [exit-code (atom 0)]
+                 (try (do (run 'pull-metafields)
+                          (apply shelly "shopify" "theme" "pull" *command-line-args*))
+                      (catch Exception e
+                        (when (zero? (deref exit-code))
+                          (reset! exit-code (or (-> e
+                                                    ex-data
+                                                    :exit)
+                                                1)))))
+                 ;; Always run format step
+                 (run 'format-json)
+                 (when (pos? (deref exit-code))
+                   (println "[BB] Task failed:" (:name (current-task)))
+                   (println "     Exit code:" (deref exit-code)))
+                 (System/exit (deref exit-code)))}
+  fetch-clean-slate
+  {:doc  "Download theme and *delete theme files not present in the remote theme* [Essentials]"
+   :task (do
+           ; theme tracker uses this task, so we cannot fail early because of dirty working
+           ; copy
+           ; TODO decouple theme tracker from this task
+           (shelly "bash -c" "cat _misc/theme-folders.txt | parallel --will-cite -j 1 'rm -rvf {}'")
+           (run 'fetch))}
+  fetch:clean-slate {:depends [fetch-clean-slate] :doc "Alias" :task (print-alias-warning)}
+  fetch:clean_slate {:depends [fetch-clean-slate] :doc "Alias" :task (print-alias-warning)}
+  format-json {:doc "Format JSON files" :task (shelly "./devops/bin/json_reformat.sh")}
+  format-json-changed {:doc  "Format JSON files for changed files only"
+                       :task (run-task-if-changed "format-json" "No modified JSON files in scope")}
+  lint {:doc  "Lint the code"
+        :task (shell
+               "./devops/src/task-conveyor.ts"
+               (cheshire.core/generate-string
+                {:plan    [{:t "task" :exec (into ["oxlint" "--quiet" "--fix"] *command-line-args*)}
+                           {:t "task" :exec ["biome" "check" "--write" "--diagnostic-level=error"]}
+                           {:t "breakpoint"}
+                           {:t "task" :exec (into ["oxlint" "--fix"] *command-line-args*)}
+                           {:t "task" :exec ["biome" "check" "--write"]}]
+                 :finally {:t "task" :exec ["bb" "run" "prettify"]}}))}
+  lint-changed {:doc  "Run lint for changed files only"
+                :task (run-task-with-changed-files "lint" "No modified files in scope")}
+  lint-fs {:doc "Lint filesystem" :task (shelly "./devops/lint/lint-filesystem.sh")}
+  lint-in-watch
+  {:doc  "Lint the code in watch mode"
+   :task (do (let [changed-files (get-changed-files-for-task "lint")]
+               (if (seq changed-files)
+                 (shell "./devops/src/task-conveyor.ts"
+                        (cheshire.core/generate-string
+                         {:plan [; Skip autofixes in watch mode because of the race condition
+                                 {:t "task" :exec (into ["oxlint" "--quiet"] changed-files)}
+                                 {:t "task" :exec ["biome" "check" "--diagnostic-level=error"]}
+                                 ; Skip final prettify - it's too heavy for the watch mode
+                                ]})))))}
+  new-block {:depends [compile-ts]
+             :doc     "Create a new portable block [Essentials]"
+             :task    (do (shelly "node" "./devops/lib/scaffold/block/index.js") (run 'prettify))}
+  new-section {:depends [compile-ts]
+               :doc     "Create a new portable section [Essentials]"
+               :task    (do (shelly "node" "./devops/lib/scaffold/section/index.js")
+                            (run 'prettify))}
+  new-snippet {:depends [compile-ts]
+               :doc     "Create a new portable snippet [Essentials]"
+               :task    (do (shelly "node" "./devops/lib/scaffold/snippet/index.js")
+                            (run 'prettify))}
+  new-standalone-bundle {:depends [compile-ts]
+                         :doc     "Create a new standalone bundle [Essentials]"
+                         :task    (shelly "node"
+                                          "./devops/lib/scaffold/standalone-bundle/index.js")}
+  new-web-component {:depends [compile-ts]
+                     :doc     "Create a new web component [Essentials]"
+                     :task    (shelly "node" "./devops/lib/scaffold/web-component/index.js")}
+  organize-imports {:doc  "Sort imports in TS/JS files"
+                    :task (do (shelly "fix-verbatim-module-syntax" "./tsconfig.json")
+                              (shelly "biome"   "check"
+                                      "--write" "--formatter-enabled=false"
+                                      "--linter-enabled=false" "--assist-enabled=true"))}
+  organize-imports-changed {:doc  "Sort imports in TS/JS files for changed files only"
+                            :task (run-task-if-changed "organize-imports"
+                                                       "No modified TS/JS files in scope")}
+  prettify {:doc "Format files" :task (shelly "./devops/bin/prettify.sh")}
+  prettify-liquid {:doc  "Format Liquid files"
+                   :task (shelly "bun" "./devops/src/format/prettify-liquid/index.ts")}
+  prettify-liquid-changed
+  {:doc  "Format Liquid files (changed files only)"
+   :task (shelly "bun" "./devops/src/format/prettify-liquid/index.ts" "--changedOnly")}
+  pull-metafields {:doc  "Download store metafield schema from Shopify"
+                   :task (do (shelly "shopify" "theme" "metafields" "pull") (run 'format-json))}
+  scaffold-block {:depends [new-block] :doc "Alias" :task (print-alias-warning)}
+  scaffold-section {:depends [new-section] :doc "Alias" :task (print-alias-warning)}
+  scaffold-snippet {:depends [new-snippet] :doc "Alias" :task (print-alias-warning)}
+  scaffold-standalone-bundle
+  {:depends [new-standalone-bundle] :doc "Alias" :task (print-alias-warning)}
+  scaffold:block {:depends [new-block] :doc "Alias" :task (print-alias-warning)}
+  scaffold:section {:depends [new-section] :doc "Alias" :task (print-alias-warning)}
+  scaffold:snippet {:depends [new-snippet] :doc "Alias" :task (print-alias-warning)}
+  scaffold:standalone-bundle
+  {:depends [new-standalone-bundle] :doc "Alias" :task (print-alias-warning)}
+  stylecheck {:depends [devops-prepare]
+              :doc     "Compile style files with Sass and display warnings"
+              :task    (apply shelly "./devops/stylecheck.sh" *command-line-args*)}
+  stylelint {:doc  "Lint style files"
+             :task (do (apply shelly
+                              "stylelint"
+                              "--allow-empty-input"
+                              "--cache"
+                              "--cache-strategy=content"
+                              "--cache-location"
+                              (System/getenv "TMP_DIR")
+                              *command-line-args*)
+                       (binding [*command-line-args* []] (run 'prettify)))}
+  stylelint-changed {:doc  "Lint style files for changed files only"
+                     :task (run-task-with-changed-files "stylelint"
+                                                        "No modified style files in scope")}
+  test {:doc  "Run unit test suite"
+        :task (shell
+               "./devops/src/task-conveyor.ts"
+               (cheshire.core/generate-string
+                {:plan    [{:t "task" :env {"NODE_ENV" "test"} :exec ["./devops/bin/pretest.sh"]}
+                           {:t "breakpoint"}
+                           {:t    "task"
+                            :exec (into ["ava"]
+                                        (->> *command-line-args*
+                                             (map (fn [arg]
+                                                    (-> arg
+                                                        (clojure.string/replace "devops/src"
+                                                                                "devops/lib")
+                                                        (clojure.string/replace "_js/"
+                                                                                "_js-test/"))))))}]
+                 :finally {:t "task" :exec ["bb" "run" "prettify"]}}))}
+  test-bb-logger {:doc  "Test bb logger"
+                  :task (lodge
+                         "Hello, world!\n\nThis is a multiline test\n \n   Too much indentation")}
+  test-changed {:doc  "Run unit tests for changed files only"
+                :task (run-task-with-changed-files "test" "No test files affected by changes")}
+  test-failure {:doc "Test ci" :task (shelly "false")}
+  test-task-conveyor
+  {:doc  "Test task conveyor"
+   :task (shell "./devops/src/task-conveyor.ts"
+                (cheshire.core/generate-string
+                 {:plan    [{:t "task" :exec (into ["echo" "Hello, world!"] *command-line-args*)}
+                            {:t "task" :exec ["echo" "$(pwd)"]} {:t "task" :exec ["false"]}
+                            {:t "breakpoint" :exec ["echo" "Breakpoint!"]}
+                            {:t "task" :exec ["echo" "After breakpoint"]}]
+                  :finally {:t "task" :exec ["echo" "Goodbye, world!"]}}))}
+  themecheck {:depends [devops-prepare]
+              :doc     "Run Shopify Theme Check"
+              :task    (shelly "./devops/bin/themecheck.sh")}
+  themecheck-changed {:doc  "Run Shopify Theme Check for changed files only"
+                      :task (run-task-if-changed "themecheck"
+                                                 "No theme files (.liquid) require validation")}
+  themecheck-debug {:doc  "Run Shopify Theme Check in debug mode"
+                    :task (apply shelly "shopify" "theme" "check" "--verbose" *command-line-args*)}
+  typecheck {:doc "Check files with Typescript" :task (shelly "tsc" "--noEmit")}
+  typecheck-changed {:doc  "Run Typescript check for changed files only"
+                     :task (run-task-if-changed "typecheck" "No TypeScript files modified")}
+  watch {:depends [dev] :doc "Shortcut for dev"}}}

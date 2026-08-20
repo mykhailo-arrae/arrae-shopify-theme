@@ -1,0 +1,216 @@
+root: .
+
+extends: :nothing
+
+require: []
+
+include_categories: []
+
+exclude_categories: []
+
+ignore:
+  - _js-dist/*
+  - _js-test/*
+  - _misc/*
+  - _misc/**/*.liquid
+  - assets/gem*
+  - assets/theme.css.liquid
+  - layout/theme.gem*
+  - node_modules/*
+  - sections/*-zipifypages.liquid
+  - sections/pf-*
+  - sections/replo*
+  - sections/shogun-*
+  - snippets/*.zipifypages.liquid
+  - snippets/collection.gem-*
+  - snippets/dataLayer-allPages.liquid
+  - snippets/dataLayer.liquid
+  - snippets/gem*
+  - snippets/loyaltylion*
+  - snippets/page.gem-*
+  - snippets/pf-*
+  - snippets/product.gem-*
+  - snippets/replo*
+  - snippets/shogun-*
+  - templates/article.gem-*
+  - templates/collection.gem-*
+  - templates/index.gem-*
+  - templates/page.gem-*
+  - templates/page.postscript-*
+  - templates/page.replo*
+  - templates/page.shogun*
+  - templates/product.gem-*
+
+ConvertIncludeToRender:
+  enabled: true
+  ignore: []
+
+LiquidTag:
+  enabled: true
+  ignore: []
+  min_consecutive_statements: 12
+
+MissingTemplate:
+  enabled: true
+  ignore: []
+
+NestedSnippet:
+  enabled: true
+  ignore: []
+  max_nesting_level: 3
+
+RequiredLayoutThemeObject:
+  enabled: true
+  ignore: []
+
+SpaceInsideBraces:
+  enabled: true
+  ignore: []
+
+SyntaxError:
+  enabled: true
+  ignore: []
+
+TemplateLength:
+  enabled: true
+  ignore: [
+    'assets/theme.css.liquid'
+  ]
+  max_length: 500
+  # Exclude content of {% schema %} in line count
+  exclude_schema: true
+  # Exclude content of {% stylesheet %} in line count
+  exclude_stylesheet: true
+  # Exclude content of {% javascript %} in line count
+  exclude_javascript: true
+
+UnknownFilter:
+  enabled: true
+  ignore: []
+
+UnusedAssign:
+  enabled: true
+  ignore: []
+
+UnusedSnippet:
+  enabled: true
+  ignore: [
+    'snippets/js-locales.liquid'
+  ]
+
+MatchingSchemaTranslations:
+  enabled: true
+  ignore: []
+
+MatchingTranslations:
+  enabled: true
+  severity: warning
+  ignore: []
+
+DefaultLocale:
+  enabled: true
+  ignore: []
+
+TranslationKeyExists:
+  enabled: true
+  ignore: []
+
+ValidHTMLTranslation:
+  enabled: true
+  ignore: []
+
+ValidJson:
+  enabled: true
+  ignore: []
+
+ValidSchema:
+  enabled: true
+  ignore: []
+
+MissingRequiredTemplateFiles:
+  enabled: true
+  ignore: []
+
+UndefinedObject:
+  enabled: true
+  ignore: []
+
+RequiredDirectories:
+  enabled: true
+  ignore: []
+
+DeprecatedFilter:
+  enabled: true
+  ignore: []
+
+DeprecateLazysizes:
+  enabled: true
+  ignore: []
+
+DeprecateBgsizes:
+  enabled: false
+  ignore: []
+
+MissingEnableComment:
+  enabled: true
+  ignore: []
+
+ParserBlockingJavaScript:
+  enabled: true
+  severity: suggestion
+  ignore: []
+
+ParserBlockingScriptTag:
+  enabled: true
+  severity: suggestion
+  ignore: []
+
+AssetSizeJavaScript:
+  enabled: false
+  threshold_in_bytes: 10_000
+  ignore: []
+
+AssetSizeCSS:
+  enabled: false
+  threshold_in_bytes: 100_000
+  ignore: []
+
+AssetSizeCSSStylesheetTag:
+  enabled: false
+  threshold_in_bytes: 100_000
+  ignore: []
+
+ImgWidthAndHeight:
+  enabled: true
+  severity: suggestion
+  ignore: []
+
+RemoteAsset:
+  enabled: true
+  ignore: []
+
+AssetUrlFilters:
+  enabled: true
+  ignore: []
+
+ContentForHeaderModification:
+  enabled: true
+  ignore: []
+
+ImgLazyLoading:
+  enabled: true
+  ignore: []
+
+HtmlParsingError:
+  enabled: true
+  ignore: []
+
+AssetSizeAppBlockJavaScript:
+  enabled: false
+  ignore: []
+  threshold_in_bytes: 10_000
+
+AssetSizeAppBlockCSS:
+  enabled: false
+  ignore: []
+  threshold_in_bytes: 100_000

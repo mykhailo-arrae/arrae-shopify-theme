@@ -1,0 +1,28 @@
+@use 'unit' as u;
+@use 'style-guide/media' as mq;
+@use 'nav-modes' as nav;
+
+.col {
+  position: relative;
+  width: 100%;
+  max-width: u.rem-calc(456);
+  align-self: stretch;
+  display: none;
+
+  @include nav.inline {
+    display: block;
+    grid-column: 3;
+    width: auto;
+    min-width: 0;
+
+    @include mq.min(smalldesktop) {
+      grid-column: -3 / -1;
+    }
+  }
+}
+
+// Enforce the "max one banner per mega menu" rule via CSS so merchants
+// can't accidentally render multiple even if they add extras in the editor.
+.col ~ .col {
+  display: none;
+}

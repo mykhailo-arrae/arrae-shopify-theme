@@ -1,0 +1,141 @@
+@use 'unit' as u;
+@use 'style-guide/media' as mq;
+@use 'style-guide/colors' as color;
+@use 'style-guide/mixins' as mixin;
+@use 'style-guide/spacing' as spacing;
+@use 'style-guide/typography' as typography;
+@use 'style-guide/sizes' as sizes;
+
+.section {
+  z-index: 10;
+  position: absolute;
+  width: 100%;
+}
+
+.root {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: u.rem-calc(32);
+  padding-inline: spacing.get(size-8);
+  gap: spacing.get(size-8);
+  background-color: color.get(text);
+  color: color.get(off-white);
+  transition: transform 500ms cubic-bezier(0.4, 0, 0.2, 1);
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
+
+  &[data-transparent='true'] {
+    background-color: color.get(brown-60);
+  }
+
+  &[data-scrolled='true'] {
+    transform: translateY(-100%);
+  }
+}
+
+.swiper {
+  flex: 0 1 auto;
+  margin: 0;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.slide {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: auto;
+}
+
+.text {
+  @include typography.font-proxima-nova();
+  font-size: sizes.get(size-12);
+  font-weight: 500;
+  letter-spacing: u.rem-calc(0.48);
+  text-transform: uppercase;
+  margin: 0;
+  color: inherit;
+  text-align: center;
+  text-decoration: none;
+  white-space: nowrap;
+
+  &:where(a) {
+    transition: opacity 200ms ease;
+
+    @media (prefers-reduced-motion: reduce) {
+      transition: none;
+    }
+
+    &:hover,
+    &:focus-visible {
+      opacity: 0.8;
+      text-decoration: underline;
+      text-underline-offset: spacing.get(size-4);
+    }
+  }
+}
+
+.arrow {
+  @include mixin.reset-button();
+  position: absolute;
+  top: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: sizes.get(size-32);
+  height: sizes.get(size-32);
+  color: inherit;
+  cursor: pointer;
+  transform: translateY(-50%);
+  transition: opacity 200ms ease;
+  z-index: 2;
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
+
+  &:hover,
+  &:focus-visible {
+    opacity: 0.7;
+  }
+
+  &:global(.swiper-button-disabled) {
+    pointer-events: auto;
+    opacity: 0.4;
+  }
+
+  svg {
+    pointer-events: none;
+  }
+
+  &--prev {
+    left: spacing.get(size-8);
+  }
+
+  &--next {
+    right: spacing.get(size-8);
+  }
+
+  @include mq.min(tabletlandscape) {
+    // `--arrow-offset` is set by index.ts based on the widest announcement
+    // text. Fallback keeps 280px layout if JS hasn't run yet.
+    &--prev {
+      left: 50%;
+      margin-left: calc(
+        var(--arrow-offset from global, #{u.rem-calc(280)}) * -1
+      );
+    }
+
+    &--next {
+      right: 50%;
+      margin-right: calc(
+        var(--arrow-offset from global, #{u.rem-calc(280)}) * -1
+      );
+    }
+  }
+}

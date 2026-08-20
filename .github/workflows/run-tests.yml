@@ -1,0 +1,182 @@
+name: 'Run Tests'
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+concurrency:
+  group: 'run-tests-${{ github.ref }}'
+  cancel-in-progress: true
+
+jobs:
+  run-tests:
+    runs-on: 'ubuntu-latest'
+    env:
+      COMPOSE_BAKE: 1
+      COMPOSE_DOCKER_CLI_BUILD: 1
+      DOCKER_BUILDKIT: 1
+    steps:
+      - name: 'Checkout branch for PR event'
+        uses: 'actions/checkout@v4'
+        if: github.event_name == 'pull_request'
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.ref }}
+          token: ${{ secrets.CHECKOUT_ACTION_PAT }}
+
+      - name: 'Checkout branch for push event'
+        uses: 'actions/checkout@v4'
+        if: github.event_name == 'push'
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.CHECKOUT_ACTION_PAT }}
+
+      - name: 'Checkout branch for manual dispatch event'
+        uses: 'actions/checkout@v4'
+        if: github.event_name == 'workflow_dispatch'
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.CHECKOUT_ACTION_PAT }}
+
+      - name: 'Init git config'
+        run: |
+          git config --global user.name 'Autobot'
+          git config --global user.email 'engineering@vaangroup.com'
+        # Workaround for No TTY issue
+        shell: 'script -qec "bash {0}"'
+
+      - name: 'Bootstrap TMP_DIR'
+        run: |
+          ./devops/github/bootstrap-tmp-dir.sh
+        shell: 'script -qec "bash {0}"'
+
+      # "Save cache" operation can take too long (~2min)
+      # because of the confirmed bug in `actions/toolkit` and Node v20
+      # See:
+      # https://github.com/actions/toolkit/issues/1643
+      # https://github.com/nodejs/node/issues/47228
+      - name: 'Cache pnpm store'
+        id: 'cache-pnpm-store'
+        uses: 'actions/cache@v3'
+        with:
+          path: /mnt/tmp/pnpm-store
+          key: pnpm-store
+
+      - if: ${{ steps.cache-pnpm-store.outputs.cache-hit != 'true' }}
+        name: 'Cache pnpm store miss'
+        run: |
+          echo 'No pnpm store cache found'
+        shell: 'script -qec "bash {0}"'
+
+      - name: 'Build and start `main_ci` container'
+        run: |
+          touch .env
+          docker compose build \
+              --build-arg GROUP_ID=$(id -g) --build-arg USER_ID=$(id -u) \
+              --progress=plain main_ci \
+            && docker compose up -d main_ci
+        shell: 'script -qec "bash {0}"'
+
+      - name: 'Install npm packages'
+        run: |
+          docker compose exec main_ci ./docker-entrypoint.sh
+        shell: 'script -qec "bash {0}"'
+
+      - name: 'Save lockfile changes'
+        run: |
+          ./devops/ci/copy-files-out-of-container.sh main_ci . \
+            && ./devops/ci/push-commits.sh 'Lock dependencies'
+        shell: 'script -qec "bash {0}"'
+
+      - name: 'Lint filesystem'
+        run: |
+          docker compose exec main_ci /bin/bash -c 'bb run lint-fs'
+        shell: 'script -qec "bash {0}"'
+
+      - name: 'Reformat JSON files'
+        run: |
+          docker compose exec main_ci /bin/bash -c 'bb run format-json-changed'
+        shell: 'script -qec "bash {0}"'
+
+      - name: 'Codemods'
+        run: |
+          docker compose exec main_ci /bin/bash -c 'bb run devops-codemod-qa'
+        shell: 'script -qec "bash {0}"'
+
+      - name: 'Codegen'
+        run: |
+          docker compose exec main_ci /bin/bash -c 'bb run codegen'
+        shell: 'script -qec "bash {0}"'
+
+      - name: 'Organize imports'
+        run: |
+          docker compose exec main_ci /bin/bash -c 'bb run organize-imports-changed'
+        shell: 'script -qec "bash {0}"'
+
+      - name: 'Prettify'
+        run: |
+          docker compose exec main_ci /bin/bash -c 'bb run prettify'
+        shell: 'script -qec "bash {0}"'
+
+      - name: 'Prettify Liquid'
+        run: |
+          docker compose exec main_ci /bin/bash -c 'bb run prettify-liquid-changed'
+        shell: 'script -qec "bash {0}"'
+
+      - name: 'Save Prettify changes'
+        run: |
+          ./devops/ci/copy-files-out-of-container.sh main_ci . \
+            && ./devops/ci/commit-assets.sh \
+            && ./devops/ci/push-commits.sh 'Prettify'
+        shell: 'script -qec "bash {0}"'
+
+      - name: 'Run Typescript type checks'
+        run: |
+          docker compose exec main_ci /bin/bash -c 'bb run typecheck-changed'
+        shell: 'script -qec "bash {0}"'
+
+      - name: 'Run ESLint checks'
+        run: |
+          docker compose exec main_ci /bin/bash -c 'bb run lint-changed'
+        shell: 'script -qec "bash {0}"'
+
+      - name: 'Build project'
+        run: |
+          docker compose exec main_ci /bin/bash -c 'bb run build'
+        shell: 'script -qec "bash {0}"'
+
+      - name: 'Codegen ignore files'
+        run: |
+          docker compose exec main_ci /bin/bash -c 'bb run codegen-ignorefiles'
+        shell: 'script -qec "bash {0}"'
+
+      - name: 'Save build output and other theme file changes'
+        run: |
+          ./devops/ci/copy-files-out-of-container.sh main_ci . \
+            && ./devops/ci/commit-assets.sh \
+            && ./devops/ci/push-commits.sh
+        shell: 'script -qec "bash {0}"'
+
+      - name: 'Run unit tests'
+        run: |
+          docker compose exec main_ci /bin/bash -c 'bb run test-changed'
+        shell: 'script -qec "bash {0}"'
+
+      - name: 'Run Stylelint checks'
+        run: |
+          docker compose exec main_ci /bin/bash -c 'bb run stylelint-changed'
+        shell: 'script -qec "bash {0}"'
+
+      - name: 'Run Theme Check'
+        run: |
+          docker compose exec main_ci /bin/bash -c 'bb run themecheck-changed'
+        shell: 'script -qec "bash {0}"'
+
+      - name: 'Shutdown containers'
+        run: 'docker compose down'
+        shell: 'script -qec "bash {0}"'

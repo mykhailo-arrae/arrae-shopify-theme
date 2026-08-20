@@ -1,0 +1,18 @@
+{
+  "context": {
+    "market": "eu"
+  },
+  "parent": "footer-group.json",
+  "sections": {
+    "footer": {
+      "blocks": {
+        "navigation_rE9V6M": {
+          "settings": {
+            "menu": "footer-support-eu"
+          }
+        }
+      },
+      "settings": {}
+    }
+  }
+}

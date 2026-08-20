@@ -1,0 +1,20 @@
+@media print, screen and (width >= 40em) {
+  .element {
+    color: red;
+  }
+}
+@media print, screen and (width >= 64em) {
+  .element {
+    color: green;
+  }
+}
+@media print, screen and (width >= 80em) {
+  .element {
+    color: blue;
+  }
+}
+@media print, screen and (width < 90em) {
+  .element {
+    color: cyan;
+  }
+}

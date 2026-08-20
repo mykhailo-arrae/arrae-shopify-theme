@@ -1,0 +1,252 @@
+{% liquid
+  assign heading = section.settings.heading
+  assign subtitle = section.settings.subtitle
+  assign product_a_title = section.settings.product_a_title
+  assign product_a_image = section.settings.product_a_image
+  assign product_b_title = section.settings.product_b_title
+  assign product_b_image = section.settings.product_b_image
+  assign product_a_image_alt = product_a_image.alt | default: product_a_title
+  assign product_b_image_alt = product_b_image.alt | default: product_b_title
+
+  assign feature_blocks = section.blocks | where: 'type', 'feature_item'
+  assign has_features = false
+  if feature_blocks.size > 0
+    assign has_features = true
+  endif
+%}
+
+{% unless heading == blank and subtitle == blank and has_features == false %}
+  <div class="{# style root #}">
+    <div class="{# style inner #}">
+      <div class="{# style intro #}">
+        {% if heading != blank %}
+          <h2 class="{# style heading #}">{{ heading }}</h2>
+        {% endif %}
+
+        {% if subtitle != blank %}
+          <p class="{# style subtitle #}">{{ subtitle }}</p>
+        {% endif %}
+      </div>
+
+      <div class="{# style table #}">
+        <div class="{# style grid #} {# style head #}">
+          <div class="{# style col #}">
+            <h3 class="{# style col-title #}">{{ product_a_title }}</h3>
+          </div>
+          <div class="{# style col #}">
+            <h3 class="{# style col-title #}">{{ product_b_title }}</h3>
+          </div>
+        </div>
+
+        <div class="{# style grid #} {# style media #}">
+          <div class="{# style media-cell #}">
+            {% if product_a_image != blank %}
+              <div class="{# style media-frame #}">
+                {% render 'core-image',
+                  image: product_a_image,
+                  image_alt_text: product_a_image_alt,
+                  mode: 'contain',
+                  object_fit: 'contain',
+                  class: '{# style media-img #}',
+                  sizes: '(min-width: 1024px) 238px, 141px',
+                  srcset_print_sizes: '240,360,480,720'
+                %}
+              </div>
+            {% endif %}
+          </div>
+          <div class="{# style media-cell #}">
+            {% if product_b_image != blank %}
+              <div class="{# style media-frame #}">
+                {% render 'core-image',
+                  image: product_b_image,
+                  image_alt_text: product_b_image_alt,
+                  mode: 'contain',
+                  object_fit: 'contain',
+                  class: '{# style media-img #}',
+                  sizes: '(min-width: 1024px) 224px, 130px',
+                  srcset_print_sizes: '240,360,480,720'
+                %}
+              </div>
+            {% endif %}
+          </div>
+        </div>
+
+        {% if has_features %}
+          <div class="{# style grid #} {# style features #}">
+            <ul class="{# style feature-list #}" role="list">
+              {% for block in section.blocks %}
+                {% if block.type != 'feature_item' %}
+                  {% continue %}
+                {% endif %}
+
+                {% liquid
+                  assign feature_product_handle = block.settings.feature_product | handle
+                  unless feature_product_handle == 'product-a' or feature_product_handle == 'a'
+                    continue
+                  endunless
+
+                  assign icon_handle = block.settings.icon_type | handle
+                  assign icon_type = icon_handle
+                  if icon_handle == 'check' or icon_handle == 'checkmark'
+                    assign icon_type = 'checkmark'
+                  elsif icon_handle == 'cross' or icon_handle == 'x' or icon_handle == 'close'
+                    assign icon_type = 'cross'
+                  elsif icon_handle == 'question' or icon_handle == 'question-mark'
+                    assign icon_type = 'question'
+                  endif
+                %}
+                <li
+                  class="{# style feature #} {# style feature--product-a #}"
+                  {{- block.shopify_attributes -}}
+                >
+                  <div
+                    data-icon-type="{{ icon_type }}"
+                    class="{# style icon-container #} {% if icon_type == 'checkmark' %} {# style icon-container--checkmark #} {% endif %}"
+                  >
+                    {% if icon_type == 'checkmark' %}
+                      {% render 'icon-check' %}
+                    {% elsif icon_type == 'cross' %}
+                      {% render 'icon-close' %}
+                    {% elsif icon_type == 'question' %}
+                      <span class="{# style question-mark #}">?</span>
+                    {% endif %}
+                  </div>
+                  <span class="{# style text #}">{{ block.settings.text }}</span>
+                </li>
+              {% endfor %}
+            </ul>
+
+            <ul class="{# style feature-list #}" role="list">
+              {% for block in section.blocks %}
+                {% if block.type != 'feature_item' %}
+                  {% continue %}
+                {% endif %}
+
+                {% liquid
+                  assign feature_product_handle = block.settings.feature_product | handle
+                  unless feature_product_handle == 'product-b' or feature_product_handle == 'b'
+                    continue
+                  endunless
+
+                  assign icon_handle = block.settings.icon_type | handle
+                  assign icon_type = icon_handle
+                  if icon_handle == 'check' or icon_handle == 'checkmark'
+                    assign icon_type = 'checkmark'
+                  elsif icon_handle == 'cross' or icon_handle == 'x' or icon_handle == 'close'
+                    assign icon_type = 'cross'
+                  elsif icon_handle == 'question' or icon_handle == 'question-mark'
+                    assign icon_type = 'question'
+                  endif
+                %}
+                <li
+                  class="{# style feature #} {# style feature--product-b #}"
+                  {{- block.shopify_attributes -}}
+                >
+                  <div
+                    data-icon-type="{{ icon_type }}"
+                    class="{# style icon-container #} {% if icon_type == 'checkmark' %} {# style icon-container--checkmark #} {% endif %}"
+                  >
+                    {% if icon_type == 'checkmark' %}
+                      {% render 'icon-check' %}
+                    {% elsif icon_type == 'cross' %}
+                      {% render 'icon-close' %}
+                    {% elsif icon_type == 'question' %}
+                      <span class="{# style question-mark #}">?</span>
+                    {% endif %}
+                  </div>
+                  <span class="{# style text #}">{{ block.settings.text }}</span>
+                </li>
+              {% endfor %}
+            </ul>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+{% endunless %}
+
+{% schema %}
+{
+  "name": "Compare",
+  "tag": "section",
+  "class": "js-compare",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle"
+    },
+    {
+      "type": "header",
+      "content": "Product A"
+    },
+    {
+      "type": "text",
+      "id": "product_a_title",
+      "label": "Product A Title"
+    },
+    {
+      "type": "image_picker",
+      "id": "product_a_image",
+      "label": "Product A Image"
+    },
+    {
+      "type": "header",
+      "content": "Product B"
+    },
+    {
+      "type": "text",
+      "id": "product_b_title",
+      "label": "Product B Title"
+    },
+    {
+      "type": "image_picker",
+      "id": "product_b_image",
+      "label": "Product B Image"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "feature_item",
+      "name": "Feature Item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "feature_product",
+          "label": "Feature Product",
+          "default": "product_a",
+          "info": "Use product_a or product_b. Connect to your metaobject choice list field for dynamic content."
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text"
+        },
+        {
+          "type": "text",
+          "id": "icon_type",
+          "label": "Icon Type",
+          "default": "checkmark",
+          "info": "Use checkmark, question, or cross. Connect to your metaobject choice list field for dynamic content."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Compare",
+      "category": "Product",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}

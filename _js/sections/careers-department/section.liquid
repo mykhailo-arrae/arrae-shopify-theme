@@ -1,0 +1,136 @@
+{% liquid
+  assign department = section.settings.department
+  assign default_open = section.settings.default_open
+
+  assign job_count = 0
+  for block in section.blocks
+    if block.type == 'job'
+      assign job_count = job_count | plus: 1
+    endif
+  endfor
+
+  assign button_id = 'careers-dept-button-' | append: section.id
+  assign panel_id = 'careers-dept-panel-' | append: section.id
+%}
+
+<div class="{# style CareersDepartment #}">
+  <div class="{# style CareersDepartment__item #}">
+    <h3 class="{# style CareersDepartment__itemTitle #}">
+      <button
+        id="{{ button_id }}"
+        class="{# style CareersDepartment__trigger #} js-careers-department-trigger"
+        type="button"
+        aria-expanded="{% if default_open %}true{% else %}false{% endif %}"
+        aria-controls="{{ panel_id }}"
+      >
+        <span class="{# style CareersDepartment__triggerLabel #}">{{ department }} ({{ job_count }})</span>
+        <span class="{# style CareersDepartment__icon #}" aria-hidden="true"></span>
+      </button>
+    </h3>
+    <div
+      id="{{ panel_id }}"
+      class="{# style CareersDepartment__panel #} js-careers-department-panel"
+      role="region"
+      aria-labelledby="{{ button_id }}"
+      {% unless default_open %}
+        hidden
+      {% endunless %}
+    >
+      <ul class="{# style CareersDepartment__panelWrapper #}">
+        {% for block in section.blocks %}
+          {% if block.type == 'job' %}
+            <li class="{# style CareersDepartment__job #}" {{ block.shopify_attributes }}>
+              {% if block.settings.title != blank %}
+                <p class="{# style CareersDepartment__jobTitle #}">{{ block.settings.title }}</p>
+              {% endif %}
+              {% if block.settings.tags != blank %}
+                <p class="{# style CareersDepartment__jobTags #}">{{ block.settings.tags }}</p>
+              {% endif %}
+              {% if block.settings.apply_url != blank %}
+                <div class="{# style CareersDepartment__actions #}">
+                  {% render 'core-button',
+                    label: 'Apply',
+                    url: block.settings.apply_url,
+                    style: 'primary',
+                    class: '{# style CareersDepartment__apply #}'
+                  %}
+                </div>
+              {% endif %}
+            </li>
+          {% endif %}
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Careers Department",
+  "tag": "section",
+  "class": "{# style section #} js-careers-department-section",
+  "enabled_on": {
+    "templates": ["page"]
+  },
+  "settings": [
+    {
+      "type": "text",
+      "id": "department",
+      "label": "Department",
+      "info": "The count shown next to this title is the number of roles below.",
+      "default": "Department"
+    },
+    {
+      "type": "checkbox",
+      "id": "default_open",
+      "label": "Expanded by default",
+      "default": false
+    }
+  ],
+  "blocks": [
+    {
+      "type": "job",
+      "name": "Role",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Role title",
+          "default": "Role title"
+        },
+        {
+          "type": "text",
+          "id": "tags",
+          "label": "Work arrangement",
+          "info": "Displayed as muted text beneath the role title.",
+          "default": "Remote / Hybrid / Full Time"
+        },
+        {
+          "type": "url",
+          "id": "apply_url",
+          "label": "Apply URL",
+          "info": "Page describing the role (e.g. a page using the legal template)."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Careers Department",
+      "category": "Page Content",
+      "settings": {
+        "department": "Department"
+      },
+      "blocks": [
+        {
+          "type": "job",
+          "settings": {
+            "title": "Role title",
+            "tags": "Remote / Hybrid / Full Time"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

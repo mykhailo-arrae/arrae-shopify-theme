@@ -1,0 +1,32 @@
+meta {
+  name: find-theme
+  type: graphql
+  seq: 2
+}
+
+post {
+  url: https://theme-kit-access.shopifyapps.com/cli/admin/api/{{shopify_admin_api_version}}/graphql.json
+  body: graphql
+  auth: none
+}
+
+headers {
+  X-Shopify-Shop: {{shopify_shop}}
+  X-Shopify-Access-Token: {{shopify_theme_access_token}}
+}
+
+body:graphql {
+  query findTheme($themeId: ID!) {
+    theme(id: $themeId) {
+      id
+      name
+    }
+  }
+  
+}
+
+body:graphql:vars {
+  {
+    "themeId": "gid://shopify/OnlineStoreTheme/131364028487"
+  }
+}

@@ -1,0 +1,125 @@
+{
+  "$schema": "https://biomejs.dev/schemas/2.4.8/schema.json",
+  "assist": {
+    "actions": {
+      "source": {
+        "organizeImports": "on"
+      }
+    }
+  },
+  "files": {
+    "includes": [
+      "**",
+      "!**/.vscode/**/*.json",
+      "!**/assets/**/*",
+      "!**/devops/ci/**/*",
+      "**/devops/ci/format-json-placeholder.json",
+      "!**/webpack_records.json"
+    ]
+  },
+  "formatter": {
+    "enabled": true,
+    "includes": [
+      "**",
+      "!**/_js/**/style.module.scss.d.ts",
+      "!**/_js/**/styles.scss.ts",
+      "!**/_sass/**/*.spec-snapshot.css"
+    ],
+    "indentStyle": "space",
+    "indentWidth": 2,
+    "lineWidth": 80
+  },
+  "javascript": {
+    "formatter": {
+      "arrowParentheses": "always",
+      "bracketSpacing": true,
+      "enabled": true,
+      "quoteStyle": "single",
+      "semicolons": "asNeeded",
+      "trailingCommas": "none"
+    }
+  },
+  "json": {
+    "formatter": {
+      "enabled": true,
+      "trailingCommas": "none"
+    }
+  },
+  "linter": {
+    "domains": {
+      "project": "recommended",
+      "react": "recommended"
+    },
+    "enabled": true,
+    "includes": ["**", "!**/_misc/**/*", "!**/assets/**/*"],
+    "rules": {
+      "complexity": {
+        "noExcessiveCognitiveComplexity": {
+          "level": "warn",
+          "options": {
+            "maxAllowedComplexity": 60
+          }
+        },
+        "noUselessRename": {
+          "level": "warn"
+        },
+        "useArrowFunction": {
+          "level": "warn"
+        }
+      },
+      "correctness": {
+        "noUnusedImports": {
+          "level": "off"
+        },
+        "useImportExtensions": {
+          "level": "error",
+          "options": {
+            "extensionMappings": {
+              "ts": "js",
+              "tsx": "js"
+            }
+          }
+        }
+      },
+      "recommended": false,
+      "style": {
+        "useArrayLiterals": {
+          "level": "error"
+        },
+        "useFilenamingConvention": {
+          "level": "error",
+          "options": {
+            "filenameCases": ["kebab-case"],
+            "requireAscii": true
+          }
+        },
+        "useImportType": {
+          "level": "warn"
+        },
+        "useNumberNamespace": {
+          "level": "error"
+        },
+        "useThrowOnlyError": {
+          "level": "warn"
+        }
+      },
+      "suspicious": {
+        "noArrayIndexKey": {
+          "level": "warn"
+        },
+        "noDoubleEquals": {
+          "level": "error"
+        },
+        "noImportCycles": {
+          "level": "error"
+        }
+      }
+    }
+  },
+  "vcs": {
+    "clientKind": "git",
+    "defaultBranch": "main",
+    "enabled": true,
+    "useIgnoreFile": true
+  }
+}

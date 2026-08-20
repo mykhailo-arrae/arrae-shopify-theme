@@ -1,0 +1,10 @@
+@use 'unit' as u;
+@use 'style-guide/spacing' as spacing;
+
+.content {
+  margin: spacing.get(size-40) auto;
+  max-width: u.rem-calc(1512);
+  width: 100%;
+  padding: 0 spacing.get(size-16);
+  box-sizing: border-box;
+}

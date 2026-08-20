@@ -1,0 +1,72 @@
+@use 'style-guide/colors' as color;
+@use 'unit' as u;
+@use 'style-guide/typography' as typography;
+
+.Comment {
+  $_top: &;
+  position: relative;
+  margin: 0;
+  background-color: color.get(off-white);
+  border: u.rem-calc(1) solid color.get(light-gray);
+  border-radius: u.rem-calc(3);
+  box-shadow: 0 u.rem-calc(1) u.rem-calc(4) color.get(light-gray);
+
+  &_is-spam {
+    opacity: 0.3;
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      margin: 0;
+      padding: u.rem-calc(16);
+      font-family: typography.get-font-family(body);
+      font-size: u.rem-calc(16);
+      font-weight: 700;
+      text-transform: uppercase;
+      background-color: color.get(off-white);
+    }
+  }
+
+  &_is-unapproved {
+    opacity: 0.75;
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      margin: 0;
+      padding: u.rem-calc(16);
+      font-family: typography.get-font-family(body);
+      font-size: u.rem-calc(16);
+      font-weight: 700;
+      text-transform: uppercase;
+      color: color.get(light-gray);
+      background-color: color.get(off-white);
+    }
+  }
+
+  &-content {
+    @at-root #{$_top}_is-spam & {
+      max-height: 3rem;
+      overflow: hidden;
+    }
+  }
+
+  &-info {
+    font-family: typography.get-font-family(heading);
+    margin: 0 0 u.rem-calc(16) 0;
+  }
+
+  &-author {
+    font-size: u.rem-calc(14);
+    color: color.get(dark-gray);
+  }
+
+  &-createdAt {
+    font-size: u.rem-calc(12);
+    color: color.get(light-gray);
+  }
+}

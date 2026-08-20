@@ -1,0 +1,6 @@
+{
+  "type": "static",
+  "stylesheet": "inline",
+  "tag": "div",
+  "class": ["snippet"]
+}

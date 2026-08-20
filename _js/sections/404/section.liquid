@@ -1,0 +1,111 @@
+{% liquid
+  assign title = section.settings.title
+  assign subtext = section.settings.subtext
+  assign button_label = section.settings.button_label
+  assign button_link = section.settings.button_link
+  assign desktop_image = section.settings.desktop_image
+  assign mobile_image = section.settings.mobile_image
+%}
+
+<div class="{# style container #}">
+  <div class="{# style background #}">
+    {% render 'core-image',
+      image: desktop_image,
+      image_mobile: mobile_image,
+      object_fit: 'cover',
+      lazyload: true,
+      preload: true,
+      srcset_print_sizes: '480,640,800,960,1024,1280,1440,1800,2000',
+      mobile_srcset_print_sizes: '320,480,640'
+    %}
+  </div>
+  <div class="{# style content #}">
+    <div class="{# style inner #}">
+      {% if title != blank %}
+        <h1 class="{# style title #}">{{ title }}</h1>
+      {% endif %}
+
+      {% if subtext != blank %}
+        <div class="{# style subtext #}">
+          <p>{{ subtext }}</p>
+        </div>
+      {% endif %}
+
+      {% if button_label != blank and button_link != blank %}
+        {% render 'core-button',
+          label: button_label,
+          url: button_link,
+          style: 'primary',
+          class: '{# style button #}',
+          size: 'large'
+        %}
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "404",
+  "tag": "section",
+  "class": "{# style section #}",
+  "enabled_on": {
+    "templates": ["404"]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Page not found."
+    },
+    {
+      "type": "textarea",
+      "id": "subtext",
+      "label": "Subtext",
+      "default": "Ooops. This page does not exist or is unavailable."
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button Text",
+      "default": "Best Sellers"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button Link"
+    },
+    {
+      "type": "header",
+      "content": "Hero Banner"
+    },
+    {
+      "type": "image_picker",
+      "id": "desktop_image",
+      "label": "Desktop Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "mobile_image",
+      "label": "Mobile Image"
+    }
+  ],
+  "presets": [
+    {
+      "name": "404",
+      "category": "Error",
+      "settings": {
+        "title": "Page not found.",
+        "subtext": "Ooops. This page does not exist or is unavailable.",
+        "button_label": "Best Sellers",
+        "button_link": "/collections/best-sellers"
+      }
+    }
+  ]
+}
+{% endschema %}

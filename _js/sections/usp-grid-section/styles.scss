@@ -1,0 +1,101 @@
+@use 'style-guide/media' as mq;
+@use 'unit' as u;
+@use 'style-guide/typography' as typography;
+@use 'style-guide/buttons' as buttons;
+@use 'style-guide/colors' as color;
+@use 'style-guide/spacing' as spacing;
+@use 'style-guide/mixins' as mixin;
+
+.section {
+  width: 100%;
+  color: color.get(off-white);
+  background-color: color.get(dark-gray);
+  border-bottom: u.rem-calc(1) solid color.get(text-gray);
+}
+
+.container {
+  @include mixin.container();
+  display: flex;
+  padding: spacing.get(size-32) spacing.get(size-16);
+
+  @include mq.min(tabletlandscape) {
+    padding: spacing.get(size-48);
+  }
+}
+
+.usp-grid {
+  @include mixin.reset-ul();
+  display: grid;
+  width: 100%;
+  grid-template-columns: repeat(2, 1fr);
+  gap: spacing.get(size-24) spacing.get(size-16);
+
+  @include mq.min(tabletlandscape) {
+    grid-template-columns: repeat(4, 1fr);
+
+    &[data-grid-items-count='1'] {
+      grid-template-columns: repeat(1, 1fr);
+    }
+
+    &[data-grid-items-count='2'] {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    &[data-grid-items-count='3'] {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    &[data-grid-items-count='4'] {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+}
+
+.grid-item {
+  display: flex;
+  flex-direction: column;
+  gap: spacing.get(size-8);
+  justify-content: start;
+  align-items: center;
+
+  @include mq.min(tabletlandscape) {
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-start;
+  }
+}
+
+.content {
+  max-width: u.rem-calc(240);
+  text-align: center;
+
+  @include mq.min(tabletlandscape) {
+    text-align: left;
+  }
+}
+
+.title {
+  @include typography.font-cardinal-fruit();
+  font-size: u.rem-calc(20);
+  font-weight: 400;
+  line-height: 112%;
+  letter-spacing: u.rem-calc(-0.6);
+  text-wrap: balance;
+
+  @include mq.min(tabletlandscape) {
+    font-size: u.rem-calc(24);
+    letter-spacing: u.rem-calc(-0.72);
+  }
+}
+
+.usp-grid .grid-item:nth-child(3):last-child {
+  grid-column: 1 / -1;
+  justify-content: center;
+}
+
+@include mq.min(tabletlandscape) {
+  .usp-grid .grid-item:nth-child(3):last-child {
+    grid-column: auto;
+    justify-content: flex-start;
+  }
+}

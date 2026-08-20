@@ -1,0 +1,65 @@
+{% comment %}
+  Example(s):
+  {% render 'article-card',
+    article: article
+  %}
+
+  Parameters:
+  - article {Article} - The article object
+{% endcomment %}
+
+{% liquid
+  assign article = article | default: null
+  assign title_split = article.title | split: '|'
+  assign title_first = title_split[0]
+  assign title_second = title_split[1] | default: null
+
+  assign badge = article.tags | first | default: null
+%}
+
+<div class="{# style card #} js-article-card">
+  <div class="{# style card__media #}">
+    <a class="{# style card__media__initial #}" href="{{ article.url }}">
+      {% if article.image != blank %}
+        {% render 'core-image',
+          image: article.image,
+          mode: 'cover',
+          object_fit: 'cover',
+          lazyload: true,
+          srcset_print_sizes: '320,480,640'
+        %}
+      {% else %}
+        <div class="{# style card__media__placeholder #}"></div>
+      {% endif %}
+    </a>
+  </div>
+
+  <div class="{# style card__content #}">
+    {% if article.title != blank %}
+      <a class="{# style card__title #}" href="{{ article.url }}">
+        <span class="{# style card__title__first #}">{{ title_first }}</span>
+        {% if title_second != blank %}
+          <span class="{# style card__title__second #}">{{ title_second }}</span>
+        {% endif %}
+      </a>
+    {% endif %}
+
+    <div class="{# style card__footer #}">
+      <div class="{# style card__byline #}">
+        {% if article.author != blank %}
+          <span class="{# style card__author #}">
+            {{ article.author }}
+          </span>
+          <span class="{# style card__date #}">
+            {{ article.published_at | date: format: 'month_day_year' }}
+          </span>
+        {% endif %}
+      </div>
+      {% if badge != blank %}
+        <div class="{# style card__badge #}">
+          <span class="{# style card__badge--label #}"> {{ badge }}</span>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>

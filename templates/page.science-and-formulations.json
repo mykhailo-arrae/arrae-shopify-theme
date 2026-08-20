@@ -1,0 +1,719 @@
+{
+  "order": [
+    "value_propositions_tcm6zq",
+    "page_header_jPcypp",
+    "education_slideshow_VXBJNi",
+    "education_slideshow_4ajYmw",
+    "education_slideshow_RDtwHL",
+    "education_slideshow_YhymQC",
+    "science_chart_je74dT",
+    "section_70_30_PkwyLc",
+    "ugc_section_rP3Jby",
+    "faq_rBgQiN"
+  ],
+  "sections": {
+    "education_slideshow_4ajYmw": {
+      "block_order": [
+        "percentage_slide_e3mWdW",
+        "feature_text_slide_AEXcGy",
+        "feature_cards_slide_qaP9gD",
+        "ingredients_slide_CFYDpb"
+      ],
+      "blocks": {
+        "feature_cards_slide_qaP9gD": {
+          "settings": {
+            "background_color": "",
+            "background_gradient": "",
+            "background_image_desktop": "shopify://shop_images/ClinicalStudies_2.jpg",
+            "background_image_mobile": "shopify://shop_images/ClinicalStudies_MBL.jpg",
+            "background_type": "image",
+            "disclaimers": "<p>(Independent <a href=\"/\">clinical study</a>, 2 months)*</p>",
+            "feature_cards": [
+              "feature-card-demo-1",
+              "feature-card-demo-2",
+              "feature-card-demo-3"
+            ],
+            "heading": "The Care Behind Every Formula",
+            "slide_title": "Formulas",
+            "subheading": "<p>We stay focused on safety and efficacy every step of the way so you can stay focused on feeling your best.</p>"
+          },
+          "type": "feature_cards_slide"
+        },
+        "feature_text_slide_AEXcGy": {
+          "disabled": true,
+          "settings": {
+            "background_color": "",
+            "background_gradient": "",
+            "background_image_desktop": "shopify://shop_images/Science_1.jpg",
+            "background_image_mobile": "shopify://shop_images/Science_MBL.jpg",
+            "background_type": "image",
+            "disclaimers": "<p>(Independent <a href=\"/\">clinical study</a>, 2 months)*</p>",
+            "feature_text_items": [
+              "clinically-studied",
+              "expertly-formulated",
+              "quality-assured",
+              "rigorous-qualification"
+            ],
+            "heading": "Our Gold Standard for Quality",
+            "slide_title": "Quality",
+            "subheading": "<p>Every Arrae product is developed through a rigorous process to ensure safety, consistency, and quality.</p>"
+          },
+          "type": "feature_text_slide"
+        },
+        "ingredients_slide_CFYDpb": {
+          "disabled": true,
+          "settings": {
+            "background_color": "",
+            "background_gradient": "",
+            "background_image_desktop": "shopify://shop_images/Ingredients_2.jpg",
+            "background_image_mobile": "shopify://shop_images/section_4_cefb042f-eed5-4ee4-813b-37626201de35.png",
+            "background_type": "image",
+            "disclaimers": "<p>(Independent <a href=\"/\">clinical study</a>, 2 months)*</p>",
+            "heading": "Key Ingredients & Benefits",
+            "ingredients": [
+              "ginger-root",
+              "citrus-extract",
+              "african-mango-seed",
+              "grain-of-paradise",
+              "ingredient-item-lz42aruo"
+            ],
+            "slide_title": "Ingredients",
+            "subheading": "<p>Some of the most effective ingredients we use in our products.</p>",
+            "text_contrast_mode": "dark"
+          },
+          "type": "ingredients_slide"
+        },
+        "percentage_slide_e3mWdW": {
+          "disabled": true,
+          "settings": {
+            "background_color": "",
+            "background_gradient": "",
+            "background_image_desktop": "shopify://shop_images/section_1_ef1acd6b-52ac-4542-b715-dfb5444ba0d9.png",
+            "background_image_mobile": "shopify://shop_images/section_3.png",
+            "background_type": "image",
+            "disclaimers": "<p>(Independent <a href=\"/\">clinical study</a>, 2 months)*</p>",
+            "heading": "Brand Philosophy & Technology",
+            "slide_title": "Science",
+            "stat_items": [
+              "percentage-stat-item-xjvss99l",
+              "percentage-stat-item-1oqdxnme",
+              "percentage-stat-item-29e9zdzv",
+              "percentage-stat-item-mtbrf1dm"
+            ],
+            "subheading": "<p>Key findings highlighting the benefits of our products</p>",
+            "wheel_color": ""
+          },
+          "type": "percentage_slide"
+        }
+      },
+      "name": "Education Slideshow",
+      "settings": {
+        "autoplay": false,
+        "autoplay_speed": "6000",
+        "cta_label": "",
+        "cta_url": "",
+        "show_playback_controls": true
+      },
+      "type": "education-slideshow"
+    },
+    "education_slideshow_RDtwHL": {
+      "block_order": ["feature_cards_slide_VdUDFj", "percentage_slide_QQykWq"],
+      "blocks": {
+        "feature_cards_slide_VdUDFj": {
+          "settings": {
+            "background_color": "",
+            "background_gradient": "",
+            "background_type": "image",
+            "disclaimers": "<p>(Independent <a href=\"/\">clinical study</a>, 2 months)*</p>",
+            "feature_cards": [],
+            "heading": "Clinically Informed",
+            "slide_title": "Clinical Studies",
+            "subheading": "<p>Every decision is supported by studies that inform measurable outcomes.</p>"
+          },
+          "type": "feature_cards_slide"
+        },
+        "percentage_slide_QQykWq": {
+          "settings": {
+            "background_color": "",
+            "background_gradient": "",
+            "background_image_desktop": "shopify://shop_images/Clincal_Studies_24d7ce64-4a18-4797-be99-d4261f5cf451.png",
+            "background_image_mobile": "shopify://shop_images/Clincal_Studies_1_383310a4-58d8-4692-a84c-ceb2dde98b9d.png",
+            "background_type": "image",
+            "disclaimers": "",
+            "heading": "The Care Behind Every Formula",
+            "slide_title": "Science",
+            "stat_items": [
+              "batches-tested",
+              "ingredients-evaluated",
+              "years-development",
+              "wellness-journeys-supported"
+            ],
+            "subheading": "<p>We stay focused on safety and efficacy every step of the way so you can stay focused on feeling your best.</p>",
+            "wheel_color": "yellow"
+          },
+          "type": "percentage_slide"
+        }
+      },
+      "disabled": true,
+      "name": "Education Slideshow",
+      "settings": {
+        "autoplay": false,
+        "autoplay_speed": "6000",
+        "cta_label": "Shop All",
+        "cta_url": "",
+        "show_playback_controls": true
+      },
+      "type": "education-slideshow"
+    },
+    "education_slideshow_VXBJNi": {
+      "block_order": [
+        "ingredients_slide_6R6aR7",
+        "ingredients_slide_jV6w9h",
+        "ingredients_slide_9hEypy",
+        "ingredients_slide_drRajY",
+        "ingredients_slide_rijCP8",
+        "ingredients_slide_bEiRHK",
+        "ingredients_slide_6pdP3j"
+      ],
+      "blocks": {
+        "ingredients_slide_6R6aR7": {
+          "settings": {
+            "background_color": "",
+            "background_gradient": "",
+            "background_type": "image",
+            "disclaimers": "",
+            "heading": "",
+            "ingredients": ["clinically-studied-ingredients"],
+            "slide_title": "Expertly Formulated",
+            "subheading": "<p>Every arrae formula is thoughtfully developed using scientific research, clinically studied ingredients, and careful consideration of ingredient safety, stability, and efficacy.</p>",
+            "text_contrast_mode": "light"
+          },
+          "type": "ingredients_slide"
+        },
+        "ingredients_slide_6pdP3j": {
+          "settings": {
+            "background_color": "",
+            "background_gradient": "",
+            "background_type": "image",
+            "disclaimers": "",
+            "heading": "",
+            "ingredients": ["continuous-innovation"],
+            "slide_title": "Continuous Innovation",
+            "subheading": "<p>Science is always evolving, and so are we. We continuously evaluate new research, ingredients, and technologies to refine our formulas and raise our standards for quality.</p>",
+            "text_contrast_mode": "light"
+          },
+          "type": "ingredients_slide"
+        },
+        "ingredients_slide_9hEypy": {
+          "settings": {
+            "background_color": "",
+            "background_gradient": "",
+            "background_type": "image",
+            "disclaimers": "",
+            "heading": "",
+            "ingredients": ["rigorous-ingredient-qualification"],
+            "slide_title": "Rigorous Ingredient Qualification",
+            "subheading": "<p>Every ingredient undergoes a comprehensive evaluation for identity, purity, potency, safety, and quality before it is approved for use in an arrae product.</p>",
+            "text_contrast_mode": "light"
+          },
+          "type": "ingredients_slide"
+        },
+        "ingredients_slide_bEiRHK": {
+          "settings": {
+            "background_color": "",
+            "background_gradient": "",
+            "background_type": "image",
+            "disclaimers": "",
+            "heading": "",
+            "ingredients": ["third-party-tested"],
+            "slide_title": "Third Party Tested",
+            "subheading": "<p>Independent laboratories verify our products for identity, potency, heavy metals, microbiological quality, allergens, and other quality specifications to ensure every batch meets our standards.</p>",
+            "text_contrast_mode": "light"
+          },
+          "type": "ingredients_slide"
+        },
+        "ingredients_slide_drRajY": {
+          "settings": {
+            "background_color": "",
+            "background_gradient": "",
+            "background_type": "image",
+            "disclaimers": "",
+            "heading": "",
+            "ingredients": ["manufactured-in-the-usa"],
+            "slide_title": "Manufactured in the USA",
+            "subheading": "<p>Our products are manufactured in the United States in facilities that follow current Good Manufacturing Practices to help ensure consistent quality from batch to batch.</p>",
+            "text_contrast_mode": "light"
+          },
+          "type": "ingredients_slide"
+        },
+        "ingredients_slide_jV6w9h": {
+          "settings": {
+            "background_color": "",
+            "background_gradient": "",
+            "background_type": "image",
+            "disclaimers": "",
+            "heading": "",
+            "ingredients": ["clinically-studied-ingredients"],
+            "slide_title": "Clinically Studied Ingredients",
+            "subheading": "<p>We prioritize ingredients supported by human clinical research and carefully evaluate the strength of the evidence, effective dosage, and study quality before incorporating them into our formulas.</p>",
+            "text_contrast_mode": "light"
+          },
+          "type": "ingredients_slide"
+        },
+        "ingredients_slide_rijCP8": {
+          "settings": {
+            "background_color": "",
+            "background_gradient": "",
+            "background_type": "image",
+            "disclaimers": "",
+            "heading": "",
+            "ingredients": ["quality-assured"],
+            "slide_title": "Quality Assured",
+            "subheading": "<p>Quality is built into every stage of our development process through supplier qualification, manufacturing oversight, and strict quality control standards.</p>",
+            "text_contrast_mode": "light"
+          },
+          "type": "ingredients_slide"
+        }
+      },
+      "name": "Education Slideshow",
+      "settings": {
+        "autoplay": false,
+        "autoplay_speed": "6000",
+        "cta_label": "",
+        "cta_url": "shopify://collections/shop-all",
+        "show_playback_controls": false
+      },
+      "type": "education-slideshow"
+    },
+    "education_slideshow_YhymQC": {
+      "block_order": [
+        "image_carousel_slide_9wqEm4",
+        "image_carousel_slide_xP894U",
+        "image_carousel_slide_D3bYh9"
+      ],
+      "blocks": {
+        "image_carousel_slide_9wqEm4": {
+          "settings": {
+            "background_color": "",
+            "background_gradient": "",
+            "background_type": "image",
+            "disclaimers": "<p>(Independent <a href=\"/\">clinical study</a>, 2 months)*</p>",
+            "heading": "The Results Don’t Lie",
+            "image_carousel_items": ["bloat-before-after"],
+            "slide_title": "Bloat",
+            "subheading": "<p>See real transformations from women who brought arrae into their wellness journey. </p>",
+            "text_contrast_mode": "light"
+          },
+          "type": "image_carousel_slide"
+        },
+        "image_carousel_slide_D3bYh9": {
+          "settings": {
+            "background_color": "",
+            "background_gradient": "",
+            "background_type": "image",
+            "disclaimers": "<p>(Independent <a href=\"/\">clinical study</a>, 2 months)*</p>",
+            "heading": "The Results Don’t Lie",
+            "image_carousel_items": ["tone-before-after"],
+            "slide_title": "Tone",
+            "subheading": "<p>See real transformations from women who brought arrae into their wellness journey. </p>",
+            "text_contrast_mode": "light"
+          },
+          "type": "image_carousel_slide"
+        },
+        "image_carousel_slide_xP894U": {
+          "settings": {
+            "background_color": "",
+            "background_gradient": "",
+            "background_type": "image",
+            "disclaimers": "<p>(Independent <a href=\"/\">clinical study</a>, 2 months)*</p>",
+            "heading": "The Results Don’t Lie",
+            "image_carousel_items": ["mb-1-before-after"],
+            "slide_title": "MB-1",
+            "subheading": "<p>See real transformations from women who brought arrae into their wellness journey. </p>",
+            "text_contrast_mode": "light"
+          },
+          "type": "image_carousel_slide"
+        }
+      },
+      "name": "Education Slideshow",
+      "settings": {
+        "autoplay": false,
+        "autoplay_speed": "6000",
+        "cta_label": "Shop All",
+        "cta_url": "",
+        "show_playback_controls": true
+      },
+      "type": "education-slideshow"
+    },
+    "faq_rBgQiN": {
+      "block_order": [
+        "faq_question_ywwkyC",
+        "faq_question_UENhVY",
+        "faq_question_Vh4jDB",
+        "faq_question_9UtiCD",
+        "faq_question_rYiH7X",
+        "faq_question_Yfxh4g",
+        "faq_question_FUNxRK",
+        "faq_question_fDNcx7",
+        "faq_question_QdyRGc",
+        "faq_question_dbKyrV",
+        "faq_question_eHEtPE",
+        "faq_question_RkGqCE",
+        "faq_question_WGkDwz",
+        "faq_question_BJQmCj",
+        "faq_question_DJDhDP",
+        "faq_question_pRxXpQ",
+        "faq_question_MzWN4V",
+        "faq_question_x9emVy",
+        "faq_question_JrAnE6"
+      ],
+      "blocks": {
+        "faq_question_9UtiCD": {
+          "settings": {
+            "content": "<p>Arrae supplements are proudly manufactured in the USA in cGMP-certified facilities that meet rigorous quality and safety standards.</p><p>Current Good Manufacturing Practices (cGMP) are FDA-established regulations that help ensure supplements are consistently produced with strict controls over ingredient sourcing, manufacturing processes, quality testing, and sanitation. By partnering with trusted cGMP-certified manufacturers, we help ensure every product is made to the highest standards of quality, safety, and consistency.</p>",
+            "title": "Where are Arrae products manufactured?"
+          },
+          "type": "faq-question"
+        },
+        "faq_question_BJQmCj": {
+          "settings": {
+            "content": "<p>Every Arrae product is designed with two things in mind: the integrity of the formula and the experience of using it. We choose the delivery format that best supports the ingredient stablity and meaningful dosages, while also considering how the product fits into your everyday life. Whether it's a capsule, gummy, or stick pack powder, every format is chosen intentionally.</p>",
+            "title": "Why are some Arrae products capsules while others are gummies or stick packs?"
+          },
+          "type": "faq-question"
+        },
+        "faq_question_DJDhDP": {
+          "settings": {
+            "content": "<p>We use proprietary blends selectively to protect the unique formulations we've carefully developed. Whether an ingredient is listed individually or as part of a blend, our approach remains the same: we formulate with meaningful ingredient amounts, carefully selected ingredients, and rigorous quality standards. Every ingredient is included with purpose and backed by the same thoughtful formulation process.</p>",
+            "title": "Why do some Arrae products use proprietary blends"
+          },
+          "type": "faq-question"
+        },
+        "faq_question_FUNxRK": {
+          "settings": {
+            "content": "<p>Arrae products should be kept in their original packaging, tightly sealed, and stored in a cool, dark, dry place. If your product includes a dessicant, do not remove this from the packaging. Avoid areas with high humidity (like bathrooms) or extreme temperature changes to maintain optimal freshness and potency through the product's shelf life. Arrae products, including Tribiotic, are shelf stable and do not require refrigeration.</p>",
+            "title": "How should I store my Arrae products?"
+          },
+          "type": "faq-question"
+        },
+        "faq_question_JrAnE6": {
+          "settings": {
+            "content": "<p>Clinical research is an important part of how we develop and validate our products. In addition to formulating with ingredients supported by scientific research, we prioritize clinical studies on our finished formulas whenever possible. We have completed clinical research on select Arrae products and continue to invest in gold standard product-level studies to further strengthen the science behind our formulations.</p>",
+            "title": "Are your products clincially studied?"
+          },
+          "type": "faq-question"
+        },
+        "faq_question_MzWN4V": {
+          "settings": {
+            "content": "<p>Some of the ingredients you'll see on our labels have trademarked names (®) because they're branded ingredients- specialized compounds developed through years of research and innovation by companies with deep expertise in that specific ingredient. These ingredients often feature unique formulations, proprietary manufacturing processes, or specialized technologies designed to optimize quality, consistency, or performance. </p><p>Many branded ingredients are also supported by human clinical studies conducted on the exact ingredient itself, at defined dosages, and in the intended study population. Rather than relying solely on research for an ingredient category, we prioritize ingredients backed by evidence on the specific ingredient we use.</p><p>You'll find ingredients like IGOB131®, Effera®, SlimBiotics®, Chromax®, and Gyntima® among many more throughout our formulas. While these ingredients often require a greater investment, we believe their innovation and clinical rigor make them well worth it.</p>",
+            "title": "Why are some of your ingredients trademarked (®)?"
+          },
+          "type": "faq-question"
+        },
+        "faq_question_QdyRGc": {
+          "settings": {
+            "content": "<p>If you are pregnant, breastfeeding or planning to conceive, we always advise checking in with your provider or OBGYN and getting the green light on any supplements you are taking or planning to take- including Arrae products. Because every pregnancy is different, it's important to ensure any supplements you take are appropriate for your individual needs.</p>",
+            "title": "Can I use Arrae products while pregnant or breastfeeding?"
+          },
+          "type": "faq-question"
+        },
+        "faq_question_RkGqCE": {
+          "settings": {
+            "content": "<p>For optimal benefits, it’s best to use Arrae’s products within their shelf life. We recommend discontinuing use of your Arrae supplements beyond the date printed on the product.</p>",
+            "title": "Can I take my supplements after the expiration date?"
+          },
+          "type": "faq-question"
+        },
+        "faq_question_UENhVY": {
+          "settings": {
+            "content": "<p>Absolutely. Every production lot undergoes rigorous third-party testing before it's released. Independent laboratories verify key quality attributes including identity, potency, purity, heavy metals, and microbiological quality to help ensure every batch meets our strict quality standards.<br/><br/>Identity Testing: Analytical testing used to confirm that each ingredient is authentic and matches its intended identity and specifications.<br/>Potency Testing: Quantitative testing used to verify that active ingredients are present at the levels stated on the label.<br/>Microbiological Testing: Screening to evaluate microbial quality and ensure products meet established safety standards.<br/>Heavy Metal Testing: Testing for potential contaminants, including lead, arsenic, cadmium, and mercury, to ensure products meet strict safety limits.<br/>Purity Testing: Evaluation of raw materials and finished products to confirm they meet established quality standards and specifications.<br/></p>",
+            "title": "Are products third-party tested?"
+          },
+          "type": "faq-question"
+        },
+        "faq_question_Vh4jDB": {
+          "settings": {
+            "content": "<p>We believe great supplements start with thoughtful formulation and at Arrae, every ingredient earns it place in our formula. We formulate with clinically studied, high-quality, and expertly dosed ingredients in their bioavaiable forms, carefully selecting each one based on the available scientific literature and its role within the formula. Rather than adding unnecessary fillers, artificial additives, or ingredients included only for label appeal, we focus on creating thoughtful, evidence-based products designed to deliver real results you can see and feel.</p>",
+            "title": "What makes Arrae formulas different from other supplements?"
+          },
+          "type": "faq-question"
+        },
+        "faq_question_WGkDwz": {
+          "settings": {
+            "content": "<p>We formulate our products without artificial additive or unnecessary fillers. While certain inactive ingredients are sometimes needed to support manufacturing, product stability, or the delivery of formats like gummies and stick packs, we use only carefully selected functional ingredients when they're necessary and only in the amounts required. Every ingredient in our formulas serves a purpose.</p>",
+            "title": "Do Arrae's products contain any fillers?"
+          },
+          "type": "faq-question"
+        },
+        "faq_question_Yfxh4g": {
+          "settings": {
+            "content": "<p>Most Arrae products are free from common allergens, and our manufacturing partners follow strict allergen control protocols, including allergen testing and sanitization protocols between production runs to help minimize the risk of cross-contact. Please note that Tribiotic, Clear Protein+, and Inositol contain dairy. If you have a food allergy or sensitivity, we always recommend reviewing the ingredient list and allergen information on the product label before use.</p>",
+            "title": "Are your products allergen free?"
+          },
+          "type": "faq-question"
+        },
+        "faq_question_dbKyrV": {
+          "settings": {
+            "content": "<p>Arrae products are intended for adults 18 years of age and older and are not recommended for childern or adolescents under the age of 18.</p>",
+            "title": "How old do you have to be to use Arrae products?"
+          },
+          "type": "faq-question"
+        },
+        "faq_question_eHEtPE": {
+          "settings": {
+            "content": "<p>Yes! Arrae products are thoughtfully formulated to complement one another and can be used together as part of your wellness routine. You can customize your stack based on your individual goals, or explore our curated bundles for combinations designed to work well together. As with any supplement routine, we recommend following the directions on each product label. If you're pregnant, breastfeeding, taking prescription medications, or have a medical condition, we always recommend checking in with your doctor before starting a new supplement. </p>",
+            "title": "Can I use multiple Arrae products at the same time?"
+          },
+          "type": "faq-question"
+        },
+        "faq_question_fDNcx7": {
+          "settings": {
+            "content": "<p>Whle there are no known interactions, for optimal absorption and the best experience, we generally do not recommend consuming alcohol while taking our products. </p>",
+            "title": "Can I use Arrae products with alcohol?"
+          },
+          "type": "faq-question"
+        },
+        "faq_question_pRxXpQ": {
+          "settings": {
+            "content": "<p>We source our ingredients from trusted suppliers around the world based on one priority: quality. Many of our ingredients come from North America and Europe, while others are sourced globally from regions known for producing exceptional raw materials. We prioritize premium branded ingredients whenever possible and carefully evaluate every ingredient based on scientific evidence, supplier standards, consistency, and quality.</p>",
+            "title": "Where do your ingredients come from?"
+          },
+          "type": "faq-question"
+        },
+        "faq_question_rYiH7X": {
+          "settings": {
+            "content": "<p>Yes. Arrae products sold in Canada are licensed by Health Canada and carry a Natural Product Number (NPN).</p><p>An NPN indicates that the product has undergone Health Canada's regulatory review and is a process that requires comprehensive documentation, including ingredient verification, dosage information, manufacturing details, quality specifications, and supporting evidence for product claims.  </p><p>An NPN provides an added level of assurance that a product has met Health Canada's standards before it reaches consumers.</p>",
+            "title": "Are Arrae products approved by Health Canada?"
+          },
+          "type": "faq-question"
+        },
+        "faq_question_x9emVy": {
+          "settings": {
+            "content": "<p>While many Arrae products are vegan and vegetarian, some formulas contain animal-derived ingredients when they're the best choice to support the intended formulation. We always select ingredients based on scientific evidence, quality, and the role they play within each product.</p><p>Please note that Tribiotic and Clear Protein+ are not vegan, as they contain bovine derived ingredients. </p>",
+            "title": "Are your products vegan?"
+          },
+          "type": "faq-question"
+        },
+        "faq_question_ywwkyC": {
+          "settings": {
+            "content": "<p>Quality isn't just something we talk about- it's built into every step of how we make our products<br/>We carefully source premium ingredients from qualified suppliers and partner with trusted cGMP-ceritifed manufacturers who share our rigorous quality standards. Before any ingredient is used in an Arrae formula, it undergoes incoming quality verification and identity testing using validated analytical methods, including FTIR (Fourier Transform Infrared Spectroscopy) and HPLC (High-Performance Liquid Chromatography) where appropriate, to help confirm authenticity and that it meets our strict quality specifications.<br/>Once manufacturing is complete, every production lot undergoes comprehensive third-party testing, including heavy metal screening, microbiological analysis, and potency verification and is issued its own Certificate of Analysis (COA). We also conduct stability testing to help ensure our products maintain their quality, potency, and consistency throughout their shelf life.<br/>By combining carefully sourced ingredients, rigorous manufacturing standards, and comprehensive testing,  we help ensure every Arrae product meets our uncompromising standards for quality, safety, and consistency- so you can feel confident in every bottle.</p>",
+            "title": "How does Arrae ensure product quality?"
+          },
+          "type": "faq-question"
+        }
+      },
+      "name": "FAQ",
+      "settings": {
+        "heading": "What to know before you try",
+        "subheading": "Frequently asked questions"
+      },
+      "type": "faq"
+    },
+    "page_header_jPcypp": {
+      "name": "Page Header",
+      "settings": {
+        "heading": "Our Gold Standard for Science & Quality",
+        "overlay_color": "#000000",
+        "overlay_opacity": "25",
+        "show_breadcrumbs": false,
+        "subheading": "",
+        "text_color": "dark"
+      },
+      "type": "page-header"
+    },
+    "science_chart_je74dT": {
+      "name": "Science Chart",
+      "settings": {
+        "axis_labels": "2,4,6,8,10",
+        "axis_x_title": "Weeks",
+        "axis_y_title": "% Body Fat Reduction",
+        "badge_text": "x5",
+        "bottom_heading": "Faster Metabolic Rate*",
+        "bottom_text": "Burn more calories even at rest.",
+        "chart_type": "bar",
+        "color_primary": "#f8a28c",
+        "color_secondary": "#efe7da",
+        "disclaimer": "(Independent <a href=\"#\">clinical study</a>, 2 months)*",
+        "heading": "Science-Backed Formulations:",
+        "primary_label": "MB-1",
+        "primary_values": "8,19,24,28,37",
+        "secondary_label": "Other",
+        "secondary_values": "6,17,19,22,31",
+        "subheading": "Track your progress over time. This chart illustrates the steady reduction in body fat observed across a 10-week period, culminating in a clinically significant 20% decrease.",
+        "y_max": 40,
+        "y_step": 10
+      },
+      "type": "science-chart"
+    },
+    "section_70_30_PkwyLc": {
+      "name": "Section 70/30",
+      "settings": {
+        "background_type": "embedded_video",
+        "body": "<p>Our manufacturing process is built around uncompromising quality, precision, and consistency. From carefully qualified ingredients to rigorous quality controls, every step is designed to ensure each arrae product meets the highest standards for safety, purity, and efficacy.</p>",
+        "cta_label": "",
+        "cta_open_in_new_tab": false,
+        "cta_url": "",
+        "desktop_image": "shopify://shop_images/col_1_1_60569806-7db3-4f71-9a17-0a22de1d7104.png",
+        "desktop_video": "shopify://files/videos/tolstoy_d2ca3d35-bd09-4abf-9757-d67b5b425d66.webm",
+        "headline": "A Look Inside Our Manufacturing",
+        "reverse_columns": false,
+        "show_mute_button": true,
+        "show_play_button": true,
+        "signature_video_loop_count": 4,
+        "video_url": "https://youtu.be/X7MnmsRB2wQ?si=N9airc6S50ff_6Qr"
+      },
+      "type": "section-70-30"
+    },
+    "ugc_section_rP3Jby": {
+      "block_order": [
+        "ugc_card_JfNnE6",
+        "ugc_card_3Dikph",
+        "ugc_card_NCgBDw",
+        "ugc_card_RKHDhz",
+        "ugc_card_bKf6M8",
+        "ugc_card_KdTppK"
+      ],
+      "blocks": {
+        "ugc_card_3Dikph": {
+          "settings": {
+            "image_alt_text": "",
+            "main_text": "“At Arrae, we pair rigorous science with real care to create evidence-based supplements that help people feel better, including me. I’m inspired by the thoughtful innovation behind every Arrae product. “",
+            "media_image": "shopify://shop_images/Erin_Vaughan_PM_1.png",
+            "media_type": "image",
+            "secondary_text": "Erin Vaughan",
+            "small_main_text": false,
+            "tertiary_text": "Project Manager"
+          },
+          "type": "ugc_card"
+        },
+        "ugc_card_JfNnE6": {
+          "settings": {
+            "image_alt_text": "",
+            "main_text": "\"Exceptional products don't happen by chance - they're built through rigorous science and relentless attention to detail. At Arrae, every ingredient is selected based on its evidence, safety, quality, and purpose, and every formula is thoroughly reviewed and tested before it reaches our customers. As Head of Product Development, I believe our responsibility extends far beyond creating effective products - it's about earning your trust through uncompromising quality, transparency, and scientific integrity.\"",
+            "media_image": "shopify://shop_images/IMG_4957.png",
+            "media_type": "image",
+            "secondary_text": "Shoshana Markel",
+            "small_main_text": false,
+            "tertiary_text": "Head of Product Development"
+          },
+          "type": "ugc_card"
+        },
+        "ugc_card_KdTppK": {
+          "disabled": true,
+          "settings": {
+            "image_alt_text": "",
+            "main_text": "\"What sets Arrae apart is their uncompromising commitment to clinical dosages. They don't just use trendy botanicals for the label; they use the exact therapeutic amounts proven in clinical literature to yield tangible, fast-acting resultsdy can actually absorb and utilize the nutrients.\"",
+            "media_image": "shopify://shop_images/science_expert_testimonial_04.png",
+            "media_type": "image",
+            "secondary_text": "Dr. Olivia Smith",
+            "small_main_text": true,
+            "tertiary_text": "PhD in Nutritional Sciences"
+          },
+          "type": "ugc_card"
+        },
+        "ugc_card_NCgBDw": {
+          "disabled": true,
+          "settings": {
+            "image_alt_text": "",
+            "main_text": "\"Finding a formulation that perfectly balances traditional botanical wisdom with rigorous scientific standards is rare. Arrae achieves this synergy beautifully, combining specific enzymes and herbs to maximize bioavailability so the body can actually absorb and utilize the nutrients.\"",
+            "media_image": "shopify://shop_images/science_expert_testimonial_01.png",
+            "media_type": "image",
+            "secondary_text": "Dr. OLIVIA SMITH",
+            "small_main_text": true,
+            "tertiary_text": "PhD in Nutritional Sciences"
+          },
+          "type": "ugc_card"
+        },
+        "ugc_card_RKHDhz": {
+          "disabled": true,
+          "settings": {
+            "image_alt_text": "",
+            "main_text": "\"What sets Arrae apart is their uncompromising commitment to clinical dosages. They don't just use trendy botanicals for the label; they use the exact therapeutic amounts proven in clinical literature to yield tangible, fast-acting resultsdy can actually absorb and utilize the nutrients.\"",
+            "media_image": "shopify://shop_images/science_expert_testimonial_02.png",
+            "media_type": "image",
+            "secondary_text": "Dr. Olivia Smith",
+            "small_main_text": true,
+            "tertiary_text": "ND, Naturopathic Doctor"
+          },
+          "type": "ugc_card"
+        },
+        "ugc_card_bKf6M8": {
+          "disabled": true,
+          "settings": {
+            "image_alt_text": "",
+            "main_text": "\"What sets Arrae apart is their uncompromising commitment to clinical dosages. They don't just use trendy botanicals for the label; they use the exact therapeutic amounts proven in clinical literature to yield tangible, fast-acting resultsdy can actually absorb and utilize the nutrients.\"",
+            "media_image": "shopify://shop_images/science_expert_testimonial_03.png",
+            "media_type": "image",
+            "secondary_text": "Dr. Olivia Smith",
+            "small_main_text": true,
+            "tertiary_text": "ND, Naturopathic Doctor"
+          },
+          "type": "ugc_card"
+        }
+      },
+      "name": "UGC Section",
+      "settings": {
+        "heading": "Take It From The Experts",
+        "show_arrows": true,
+        "show_pagination": true
+      },
+      "type": "ugc-section"
+    },
+    "value_propositions_tcm6zq": {
+      "block_order": [
+        "proposition_PJ3Wqi",
+        "proposition_rrpB6d",
+        "proposition_iMXPKk",
+        "proposition_UXrLUp"
+      ],
+      "blocks": {
+        "proposition_PJ3Wqi": {
+          "settings": {
+            "icon": "shopify://shop_images/eco_icon_7a163075-4241-4106-815a-664642cec4d8.svg",
+            "text": "Clinically Studied Ingredients"
+          },
+          "type": "proposition"
+        },
+        "proposition_UXrLUp": {
+          "settings": {
+            "icon": "shopify://shop_images/cruelty_free_icon_63e2980f-9ed3-4f44-b5fa-8ad46b2d97b9.svg",
+            "text": "No Artificial Colors, Flavors or Fillers"
+          },
+          "type": "proposition"
+        },
+        "proposition_iMXPKk": {
+          "settings": {
+            "icon": "shopify://shop_images/genetics_icon_ae0489c3-e59e-4cda-b4d7-d1f25a574537.svg",
+            "text": "cGMP-Certified Facilities"
+          },
+          "type": "proposition"
+        },
+        "proposition_rrpB6d": {
+          "settings": {
+            "icon": "shopify://shop_images/dropper_eye_icon_d191566c-bb7e-4619-901b-99bcab90ae33.svg",
+            "text": "Verified for Purity & Potency"
+          },
+          "type": "proposition"
+        }
+      },
+      "settings": {
+        "alternate_heading_placement": true,
+        "cta_primary_label": "",
+        "cta_primary_url": "",
+        "cta_secondary_label": "",
+        "cta_secondary_url": "",
+        "description": "At arrae, we hold our formulations to the highest possible standard so taking care of your health can feel easy—because you deserve to feel your best, everyday.",
+        "desktop_image": "shopify://shop_images/section_1_bc524181-5cb1-4fca-99a3-b57ebf64e39d.png",
+        "heading": "Where Nature Meets Clinical Precision",
+        "large_heading": true,
+        "mobile_image": "shopify://shop_images/section_a2053b12-48f5-4b9a-9621-694a87145d9c.png",
+        "overlay_color": "#21180e",
+        "overlay_enabled": false,
+        "overlay_opacity": 20,
+        "text_color": "#fffef7"
+      },
+      "type": "value-propositions"
+    }
+  },
+  "wrapper": "main.o-main[role='main']"
+}

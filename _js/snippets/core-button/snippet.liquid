@@ -1,0 +1,83 @@
+{% doc %}
+  @description
+  - Renders a button or link depending on whether a URL is provided.
+  - Accessibility: button and link both use `aria-label` for screen readers.
+
+  @param {string} url - The URL to link to. If provided, renders an `<a>` tag; otherwise, renders a `<button>` element.
+  @param {string} label - The text displayed on the button or link
+  @param {string} target - Specifies where to open the linked document (e.g., '_self', '_blank'). Defaults to '_self'.
+  @param {string} class - Specify custom class to add to button
+  @param {string} label_class - Specify custom class to add to button label
+  @param {string} id - Specify custom id to add to button
+  @param {string} type - Specifies the type of button (e.g., 'button', 'submit', 'reset'). Defaults to 'button'.
+  @param {boolean} has_loading_state - If true, adds a loading spinner to the button
+  @param {boolean} is_disabled - If true, disables the button
+  @param {string} attributes - Custom attributes as a string (e.g., 'data-example="value" aria-label="Label"')
+  @param {string} style - Button style: primary | secondary
+
+  @example
+  {% render 'core-button',
+    url: 'https://example.com',
+    label: 'Click Me',
+    target: '_blank',
+    attributes: 'data-example="value" aria-label="Label"'
+  %}
+{% enddoc %}
+
+{% liquid
+  assign url = url | default: null
+  assign label = label | default: null
+  assign target = target | default: '_self'
+  assign class = class | default: null
+  assign label_class = label_class | default: null
+  assign id = id | default: null
+  assign type = type | default: 'button'
+  assign has_loading_state = has_loading_state | default: false
+  assign attributes = attributes | default: ''
+  assign style = style | default: 'primary'
+  assign is_disabled = is_disabled | default: false
+%}
+
+{%- if url or style == 'text-link-large' or style == 'text-link' -%}
+  {%- if label -%}
+    <a
+      href="{{- url -}}"
+      {% if id %}
+        id="{{- id -}}"
+      {% endif %}
+      class="{# style root #}{% if style %} {# style root #}--{{ style }}{% endif %} {% if class %} {{ class }}{% endif %}"
+      target="{{- target -}}"
+      aria-label="{{- label -}}"
+      {{ attributes }}
+    >
+      {%- if has_loading_state -%}
+        <span class="{# style loading #}"><!-- {% render 'icon-spinner' %} --></span>
+      {%- endif -%}
+      <span class="{# style label #} {{ label_class }}">
+        {{- label -}}
+      </span>
+    </a>
+  {%- endif -%}
+{%- else -%}
+  {%- if label -%}
+    <button
+      {% if id %}
+        id="{{ id }}"
+      {% endif %}
+      class="{# style root #}{% if style %} {# style root #}--{{ style }}{% endif %} {% if class %} {{ class }}{% endif %}"
+      {{ attributes }}
+      type="{{- type -}}"
+      aria-label="{{- label -}}"
+      {%- if is_disabled -%}
+        disabled
+      {%- endif -%}
+    >
+      {%- if has_loading_state -%}
+        <span class="{# style loading #}"><!-- {% render 'icon-spinner' %} --></span>
+      {%- endif -%}
+      <span class="{# style label #} {{ label_class }}">
+        {{- label -}}
+      </span>
+    </button>
+  {%- endif -%}
+{%- endif -%}

@@ -1,0 +1,293 @@
+{% doc %}
+  Combined "Filter & Sort" drawer powered by the Search & Discovery app.
+  Renders the collection (or search) filters as pill toggles, plus an optional
+  "Sort by" radio group, inside a single offcanvas panel.
+
+  @param {object} [filters] - Filter list. Defaults to `collection.filters`.
+
+  Pass `search.filters` for the search context.
+
+  @param {boolean} [show_filters] - Render the filter groups. Default true.
+  @param {boolean} [show_sort] - Render the "Sort by" radio group. Default false.
+  @param {boolean} [sort_context] - When true, read sort state from `search`
+
+  instead of `collection`.
+
+  @param {boolean} [ajax] - When true, the drawer applies filter/sort changes
+
+  in place via the Section Rendering API (see `collection-results-refresh.ts`) instead of navigating. Falls back to
+  navigation when false.
+
+  Examples:
+
+  Collection (combined, live updates): {% render 'collection-filters', show_sort: true, ajax: true %}
+
+  Search (filters only, navigation fallback): {% render 'collection-filters', filters: search.filters %}
+{% enddoc %}
+
+{% liquid
+  assign filters = filters | default: collection.filters
+  assign submit_label = 'collections.filter.apply' | t
+
+  if show_filters == null
+    assign show_filters = true
+  endif
+
+  assign sort_values = 'manual,created-descending,price-ascending,price-descending' | split: ','
+
+  if sort_context
+    assign current_sort_by = search.sort_by | default: search.default_sort_by
+    assign default_sort_by = search.default_sort_by
+  else
+    assign current_sort_by = collection.sort_by | default: collection.default_sort_by
+    assign default_sort_by = collection.default_sort_by
+  endif
+
+  # Anything outside our curated set collapses to "Featured" (manual).
+  unless sort_values contains current_sort_by
+    assign current_sort_by = 'manual'
+  endunless
+
+  unless sort_values contains default_sort_by
+    assign default_sort_by = 'manual'
+  endunless
+
+  # Total applied filters, surfaced in the footer "Clear (NN)" label. The JS
+  # keeps this in sync as pills toggle (see index.tsx `updateTriggerCount`).
+  assign active_count = 0
+  for filter in filters
+    assign active_count = active_count | plus: filter.active_values.size
+  endfor
+
+  assign has_active_filters = false
+  if active_count > 0
+    assign has_active_filters = true
+  endif
+
+  assign has_non_default_sort = false
+  if show_sort and current_sort_by != default_sort_by
+    assign has_non_default_sort = true
+  endif
+
+  assign clear_count = active_count
+  if active_count < 10
+    assign clear_count = '0' | append: active_count
+  endif
+%}
+
+<div class="{# style overlay #} js-offcanvas-bg"></div>
+
+<aside
+  class="js-offcanvas {# style root #}"
+  data-drawer-names="filters"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="filters-title"
+  tabindex="-1"
+  inert
+  aria-hidden="true"
+  data-section-id="{{ section.id }}"
+  data-section-name="collection_filters"
+  data-tvg-track-section-name="collection_filters"
+>
+  <div class="{# style container #} js-filters-body">
+    <div class="{# style header #}">
+      <h2 id="filters-title" class="{# style title #}">
+        {{ 'collections.filter.button' | t }}
+      </h2>
+      <button type="button" class="js-offcanvas-close {# style close #}">
+        {% render 'icon-close' %}
+        <span class="u-vhide">{{ 'accessibility.icons.close' | t }}</span>
+      </button>
+    </div>
+
+    <form
+      id="js-filters-form"
+      class="{# style form #}"
+      aria-label="{{ 'collections.general.controls' | t }}"
+      data-collection-ajax="{% if ajax %}true{% else %}false{% endif %}"
+      {% if show_sort %}
+        data-default-sort-by="{{ default_sort_by }}"
+      {% endif %}
+    >
+      {%- if show_sort -%}
+        <fieldset class="{# style group #}">
+          <legend class="{# style group__title #}">{{ 'collections.sorting.sort_by' | t }}</legend>
+          <ul
+            class="{# style sort #}"
+            role="radiogroup"
+            aria-label="{{ 'collections.sorting.sort_by' | t }}"
+          >
+            {%- for value in sort_values -%}
+              {%- liquid
+                # Literal keys (not built dynamically) so theme-check can verify them.
+                case value
+                  when 'manual'
+                    assign sort_name = 'collections.sorting.manual' | t
+                  when 'created-descending'
+                    assign sort_name = 'collections.sorting.newest' | t
+                  when 'price-ascending'
+                    assign sort_name = 'collections.sorting.price_ascending' | t
+                  when 'price-descending'
+                    assign sort_name = 'collections.sorting.price_descending' | t
+                endcase
+                assign sort_id = value | append: '-' | append: forloop.index
+              -%}
+              <li class="{# style sort__option #} js-sort-option">
+                <input
+                  type="radio"
+                  name="sort_by"
+                  value="{{ value }}"
+                  id="sort-{{ sort_id }}"
+                  class="{# style sort__input #} js-collection-sort"
+                  {% if current_sort_by == value %}
+                    checked
+                  {% endif %}
+                >
+                <label class="{# style sort__label #}" for="sort-{{ sort_id }}">
+                  {{- sort_name -}}
+                </label>
+              </li>
+            {%- endfor -%}
+          </ul>
+        </fieldset>
+      {%- endif -%}
+
+      {%- if show_filters -%}
+        {%- for filter in filters -%}
+          {%- liquid
+            assign filter_label = filter.label | downcase | handle
+            assign is_product_type_group = false
+
+            if filter_label == 'product-type'
+              assign is_product_type_group = true
+            endif
+          -%}
+          <fieldset class="{# style group #}">
+            <legend class="{# style group__title #}">{{ filter.label }}</legend>
+
+            {%- case filter.type -%}
+              {%- when 'boolean', 'list' -%}
+                <ul
+                  class="{# style filter__container #}{% if is_product_type_group %} {# style filter__container--product-type #}{% endif %}"
+                >
+                  {%- for filter_value in filter.values -%}
+                    {%- liquid
+                      assign facet_id = 'filter-' | append: filter_label | append: '-' | append: forloop.index
+                      assign filter_value_handle = filter_value.label | handle
+                      assign filter_value_param_handle = filter_value.value | handle
+                      assign product_type_icon = null
+
+                      if is_product_type_group
+                        for product_type_entry in shop.metaobjects.filters_product_type.values
+                          assign entry_handle = product_type_entry.system.handle
+                          assign entry_name_handle = product_type_entry.name | handle
+
+                          if entry_handle == filter_value_handle or entry_handle == filter_value_param_handle or entry_name_handle == filter_value_handle or entry_name_handle == filter_value_param_handle
+                            assign product_type_icon = product_type_entry.icon.value | default: product_type_entry.icon
+                            break
+                          endif
+                        endfor
+                      endif
+                    -%}
+                    <li class="{# style facet #} js-facet">
+                      <input
+                        type="checkbox"
+                        name="{{ filter_value.param_name }}"
+                        value="{{ filter_value.value }}"
+                        id="{{ facet_id }}"
+                        class="{# style facet__input #} js-collection-filter"
+                        {% if filter_value.active %}
+                          checked
+                        {% endif %}
+                        {% if filter_value.count == 0 and filter_value.active == false %}
+                          disabled
+                        {% endif %}
+                      >
+                      <label
+                        class="{# style facet__pill #}{% if is_product_type_group %} {# style facet__pill--product-type #}{% endif %}{% if product_type_icon != blank %} {# style facet__pill--has-icon #}{% endif %}"
+                        for="{{ facet_id }}"
+                      >
+                        <span class="{# style facet__label #}">{{ filter_value.label }}</span>
+                        {%- if product_type_icon != blank -%}
+                          <span class="{# style facet__icon #}">
+                            {%- render 'core-image',
+                              image: product_type_icon,
+                              image_alt_text: filter_value.label,
+                              mode: 'contain',
+                              object_fit: 'contain',
+                              lazyload: true,
+                              srcset_print_sizes: '30,60'
+                            -%}
+                          </span>
+                        {%- endif -%}
+                      </label>
+                    </li>
+                  {%- endfor -%}
+                </ul>
+
+              {%- when 'price_range' -%}
+                <div class="{# style price #}">
+                  <div class="{# style price__from #}">
+                    <label class="{# style price__label #}" for="filter-{{ filter.min_value.param_name }}">
+                      {{- 'collections.filter.price_from' | t -}}
+                    </label>
+                    <input
+                      name="{{ filter.min_value.param_name }}"
+                      id="filter-{{ filter.min_value.param_name }}"
+                      {% if filter.min_value.value -%}
+                        value="{{ filter.min_value.value | money_without_currency | replace: ',', '' }}"
+                      {%- endif %}
+                      type="number"
+                      placeholder="{{ cart.currency.symbol }}0"
+                      min="0"
+                      max="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
+                    >
+                  </div>
+                  <div class="{# style price__to #}">
+                    <label class="{# style price__label #}" for="filter-{{ filter.max_value.param_name }}">
+                      {{- 'collections.filter.price_to' | t -}}
+                    </label>
+                    <input
+                      name="{{ filter.max_value.param_name }}"
+                      id="filter-{{ filter.max_value.param_name }}"
+                      {% if filter.max_value.value -%}
+                        value="{{ filter.max_value.value | money_without_currency | replace: ',', '' }}"
+                      {%- endif %}
+                      type="number"
+                      placeholder="{{ cart.currency.symbol }}{{ filter.range_max | money_without_currency | replace: ',', '' }}"
+                      min="0"
+                      max="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
+                    >
+                  </div>
+                </div>
+            {%- endcase -%}
+          </fieldset>
+        {%- endfor -%}
+      {%- endif -%}
+    </form>
+
+    <div class="{# style footer #}">
+      <button
+        type="button"
+        class="{# style reset #} js-reset-filters"
+        {% unless has_active_filters %}
+          disabled
+        {% endunless %}
+      >
+        <span class="{# style reset__label #}">{{ 'collections.filter.clear' | t }}</span>
+        <span class="{# style reset__count #} js-filter-clear-count">({{ clear_count }})</span>
+      </button>
+
+      <button
+        type="button"
+        class="{# style submit #} js-submit-filters js-offcanvas-close"
+        {% unless has_active_filters or has_non_default_sort %}
+          disabled
+        {% endunless %}
+      >
+        {{- submit_label -}}
+      </button>
+    </div>
+  </div>
+</aside>

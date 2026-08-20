@@ -1,0 +1,6 @@
+{
+  "type": "dynamic",
+  "stylesheet": "external",
+  "tag": "div",
+  "class": ["root"]
+}

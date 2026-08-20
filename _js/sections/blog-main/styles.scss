@@ -1,0 +1,50 @@
+@use 'style-guide/spacing' as spacing;
+@use 'style-guide/mixins' as mixin;
+@use 'style-guide/media' as mq;
+
+.section {
+  @include mixin.container;
+  display: block;
+  padding: 0 spacing.get(size-16) spacing.get(size-24);
+
+  @include mq.min(tabletlandscape) {
+    margin-top: spacing.get(size-16);
+    padding: spacing.get(size-24) spacing.get(size-48) spacing.get(size-40);
+  }
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: spacing.get(size-24);
+  width: 100%;
+  padding-bottom: spacing.get(size-24);
+
+  @include mq.min(tabletlandscape) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    row-gap: spacing.get(size-64);
+    column-gap: spacing.get(size-16);
+    padding-bottom: spacing.get(size-48);
+  }
+}
+
+.item {
+  min-width: 0;
+}
+
+:global(.js-blog-results) {
+  transition: opacity 160ms ease;
+
+  &[aria-busy='true'] {
+    opacity: 0.55;
+    pointer-events: none;
+  }
+}
+
+:global(button.js-blog-load-more) {
+  @include mq.min(tabletlandscape) {
+    min-width: auto;
+    width: fit-content;
+    padding: spacing.get(size-8) spacing.get(size-20);
+  }
+}

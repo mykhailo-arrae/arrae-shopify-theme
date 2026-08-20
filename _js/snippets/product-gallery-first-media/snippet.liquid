@@ -1,0 +1,65 @@
+{% doc %}
+  @description
+  Prints the storefront URL for the first renderable image in a gallery set
+  (variant_gallery_set / pdp_gallery_images), using the same field unwrapping as
+  product-gallery-entry-json.
+
+  @param {array} gallery_set - Gallery entry list
+  @param {number} [width] - Target width for image_url (default 1200)
+{% enddoc %}
+
+{% liquid
+  assign gallery_set = gallery_set | default: null
+  assign width = width | default: 1200
+  assign resolved_src = ''
+
+  if gallery_set != blank
+    for entry in gallery_set
+      assign media_list = null
+
+      if entry.images.value != blank
+        assign media_list = entry.images.value
+      elsif entry.gallery.value != blank
+        assign media_list = entry.gallery.value
+      elsif entry.gallery_images.value != blank
+        assign media_list = entry.gallery_images.value
+      elsif entry.files.value != blank
+        assign media_list = entry.files.value
+      elsif entry.photos.value != blank
+        assign media_list = entry.photos.value
+      elsif entry.assets.value != blank
+        assign media_list = entry.assets.value
+      elsif entry.media_list.value != blank
+        assign media_list = entry.media_list.value
+      elsif entry.carousel_images.value != blank
+        assign media_list = entry.carousel_images.value
+      endif
+
+      if media_list != blank
+        for media in media_list
+          capture media_src
+            render 'product-gallery-image-src', image: media, width: width
+          endcapture
+          assign media_src = media_src | strip
+          if media_src != blank
+            assign resolved_src = media_src
+            break
+          endif
+        endfor
+      elsif entry != blank
+        capture media_src
+          render 'product-gallery-image-src', image: entry, width: width
+        endcapture
+        assign media_src = media_src | strip
+        if media_src != blank
+          assign resolved_src = media_src
+        endif
+      endif
+
+      if resolved_src != blank
+        break
+      endif
+    endfor
+  endif
+%}
+{{- resolved_src -}}

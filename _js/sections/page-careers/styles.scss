@@ -1,0 +1,165 @@
+@use 'unit' as u;
+@use 'style-guide/colors' as color;
+@use 'style-guide/media' as mq;
+@use 'style-guide/mixins' as mixin;
+@use 'style-guide/spacing' as spacing;
+@use 'style-guide/typography' as typography;
+
+.section {
+  background-color: color.get(background);
+}
+
+.PageCareers {
+  @include mixin.container();
+
+  padding: spacing.get(size-24) spacing.get(size-16) 0;
+
+  @include mq.min(tabletlandscape) {
+    display: contents;
+    padding: 0;
+  }
+}
+
+.PageCareers__layout {
+  display: flex;
+  flex-direction: column;
+  gap: spacing.get(size-32);
+
+  @include mq.min(tabletlandscape) {
+    display: contents;
+  }
+}
+
+.PageCareers__media {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border-radius: spacing.get(size-8);
+
+  @include mq.min(tabletlandscape) {
+    grid-column: 1;
+    grid-row: 1 / span 99;
+    aspect-ratio: auto;
+    align-self: start;
+    width: calc(100% - spacing.get(size-32));
+    height: u.rem-calc(668);
+  }
+}
+
+.PageCareers__mediaImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.PageCareers__main {
+  display: flex;
+  flex-direction: column;
+  gap: spacing.get(size-40);
+  min-width: 0;
+}
+
+.PageCareers__content {
+  display: flex;
+  flex-direction: column;
+  gap: u.rem-calc(15);
+
+  @include mq.min(tabletlandscape) {
+    gap: u.rem-calc(18);
+  }
+}
+
+.PageCareers__heading {
+  margin: 0;
+  color: color.get(dark-gray);
+  font-family: typography.get-font-family(heading);
+  font-size: typography.get-font-size(size-32);
+  font-weight: 400;
+  line-height: 112%;
+  letter-spacing: -0.03em;
+
+  @include mq.min(tabletlandscape) {
+    width: min(100%, u.rem-calc(619));
+    height: auto;
+    font-size: typography.get-font-size(size-56);
+    line-height: 98%;
+  }
+}
+
+.PageCareers__subheading {
+  margin: 0;
+  color: color.get(text-gray);
+  font-family: typography.get-font-family(body);
+  font-size: typography.get-font-size(size-16);
+  font-weight: 500;
+  line-height: 110%;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+
+  @include mq.min(tabletlandscape) {
+    font-weight: 400;
+    color: color.get(dark-gray);
+  }
+}
+
+.PageCareers__body {
+  max-width: u.rem-calc(502);
+  margin: 0;
+  color: color.get(dark-gray);
+  font-family: typography.get-font-family(body);
+  font-size: typography.get-font-size(size-16);
+  font-weight: 300;
+  line-height: 120%;
+  letter-spacing: -0.01em;
+}
+
+.PageCareers__rolesTitle {
+  margin: u.rem-calc(50) 0 0;
+  color: color.get(dark-gray);
+  font-family: typography.get-font-family(heading);
+  font-size: typography.get-font-size(size-32);
+  font-weight: 400;
+  line-height: 112%;
+  letter-spacing: -0.03em;
+
+  @include mq.min(tabletlandscape) {
+    grid-column: 2;
+    width: min(100%, u.rem-calc(389));
+    margin: u.rem-calc(53) 0 u.rem-calc(18);
+    font-size: typography.get-font-size(size-40);
+    line-height: 98%;
+    letter-spacing: -0.03em;
+  }
+}
+
+:global(.CareersPage) {
+  padding-bottom: spacing.get(size-32);
+  background-color: color.get(background);
+
+  @include mq.min(tabletlandscape) {
+    padding-bottom: 0;
+  }
+}
+
+@include mq.min(tabletlandscape) {
+  :global(.CareersPage) {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: start;
+    column-gap: spacing.get(size-16);
+    width: 100%;
+    max-width: u.rem-calc(1512);
+    margin-inline: auto;
+    padding: spacing.get(size-48);
+  }
+
+  .section {
+    display: contents;
+  }
+
+  .PageCareers__main {
+    grid-column: 2;
+    width: min(100%, u.rem-calc(619));
+  }
+}

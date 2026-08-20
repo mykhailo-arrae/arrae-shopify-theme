@@ -1,0 +1,36 @@
+@use 'unit' as u;
+@use 'style-guide/media' as mq;
+@use 'style-guide/spacing' as spacing;
+@use 'style-guide/typography' as typography;
+@use 'style-guide/buttons' as buttons;
+@use 'style-guide/colors' as color;
+@use 'style-guide/form' as form;
+
+.main {
+  margin: spacing.get(size-40) auto;
+  max-width: u.rem-calc(1512);
+  width: 100%;
+  padding: 0 spacing.get(size-16);
+  box-sizing: border-box;
+}
+
+.container {
+  margin-bottom: u.rem-calc(60);
+}
+
+.title {
+  text-transform: uppercase;
+  text-align: center;
+  font-size: typography.get-font-size(size-24);
+  font-weight: 700;
+  margin-bottom: u.rem-calc(40);
+}
+
+.content {
+  position: relative;
+  max-width: u.rem-calc(640);
+  margin: 0 auto;
+  margin-top: u.rem-calc(40);
+  text-align: left;
+  font-size: typography.get-font-size(size-16);
+}

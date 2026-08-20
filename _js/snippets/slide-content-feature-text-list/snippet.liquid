@@ -1,0 +1,35 @@
+{% doc %}
+  @description
+  Thin slide adapter for feature text content.
+
+  @param {block} block - Source Shopify block.
+  @param {metaobject[]} slide_content - Selected feature text metaobjects (entry.title, entry.description).
+
+  @example
+  {% render 'slide-content-feature-text-list', block: block, slide_content: block.settings.feature_text_items %}
+{% enddoc %}
+
+{% liquid
+  assign features = slide_content | default: blank
+%}
+
+{% if features != blank %}
+  <div class="{# style root #}" data-slide-content="feature-text">
+    <ul class="{# style features-list #}">
+      {% for feature in features %}
+        <li class="{# style feature #}">
+          {% if feature.title.value != blank %}
+            <h3 class="{# style feature__title #}">
+              {{ feature.title.value }}
+            </h3>
+          {% endif %}
+          {% if feature.description.value != blank %}
+            <div class="{# style feature__description #}">
+              {{ feature.description.value }}
+            </div>
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+{% endif %}

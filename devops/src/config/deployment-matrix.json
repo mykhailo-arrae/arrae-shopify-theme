@@ -1,0 +1,37 @@
+{
+  "$schema": "../core/shopify/deployment/matrix.schema.json",
+  "byTarget": {
+    "dev-testing": {
+      "environment": [
+        {
+          "name": "arrae-staging",
+          "contentOverridePatterns": ""
+        }
+      ]
+    },
+    "dev-qa": {
+      "environment": [
+        {
+          "name": "arrae-staging",
+          "contentOverridePatterns": ""
+        },
+        {
+          "name": "arrae-wellness",
+          "contentOverridePatterns": ""
+        }
+      ]
+    },
+    "uat": {
+      "environment": [
+        {
+          "name": "arrae-staging",
+          "contentOverridePatterns": ""
+        },
+        {
+          "name": "arrae-wellness",
+          "contentOverridePatterns": ""
+        }
+      ]
+    }
+  }
+}

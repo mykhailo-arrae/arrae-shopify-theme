@@ -1,0 +1,66 @@
+{% doc %}
+  Renders the async "Load more" control for the collection grid: a product
+  count ("[COUNT] out of [TOTAL] products") and a button that appends the next
+  page via the Section Rendering API.
+
+  Render inside a `{% paginate %}` block so it can read pagination state from
+  the `paginate` parameter. The button is hidden up-front when there is only a
+  single page.
+
+  @param {paginate} paginate - Liquid paginate object (required)
+  @param {section} section - Parent section, used to read settings (required)
+
+  @example
+  {% render 'collection-load-more', paginate: paginate, section: section %}
+{% enddoc %}
+
+{% liquid
+  assign load_more_label = section.settings.load_more_label | default: 'Load more'
+  assign progress_label = section.settings.progress_label | default: '[COUNT] out of [TOTAL] products'
+
+  assign total = paginate.items
+  assign total_pages = paginate.pages
+
+  assign loaded = paginate.current_offset | plus: paginate.page_size
+  if loaded > total
+    assign loaded = total
+  endif
+
+  assign initial_text = progress_label | replace: '[COUNT]', loaded | replace: '[TOTAL]', total
+%}
+
+{% comment %}
+  Hide the whole block when there is only a single page: with no "Load more"
+  button there is no pagination to surface, so the product count is hidden too.
+{% endcomment %}
+<div
+  class="{# style root #} js-load-more-root"
+  data-total="{{ total }}"
+  data-per-page="{{ paginate.page_size }}"
+  data-current-page="{{ paginate.current_page }}"
+  data-total-pages="{{ total_pages }}"
+  {% if total_pages <= 1 %}
+    hidden
+  {% endif %}
+>
+  <p
+    class="{# style count #} js-load-more-count"
+    data-template="{{ progress_label | escape }}"
+    role="status"
+    aria-live="polite"
+  >
+    {{- initial_text -}}
+  </p>
+
+  <button
+    type="button"
+    class="{# style button #} js-load-more"
+    {% if total_pages <= 1 %}
+      hidden
+    {% endif %}
+  >
+    <span class="{# style button__label #}">{{ load_more_label | truncate: 24 }}</span>
+  </button>
+
+  <p class="{# style error #} js-load-more-error" role="alert" hidden></p>
+</div>

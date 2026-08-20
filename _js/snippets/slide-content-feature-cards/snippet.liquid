@@ -1,0 +1,72 @@
+{% doc %}
+  @description
+  Thin slide adapter for feature card content.
+
+  @param {block} block - Source Shopify block.
+  @param {metaobject[]} slide_content - Selected feature card metaobjects.
+
+  @example
+  {% render 'slide-content-feature-cards', block: block, slide_content: block.settings.feature_cards %}
+{% enddoc %}
+
+{% liquid
+  assign features = slide_content | default: blank
+%}
+
+{% if features != blank %}
+  <div class="{# style root #}" data-slide-content="feature-cards">
+    <div class="{# style carousel #} swiper">
+      <ul class="swiper-wrapper {# style features-list #}">
+        {% for feature in features %}
+          <li class="swiper-slide {# style slide #}">
+            <div class="{# style feature #}">
+              <div class="{# style feature__image #}">
+                {% render 'core-image',
+                  image: feature.image,
+                  mode: 'cover',
+                  object_fit: 'cover',
+                  lazyload: true,
+                  sizes: '320,480,640',
+                  srcset_print_sizes: '320,480,640'
+                %}
+              </div>
+              {% if feature.eyebrow != blank and feature.eyebrow.value != blank %}
+                <span class="{# style feature__eyebrow #}">
+                  {{ feature.eyebrow.value }}
+                </span>
+              {% endif %}
+              {% if feature.description != blank and feature.description.value != blank %}
+                <p class="{# style feature__description #}">
+                  {{ feature.description.value }}
+                </p>
+              {% endif %}
+            </div>
+          </li>
+        {% endfor %}
+      </ul>
+      <div class="{# style pagination #} swiper-pagination"></div>
+    </div>
+
+    {% if features.size > 1 %}
+      <div class="{# style nav-arrows #} swiper-navigation-arrows js-nav-arrows">
+        <button
+          type="button"
+          class="swiper-button-prev {# style arrow #}"
+          title="{{ 'accessibility.previous_slide' | t }}"
+          aria-label="{{ 'accessibility.previous_slide' | t }}"
+        >
+          <span aria-hidden="true">{%- render 'icon-arrow-left' -%}</span>
+        </button>
+
+        <button
+          type="button"
+          class="swiper-button-next {# style arrow #}"
+          title="{{ 'accessibility.next_slide' | t }}"
+          aria-label="{{ 'accessibility.next_slide' | t }}"
+        >
+          <span aria-hidden="true">{%- render 'icon-arrow-right' -%}</span>
+        </button>
+      </div>
+    {% endif %}
+  </div>
+{% endif %}

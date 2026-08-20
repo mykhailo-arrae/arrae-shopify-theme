@@ -1,0 +1,97 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "byTarget": {
+      "type": "object",
+      "properties": {
+        "dev-testing": {
+          "type": "object",
+          "properties": {
+            "environment": {
+              "minItems": 1,
+              "maxItems": 1,
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "contentOverridePatterns": {
+                    "default": "",
+                    "type": "string"
+                  }
+                },
+                "required": ["name", "contentOverridePatterns"],
+                "additionalProperties": false
+              }
+            }
+          },
+          "required": ["environment"],
+          "additionalProperties": false
+        },
+        "dev-qa": {
+          "type": "object",
+          "properties": {
+            "environment": {
+              "minItems": 1,
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "contentOverridePatterns": {
+                    "default": "",
+                    "type": "string"
+                  }
+                },
+                "required": ["name", "contentOverridePatterns"],
+                "additionalProperties": false
+              }
+            }
+          },
+          "required": ["environment"],
+          "additionalProperties": false
+        },
+        "uat": {
+          "type": "object",
+          "properties": {
+            "environment": {
+              "minItems": 1,
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "contentOverridePatterns": {
+                    "default": "",
+                    "type": "string"
+                  }
+                },
+                "required": ["name", "contentOverridePatterns"],
+                "additionalProperties": false
+              }
+            }
+          },
+          "required": ["environment"],
+          "additionalProperties": false
+        }
+      },
+      "required": ["dev-testing", "dev-qa", "uat"],
+      "additionalProperties": false
+    }
+  },
+  "required": ["byTarget"],
+  "additionalProperties": false
+}

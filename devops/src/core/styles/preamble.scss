@@ -1,0 +1,23 @@
+@use 'sass:map' as map;
+@use 'stdlib/list' as slist;
+@use 'style-guide/media' as mq;
+
+// We ensure that the breakpoints are in the correct order after packing with MQPacker
+
+@media print {
+  /* MQPACKER PRINT **/
+}
+
+$_breakpoint-names: map.keys(mq.$breakpoints);
+
+@each $name in $_breakpoint-names {
+  @include mq.min($name) {
+    /* MQPACKER MIN: #{$name} */
+  }
+}
+
+@each $name in slist.reverse($_breakpoint-names) {
+  @include mq.max($name) {
+    /* MQPACKER MAX: #{$name} */
+  }
+}

@@ -1,0 +1,43 @@
+{% liquid
+  assign image = block.settings.image
+  assign title = block.settings.title
+  assign url = block.settings.url
+%}
+
+{% render 'nav-banner-card', image: image, title: title, url: url %}
+
+{% schema %}
+{
+  "name": "Menu Banner",
+  "class": "{# style col #}",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Only one Menu Banner per mega menu is supported. Additional banners will be hidden."
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title"
+    },
+    {
+      "type": "url",
+      "id": "url",
+      "label": "Link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Menu Banner",
+      "settings": {
+        "title": "Shop All Bundles"
+      }
+    }
+  ]
+}
+{% endschema %}

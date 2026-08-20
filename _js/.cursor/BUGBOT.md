@@ -1,0 +1,74 @@
+# TypeScript: Window Type Augmentation
+
+## Rule: No Global Window Overrides
+
+**Severity:** Error
+**Scope:** All `.d.ts`, `.ts` and `.tsx` files
+
+### Forbidden Patterns
+
+Do NOT use global augmentation to extend the `Window` interface:
+
+```ts
+// ❌ FORBIDDEN — pollutes every file in the project
+declare global {
+  interface Window {
+    myProperty: string;
+  }
+}
+
+// ❌ FORBIDDEN — global .d.ts augmentation
+// (in a .d.ts file without imports/exports)
+interface Window {
+  myProperty: string;
+}
+```
+
+Do NOT use `declare let window` in ambient (non-module) files. A file without any `import` or `export` statement is treated as a script by TypeScript, so a top-level `declare let window` in it leaks globally — the same problem as `interface Window` augmentation:
+
+```ts
+// ❌ FORBIDDEN — ambient .d.ts file (no import/export), leaks globally
+// custom-globals.d.ts
+type CustomWindow = Window & { myProperty: string }
+declare let window: CustomWindow
+```
+
+### Required Pattern
+
+Use `declare let window` **only inside module files** (files that already contain at least one `import` or `export`). This limits the redeclaration to the current module scope:
+
+```ts
+// ✅ CORRECT — this file is a module (has imports), so the
+// redeclaration is scoped to this file only
+import { someHelper } from './helpers.js'
+
+type CustomWindow = Window & {
+  myProperty: string;
+  analytics?: AnalyticsLib;
+}
+
+declare let window: CustomWindow;
+
+window.myProperty = 'works';
+window.location.href = '/works'; // built-in props still resolve
+```
+
+### Rationale
+
+- Global `Window` augmentation leaks custom properties into every file, hiding type errors and creating implicit dependencies.
+- The `declare let window: CustomWindow` pattern re-declares `window` only in the current module scope, keeping type safety intact elsewhere. This safety **only holds** when the file is a module (has `import`/`export`).
+- Each module explicitly declares what it expects from `window`, making dependencies visible and reviewable.
+
+### Implementation Notes
+
+1. Always **inline** the custom window type in every module that needs it. Do not create a shared/exported `CustomWindow` type — each module should declare exactly the window properties it depends on, keeping the dependency surface explicit and minimal.
+2. Never place `declare global { interface Window { ... } }` in any file — including `.d.ts` files.
+3. Never use a top-level `declare let window` in an ambient `.d.ts` or any file that lacks `import`/`export`.
+4. If a third-party library requires global window augmentation, isolate it in a single adapter/wrapper module and re-export typed accessors instead of leaking the global override.
+
+### Enforcement
+
+- Flag any use of `declare global` containing `interface Window` as a rule violation.
+- Flag any ambient `.d.ts` file that augments `Window` without module scope.
+- Flag any `declare let window` in a file that has no `import` or `export` statements — this is effectively global.
+- Auto-suggest the module-scoped `declare let window: CustomWindow` refactor in review.

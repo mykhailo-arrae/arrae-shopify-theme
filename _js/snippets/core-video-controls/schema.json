@@ -1,0 +1,6 @@
+{
+  "type": "dynamic",
+  "stylesheet": "inline",
+  "tag": "div",
+  "class": ["snippet"]
+}

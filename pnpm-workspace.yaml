@@ -1,0 +1,30 @@
+enablePrePostScripts: true
+
+managePackageManagerVersions: false
+
+# 24 hours
+minimumReleaseAge: 1440
+
+onlyBuiltDependencies:
+  - '@biomejs/biome'
+  - '@swc/core'
+  - bun
+  - core-js
+  - es5-ext
+  - esbuild
+
+overrides:
+  chokidar: $chokidar
+  graphql: $graphql
+  jquery: $jquery
+  micromatch@3: 4.0.x
+
+saveExact: true
+
+storeDir: ${TMP_DIR}/pnpm-store
+
+strictPeerDependencies: false
+
+updateNotifier: false
+
+virtualStoreDir: ${TMP_DIR}/node_modules/.pnpm

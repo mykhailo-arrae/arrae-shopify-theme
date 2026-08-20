@@ -1,0 +1,90 @@
+@charset 'utf-8';
+
+@use '../devops/src/core/styles/preamble';
+
+@import '../node_modules/@csstools/normalize.css/normalize';
+
+// Switches
+// ===============================================
+
+$disable_modern_code: false;
+
+// Variables
+// ===============================================
+
+@import 'core/unit';
+
+html {
+  overscroll-behavior: none;
+
+  // Reserve the document scrollbar's gutter at all times. This keeps the
+  // viewport / initial-containing-block width identical whether or not
+  // the scrollbar is currently rendered, so locking <body> to `fixed`
+  // (mega menu, offcanvas drawers) cannot widen any descendant — and
+  // Swiper's internal ResizeObserver in the announcement bar never fires
+  // on a phantom width change, eliminating the slide jump on open/close.
+  // Unsupported browsers (Safari < 17.4) gracefully ignore this property.
+  scrollbar-gutter: stable;
+
+  // While a right-docked drawer is open, drop the reserved gutter so the
+  // panel sits flush with the viewport edge. Body is already position:fixed
+  // under an overlay, so reclaiming the gutter isn't a visible page jump.
+  &:has(body.has-open-offcanvas),
+  &:has(body.has-open-mobile-drawer) {
+    scrollbar-gutter: auto;
+  }
+}
+
+body {
+  margin: 0;
+}
+
+body.has-open-offcanvas,
+body.has-open-megamenu,
+body.has-open-mobile-drawer {
+  position: fixed !important;
+  width: 100%;
+
+  #recently-notification {
+    z-index: 1 !important;
+  }
+
+  #ju_bbox {
+    display: none !important;
+  }
+
+  #ju_custom_open_btn {
+    display: none !important;
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+}
+
+fieldset {
+  min-width: 0; // Fix fieldset width if child widths exceed container width or if you need to use overflow-x: auto.
+}
+
+// Components
+// ===============================================
+
+@import 'swiper';
+
+// Theme
+// ===============================================
+
+@import 'utilities';
+@import 'objects';

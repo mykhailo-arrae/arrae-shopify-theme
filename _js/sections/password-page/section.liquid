@@ -1,0 +1,126 @@
+{% liquid
+  assign heading = section.settings.heading | default: ''
+  assign subhead = section.settings.subhead | default: ''
+  assign mailchimp_form_action = section.settings.mailchimp_form_action | default: ''
+%}
+
+<section class="{# style PasswordNewsletter #}">
+  {% if heading != blank %}
+    <h1 class="{# style PasswordNewsletter-heading #}">
+      {{ heading }}
+    </h1>
+  {% endif %}
+
+  {% if subhead != blank %}
+    <div class="{# style PasswordNewsletter-subheading #}">
+      {{ subhead }}
+    </div>
+  {% endif %}
+
+  <div class="{# style PasswordNewsletter-form #}">
+    {% if mailchimp_form_action != blank %}
+      <form action="{{ mailchimp_form_action }}" method="post" name="mc-embedded-subscribe-form" target="_blank">
+        <!--
+          real people should not fill this in and expect good things - do not remove this or risk form bot signups
+        -->
+        <div style="position: absolute; left: -5000px;">
+          <input type="text" name="b_85df1bbc05a1d0dfb3763c877_c784621d65" tabindex="-1" value="">
+        </div>
+
+        <input
+          type="email"
+          class="{# style PasswordNewsletter-input #}"
+          name="EMAIL"
+          value="{% if customer %}{{ customer.email }}{% endif %}"
+          placeholder="{{ 'newsletter_email' | t }}"
+          aria-label="{{ 'newsletter_email' | t }}"
+          autocorrect="off"
+          autocapitalize="off"
+          required
+        >
+
+        <button type="submit" name="subscribe" class="{# style PasswordNewsletter-btn #}">
+          {{ 'submit' | t }}
+        </button>
+      </form>
+    {% else %}
+      {% form 'customer' %}
+        {% if form.errors %}
+          <div class="{# style PasswordNewsletter-errors #}">
+            <p>{{ 'errors_were_encountered' | t }}</p>
+            {{ form.errors | default_errors }}
+          </div>
+        {% endif %}
+
+        {% if form.posted_successfully? %}
+          <p class="{# style PasswordNewsletter-success #}">
+            {{ 'confirmation' | t }}
+          </p>
+        {% else %}
+          <input type="hidden" name="contact[tags]" value="newsletter">
+
+          <input
+            class="{# style PasswordNewsletter-input #}"
+            type="email"
+            name="contact[email]"
+            value="{% if customer %}{{ customer.email }}{% endif %}"
+            placeholder="{{ 'newsletter_email' | t }}"
+            aria-label="{{ 'newsletter_email' | t }}"
+            autocorrect="off"
+            autocapitalize="off"
+            required
+          >
+
+          <button type="submit" class="{# style PasswordNewsletter-btn #}" name="subscribe">
+            {{ 'submit' | t }}
+          </button>
+        {% endif %}
+      {% endform %}
+    {% endif %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Password Section",
+  "class": "PasswordPage",
+  "locales": {
+    "en": {
+      "confirmation": "Thanks for subscribing",
+      "newsletter_email": "Enter your email",
+      "submit": "Join",
+      "errors_were_encountered": "The following errors were encountered:"
+    }
+  },
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Opening Soon"
+    },
+    {
+      "type": "richtext",
+      "id": "subhead",
+      "label": "Subheading",
+      "default": "<p>Be the first to know when we launch</p>"
+    },
+    {
+      "type": "text",
+      "id": "mailchimp_form_action",
+      "label": "MailChimp form action URL",
+      "info": "[Find your MailChimp form action URL](https://help.shopify.com/themes/customization/communication/get-a-mailchimp-form-action-url)"
+    }
+  ],
+  "enabled_on": {
+    "templates": ["password"]
+  },
+  "presets": [
+    {
+      "name": "Password Section",
+      "category": "Forms",
+      "settings": {}
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,29 @@
+<div class="js-full-screen-banner-list {# style list #}" data-stack="false">
+  {% content_for 'blocks' %}
+</div>
+
+{% schema %}
+{
+  "name": "Full screen banner list",
+  "tag": "section",
+  "class": "js-full-screen-banner-list {# style section #}",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "full-screen-banner"
+    }
+  ],
+  "max_blocks": 4,
+  "presets": [
+    {
+      "name": "Full screen banner list",
+      "category": "Banners",
+      "blocks": [
+        {
+          "type": "full-screen-banner"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,152 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "categories": {
+    "correctness": "error",
+    "nursery": "off",
+    "pedantic": "off",
+    "perf": "off",
+    "restriction": "off",
+    "style": "off",
+    "suspicious": "off"
+  },
+  "ignorePatterns": [
+    "_js-dist",
+    "_js-test",
+    "_libs/*.js",
+    "_misc",
+    "assets/*.js",
+    "devops/ci/prepare-deployment-matrix.js",
+    "devops/lib",
+    "node_modules"
+  ],
+  "options": {
+    "reportUnusedDisableDirectives": "warn",
+    "typeAware": true,
+    "typeCheck": true
+  },
+  "overrides": [
+    {
+      "files": ["devops/**/*"],
+      "rules": {
+        "import/no-default-export": ["error"],
+        "promise/no-callback-in-promise": ["off"],
+        "typescript/explicit-module-boundary-types": ["error"],
+        "typescript/require-await": ["off"],
+        "unicorn/no-empty-file": ["error"]
+      }
+    },
+    {
+      "files": ["**/*.config.ts", "devops/src/webpack/**/*.ts"],
+      "rules": { "import/no-default-export": ["off"] }
+    },
+    {
+      "files": ["**/*.spec.ts"],
+      "rules": { "typescript/require-await": ["off"] }
+    },
+    {
+      "files": ["_js/**/*.scss.ts", "_js/**/*.scss.d.ts"],
+      "rules": { "import/no-default-export": ["off"] }
+    },
+    {
+      "files": ["_js/project/**/*"],
+      "rules": {
+        "import/no-default-export": ["error"],
+        "typescript/explicit-module-boundary-types": ["warn"],
+        "unicorn/no-empty-file": ["warn"]
+      }
+    },
+    {
+      "files": ["_js/core/**/*"],
+      "rules": {
+        "import/no-default-export": ["error"],
+        "typescript/explicit-module-boundary-types": ["error"],
+        "unicorn/no-empty-file": ["error"]
+      }
+    }
+  ],
+  "plugins": [
+    "import",
+    "node",
+    "oxc",
+    "promise",
+    "react",
+    "react-perf",
+    "typescript",
+    "unicorn",
+    "vitest"
+  ],
+  "rules": {
+    "eslint/curly": ["error", "all"],
+    "eslint/no-console": ["warn", { "allow": ["warn", "error"] }],
+    "eslint/no-unused-vars": ["warn"],
+    "eslint/prefer-promise-reject-errors": ["error"],
+    "eslint/symbol-description": ["error"],
+    "import/consistent-type-specifier-style": ["off"],
+    "import/no-default-export": ["warn"],
+    "typescript/ban-ts-comment": [
+      "error",
+      {
+        "minimumDescriptionLength": 7,
+        "ts-check": false,
+        "ts-expect-error": "allow-with-description",
+        "ts-ignore": true,
+        "ts-nocheck": true
+      }
+    ],
+    "typescript/consistent-type-assertions": [
+      "error",
+      { "assertionStyle": "never" }
+    ],
+    "typescript/consistent-type-definitions": ["error", "type"],
+    "typescript/consistent-type-imports": [
+      "error",
+      { "fixStyle": "separate-type-imports", "prefer": "type-imports" }
+    ],
+    "typescript/explicit-module-boundary-types": ["warn"],
+    "typescript/no-deprecated": ["error"],
+    "typescript/no-explicit-any": ["error", { "fixToUnknown": true }],
+    "typescript/no-floating-promises": ["error"],
+    "typescript/no-invalid-void-type": ["error"],
+    "typescript/no-misused-promises": [
+      "error",
+      { "checksVoidReturn": { "attributes": false } }
+    ],
+    "typescript/no-unnecessary-condition": ["off"],
+    "typescript/no-unnecessary-type-parameters": ["error"],
+    "typescript/no-unsafe-argument": ["error"],
+    "typescript/no-unsafe-assignment": ["error"],
+    "typescript/no-unsafe-call": ["error"],
+    "typescript/no-unsafe-function-type": ["error"],
+    "typescript/no-unsafe-member-access": ["error"],
+    "typescript/no-unsafe-return": ["error"],
+    "typescript/prefer-for-of": ["error"],
+    "typescript/prefer-ts-expect-error": ["error"],
+    "typescript/require-await": ["off"],
+    "typescript/restrict-template-expressions": [
+      "error",
+      {
+        "allowAny": false,
+        "allowBoolean": false,
+        "allowNever": false,
+        "allowNullish": true,
+        "allowNumber": true,
+        "allowRegExp": false
+      }
+    ],
+    "typescript/return-await": ["error", "error-handling-correctness-only"],
+    "typescript/use-unknown-in-catch-callback-variable": ["error"],
+    "unicorn/catch-error-name": [
+      "error",
+      { "ignore": ["_err"], "name": "err" }
+    ],
+    "unicorn/no-abusive-eslint-disable": ["error"],
+    "unicorn/no-await-expression-member": ["error"],
+    "unicorn/no-empty-file": ["off"],
+    "unicorn/numeric-separators-style": ["error"],
+    "unicorn/prefer-dom-node-text-content": ["error"],
+    "unicorn/prefer-set-size": ["error"],
+    "unicorn/prefer-string-raw": ["error"],
+    "unicorn/prefer-type-error": ["error"],
+    "unicorn/throw-new-error": ["error"]
+  }
+}

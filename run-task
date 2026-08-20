@@ -1,0 +1,90 @@
+#!/bin/bash
+
+set -Eeuo pipefail
+
+# Function to print output
+print_error() {
+  echo "Error: $1" >&2
+}
+
+print_warning() {
+  echo "Warning: $1" >&2
+}
+
+print_success() {
+  echo "$1" >&2
+}
+
+# Function to check if docker is available and running
+check_docker() {
+  if ! command -v docker >/dev/null 2>&1; then
+    print_error "Docker is not installed or not in PATH"
+    exit 1
+  fi
+
+  if ! docker info >/dev/null 2>&1; then
+    print_error "Docker daemon is not running"
+    exit 1
+  fi
+}
+
+# Function to check if docker compose is available
+check_docker_compose() {
+  if ! docker compose version >/dev/null 2>&1; then
+    print_error "Docker Compose is not available"
+    exit 1
+  fi
+}
+
+# Function to check if the main container is running
+check_container_running() {
+  if ! docker compose ps main --format json 2>/dev/null | grep -q '"State":"running"'; then
+    print_error "Container 'main' is not running. Please start it with `./up`"
+    exit 1
+  fi
+}
+
+# Function to run task inside container
+run_inside_container() {
+  if [ $# -eq 0 ]; then
+    print_warning "No task specified, running help"
+    fish -c help
+  elif [ $# -eq 1 ]; then
+    bb run "$1"
+  else
+    task="$1"
+    shift
+    bb run "$task" -- "$@"
+  fi
+}
+
+# Function to run task outside container
+run_outside_container() {
+  check_docker
+  check_docker_compose
+  check_container_running
+
+  if [ $# -eq 0 ]; then
+    print_warning "No task specified, running help"
+    docker compose exec main fish -c help
+  elif [ $# -eq 1 ]; then
+    docker compose exec --no-TTY main bb run "$1"
+  else
+    task="$1"
+    shift
+    docker compose exec --no-TTY main bb run "$task" -- "$@"
+  fi
+}
+
+# Main logic
+if [ "${IS_INSIDE_CONTAINER:-0}" = "1" ]; then
+  # We're inside the container
+  if ! command -v bb >/dev/null 2>&1; then
+    print_error "bb (babashka) is not available inside the container"
+    exit 1
+  fi
+  run_inside_container "$@"
+else
+  # We're outside the container
+  run_outside_container "$@"
+fi

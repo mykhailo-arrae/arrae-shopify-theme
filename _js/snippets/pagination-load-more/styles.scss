@@ -1,0 +1,33 @@
+@use 'unit' as u;
+@use 'style-guide/spacing' as spacing;
+@use 'style-guide/typography' as typography;
+@use 'style-guide/colors' as color;
+
+.root {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: spacing.get(size-16);
+  margin: spacing.get(size-40) 0;
+  text-align: center;
+}
+
+.legend {
+  margin: 0;
+  font-size: typography.get-font-size(size-16);
+  line-height: 1.4;
+  color: color.get(text);
+  @include typography.font-proxima-nova();
+}
+
+.legend__count {
+  font-weight: 700;
+}
+
+.legend__text {
+  font-weight: 400;
+}
+
+:global(.portable-snippet[data-snippet-name='core-button']).button {
+  min-width: u.rem-calc(200);
+}

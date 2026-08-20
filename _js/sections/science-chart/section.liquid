@@ -1,0 +1,253 @@
+{% liquid
+  assign heading = section.settings.heading
+  assign subheading = section.settings.subheading
+
+  assign bottom_heading = section.settings.bottom_heading
+  assign bottom_text = section.settings.bottom_text
+  assign badge_text = section.settings.badge_text
+  assign disclaimer = section.settings.disclaimer
+
+  assign chart_type = section.settings.chart_type | default: 'bar'
+%}
+{% render 'chart-stylesheet' %}
+<section
+  class="{# style section #} js-science-chart"
+  data-section-id="{{ section.id }}"
+>
+  <div class="{# style container #}">
+    <div class="{# style grid #}">
+      <div class="{# style intro #}">
+        {% if heading != blank %}
+          <h2 class="{# style heading #}">{{ heading | newline_to_br }}</h2>
+        {% endif %}
+
+        {% if subheading != blank %}
+          <p class="{# style subheading #}">{{ subheading | newline_to_br }}</p>
+        {% endif %}
+      </div>
+
+      <div class="{# style chart-col #}">
+        {% render 'chart',
+          chart_title: section.settings.chart_title,
+          chart_type: chart_type,
+          footnote: section.settings.footnote,
+          primary_label: section.settings.primary_label,
+          secondary_label: section.settings.secondary_label,
+          color_primary: section.settings.color_primary,
+          color_secondary: section.settings.color_secondary,
+          line_color_primary: section.settings.line_color_primary,
+          line_color_secondary: section.settings.line_color_secondary,
+          axis_labels: section.settings.axis_labels,
+          primary_values: section.settings.primary_values,
+          secondary_values: section.settings.secondary_values,
+          axis_x_title: section.settings.axis_x_title,
+          axis_y_title: section.settings.axis_y_title,
+          y_min: section.settings.y_min,
+          y_max: section.settings.y_max,
+          y_step: section.settings.y_step
+        %}
+      </div>
+
+      {% if bottom_heading != blank or bottom_text != blank or badge_text != blank or disclaimer != blank %}
+        <div class="{# style footer #}">
+          {% if bottom_heading != blank or bottom_text != blank or badge_text != blank %}
+            <div class="{# style metric #}">
+              {% if badge_text != blank %}
+                <div class="{# style badge #}">{{ badge_text }}</div>
+              {% endif %}
+
+              {% if bottom_heading != blank or bottom_text != blank %}
+                <div class="{# style metric__text #}">
+                  {% if bottom_heading != blank %}
+                    <p class="{# style metric__heading #}">{{ bottom_heading }}</p>
+                  {% endif %}
+                  {% if bottom_text != blank %}
+                    <p class="{# style metric__body #}">{{ bottom_text | newline_to_br }}</p>
+                  {% endif %}
+                </div>
+              {% endif %}
+            </div>
+          {% endif %}
+
+          {% if disclaimer != blank %}
+            <div class="{# style disclaimer #}">{{ disclaimer }}</div>
+          {% endif %}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+{% schema %}
+{
+  "name": "Science",
+  "tag": "section",
+  "class": "{# style section #} js-science-chart",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Clinical Studies"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Track your progress over time. This chart illustrates the steady reduction in body fat observed across a 10-week period, culminating in a clinically significant 20% decrease."
+    },
+    {
+      "type": "header",
+      "content": "Bottom Content"
+    },
+    {
+      "type": "text",
+      "id": "badge_text",
+      "label": "Badge Text",
+      "info": "Shown inside the circular badge (e.g. \"x5\"). Leave empty to hide the badge.",
+      "default": "x5"
+    },
+    {
+      "type": "text",
+      "id": "bottom_heading",
+      "label": "Bottom Heading",
+      "default": "Faster Metabolic Rate*"
+    },
+    {
+      "type": "textarea",
+      "id": "bottom_text",
+      "label": "Bottom Text",
+      "default": "Burn more calories even at rest."
+    },
+    {
+      "type": "inline_richtext",
+      "id": "disclaimer",
+      "label": "Disclaimer",
+      "default": "(Independent <a href=\"#\">clinical study</a>, 2 months)*"
+    },
+    {
+      "type": "header",
+      "content": "Chart"
+    },
+    {
+      "type": "text",
+      "id": "chart_title",
+      "label": "Chart Title"
+    },
+    {
+      "type": "richtext",
+      "id": "footnote",
+      "label": "Footnote"
+    },
+    {
+      "type": "select",
+      "id": "chart_type",
+      "label": "Chart type",
+      "options": [
+        { "value": "bar", "label": "Bar chart" },
+        { "value": "line", "label": "Line chart" }
+      ],
+      "default": "bar"
+    },
+    {
+      "type": "text",
+      "id": "primary_label",
+      "label": "Primary dataset label",
+      "default": "MB-1"
+    },
+    {
+      "type": "text",
+      "id": "secondary_label",
+      "label": "Secondary dataset label",
+      "default": "Other"
+    },
+    {
+      "type": "color",
+      "id": "color_primary",
+      "label": "Primary dataset color",
+      "default": "#f8a28c"
+    },
+    {
+      "type": "color",
+      "id": "color_secondary",
+      "label": "Secondary dataset color",
+      "default": "#efe7da"
+    },
+    {
+      "type": "color",
+      "id": "line_color_primary",
+      "label": "Primary dataset line color",
+      "default": "#23180C"
+    },
+    {
+      "type": "color",
+      "id": "line_color_secondary",
+      "label": "Secondary dataset line color",
+      "default": "#23180C"
+    },
+    {
+      "type": "text",
+      "id": "axis_labels",
+      "label": "X-axis labels",
+      "info": "Comma-separated, one per data point (e.g. 2,4,6,8,10 or Jan,Feb,Mar).",
+      "default": "2,4,6,8,10"
+    },
+    {
+      "type": "text",
+      "id": "primary_values",
+      "label": "Primary dataset values",
+      "info": "Comma-separated numbers, aligned with the X-axis labels.",
+      "default": "8,19,24,28,37"
+    },
+    {
+      "type": "text",
+      "id": "secondary_values",
+      "label": "Secondary dataset values",
+      "info": "Comma-separated numbers, aligned with the X-axis labels.",
+      "default": "6,17,19,22,31"
+    },
+    {
+      "type": "text",
+      "id": "axis_x_title",
+      "label": "X-axis title",
+      "default": "Weeks"
+    },
+    {
+      "type": "text",
+      "id": "axis_y_title",
+      "label": "Y-axis title",
+      "default": "% Body Fat Reduction"
+    },
+    {
+      "type": "number",
+      "id": "y_min",
+      "label": "Y-axis minimum",
+      "default": 0
+    },
+    {
+      "type": "number",
+      "id": "y_max",
+      "label": "Y-axis maximum",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "y_step",
+      "label": "Y-axis tick interval",
+      "min": 1,
+      "max": 25,
+      "step": 1,
+      "default": 10
+    }
+  ],
+  "presets": [
+    {
+      "name": "Science Chart",
+      "category": "Content"
+    }
+  ]
+}
+{% endschema %}

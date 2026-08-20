@@ -1,0 +1,52 @@
+# Get editor completions based on the config schema
+"$schema" = 'https://starship.rs/config-schema.json'
+
+format = """
+${env_var.INFERRED_PROJECT_NAME}\
+$directory\
+$git_branch\
+$git_status\
+$cmd_duration\
+$line_break\
+$character"""
+
+# Inserts a blank line between shell prompts
+add_newline = false
+
+[battery]
+disabled = true
+
+# Replace the '❯' symbol in the prompt with '➜'
+[character]
+success_symbol = '[>](bold cyan)'
+error_symbol = '[\(>_<\)](bold red)'
+
+[container]
+disabled = true
+
+[env_var.INFERRED_PROJECT_NAME]
+format = '[DOCKER](bold cyan) [$env_value]($style) '
+default = 'unknown'
+style = 'bold fg'
+
+[directory]
+style = 'bold cyan'
+fish_style_pwd_dir_length = 1
+truncation_length = 1
+truncate_to_repo = true
+
+[git_branch]
+symbol = ''
+style = 'bold cyan'
+
+[nodejs]
+disabled = true
+
+[package]
+disabled = true
+
+[python]
+disabled = true
+
+[ruby]
+disabled = true

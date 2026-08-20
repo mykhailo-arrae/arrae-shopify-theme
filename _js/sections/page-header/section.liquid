@@ -1,0 +1,162 @@
+{% liquid
+  assign is_first_section = false
+  if section.index == 1
+    assign is_first_section = true
+  endif
+
+  assign show_breadcrumbs = section.settings.show_breadcrumbs
+  assign subheading = section.settings.subheading
+  assign bg_desktop = section.settings.background_image_desktop
+  assign bg_mobile = section.settings.background_image_mobile
+  # Text color can be driven by a collection metafield when present, otherwise
+  # it falls back to the section setting, then to 'dark'.
+  assign text_color = collection.metafields.custom.header_banner_text_color.value | default: section.settings.text_color | default: 'dark' | downcase
+  assign overlay_color = section.settings.overlay_color
+  assign overlay_opacity = section.settings.overlay_opacity | default: 25 | at_least: 0 | at_most: 100
+  assign overlay = ''
+  if overlay_color != blank
+    assign overlay_alpha = overlay_opacity | times: 1.0 | divided_by: 100.0
+    assign overlay = overlay_color | color_modify: 'alpha', overlay_alpha
+  endif
+
+  assign heading = section.settings.heading | replace: '[br]', '<br>' | default: null
+
+  assign has_bg = false
+  if bg_desktop != blank or bg_mobile != blank
+    assign has_bg = true
+  endif
+%}
+
+{% if show_breadcrumbs %}
+  {% comment %}
+    Rendered as a direct, full-width child (no container) so the breadcrumb
+    snippet's own border bar can span the whole viewport while its inner
+    container keeps the content aligned with the page.
+  {% endcomment %}
+  <div class="{# style breadcrumbs #}">
+    {% render 'breadcrumbs' %}
+  </div>
+{% endif %}
+
+<div class="{# style header #}{% if text_color == 'light' %} {# style header--light #}{% endif %}">
+  {%- if has_bg -%}
+    <div class="{# style header__media #}">
+      {% render 'core-image',
+        image: bg_desktop,
+        image_mobile: bg_mobile,
+        mode: 'cover',
+        object_fit: 'cover',
+        preload: true,
+        lazyload: false,
+        srcset_print_sizes: '480,640,800,960,1024,1280,1440,1800,2000',
+        mobile_srcset_print_sizes: '320,480,640,800'
+      %}
+    </div>
+  {%- endif -%}
+
+  {%- if overlay != blank and has_bg -%}
+    <div
+      class="{# style header__overlay #}"
+      style="background:{{ overlay }}"
+    ></div>
+  {%- endif -%}
+
+  {% if heading != blank %}
+    <div class="{# style header__inner #}">
+      {% if is_first_section %}
+        <h1
+          class="{# style title #}"
+          {% if section.settings.heading == blank %}
+            data-dynamic-title="true"
+          {% endif %}
+        >
+          {{- heading -}}
+        </h1>
+      {% else %}
+        <h2
+          class="{# style title #}"
+          {% if section.settings.heading == blank %}
+            data-dynamic-title="true"
+          {% endif %}
+        >
+          {{- heading -}}
+        </h2>
+      {% endif %}
+
+      {% if subheading != blank %}
+        <p class="{# style subheading #}">{{ subheading }}</p>
+      {% endif %}
+    </div>
+  {% endif %}
+</div>
+
+{% schema %}
+{
+  "name": "Page Header",
+  "class": "{# style root #}",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading",
+      "info": "Use [br] to add line breaks."
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading"
+    },
+    {
+      "type": "select",
+      "id": "text_color",
+      "label": "Text color",
+      "info": "Overridden by the collection's \"header_banner_text_color\" metafield when set.",
+      "options": [
+        { "value": "dark", "label": "Dark" },
+        { "value": "light", "label": "Light" }
+      ],
+      "default": "dark"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image_desktop",
+      "label": "Background image (desktop)"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image_mobile",
+      "label": "Background image (mobile)"
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "Overlay color",
+      "default": "#000000"
+    },
+    {
+      "type": "text",
+      "id": "overlay_opacity",
+      "label": "Overlay opacity",
+      "info": "Percentage from 0 to 100.",
+      "default": "25"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_breadcrumbs",
+      "label": "Show Breadcrumbs",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "Page Header",
+      "category": "Header",
+      "settings": {
+        "show_breadcrumbs": true,
+        "text_color": "dark"
+      }
+    }
+  ]
+}
+{% endschema %}

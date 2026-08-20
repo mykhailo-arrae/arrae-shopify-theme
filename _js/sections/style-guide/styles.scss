@@ -1,0 +1,728 @@
+@use 'sass:meta';
+@use 'style-guide/spacing' as spacing;
+@use 'style-guide/typography' as typography;
+@use 'style-guide/colors' as color;
+@use 'style-guide/form' as form;
+@use 'style-guide/mixins' as mixin;
+@use 'style-guide/components' as components;
+@use 'style-guide/media' as mq;
+@use 'unit' as u;
+
+/* ===================================================== */
+/* Root */
+/* ===================================================== */
+
+.root {
+  display: flex;
+  position: relative;
+  background-color: color.get(background);
+}
+
+/* ===================================================== */
+/* Nav */
+/* ===================================================== */
+
+.nav {
+  display: block;
+  width: fit-content;
+  color: color.get(off-white);
+  @include mixin.reset-button;
+  cursor: pointer;
+
+  svg {
+    color: color.get(off-white);
+    pointer-events: none;
+  }
+
+  span {
+    @include mixin.visually-hidden;
+  }
+}
+
+/* ===================================================== */
+/* Drawer */
+/* ===================================================== */
+
+.drawer {
+  height: auto;
+  position: relative;
+  box-sizing: border-box;
+  color: color.get(off-white);
+  background-color: color.get(dark-gray);
+  width: 0;
+  transition: all 0.5s ease-in-out;
+  pointer-events: none;
+  @include mq.min(mobile) {
+    max-width: u.rem-calc(243);
+  }
+
+  &:global(.is-expanded) {
+    width: 100%;
+    pointer-events: auto;
+  }
+
+  &__logo {
+    display: block;
+    padding-bottom: spacing.get(size-16);
+  }
+
+  &__wrapper {
+    top: 0;
+    position: sticky;
+    padding: spacing.get(size-24);
+    padding-right: 0;
+    @include mq.min(mobile) {
+      padding: spacing.get(size-40);
+      padding-right: 0;
+    }
+  }
+
+  &__container {
+    height: 100%;
+    overflow: hidden;
+  }
+
+  &__trigger {
+    display: block;
+    pointer-events: auto;
+    background-color: color.get(dark-gray);
+    margin-left: -1px;
+
+    button {
+      cursor: pointer;
+      position: sticky;
+      top: spacing.get(size-12);
+      padding: spacing.get(size-24);
+
+      @include mq.min(mobile) {
+        padding: spacing.get(size-40);
+      }
+    }
+  }
+
+  &__title {
+    text-wrap-mode: nowrap;
+    text-transform: uppercase;
+    color: color.get(off-white-60);
+    @include typography.body-xsmall();
+    padding-top: spacing.get(size-40);
+    padding-bottom: spacing.get(size-16);
+  }
+
+  &__main {
+    position: relative;
+  }
+
+  &__nav {
+    display: flex;
+    flex-direction: column;
+    gap: spacing.get(size-14);
+    @include mixin.reset-ul;
+  }
+
+  &__nav__item {
+    position: relative;
+  }
+
+  &__nav__action {
+    color: color.get(off-white);
+    @include typography.body-regular();
+    text-decoration: none;
+
+    &:global(.is-active) {
+      font-weight: 700;
+    }
+  }
+}
+
+/* ===================================================== */
+/* Sections */
+/* ===================================================== */
+
+.sections {
+  width: 100%;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+.section {
+  min-height: 100vh;
+  display: none;
+
+  &:global(.is-active) {
+    display: block;
+  }
+
+  &__container {
+    width: 100%;
+  }
+
+  &__logo {
+    display: block;
+    color: color.get(dark-gray);
+    max-width: u.rem-calc(390);
+  }
+
+  &__header {
+    padding: spacing.get(size-24) spacing.get(size-16);
+    border-bottom: 1px solid color.get(text-gray);
+    @include mq.min(mobile) {
+      padding: spacing.get(size-40);
+    }
+  }
+
+  &__title {
+    text-transform: uppercase;
+    @include typography.heading-2();
+  }
+
+  &__tagline {
+    display: block;
+    color: color.get(light-gray);
+    @include typography.body-medium();
+    padding-bottom: spacing.get(size-12);
+  }
+
+  &__main {
+    width: 100%;
+    box-sizing: border-box;
+    padding: spacing.get(size-24) spacing.get(size-16);
+    @include mq.min(mobile) {
+      padding: spacing.get(size-64);
+    }
+  }
+
+  &__rows {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__row {
+    display: flex;
+    flex-direction: column;
+    gap: spacing.get(size-14);
+  }
+
+  &__divider {
+    border-bottom: 1px solid color.get(dark-gray-20);
+    height: 1px;
+  }
+
+  &__columns {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+
+    &--gap {
+      gap: spacing.get(size-12);
+    }
+  }
+
+  &__column {
+    width: 100%;
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    border-top: 1px solid color.get(dark-gray-20);
+    border-bottom: 1px solid color.get(dark-gray-20);
+    padding: spacing.get(size-14) 0;
+    gap: spacing.get(size-12);
+  }
+
+  &__body {
+    @include typography.body-small();
+  }
+
+  &__label {
+    @include typography.body-small();
+    font-weight: 700;
+    padding-bottom: spacing.get(size-16);
+    border-bottom: 1px solid color.get(dark-gray-20);
+  }
+
+  &__subtitle {
+    text-transform: uppercase;
+    @include typography.body-medium();
+    font-weight: 500;
+  }
+
+  &__item {
+    position: relative;
+  }
+}
+
+/* ===================================================== */
+/* Typography */
+/* ===================================================== */
+
+.typography {
+  line-height: inherit;
+  gap: spacing.get(size-64);
+  padding-top: spacing.get(size-40);
+
+  &__font {
+    @include typography.body-large();
+
+    &--heading {
+      font-family: typography.get-font-family(heading);
+    }
+  }
+
+  &__text {
+    @include typography.body-regular();
+
+    &--heading {
+      font-family: typography.get-font-family(heading);
+    }
+  }
+
+  &__columns {
+    gap: spacing.get(size-40);
+    flex-direction: column;
+    @include mq.min(mobile) {
+      flex-direction: row;
+    }
+  }
+
+  &--heading-1 {
+    @include typography.heading-1();
+  }
+
+  &--heading-2 {
+    @include typography.heading-2();
+  }
+
+  &--heading-3 {
+    @include typography.heading-3();
+  }
+
+  &--heading-4 {
+    @include typography.heading-4();
+  }
+
+  &--paragraph-regular {
+    @include typography.body-regular();
+  }
+
+  &--paragraph-bold {
+    @include typography.body-regular();
+    font-weight: 420;
+  }
+
+  &--paragraph-italic {
+    @include typography.body-regular();
+    font-style: italic;
+  }
+
+  &--paragraph-underline {
+    @include typography.body-regular();
+    text-decoration: underline;
+  }
+
+  &--paragraph-strikethrough {
+    @include typography.body-regular();
+    text-decoration: line-through;
+  }
+
+  &--paragraph-link {
+    @include typography.body-regular();
+    color: color.get(text);
+    text-decoration: underline;
+  }
+
+  &--paragraph-blockquotes {
+    @include typography.body-regular();
+    font-weight: 420;
+    font-style: italic;
+  }
+}
+
+/* ===================================================== */
+/* Colors */
+/* ===================================================== */
+
+.colors {
+  display: flex;
+  flex-direction: column;
+  gap: spacing.get(size-64);
+
+  &__label {
+    display: flex;
+    align-items: center;
+    text-transform: capitalize;
+  }
+
+  &__swatch {
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+    aspect-ratio: 1/1;
+    width: spacing.get(size-40);
+    margin-right: spacing.get(size-14);
+    border: 1px solid color.get(light-gray);
+  }
+
+  &__swatch__inner {
+    @include mixin.fill-parent();
+  }
+
+  &__hex {
+    text-transform: uppercase;
+  }
+
+  &__handle {
+    color: color.get(text-gray);
+    text-transform: none;
+  }
+}
+
+/* ===================================================== */
+/* Spacing */
+/* ===================================================== */
+
+.spacing {
+  display: flex;
+  flex-direction: column;
+
+  &__row {
+    gap: spacing.get(size-12);
+    padding: spacing.get(size-16) 0;
+    border-bottom: 1px solid color.get(dark-gray-20);
+  }
+
+  &__item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  &__body {
+    @include typography.body-small();
+  }
+
+  &__unit {
+    display: block;
+    aspect-ratio: 1;
+    background-color: color.get(dark-gray);
+
+    &--xxsmall {
+      width: spacing.get(size-8);
+    }
+
+    &--xsmall {
+      width: spacing.get(size-12);
+    }
+
+    &--small {
+      width: spacing.get(size-14);
+    }
+
+    &--regular {
+      width: spacing.get(size-16);
+    }
+
+    &--medium {
+      width: spacing.get(size-24);
+    }
+
+    &--large {
+      width: spacing.get(size-40);
+    }
+
+    &--xlarge {
+      width: spacing.get(size-64);
+    }
+
+    &--xxlarge {
+      width: spacing.get(size-80);
+    }
+
+    &--xxxlarge {
+      width: spacing.get(size-120);
+    }
+  }
+}
+
+/* ===================================================== */
+/* Icons */
+/* ===================================================== */
+
+.icons {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: spacing.get(size-16);
+  @include mq.min(mobile) {
+    grid-template-columns: repeat(6, 1fr);
+  }
+
+  &__icon {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    gap: spacing.get(size-12);
+    border-radius: spacing.get(size-16);
+    background: color.get(dark-gray-10);
+    padding: spacing.get(size-40) spacing.get(size-24);
+  }
+
+  &__icon__svg {
+    display: block;
+    width: spacing.get(size-40);
+    aspect-ratio: 1/1;
+    height: auto;
+
+    > svg {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  &__icon__label {
+    text-align: center;
+    color: color.get(text-gray);
+    @include typography.body-xsmall();
+  }
+}
+
+/* ===================================================== */
+/* Components */
+/* ===================================================== */
+
+.components {
+  &__badge {
+    @include components.badge();
+
+    &--var2 {
+      @include components.badge(color.get(rose));
+    }
+
+    &--var3 {
+      @include components.badge(color.get(error), color.get(off-white));
+    }
+  }
+
+  &__video-controls {
+    @include components.video-controls();
+  }
+
+  &__scrollbar {
+    @include components.scrollbar();
+  }
+
+  &__carousel-dots {
+    @include components.carousel-dots();
+  }
+
+  &__carousel-arrows {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: start;
+    gap: spacing.get(size-12);
+  }
+
+  &__carousel-dot {
+    @include components.carousel-dot();
+  }
+
+  &__carousel-arrow {
+    @include components.carousel-arrow();
+  }
+
+  &__filter-badge {
+    @include components.filter-badge();
+  }
+
+  &__quantity-selector {
+    @include components.quantity-selector();
+  }
+
+  &__label {
+    @include components.label();
+  }
+
+  &__tab {
+    @include components.tab();
+
+    &--reverse {
+      @include components.tab-reverse();
+    }
+
+    &--large {
+      @include components.tab-large();
+    }
+  }
+
+  &__navigation {
+    position: relative;
+    height: spacing.get(size-40);
+    padding-top: spacing.get(size-24);
+  }
+
+  &__qty {
+    @include components.qty();
+    @include typography.body-xsmall();
+
+    button {
+      @include mixin.reset-button();
+      cursor: pointer;
+    }
+  }
+
+  &__dropdown {
+    @include components.dropdown();
+  }
+
+  &__link {
+    @include components.link();
+
+    &--small {
+      @include components.link-small();
+    }
+  }
+}
+
+.component {
+  &__container {
+    width: 100%;
+  }
+}
+
+/* ===================================================== */
+/* Buttons */
+/* ===================================================== */
+
+.buttons {
+  &__label {
+    border-bottom: 0;
+    color: color.get(text-gray);
+    @include typography.body-xsmall();
+  }
+
+  &__row {
+    padding: spacing.get(size-16) 0;
+  }
+
+  &__column {
+    flex-direction: column;
+    gap: spacing.get(size-16);
+
+    @include mq.min(mobile) {
+      flex-direction: row;
+    }
+
+    &--reverse {
+      flex-direction: row-reverse;
+
+      @include mq.min(mobile) {
+        flex-direction: row;
+      }
+    }
+  }
+}
+
+/* ===================================================== */
+/* Forms */
+/* ===================================================== */
+
+.forms {
+  max-width: u.rem-calc(600);
+
+  &__rows {
+    display: flex;
+    flex-direction: column;
+    gap: spacing.get(size-24);
+  }
+
+  &__successMessage {
+    width: 100%;
+    @include form.success-message();
+  }
+
+  &__errorMessage {
+    width: 100%;
+    @include form.error-message();
+  }
+
+  &__neutralMessage {
+    width: 100%;
+    @include form.neutral-message();
+  }
+
+  &__fieldset {
+    @include form.fieldset();
+  }
+
+  &__label {
+    @include form.label();
+  }
+
+  &__label_alt {
+    @include form.label-alt();
+  }
+
+  &__input {
+    @include form.input();
+  }
+
+  &__input_alt {
+    @include form.input-alt();
+  }
+
+  &__select {
+    @include form.select();
+  }
+
+  &__select_alt {
+    @include form.select-alt();
+  }
+
+  &__message {
+    @include form.input-message();
+  }
+
+  &__error {
+    @include form.input-error();
+  }
+
+  &__password {
+    position: relative;
+  }
+
+  &__passwordEye {
+    position: absolute;
+    top: 25%;
+    right: spacing.get(size-12);
+    cursor: pointer;
+  }
+
+  &__warning {
+    @include form.warning();
+  }
+
+  &__checkbox {
+    @include form.checkbox();
+  }
+
+  &__radio {
+    @include form.radio();
+  }
+
+  &__link {
+    @include form.link();
+  }
+
+  &__submit {
+    button {
+      padding-left: spacing.get(size-32);
+      padding-right: spacing.get(size-32);
+    }
+  }
+
+  &__cancel {
+    padding-left: spacing.get(size-16);
+  }
+}

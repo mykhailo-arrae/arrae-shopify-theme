@@ -1,0 +1,339 @@
+@use 'unit' as u;
+@use 'style-guide/media' as mq;
+@use 'style-guide/spacing' as spacing;
+@use 'style-guide/typography' as typography;
+@use 'style-guide/colors' as color;
+@use 'style-guide/mixins' as mixin;
+@use 'style-guide/sizes' as sizes;
+@use 'nav-modes' as nav;
+
+// ----------------------------------------------------------------------------
+// Layout root
+// ----------------------------------------------------------------------------
+
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  position: static;
+  width: 100%;
+
+  @include nav.inline {
+    flex-direction: row;
+    align-items: stretch;
+    width: auto;
+  }
+}
+
+// ----------------------------------------------------------------------------
+// Desktop trigger (hover/click)
+// ----------------------------------------------------------------------------
+
+.nav-link {
+  @include mixin.reset-button();
+  display: flex;
+  align-items: center;
+  align-self: stretch;
+  padding-inline: spacing.get(size-20);
+  color: currentcolor;
+  cursor: pointer;
+  text-decoration: none;
+  white-space: nowrap;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.desktop-trigger {
+  display: none;
+
+  @include nav.inline {
+    display: flex;
+  }
+}
+
+.inline-trigger[hidden] {
+  display: none;
+}
+
+.nav-link__text {
+  @include typography.body(size-12, 500);
+  position: relative;
+  line-height: 1.06;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  @include mixin.animated-underline();
+
+  &::before {
+    bottom: -(spacing.get(size-4));
+  }
+
+  .nav-link:focus-visible & {
+    outline: spacing.get(size-2) solid currentcolor;
+    outline-offset: spacing.get(size-4);
+  }
+
+  .nav-link[aria-expanded='true'] &::before,
+  .nav-link[aria-current='page'] &::before {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+}
+
+.link {
+  .nav-item &:hover {
+    opacity: 1;
+  }
+
+  @include nav.drawer {
+    width: 100%;
+    padding-inline: 0;
+
+    .nav-link__text {
+      @include typography.body(size-20, 300);
+      letter-spacing: 0.04em;
+      text-transform: none;
+    }
+  }
+}
+
+// ----------------------------------------------------------------------------
+// Mobile accordion trigger (mega menu only)
+// ----------------------------------------------------------------------------
+
+.mobile-trigger {
+  @include mixin.reset-button();
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: spacing.get(size-12);
+  color: currentcolor;
+  cursor: pointer;
+  text-align: left;
+
+  &:focus-visible {
+    outline-offset: spacing.get(size-2);
+  }
+
+  @include nav.drawer {
+    display: flex;
+  }
+}
+
+.mobile-trigger__label {
+  @include typography.body(size-20, 300);
+  line-height: 1.2;
+  letter-spacing: 0.04em;
+  color: color.get(text);
+}
+
+.mobile-trigger__icon {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: sizes.get(size-32);
+  height: sizes.get(size-32);
+  transition: transform 250ms ease;
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
+
+  .mobile-trigger[aria-expanded='true'] & {
+    transform: rotate(180deg);
+  }
+
+  svg {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+// ----------------------------------------------------------------------------
+// Shared panel (desktop megamenu ←→ mobile accordion content)
+// ----------------------------------------------------------------------------
+
+$_panel-fade-duration: 200ms;
+$_panel-slide-duration: 350ms;
+$_panel-slide-easing: cubic-bezier(0.32, 0.72, 0, 1);
+
+.panel-wrap {
+  display: block;
+  width: 100%;
+
+  @include nav.inline {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    width: auto;
+    pointer-events: none;
+    z-index: 99999;
+  }
+}
+
+.panel {
+  display: grid;
+  grid-template-rows: 1fr;
+  visibility: visible;
+  transition:
+    grid-template-rows $_panel-slide-duration $_panel-slide-easing,
+    visibility 0s linear 0s;
+
+  &[hidden] {
+    display: grid;
+  }
+
+  &[aria-hidden='true'] {
+    grid-template-rows: 0fr;
+    visibility: hidden;
+    transition:
+      grid-template-rows $_panel-slide-duration $_panel-slide-easing,
+      visibility 0s linear $_panel-slide-duration;
+  }
+
+  &[data-disable-outer-accordion='true'] {
+    grid-template-rows: 1fr;
+    visibility: visible;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
+
+  // ---- Desktop: hover megamenu ----
+  @include nav.inline {
+    display: block;
+    overflow-y: auto;
+    overflow-x: hidden;
+    overscroll-behavior: contain;
+    background-color: color.get(off-white);
+    color: color.get(dark-gray);
+    border-radius: 0 0 sizes.get(size-16) sizes.get(size-16);
+    border-top: u.rem-calc(1) solid rgb(0 0 0 / 6%);
+    box-shadow: 0 u.rem-calc(8) u.rem-calc(24) rgb(0 0 0 / 4%);
+    max-height: calc(100dvh - var(--megamenu-chrome-height, 4rem));
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-(u.rem-calc(8)));
+    transition:
+      opacity $_panel-fade-duration ease,
+      visibility $_panel-slide-duration ease,
+      transform $_panel-slide-duration $_panel-slide-easing;
+
+    @media (prefers-reduced-motion: reduce) {
+      transition: none;
+    }
+
+    &[hidden] {
+      display: none;
+    }
+
+    &[aria-hidden='false'] {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+
+    &[data-disable-outer-accordion='true'] {
+      grid-template-rows: initial;
+    }
+
+    &[data-crossfade] {
+      transform: translateY(0);
+      transition: none;
+    }
+  }
+}
+
+.panel__inner {
+  display: flex;
+  flex-direction: column;
+  padding-inline: 0;
+  min-height: 0;
+  overflow: hidden;
+
+  @include nav.inline {
+    @include mixin.container();
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    align-items: flex-start;
+    gap: spacing.get(size-32) spacing.get(size-24);
+    padding-block: spacing.get(size-32) spacing.get(size-48);
+    padding-inline: spacing.get(size-32);
+    min-height: u.rem-calc(330);
+    overflow: visible;
+
+    @include mq.min(smalldesktop) {
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      padding-block: spacing.get(size-32) spacing.get(size-64);
+      padding-inline: spacing.get(size-48);
+    }
+  }
+}
+
+// ----------------------------------------------------------------------------
+// Mobile-only banner and CTA
+// ----------------------------------------------------------------------------
+
+.mobile-banner {
+  display: none;
+
+  @include nav.drawer {
+    position: relative;
+    display: block;
+    order: 5;
+    margin-bottom: spacing.get(size-24);
+  }
+}
+
+.mobile-cta {
+  display: none;
+
+  @include nav.drawer {
+    @include typography.body(size-14, 400);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    order: 4;
+    width: 100%;
+    padding: spacing.get(size-12) spacing.get(size-24);
+    background-color: color.get(dark-gray);
+    border-radius: 9999px;
+    text-decoration: none;
+    line-height: 1.06;
+    letter-spacing: u.rem-calc(0.84);
+    text-transform: uppercase;
+    transition: opacity 200ms ease;
+    margin-top: u.rem-calc(28);
+    margin-bottom: spacing.get(size-40);
+
+    @media (prefers-reduced-motion: reduce) {
+      transition: none;
+    }
+
+    &:hover,
+    &:focus-visible {
+      opacity: 0.85;
+    }
+
+    &:is(a) {
+      color: color.get(off-white);
+    }
+  }
+}
+
+.mobile-cta__label {
+  display: block;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .panel,
+  .nav-link__text::before {
+    transition: none;
+  }
+}

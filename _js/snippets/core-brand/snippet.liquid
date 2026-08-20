@@ -1,0 +1,11 @@
+{% liquid
+  assign width = width | default: 80
+  assign height = height | default: 26
+  assign fill = fill | default: 'currentColor'
+%}
+
+<span class="{# style root #}" role="img">
+  <span class="{# style container #}">
+    {% render 'icon-logo', responsive: true, fill: fill %}
+  </span>
+</span>

@@ -1,0 +1,144 @@
+{% liquid
+  assign heading = block.settings.heading
+  assign menu_handle = block.settings.menu
+  assign links = linklists[menu_handle].links | default: empty
+  assign total_links = links.size
+  assign multi_column_threshold = 5
+  assign use_multi_column = false
+  if total_links > multi_column_threshold
+    assign use_multi_column = true
+    assign split_at = total_links | divided_by: 2.0 | ceil
+  endif
+
+  assign mobile_trigger_id = 'nav-links-trigger-' | append: block.id
+  assign mobile_content_id = 'nav-links-content-' | append: block.id
+
+  assign has_heading = false
+  if heading != blank
+    assign has_heading = true
+  endif
+%}
+
+<div class="{# style root #}" data-multi-column="{{ use_multi_column }}">
+  {% if has_heading %}
+    {% comment %}
+      Desktop: visible heading above the list(s). CSS hides this on
+      mobile, where the heading turns into an accordion trigger below.
+    {% endcomment %}
+    <h3 class="{# style heading #}">{{ heading }}</h3>
+
+    {% comment %}
+      Mobile: accordion trigger when a heading is configured. Lists
+      without a heading render flat (no trigger).
+    {% endcomment %}
+    <button
+      type="button"
+      id="{{ mobile_trigger_id }}"
+      class="{# style mobile-trigger #} js-mobile-accordion-trigger"
+      aria-expanded="false"
+      aria-controls="{{ mobile_content_id }}"
+    >
+      <span class="{# style mobile-trigger__label #}">{{ heading }}</span>
+      <span class="{# style mobile-trigger__icon #}" aria-hidden="true">
+        {% render 'icon-chevron-bottom', width: 24, height: 24 %}
+      </span>
+    </button>
+  {% endif %}
+
+  {% if links.size > 0 %}
+    <div
+      class="{# style content #}"
+      {% if has_heading %}
+        id="{{ mobile_content_id }}"
+        aria-labelledby="{{ mobile_trigger_id }}"
+        aria-hidden="true"
+      {% endif %}
+    >
+      <div class="{# style lists #}">
+        {% if use_multi_column %}
+          {% comment %}
+            Two balanced columns on desktop preserve original ordering:
+            items 1..split_at in the first list, the remainder in the
+            second. On mobile the column rule is overridden so all
+            links flow in a single vertical list.
+          {% endcomment %}
+          <ul class="{# style list #}" role="list">
+            {% for link in links limit: split_at %}
+              <li class="{# style item #}">
+                <a
+                  href="{{ link.url }}"
+                  class="{# style link #}"
+                  {% if link.active %}
+                    aria-current="page"
+                  {% endif %}
+                >
+                  <span class="{# style link__text #}">{{ link.title }}</span>
+                </a>
+              </li>
+            {% endfor %}
+          </ul>
+          <ul class="{# style list #}" role="list">
+            {% for link in links offset: split_at %}
+              <li class="{# style item #}">
+                <a
+                  href="{{ link.url }}"
+                  class="{# style link #}"
+                  {% if link.active %}
+                    aria-current="page"
+                  {% endif %}
+                >
+                  <span class="{# style link__text #}">{{ link.title }}</span>
+                </a>
+              </li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <ul class="{# style list #}" role="list">
+            {% for link in links %}
+              <li class="{# style item #}">
+                <a
+                  href="{{ link.url }}"
+                  class="{# style link #}"
+                  {% if link.active %}
+                    aria-current="page"
+                  {% endif %}
+                >
+                  <span class="{# style link__text #}">{{ link.title }}</span>
+                </a>
+              </li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      </div>
+    </div>
+  {% endif %}
+</div>
+
+{% schema %}
+{
+  "name": "Header Links",
+  "class": "{# style col #}",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "info": "Optional. e.g. \"By Product\". On mobile, the heading is used as the accordion trigger; lists without a heading render flat."
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Menu",
+      "info": "Items from the selected Shopify menu render automatically. Lists with more than 5 links are split into two balanced columns on desktop."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Header Links",
+      "settings": {
+        "heading": "By Product"
+      }
+    }
+  ]
+}
+{% endschema %}

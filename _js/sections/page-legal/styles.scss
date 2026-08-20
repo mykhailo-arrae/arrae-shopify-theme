@@ -1,0 +1,100 @@
+@use 'unit' as u;
+@use 'style-guide/colors' as color;
+@use 'style-guide/media' as mq;
+@use 'style-guide/mixins' as mixins;
+@use 'style-guide/spacing' as spacing;
+@use 'style-guide/typography' as typography;
+
+.section {
+  background-color: color.get(background);
+}
+
+.LegalPage {
+  @include mixins.container();
+  padding: spacing.get(size-24) spacing.get(size-16) spacing.get(size-40);
+  color: color.get(text);
+  background-color: color.get(background);
+
+  @include mq.min(tabletlandscape) {
+    padding: spacing.get(size-32) spacing.get(size-48) spacing.get(size-64);
+  }
+}
+
+.LegalPage__inner {
+  width: 100%;
+}
+
+.LegalPage__header {
+  width: 100%;
+  max-width: u.rem-calc(992);
+  margin-bottom: spacing.get(size-24);
+
+  @include mq.min(tabletlandscape) {
+    margin-bottom: spacing.get(size-20);
+  }
+}
+
+.LegalPage__title {
+  margin: 0;
+  color: color.get(dark-gray);
+  font-family: typography.get-font-family(heading);
+  font-size: typography.get-font-size(size-32);
+  font-weight: 400;
+  line-height: 112%;
+  letter-spacing: u.rem-calc(-0.96);
+  text-transform: capitalize;
+
+  @include mq.min(tabletlandscape) {
+    font-size: typography.get-font-size(size-56);
+    line-height: 98%;
+    letter-spacing: u.rem-calc(-1.68);
+  }
+}
+
+.LegalPage__content {
+  width: 100%;
+  max-width: u.rem-calc(992);
+  color: color.get(text);
+  font-family: typography.get-font-family(body);
+  font-size: typography.get-font-size(size-16);
+  line-height: 1.2;
+  letter-spacing: u.rem-calc(-0.16);
+
+  strong {
+    letter-spacing: u.rem-calc(0.96);
+    font-weight: 600;
+  }
+
+  &--fullwidth {
+    max-width: unset;
+  }
+
+  p {
+    margin: 0 0 spacing.get(size-16);
+  }
+
+  ul,
+  ol {
+    margin: 0 0 spacing.get(size-16);
+  }
+
+  & > ul,
+  & > ol {
+    padding-left: spacing.get(size-16);
+
+    ol,
+    ul {
+      padding-left: spacing.get(size-8);
+    }
+  }
+
+  li {
+    margin-bottom: spacing.get(size-4);
+  }
+
+  a:not(:global(.o-button)) {
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: u.rem-calc(2);
+  }
+}

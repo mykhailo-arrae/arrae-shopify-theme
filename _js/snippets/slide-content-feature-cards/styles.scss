@@ -1,0 +1,238 @@
+@use 'unit' as u;
+@use 'style-guide/media' as mq;
+@use 'style-guide/spacing' as spacing;
+@use 'style-guide/sizes' as sizes;
+@use 'style-guide/colors' as color;
+@use 'style-guide/components' as components;
+@use 'style-guide/typography' as typography;
+
+.features-list {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.slide {
+  height: auto;
+  box-sizing: border-box;
+  min-width: 0;
+  width: 100%;
+}
+
+.feature {
+  display: flex;
+  flex-direction: column;
+  gap: spacing.get(size-12);
+  width: 100%;
+  max-width: min(90%, u.rem-calc(360));
+  margin-inline: auto;
+  padding: spacing.get(size-12);
+  background-color: color.get(off-white-80);
+  backdrop-filter: blur(2px);
+  border-radius: spacing.get(size-12);
+  aspect-ratio: 4/5;
+  box-sizing: border-box;
+  color: color.get(text);
+
+  @include mq.min(smalldesktop) {
+    padding: spacing.get(size-24);
+    max-width: unset;
+  }
+}
+
+.feature__image {
+  width: 100%;
+  aspect-ratio: 1/1;
+  position: relative;
+  overflow: hidden;
+  border-radius: spacing.get(size-8);
+}
+
+.feature__eyebrow {
+  @include typography.body(size-14, 500);
+  line-height: 120%;
+  letter-spacing: u.rem-calc(-0.28);
+  color: color.get(text);
+}
+
+.feature__description {
+  @include typography.body();
+  font-size: u.rem-calc(18);
+  font-weight: 300;
+  line-height: 120%; /* 24px */
+  letter-spacing: u.rem-calc(-0.2);
+  color: color.get(text);
+}
+
+.root {
+  position: relative;
+  display: flex;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  flex-direction: column;
+  align-items: stretch;
+
+  @include mq.max(smalldesktop) {
+    flex: 1 1 auto;
+    height: 100%;
+    min-height: auto;
+    place-content: start stretch;
+  }
+
+  @include mq.min(smalldesktop) {
+    height: 100%;
+    place-content: flex-end;
+  }
+}
+
+.carousel {
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+
+  @include mq.min(smalldesktop) {
+    padding-bottom: spacing.get(size-32);
+    max-width: 78%;
+    margin-left: auto;
+    margin-right: 0;
+    overflow: visible;
+  }
+
+  :global(.swiper-slide) {
+    height: auto;
+    box-sizing: border-box;
+    min-width: 0;
+  }
+
+  &:not(:global(.swiper-initialized)) {
+    .features-list {
+      display: flex;
+      flex-direction: row;
+      gap: spacing.get(size-8);
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+
+      @include mq.min(smalldesktop) {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        overflow-x: visible;
+        scroll-snap-type: none;
+      }
+    }
+
+    .slide {
+      flex: 0 0 min(88%, u.rem-calc(320));
+      scroll-snap-align: start;
+
+      @include mq.min(smalldesktop) {
+        flex: unset;
+        scroll-snap-align: unset;
+      }
+    }
+  }
+
+  /* Keep main-axis default flex-start so Swiper snap / maxTranslate stay correct. */
+  :global(.swiper-wrapper) {
+    align-items: stretch;
+    justify-content: flex-start;
+  }
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: spacing.get(size-8);
+  position: relative;
+  width: 100%;
+  padding-top: spacing.get(size-32);
+
+  @include mq.min(smalldesktop) {
+    display: none;
+  }
+
+  &:global(.swiper-pagination-horizontal) {
+    top: auto;
+  }
+
+  :global(.swiper-pagination-bullet) {
+    margin: 0;
+    width: sizes.get(size-8);
+    height: sizes.get(size-8);
+    border-radius: 50%;
+    opacity: 1;
+    background: color.get(dark-gray-20);
+    transition: background 200ms ease;
+
+    &:focus-visible {
+      outline: 2px solid color.get(dark-gray);
+      outline-offset: 2px;
+    }
+  }
+
+  :global(.swiper-pagination-bullet-active) {
+    background: color.get(dark-gray);
+  }
+}
+
+.nav-arrows {
+  display: none;
+  z-index: 6;
+  position: absolute;
+  width: auto;
+  height: auto;
+  pointer-events: none;
+  inset: spacing.get(size-0) spacing.get(size-8);
+
+  :global(.swiper-button-prev) {
+    left: u.rem-calc(-10);
+  }
+
+  :global(.swiper-button-next) {
+    right: u.rem-calc(-10);
+  }
+
+  :global(.swiper-button-prev),
+  :global(.swiper-button-next) {
+    top: 42.5%;
+  }
+
+  @include mq.min(smalldesktop) {
+    inset: spacing.get(size-64) spacing.get(size-0);
+    transform: translateX(0);
+
+    :global(.swiper-button-prev) {
+      left: u.rem-calc(-20);
+    }
+
+    :global(.swiper-button-next) {
+      right: u.rem-calc(-20);
+    }
+  }
+}
+
+.arrow {
+  @include components.carousel-arrow();
+  pointer-events: auto;
+  z-index: 4;
+
+  span {
+    width: inherit;
+    height: inherit;
+  }
+
+  &:global(.swiper-button-lock) {
+    display: none;
+  }
+
+  &::after {
+    display: none;
+  }
+
+  &[disabled] {
+    display: none;
+  }
+}

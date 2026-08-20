@@ -1,0 +1,110 @@
+{% liquid
+  assign has_product = false
+  if product != blank and product.id != blank
+    assign has_product = true
+  endif
+
+  if has_product
+    assign resolved_title = product.title
+
+    assign collection_display = product.metafields.custom.smp_display_override.value | default: null
+    assign resolved_description = collection_display.short_description | default: product.metafields.custom.product_card_marketing_copy.value | default: product.metafields.custom_fields.collection_short_description.value | default: product.description
+    assign resolved_description = resolved_description | strip_html
+
+    assign resolved_hide_reviews = product.metafields.custom.hide_reviews_summary.value | default: false, allow_false: true
+  endif
+%}
+
+<div class="{# style overlay #} js-offcanvas-bg"></div>
+
+<div
+  data-section-id="{{ section.id }}"
+  data-section-name="{{ section.type }}"
+  class="js-offcanvas js-quickshop {# style root #}"
+  data-quickshop
+  data-drawer-names="quickshop"
+  role="dialog"
+  aria-modal="true"
+  aria-label="{{ 'quickshop_drawer' | t }}"
+  tabindex="-1"
+  inert
+  aria-hidden="true"
+  {% if has_product %}
+    data-product-handle="{{ product.handle | escape }}"
+  {% endif %}
+>
+  <div class="js-offcanvas-content js-quickshop-scroll {# style wrapper #}">
+    <div class="js-offcanvas-content {# style content #}">
+      <button
+        type="button"
+        class="js-offcanvas-close {# style close #}"
+      >
+        {% render 'icon-close' %}
+        <span class="sr-only">{{ 'accessibility.icons.close' | t }}</span>
+      </button>
+
+      <div class="{# style container #}">
+        <div class="js-quickshop-content {# style panel #}" aria-live="polite">
+          <div
+            class="{# style loading #} js-quickshop-loading"
+            hidden
+            role="status"
+            aria-label="{{ 'accessibility.loading' | t }}"
+          >
+            <svg
+              class="{# style loading-spinner #}"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <path
+                d="M12 4a8 8 0 0 1 7.89 6.7 1.53 1.53 0 0 0 1.49 1.3 1.5 1.5 0 0 0 1.48-1.75 11 11 0 0 0-21.72 0A1.5 1.5 0 0 0 2.62 12a1.53 1.53 0 0 0 1.49-1.3A8 8 0 0 1 12 4Z"
+              />
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% comment %}
+  Buy-box markup for Section Rendering API responses. Kept inside <template>
+  so portable snippets are not initialized on the live page (e.g. PDP) until
+  JS injects them into .js-quickshop-content.
+{% endcomment %}
+{% if has_product %}
+  <template class="js-quickshop-buybox-source">
+    <div class="{# style buybox #} js-quickshop-buybox">
+      <div class="{# style media #}">
+        {% render 'quickshop-media', product: product %}
+      </div>
+
+      {% render 'product-details',
+        layout: 'quickshop',
+        title: resolved_title,
+        description: resolved_description,
+        hide_reviews: resolved_hide_reviews
+      %}
+    </div>
+  </template>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Quickshop",
+  "locales": {
+    "en": {
+      "quickshop_drawer": "Quick shop"
+    }
+  },
+  "class": "js-drawer-quickshop",
+  "settings": [],
+  "enabled_on": {
+    "groups": ["header", "footer"]
+  }
+}
+{% endschema %}
