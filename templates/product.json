@@ -1,7 +1,5 @@
 {
-  "order": [
-    "featured_collections_t74N6y"
-  ],
+  "order": ["featured_collections_t74N6y"],
   "sections": {
     "featured_collections_t74N6y": {
       "block_order": [
@@ -66,4 +64,3 @@
   },
   "wrapper": "main.Product[role='main']"
 }
-
