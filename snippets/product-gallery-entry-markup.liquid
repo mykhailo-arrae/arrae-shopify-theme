@@ -1,0 +1,87 @@
+{% # DO NOT EDIT: This file is auto-generated and will be overwritten. [build-fingerprint:assets:source={_js/snippets/product-gallery-entry-markup/snippet.liquid}] %}
+
+{% doc %}
+  Renders gallery image markup for one gallery list entry (carousel slide or
+  desktop cell). Expands metaobject list-of-files fields when present.
+
+  @param {object} entry - One item from a gallery list
+  @param {string} layout - 'carousel' or 'desktop'
+  @param {string} slide_class - CSS module class for carousel slide (from parent)
+  @param {string} image_class - CSS module class for image cell (from parent)
+  @param {boolean} lazyload - Defaults to true
+{% enddoc %}
+
+{% liquid
+  assign entry = entry | default: null
+  assign layout = layout | default: 'desktop'
+  assign slide_class = slide_class | default: ''
+  assign image_class = image_class | default: ''
+  assign lazyload = lazyload | default: true, allow_false: true
+  assign media_list = null
+
+  if entry != blank
+    if entry.images.value != blank
+      assign media_list = entry.images.value
+    elsif entry.gallery.value != blank
+      assign media_list = entry.gallery.value
+    elsif entry.gallery_images.value != blank
+      assign media_list = entry.gallery_images.value
+    elsif entry.files.value != blank
+      assign media_list = entry.files.value
+    elsif entry.photos.value != blank
+      assign media_list = entry.photos.value
+    elsif entry.assets.value != blank
+      assign media_list = entry.assets.value
+    elsif entry.media_list.value != blank
+      assign media_list = entry.media_list.value
+    elsif entry.carousel_images.value != blank
+      assign media_list = entry.carousel_images.value
+    endif
+  endif
+%}
+
+{%- if media_list != blank -%}
+  {%- for media in media_list -%}
+    {%- capture item_src -%}
+      {%- render 'product-gallery-image-src', image: media, width: 1280 -%}
+    {%- endcapture -%}
+    {%- assign item_src = item_src | strip -%}
+    {%- if item_src != blank -%}
+      {%- capture item_alt -%}
+        {%- render 'product-gallery-image-alt', image: media -%}
+      {%- endcapture -%}
+      {%- if layout == 'carousel' -%}
+        <div class="swiper-slide {{ slide_class }}">
+          <div class="{{ image_class }}">
+            {% render 'product-gallery-img', src: item_src, alt: item_alt | strip, lazyload: lazyload %}
+          </div>
+        </div>
+      {%- else -%}
+        <div class="{{ image_class }}">
+          {% render 'product-gallery-img', src: item_src, alt: item_alt | strip, lazyload: lazyload %}
+        </div>
+      {%- endif -%}
+    {%- endif -%}
+  {%- endfor -%}
+{%- elsif entry != blank -%}
+  {%- capture item_src -%}
+    {%- render 'product-gallery-image-src', image: entry, width: 1280 -%}
+  {%- endcapture -%}
+  {%- assign item_src = item_src | strip -%}
+  {%- if item_src != blank -%}
+    {%- capture item_alt -%}
+      {%- render 'product-gallery-image-alt', image: entry -%}
+    {%- endcapture -%}
+    {%- if layout == 'carousel' -%}
+      <div class="swiper-slide {{ slide_class }}">
+        <div class="{{ image_class }}">
+          {% render 'product-gallery-img', src: item_src, alt: item_alt | strip, lazyload: lazyload %}
+        </div>
+      </div>
+    {%- else -%}
+      <div class="{{ image_class }}">
+        {% render 'product-gallery-img', src: item_src, alt: item_alt | strip, lazyload: lazyload %}
+      </div>
+    {%- endif -%}
+  {%- endif -%}
+{%- endif -%}

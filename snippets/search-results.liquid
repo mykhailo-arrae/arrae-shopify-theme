@@ -1,0 +1,29 @@
+{% # DO NOT EDIT: This file is auto-generated and will be overwritten. [build-fingerprint:assets:source={_js/snippets/search-results/snippet.liquid}] %}
+
+{%- render 'search-results-stylesheet' -%}
+
+{%- for item in search.results -%}
+  <article class="tvg_search_results_5xCj6G_SearchResult {% if forloop.last %}is-last{% endif %}">
+    {%- if item.featured_image -%}
+      <div class="tvg_search_results_5xCj6G_SearchResult-image">
+        <a href="{{ item.url }}" class="tvg_search_results_5xCj6G_SearchResult-imageLink" title="{{ item.title | escape }}">
+          <div class=" o-placeholder" {% if item.featured_image %} style="background-image: url('{{ item.featured_image.src | image_url: width: 480 }}');"{% endif %}>
+          </div>
+        </a>
+      </div>
+    {%- endif -%}
+
+    <div class="tvg_search_results_5xCj6G_SearchResult-info">
+      <h4 class="tvg_search_results_5xCj6G_SearchResult-title">
+        {{ item.title | link_to: item.url }}
+      </h4>
+
+      {%- assign result_excerpt = item.content | default: '' | strip_html | truncatewords: 50 -%}
+      {%- if result_excerpt != blank -%}
+        <div class="tvg_search_results_5xCj6G_SearchResult-excerpt">
+            {{ result_excerpt }}
+        </div>
+      {% endif %}
+    </div>
+  </article>
+{%- endfor -%}

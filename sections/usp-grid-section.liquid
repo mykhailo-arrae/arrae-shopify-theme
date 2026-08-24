@@ -1,0 +1,124 @@
+{% # DO NOT EDIT: This file is auto-generated and will be overwritten. [build-fingerprint:assets:source={_js/sections/usp-grid-section/section.liquid}] %}
+
+<script class="json-portable-section-assets" type="application/json">
+{"sectionName":"usp-grid-section"}
+</script>
+
+<style>
+.tvg_usp_grid_section_J1EEZW_section{color:oklch(99.59% .0093 99.98);background-color:oklch(21.71% .0232 69.07);border-bottom:.0625rem solid oklch(53.82% 0 0);width:100%}
+.tvg_usp_grid_section_J1EEZW_container{width:100%;max-width:94.5rem;margin-inline:auto;padding:2rem 1rem;display:flex}
+.tvg_usp_grid_section_J1EEZW_usp-grid{grid-template-columns:repeat(2,1fr);gap:1.5rem 1rem;width:100%;margin:0;padding:0;list-style:none;display:grid}
+.tvg_usp_grid_section_J1EEZW_grid-item{flex-direction:column;justify-content:start;align-items:center;gap:.5rem;display:flex}
+.tvg_usp_grid_section_J1EEZW_content{text-align:center;max-width:15rem}
+.tvg_usp_grid_section_J1EEZW_title{letter-spacing:-.15rem;letter-spacing:-.0375rem;text-wrap:balance;font-family:Cardinal Fruit,Georgia,Book Antiqua,Times New Roman,serif;font-size:1.25rem;font-weight:400;line-height:112%}
+.tvg_usp_grid_section_J1EEZW_usp-grid .tvg_usp_grid_section_J1EEZW_grid-item:nth-child(3):last-child{grid-column:1/-1;justify-content:center}
+@media print,screen and (width>=64em){.tvg_usp_grid_section_J1EEZW_container{padding:3rem}
+.tvg_usp_grid_section_J1EEZW_usp-grid{grid-template-columns:repeat(4,1fr)}
+.tvg_usp_grid_section_J1EEZW_usp-grid[data-grid-items-count="1"]{grid-template-columns:repeat(1,1fr)}
+.tvg_usp_grid_section_J1EEZW_usp-grid[data-grid-items-count="2"]{grid-template-columns:repeat(2,1fr)}
+.tvg_usp_grid_section_J1EEZW_usp-grid[data-grid-items-count="3"]{grid-template-columns:repeat(3,1fr)}
+.tvg_usp_grid_section_J1EEZW_usp-grid[data-grid-items-count="4"]{grid-template-columns:repeat(4,1fr)}
+.tvg_usp_grid_section_J1EEZW_grid-item{flex-direction:row;justify-content:flex-start;align-items:flex-start}
+.tvg_usp_grid_section_J1EEZW_content{text-align:left}
+.tvg_usp_grid_section_J1EEZW_title{letter-spacing:-.045rem;font-size:1.5rem}
+.tvg_usp_grid_section_J1EEZW_usp-grid .tvg_usp_grid_section_J1EEZW_grid-item:nth-child(3):last-child{grid-column:auto;justify-content:flex-start}
+}
+</style>
+
+{% doc %}
+  USP (Unique Selling Points) Grid Section - Displays promotional items with icons, titles, and subtitles.
+
+  Features:
+  - Supports up to 4 configurable blocks with icon and supporting copy
+  - Responsive behavior:
+    * Mobile (< 768px): 2x2 grid layout
+    * Desktop (≥ 768px): 4x1 grid layout
+
+  Block Structure:
+  - Settings: text icon handle, text supporting
+  - Limit: 4 blocks maximum
+{% enddoc %}
+
+{% liquid
+  assign blocks = section.blocks | default: null
+  assign blocks_count = blocks.size
+%}
+
+{% if blocks != blank and blocks_count > 0 %}
+  <div class="tvg_usp_grid_section_J1EEZW_container">
+    <ul class="tvg_usp_grid_section_J1EEZW_usp-grid" data-grid-items-count="{{ blocks_count }}">
+      {% for category in blocks %}
+        {% liquid
+          assign icon_handle = category.settings.icon_handle | default: null
+          assign custom_image = category.settings.custom_image | default: null
+          assign supporting_copy = category.settings.supporting_copy | default: null
+        %}
+        {% if icon_handle != blank or supporting_copy != blank or custom_image != blank %}
+          <li class="tvg_usp_grid_section_J1EEZW_grid-item">
+            {% if custom_image != blank %}
+              <div>
+                {{ custom_image | image_url: width: 40, height: 40 | image_tag: loading: 'lazy' }}
+              </div>
+            {% elsif icon_handle != blank %}
+              <div>
+                {% render 'dynamic-icon', icon_handle: icon_handle %}
+              </div>
+            {% endif %}
+            <div class="tvg_usp_grid_section_J1EEZW_content">
+              {% if supporting_copy != blank %}
+                <h4 class="tvg_usp_grid_section_J1EEZW_title">
+                  {{ supporting_copy }}
+                </h4>
+              {% endif %}
+            </div>
+          </li>
+        {% endif %}
+      {% endfor %}
+    </ul>
+  </div>
+{% endif %}
+
+{% schema %}
+{
+  "name": "USP Grid Section",
+  "class": "tvg_usp_grid_section_J1EEZW_section js-usp-grid-section",
+  "tag": "section",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "usp-item",
+      "name": "USP Item",
+      "limit": 4,
+      "settings": [
+        {
+          "type": "text",
+          "id": "icon_handle",
+          "label": "Icon Handle"
+        },
+        {
+          "type": "image_picker",
+          "id": "custom_image",
+          "label": "Custom Image",
+          "info": "Override the icon with a custom image. Use PNG or SVG 40x40px images."
+        },
+        {
+          "type": "text",
+          "id": "supporting_copy",
+          "label": "Supporting Copy"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "USP Grid Section",
+      "category": "Content",
+      "blocks": [
+        {
+          "type": "usp-item"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

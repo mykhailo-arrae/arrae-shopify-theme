@@ -1,0 +1,21 @@
+{% liquid
+  assign width = width | default: 21
+  assign height = height | default: 20
+  assign fill = fill | default: 'currentColor'
+
+  assign title_fallback = 'accessibility.icons.ok' | t
+  assign title = title | default: title_fallback
+%}
+
+<svg
+  width="{{ width }}"
+  height="{{ height }}"
+  viewBox="0 0 21 20"
+  fill="none"
+  xmlns="http://www.w3.org/2000/svg"
+  aria-labelledby="ok"
+>
+  <title id="ok">{{ title }}</title>
+  <path d="M2.5 8.09429C2.5 7.81848 2.72247 7.5949 2.99691 7.5949H6.77342C7.04785 7.5949 7.27033 7.81848 7.27033 8.09429V15.5852C7.27033 15.861 7.04785 16.0846 6.77342 16.0846H2.99691C2.72247 16.0846 2.5 15.861 2.5 15.5852V8.09429Z" stroke="{{ fill }}" stroke-width="0.75"/>
+  <path d="M7.27008 7.99206V15.7139C8.18668 16.4681 9.28844 17.0002 10.1519 17.0002H16.1148C17.4321 17.0002 18.5 15.927 18.5 14.6032V10.2085C18.5 8.88464 17.4321 7.81143 16.1148 7.81143H13.7243C13.7246 7.26389 13.8522 6.64164 14.2266 5.81384C14.7536 4.64853 14.6738 3.61953 13.5309 3.16702C11.9025 2.52226 11.0364 3.86776 10.2187 5.13803L10.2016 5.16457C9.80492 5.78077 8.49215 7.17709 7.27008 7.99206Z" stroke="{{ fill }}" stroke-width="0.75"/>
+</svg>

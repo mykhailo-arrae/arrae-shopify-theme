@@ -1,0 +1,27 @@
+{% liquid
+  assign width = width | default: 23
+  assign height = height | default: 23
+  assign fill = fill | default: 'currentColor'
+
+  assign title_fallback = 'accessibility.icons.view_grid' | t
+  assign title = title | default: title_fallback
+%}
+
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="{{ width }}"
+  height="{{ height }}"
+  viewBox="0 0 23 23"
+  fill="none"
+  aria-labelledby="view-grid"
+>
+  <title id="view-grid">{{ title }}</title>
+  <path d="M0.666668 0.666687H8.66667V8.66669H0.666668V0.666687Z" fill="{{ fill }}"/>
+  <path d="M14 0.666687H22V8.66669H14V0.666687Z" fill="{{ fill }}"/>
+  <path d="M0.666668 14H8.66667V22H0.666668V14Z" fill="{{ fill }}"/>
+  <path d="M14 14H22V22H14V14Z" fill="{{ fill }}"/>
+  <path d="M0.666668 0.666687H8.66667V8.66669H0.666668V0.666687Z" stroke="{{ fill }}" stroke-width="1.33333" stroke-linejoin="round"/>
+  <path d="M14 0.666687H22V8.66669H14V0.666687Z" stroke="{{ fill }}" stroke-width="1.33333" stroke-linejoin="round"/>
+  <path d="M0.666668 14H8.66667V22H0.666668V14Z" stroke="{{ fill }}" stroke-width="1.33333" stroke-linejoin="round"/>
+  <path d="M14 14H22V22H14V14Z" stroke="{{ fill }}" stroke-width="1.33333" stroke-linejoin="round"/>
+</svg>

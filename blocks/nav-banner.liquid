@@ -1,0 +1,54 @@
+{% # DO NOT EDIT: This file is auto-generated and will be overwritten. [build-fingerprint:assets:source={_js/blocks/nav-banner/block.liquid}] %}
+
+<style>
+.tvg_nav_banner_i2MQ-W_col{align-self:stretch;width:100%;max-width:28.5rem;display:none;position:relative}
+.tvg_nav_banner_i2MQ-W_col~.tvg_nav_banner_i2MQ-W_col{display:none}
+@media print,screen and (width>=64em){.js-mobile-drawer:not([data-drawer-mode-on-desktop=true]) .tvg_nav_banner_i2MQ-W_col{grid-column:3;width:auto;min-width:0;display:block}
+}
+@media print,screen and (width>=64em) and (width>=80em){.js-mobile-drawer:not([data-drawer-mode-on-desktop=true]) .tvg_nav_banner_i2MQ-W_col{grid-column:-3/-1}
+}
+</style>
+
+{% liquid
+  assign image = block.settings.image
+  assign title = block.settings.title
+  assign url = block.settings.url
+%}
+
+{% render 'nav-banner-card', image: image, title: title, url: url %}
+
+{% schema %}
+{
+  "name": "Menu Banner",
+  "class": "tvg_nav_banner_i2MQ-W_col",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Only one Menu Banner per mega menu is supported. Additional banners will be hidden."
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title"
+    },
+    {
+      "type": "url",
+      "id": "url",
+      "label": "Link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Menu Banner",
+      "settings": {
+        "title": "Shop All Bundles"
+      }
+    }
+  ]
+}
+{% endschema %}

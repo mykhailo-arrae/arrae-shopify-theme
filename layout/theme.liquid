@@ -1,70 +1,70 @@
 <!doctype html>
-<html
-  class="no-js{% if request.design_mode %} shopify-design-mode{% endif %}"
-  lang="{{ request.locale.iso_code }}"
->
+{% assign site_lang = shop.locale | default: 'en' %}
+<!--[if lt IE 9]> <html class="lt-ie9" lang="{{ site_lang }}"> <![endif]-->
+<!--[if IE 9]> <html class="lt-ie10" lang="{{ site_lang }}"> <![endif]-->
+<!-- [if gt IE 9]><! -->
+<html lang="{{ site_lang }}">
+  <!-- <![endif] -->
+
   <head>
-    {%- render 'stylesheets' -%}
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    {%- if settings.favicon != blank -%}
-      <link
-        rel="icon"
-        type="image/png"
-        href="{{ settings.favicon | image_url: width: 32, height: 32 }}"
-      >
-    {%- endif -%}
+    <!-- Resource hints -->
+    <link rel="preconnect" href="https://cdn.shopify.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+    <link rel="preconnect" href="https://use.typekit.net">
+    <link rel="stylesheet" href="https://use.typekit.net/hdm1yfi.css">
 
-    {% comment %} This a way to wait for main content to load when navigating to a new page so that the view transitions can work consistently {% endcomment %}
-    <link
-      rel="expect"
-      href="#MainContent"
-      blocking="render"
-      id="view-transition-render-blocker"
-    >
+    <!-- Meta -->
+    {% liquid
+      render 'meta'
+      unless template contains 'blank'
+        render 'meta-twitter-card'
+        render 'meta-fb-open-graph'
+        render 'meta-json-ld'
+      endunless
+    %}
 
-    {%- render 'meta-tags' -%}
-    {%- render 'fonts' -%}
-    {%- render 'scripts' -%}
-    {%- render 'theme-styles-variables' -%}
-    {%- render 'color-schemes' -%}
+    <!-- Stylesheets -->
+    {{ 'main.css' | asset_url | stylesheet_tag }}
+    {{ 'wc-ssr.css' | asset_url | stylesheet_tag }}
 
-    {% if request.design_mode %}
-      {%- render 'theme-editor' -%}
-    {% endif %}
+    {% capture lazy_placeholder %}<svg viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"><path d="M872,192 L152,192 C129.88,192 112,209.88 112,232 L112,792 C112,814.08 129.88,832 152,832 L872,832 C894.12,832 912,814.08 912,792 L912,232 C912,209.92 894.12,192 872,192 L872,192 L872,192 Z M832,752 L192,752 L192,272 L832,272 L832,752 L832,752 L832,752 Z M684.6,547.08 L555.36,611.28 L404.56,367.24 L272,672 L752,672 L684.6,547.08 L684.6,547.08 L684.6,547.08 Z M642,472 C669.6,472 692,449.6 692,422 C692,394.4 669.6,372 642,372 C614.4,372 592,394.4 592,422 C592,449.6 614.4,472 642,472 L642,472 L642,472 Z" style="fill: #efefef; fill: {{ settings.color_gray_70 }};"></path></svg>{% endcapture %}
 
+    <style>
+      .o-placeholder.has-icon::before {
+        background-image: url('{{ lazy_placeholder | strip | url_param_escape | prepend: "data:image/svg+xml," }}');
+      }
+    </style>
+    {% render 'inline-css' %}
+
+    <!-- Custom header content -->
     {{ content_for_header }}
+    <!-- End of custom header content -->
   </head>
 
-  <body class="page-width-{{ settings.page_width }} card-hover-effect-{{ settings.card_hover_effect }}">
-    {% render 'skip-to-content-link', href: '#MainContent', text: 'accessibility.skip_to_text' %}
-    <div id="header-group">
-      {% sections 'header-group' %}
-    </div>
+  <body
+    class="{{ template | handle | split: '-' | first | prepend: 'template-' }} {% if template == blank %}no-template{% endif %}"
+    data-shopify-template="{{ template | handleize }}"
+  >
+    {% render 'skip-content-button-stylesheet' %}
+    {% render 'skip-content-button' %}
 
-    <script
-      src="{{ 'critical.js' | asset_url }}"
-      type="module"
-      async
-      blocking="render"
-    ></script>
+    {% sections 'header-group' %}
 
-    <main
-      id="MainContent"
-      class="content-for-layout"
-      role="main"
-      data-page-transition-enabled="{{ settings.page_transition_enabled }}"
-      data-product-transition="{{ settings.transition_to_main_product }}"
-      data-template="{{ template }}"
-    >
+    <!-- Begin content -->
+    <div id="main-content">
       {{ content_for_layout }}
-    </main>
+    </div>
+    <!-- End content -->
 
     {% sections 'footer-group' %}
 
-    {% render 'search-modal' %}
+    {% section 'analytics-google' %}
 
-    {% if settings.quick_add or settings.mobile_quick_add %}
-      {% render 'quick-add-modal' %}
-    {% endif %}
+    {% render 'scripts' %}
+    {% render 'js-locales' %}
   </body>
 </html>

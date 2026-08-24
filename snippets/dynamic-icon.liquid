@@ -1,0 +1,73 @@
+{% # DO NOT EDIT: This file is auto-generated and will be overwritten. [build-fingerprint:assets:source={_js/snippets/dynamic-icon/snippet.liquid}] %}
+
+{% liquid
+  assign icon_handle = icon_handle | default: null
+  assign allowed_icon_handles = 'icon-menu,icon-search,icon-shopping-bag,icon-check,icon-plus,icon-minus,icon-close,icon-chevron-top,icon-chevron-bottom,icon-chevron-circle,icon-arrow-left,icon-arrow-right,icon-play,icon-sound-off,icon-sound-on,icon-pause,icon-account,icon-target,icon-science,icon-leaf,icon-focus,icon-globe-question,icon-mail,icon-chat,icon-box'
+
+  assign allowed_icon_handles_array = allowed_icon_handles | split: ','
+
+  assign is_allowed_icon_handle = false
+
+  for allowed_icon_handle in allowed_icon_handles_array
+    if icon_handle == allowed_icon_handle
+      assign is_allowed_icon_handle = true
+      break
+    endif
+  endfor
+%}
+
+{% if icon_handle != blank and is_allowed_icon_handle %}
+  <!-- Enumerate all icon handles  here as a case statement -->
+  {% case icon_handle %}
+    {% when 'icon-menu' %}
+      {% render 'icon-menu' %}
+    {% when 'icon-search' %}
+      {% render 'icon-search' %}
+    {% when 'icon-shopping-bag' %}
+      {% render 'icon-shopping-bag' %}
+    {% when 'icon-check' %}
+      {% render 'icon-check' %}
+    {% when 'icon-plus' %}
+      {% render 'icon-plus' %}
+    {% when 'icon-minus' %}
+      {% render 'icon-minus' %}
+    {% when 'icon-close' %}
+      {% render 'icon-close' %}
+    {% when 'icon-chevron-top' %}
+      {% render 'icon-chevron-top' %}
+    {% when 'icon-chevron-bottom' %}
+      {% render 'icon-chevron-bottom' %}
+    {% when 'icon-chevron-circle' %}
+      {% render 'icon-chevron-circle' %}
+    {% when 'icon-arrow-left' %}
+      {% render 'icon-arrow-left' %}
+    {% when 'icon-arrow-right' %}
+      {% render 'icon-arrow-right' %}
+    {% when 'icon-play' %}
+      {% render 'icon-play' %}
+    {% when 'icon-sound-off' %}
+      {% render 'icon-sound-off' %}
+    {% when 'icon-sound-on' %}
+      {% render 'icon-sound-on' %}
+    {% when 'icon-pause' %}
+      {% render 'icon-pause' %}
+    {% when 'icon-account' %}
+      {% render 'icon-account' %}
+    {% when 'icon-target' %}
+      {% render 'icon-target' %}
+    {% when 'icon-science' %}
+      {% render 'icon-science' %}
+    {% when 'icon-leaf' %}
+      {% render 'icon-leaf' %}
+    {% when 'icon-focus' %}
+      {% render 'icon-focus' %}
+    {% when 'icon-globe-question' %}
+      {% render 'icon-globe-question' %}
+    {% when 'icon-mail' %}
+      {% render 'icon-mail' %}
+    {% when 'icon-chat' %}
+      {% render 'icon-chat' %}
+    {% when 'icon-box' %}
+      {% render 'icon-box' %}
+  {% endcase %}
+{% endif %}

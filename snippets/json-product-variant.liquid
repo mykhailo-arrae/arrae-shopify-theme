@@ -1,0 +1,7 @@
+{% liquid
+  assign product = product | default: null
+  assign variant = variant | default: null
+%}
+
+{ "variant": {{ variant | json }}
+}

@@ -1,0 +1,49 @@
+{% # DO NOT EDIT: This file is auto-generated and will be overwritten. [build-fingerprint:assets:source={_js/sections/analytics-google/section.liquid}] %}
+
+<script class="json-portable-section-assets" type="application/json">
+{"sectionName":"analytics-google"}
+</script>
+
+<style>
+.tvg_analytics_google_gF1M8a_section{display:none}
+</style>
+
+{% liquid
+  assign gtag = null
+  if section.settings.gtag != blank and section.settings.gtag
+    assign gtag = section.settings.gtag | default: null
+  endif
+
+  assign enabled = section.settings.enabled | default: false
+  if request.design_mode
+    assign enabled = false
+  endif
+%}
+
+<script type="application/json">
+  {
+    "enabled": {{ enabled | json }},
+    "gtag": {{ gtag | json }}
+  }
+</script>
+
+{% schema %}
+{
+  "class": "tvg_analytics_google_gF1M8a_section js-analytics-google",
+  "name": "Analytics — Google",
+  "settings": [
+    {
+      "default": true,
+      "id": "enabled",
+      "label": "Enable analytics",
+      "type": "checkbox"
+    },
+    {
+      "id": "gtag",
+      "info": "REQUIRED - G-XXXX that will be used to track events",
+      "label": "G-Tag ID",
+      "type": "text"
+    }
+  ]
+}
+{% endschema %}

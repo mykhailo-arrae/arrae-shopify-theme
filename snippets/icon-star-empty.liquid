@@ -1,0 +1,19 @@
+{% liquid
+  assign width = width | default: 13
+  assign height = height | default: 12
+  assign fill = fill | default: 'currentColor'
+
+  assign title_fallback = 'accessibility.icons.star_empty' | t
+  assign title = title | default: title_fallback
+%}
+
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="{{ width }}"
+  height="{{ height }}"
+  viewBox="0 0 {{width}} {{height}}"
+  fill="none"
+>
+  <title id="star-empty">{{ title }}</title>
+  <path d="M7.79785 4.58398H12.6172L8.71875 7.41602L10.208 12L6.30859 9.16699L2.41016 12L3.89941 7.41602L0 4.58398H4.81934L6.30859 0L7.79785 4.58398ZM5.5459 5.58398H3.0791L5.07422 7.03418L4.31055 9.38184L5.7207 8.3584L6.30859 7.93066L8.30566 9.38184L7.54297 7.03418L9.53906 5.58398H7.07129L6.30859 3.23633L5.5459 5.58398Z" fill="{{ fill }}"/>
+</svg>

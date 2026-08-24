@@ -1,0 +1,651 @@
+{% # DO NOT EDIT: This file is auto-generated and will be overwritten. [build-fingerprint:assets:source={_js/sections/education-slideshow/section.liquid}] %}
+
+<script class="json-portable-section-assets" type="application/json">
+{"sectionName":"education-slideshow"}
+</script>
+
+<style>
+.tvg_education_slideshow_dAh1aa_root{isolation:isolate;color:oklch(99.59% .0093 99.98);background:oklch(21.71% .0232 69.07);width:100%;display:block;position:relative;overflow:hidden}
+.tvg_education_slideshow_dAh1aa_live-region{clip:rect(1px,1px,1px,1px);white-space:nowrap;width:1px;height:1px;margin:0;overflow:hidden;position:absolute!important}
+.tvg_education_slideshow_dAh1aa_stage{width:100%;position:relative}
+.tvg_education_slideshow_dAh1aa_stage:has(div[data-stats-count="3"]),.tvg_education_slideshow_dAh1aa_stage:has(div[data-stats-count="4"]){width:100%}
+.tvg_education_slideshow_dAh1aa_viewport{width:100%;height:100%;overflow:hidden}
+.tvg_education_slideshow_dAh1aa_slideshow-navigation{pointer-events:none;width:100%;max-width:94.5rem;height:100%;margin-inline:auto;position:absolute;inset:0}
+.tvg_education_slideshow_dAh1aa_mobile-cta{pointer-events:all;background-color:oklch(99.59% .0093 99.98);flex-direction:column;align-items:stretch;width:100%;max-width:94.5rem;margin-inline:auto;padding:1.25rem 1rem 1.5rem;display:flex}
+.tvg_education_slideshow_dAh1aa_mobile-cta__button.root--secondary{color:oklch(21.71% .0232 69.07);background-color:#0000;border-color:oklch(21.71% .0232 69.07);width:100%;max-width:100%;display:flex}
+.tvg_education_slideshow_dAh1aa_root[data-text-contrast=dark] .tvg_education_slideshow_dAh1aa_mobile-cta__button.root--secondary{color:oklch(21.71% .0232 69.07);border-color:oklch(21.71% .0232 69.07)}
+.tvg_education_slideshow_dAh1aa_track{height:100%;display:flex}
+@media print,screen and (width>=80em){.tvg_education_slideshow_dAh1aa_stage{height:min(47.75rem,45.8995vw);max-height:47.75rem}
+.tvg_education_slideshow_dAh1aa_mobile-cta{display:none}
+.tvg_education_slideshow_dAh1aa_viewport .swiper-slide{height:100%}
+}
+@media print,screen and (width<80em){.tvg_education_slideshow_dAh1aa_stage{flex-direction:column;height:auto;display:flex}
+.tvg_education_slideshow_dAh1aa_stage:has(div[data-stats-count="3"]),.tvg_education_slideshow_dAh1aa_stage:has(div[data-stats-count="4"]){height:auto}
+.tvg_education_slideshow_dAh1aa_viewport{flex-direction:column;flex:auto;height:auto;min-height:0;display:flex}
+.tvg_education_slideshow_dAh1aa_root[data-has-mobile-cta=true] .tvg_education_slideshow_dAh1aa_stage{height:auto}
+.tvg_education_slideshow_dAh1aa_root[data-has-mobile-cta=true] .tvg_education_slideshow_dAh1aa_viewport{flex:auto;height:auto}
+.tvg_education_slideshow_dAh1aa_root[data-has-mobile-cta=true] .tvg_education_slideshow_dAh1aa_track{flex:auto;height:auto;min-height:100%}
+.tvg_education_slideshow_dAh1aa_root[data-has-mobile-cta=true] .tvg_education_slideshow_dAh1aa_viewport .swiper-slide{height:auto;min-height:100%}
+.tvg_education_slideshow_dAh1aa_track{flex:auto;align-items:stretch;height:auto;min-height:100%}
+.tvg_education_slideshow_dAh1aa_viewport .swiper-slide{height:auto;min-height:100%}
+}
+@media print,screen and (width<48em){.tvg_education_slideshow_dAh1aa_stage,.tvg_education_slideshow_dAh1aa_stage:has(div[data-stats-count="3"]),.tvg_education_slideshow_dAh1aa_stage:has(div[data-stats-count="4"]),.tvg_education_slideshow_dAh1aa_root[data-has-mobile-cta=true] .tvg_education_slideshow_dAh1aa_stage{min-height:43rem}
+}
+</style>
+
+{% if section.blocks.size > 0 %}
+  {% liquid
+    assign autoplay = section.settings.autoplay | default: false, allow_false: true
+    assign autoplay_speed = section.settings.autoplay_speed | default: '6000'
+    assign cta_label = section.settings.cta_label | default: blank
+    assign cta_url = section.settings.cta_url | default: blank
+    assign show_playback_controls = section.settings.show_playback_controls | default: true, allow_false: true
+    assign show_cta = false
+    if cta_label != blank and cta_url != blank
+      assign show_cta = true
+    endif
+
+    render 'education-slide-stylesheet'
+  %}
+
+  <div
+    class="tvg_education_slideshow_dAh1aa_root"
+    data-education-slideshow
+    data-autoplay="{{ autoplay }}"
+    data-autoplay-speed="{{ autoplay_speed }}"
+    data-slide-count="{{ section.blocks.size }}"
+    {% if show_cta %}
+      data-has-mobile-cta="true"
+    {% endif %}
+    data-a11y-play="{{ 'accessibility.education_slideshow.play' | t | escape }}"
+    data-a11y-pause="{{ 'accessibility.education_slideshow.pause' | t | escape }}"
+    data-a11y-announce-template="{{ 'accessibility.education_slideshow.live_region_announcement' | t | escape }}"
+  >
+    <p
+      class="tvg_education_slideshow_dAh1aa_live-region"
+      data-education-slideshow-live-region
+      aria-live="polite"
+      aria-atomic="true"
+    ></p>
+    <div class="tvg_education_slideshow_dAh1aa_stage">
+      <div class="tvg_education_slideshow_dAh1aa_viewport swiper" data-education-slideshow-viewport>
+        <div class="tvg_education_slideshow_dAh1aa_track swiper-wrapper" data-education-slideshow-track>
+          {% for block in section.blocks %}
+            {% render 'education-slide',
+              block: block,
+              section_id: section.id,
+              slide_index: forloop.index0,
+              slide_count: section.blocks.size
+            %}
+          {% endfor %}
+        </div>
+      </div>
+
+      {% if section.blocks.size > 1 %}
+        <div class="tvg_education_slideshow_dAh1aa_slideshow-navigation">
+          {% render 'education-slide-navigation',
+            section_id: section.id,
+            blocks: section.blocks,
+            autoplay: autoplay,
+            show_playback_controls: show_playback_controls,
+            cta_label: cta_label,
+            cta_url: cta_url
+          %}
+        </div>
+      {% endif %}
+    </div>
+
+    {% if show_cta %}
+      <div class="tvg_education_slideshow_dAh1aa_mobile-cta">
+        {% render 'core-button',
+          label: cta_label,
+          url: cta_url,
+          style: 'secondary',
+          class: 'tvg_education_slideshow_dAh1aa_mobile-cta__button'
+        %}
+      </div>
+    {% endif %}
+  </div>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Education Slideshow",
+  "tag": "section",
+  "class": "js-education-slideshow",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Auto-rotate slides",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "autoplay_speed",
+      "label": "Change slides every",
+      "options": [
+        { "value": "3000", "label": "3 seconds" },
+        { "value": "4000", "label": "4 seconds" },
+        { "value": "5000", "label": "5 seconds" },
+        { "value": "6000", "label": "6 seconds" },
+        { "value": "7000", "label": "7 seconds" }
+      ],
+      "default": "6000"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_playback_controls",
+      "label": "Show playback controls",
+      "default": true,
+      "info": "Play/pause button below the slide navigation. Can be shown alongside the optional CTA."
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "CTA label",
+      "default": "Shop All",
+      "info": "Optional — both label and link are required to show the CTA."
+    },
+    {
+      "type": "url",
+      "id": "cta_url",
+      "label": "CTA link",
+      "info": "Optional — both label and link are required to show the CTA. Renders below playback controls when both are enabled."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "percentage_slide",
+      "name": "Percentage Stats slide",
+      "limit": 8,
+      "settings": [
+        {
+          "type": "text",
+          "id": "slide_title",
+          "label": "Slide Title",
+          "default": "Science"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "info": "Recommended max 80 characters.",
+          "default": "Brand Philosophy & Technology"
+        },
+        {
+          "type": "richtext",
+          "id": "subheading",
+          "label": "Subheading",
+          "info": "Recommended max 200 characters.",
+          "default": "<p>Key findings highlighting the benefits of our products.</p>"
+        },
+        {
+          "type": "richtext",
+          "id": "disclaimers",
+          "label": "Disclaimers",
+          "default": "<p>(Independent <a href='/'>clinical study</a>, 2 months)*</p>"
+        },
+        {
+          "type": "select",
+          "id": "background_type",
+          "label": "Background Type",
+          "options": [
+            {
+              "value": "image",
+              "label": "Image"
+            },
+            {
+              "value": "color",
+              "label": "Solid Color"
+            },
+            {
+              "value": "gradient",
+              "label": "Gradient"
+            }
+          ],
+          "default": "image",
+          "info": "Choose how this slide's background is filled. If the selected type has no value, the contrast mode default is used (off-white for light, dark-gray for dark)."
+        },
+        {
+          "type": "image_picker",
+          "id": "background_image_desktop",
+          "label": "Background Image Desktop",
+          "info": "Select the background image for this slide.",
+          "visible_if": "{{ block.settings.background_type == 'image' }}"
+        },
+        {
+          "type": "image_picker",
+          "id": "background_image_mobile",
+          "label": "Background Image Mobile",
+          "info": "Select the background image for this slide on mobile. (if empty, the desktop image will be used)",
+          "visible_if": "{{ block.settings.background_type == 'image' }}"
+        },
+        {
+          "type": "color",
+          "id": "background_color",
+          "label": "Background Color",
+          "info": "Solid background color for this slide.",
+          "visible_if": "{{ block.settings.background_type == 'color' }}"
+        },
+        {
+          "type": "color_background",
+          "id": "background_gradient",
+          "label": "Background Gradient",
+          "info": "Gradient background for this slide.",
+          "visible_if": "{{ block.settings.background_type == 'gradient' }}"
+        },
+        {
+          "type": "text",
+          "id": "wheel_color",
+          "label": "Wheel color",
+          "default": "default",
+          "info": "Enter \"yellow\" for the yellow wheel. Any other value (including \"default\") uses the blue wheel. Not case sensitive."
+        },
+        {
+          "type": "color",
+          "id": "wheel_track_stroke_color",
+          "label": "Wheel Track Color",
+          "default": "#672f45",
+          "info": "The color of the track of the wheel."
+        },
+        {
+          "type": "metaobject_list",
+          "id": "stat_items",
+          "label": "Stat Items",
+          "metaobject_type": "percentage_stat_item",
+          "limit": 4,
+          "info": "Select the metaobject entries for this slide."
+        }
+      ]
+    },
+    {
+      "type": "ingredients_slide",
+      "name": "Ingredients slide",
+      "limit": 8,
+      "settings": [
+        {
+          "type": "text",
+          "id": "slide_title",
+          "label": "Slide Title",
+          "default": "Ingredients"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "info": "Recommended max 80 characters.",
+          "default": "Key Ingredients & Benefits"
+        },
+        {
+          "type": "richtext",
+          "id": "subheading",
+          "label": "Subheading",
+          "info": "Recommended max 200 characters.",
+          "default": "<p>Some of the most effective ingredients we use in our products.</p>"
+        },
+        {
+          "type": "richtext",
+          "id": "disclaimers",
+          "label": "Disclaimers",
+          "default": "<p>(Independent <a href='/'>clinical study</a>, 2 months)*</p>"
+        },
+        {
+          "type": "select",
+          "id": "background_type",
+          "label": "Background Type",
+          "options": [
+            {
+              "value": "image",
+              "label": "Image"
+            },
+            {
+              "value": "color",
+              "label": "Solid Color"
+            },
+            {
+              "value": "gradient",
+              "label": "Gradient"
+            }
+          ],
+          "default": "image",
+          "info": "Choose how this slide's background is filled. If the selected type has no value, the contrast mode default is used (off-white for light, dark-gray for dark)."
+        },
+        {
+          "type": "image_picker",
+          "id": "background_image_desktop",
+          "label": "Background Image Desktop",
+          "info": "Select the background image for this slide.",
+          "visible_if": "{{ block.settings.background_type == 'image' }}"
+        },
+        {
+          "type": "image_picker",
+          "id": "background_image_mobile",
+          "label": "Background Image Mobile",
+          "info": "Select the background image for this slide on mobile. (if empty, the desktop image will be used)",
+          "visible_if": "{{ block.settings.background_type == 'image' }}"
+        },
+        {
+          "type": "color",
+          "id": "background_color",
+          "label": "Background Color",
+          "info": "Solid background color for this slide.",
+          "visible_if": "{{ block.settings.background_type == 'color' }}"
+        },
+        {
+          "type": "color_background",
+          "id": "background_gradient",
+          "label": "Background Gradient",
+          "info": "Gradient background for this slide.",
+          "visible_if": "{{ block.settings.background_type == 'gradient' }}"
+        },
+        {
+          "type": "text",
+          "id": "text_contrast_mode",
+          "label": "Content Contrast Mode",
+          "default": "dark",
+          "info": "Enter \"dark\" for light text (dark default background). Any other value (including \"light\") uses dark text (light/off-white default background). Not case sensitive. Custom background type values override the default fill."
+        },
+        {
+          "type": "metaobject_list",
+          "id": "ingredients",
+          "label": "Ingredients",
+          "metaobject_type": "ingredient_item",
+          "limit": 6,
+          "info": "Select the metaobject entries for this slide."
+        }
+      ]
+    },
+    {
+      "type": "feature_text_slide",
+      "name": "Feature Text slide",
+      "limit": 8,
+      "settings": [
+        {
+          "type": "text",
+          "id": "slide_title",
+          "label": "Slide Title",
+          "default": "Formulas"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "info": "Recommended max 80 characters.",
+          "default": "The Formula Standard"
+        },
+        {
+          "type": "richtext",
+          "id": "subheading",
+          "label": "Subheading",
+          "info": "Recommended max 200 characters.",
+          "default": "<p>We treat formulation as a balance of efficacy, experience, and long term trust.</p>"
+        },
+        {
+          "type": "richtext",
+          "id": "disclaimers",
+          "label": "Disclaimers",
+          "default": "<p>(Independent <a href='/'>clinical study</a>, 2 months)*</p>"
+        },
+        {
+          "type": "select",
+          "id": "background_type",
+          "label": "Background Type",
+          "options": [
+            {
+              "value": "image",
+              "label": "Image"
+            },
+            {
+              "value": "color",
+              "label": "Solid Color"
+            },
+            {
+              "value": "gradient",
+              "label": "Gradient"
+            }
+          ],
+          "default": "image",
+          "info": "Choose how this slide's background is filled. If the selected type has no value, the contrast mode default is used (off-white for light, dark-gray for dark)."
+        },
+        {
+          "type": "image_picker",
+          "id": "background_image_desktop",
+          "label": "Background Image Desktop",
+          "info": "Select the background image for this slide.",
+          "visible_if": "{{ block.settings.background_type == 'image' }}"
+        },
+        {
+          "type": "image_picker",
+          "id": "background_image_mobile",
+          "label": "Background Image Mobile",
+          "info": "Select the background image for this slide on mobile. (if empty, the desktop image will be used)",
+          "visible_if": "{{ block.settings.background_type == 'image' }}"
+        },
+        {
+          "type": "color",
+          "id": "background_color",
+          "label": "Background Color",
+          "info": "Solid background color for this slide.",
+          "visible_if": "{{ block.settings.background_type == 'color' }}"
+        },
+        {
+          "type": "color_background",
+          "id": "background_gradient",
+          "label": "Background Gradient",
+          "info": "Gradient background for this slide.",
+          "visible_if": "{{ block.settings.background_type == 'gradient' }}"
+        },
+        {
+          "type": "metaobject_list",
+          "id": "feature_text_items",
+          "label": "Features Text Items",
+          "metaobject_type": "feature_text_item",
+          "limit": 4,
+          "info": "Select the metaobject entries for this slide."
+        }
+      ]
+    },
+    {
+      "type": "feature_cards_slide",
+      "name": "Feature Cards slide",
+      "limit": 8,
+      "settings": [
+        {
+          "type": "text",
+          "id": "slide_title",
+          "label": "Slide Title",
+          "default": "Clinical Studies"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "info": "Recommended max 80 characters.",
+          "default": "Clinically Informed"
+        },
+        {
+          "type": "richtext",
+          "id": "subheading",
+          "label": "Subheading",
+          "info": "Recommended max 200 characters.",
+          "default": "<p>Every decision is supported by studies that inform measurable outcomes.</p>"
+        },
+        {
+          "type": "richtext",
+          "id": "disclaimers",
+          "label": "Disclaimers",
+          "default": "<p>(Independent <a href='/'>clinical study</a>, 2 months)*</p>"
+        },
+        {
+          "type": "select",
+          "id": "background_type",
+          "label": "Background Type",
+          "options": [
+            {
+              "value": "image",
+              "label": "Image"
+            },
+            {
+              "value": "color",
+              "label": "Solid Color"
+            },
+            {
+              "value": "gradient",
+              "label": "Gradient"
+            }
+          ],
+          "default": "image",
+          "info": "Choose how this slide's background is filled. If the selected type has no value, the contrast mode default is used (off-white for light, dark-gray for dark)."
+        },
+        {
+          "type": "image_picker",
+          "id": "background_image_desktop",
+          "label": "Background Image Desktop",
+          "info": "Select the background image for this slide.",
+          "visible_if": "{{ block.settings.background_type == 'image' }}"
+        },
+        {
+          "type": "image_picker",
+          "id": "background_image_mobile",
+          "label": "Background Image Mobile",
+          "info": "Select the background image for this slide on mobile. (if empty, the desktop image will be used)",
+          "visible_if": "{{ block.settings.background_type == 'image' }}"
+        },
+        {
+          "type": "color",
+          "id": "background_color",
+          "label": "Background Color",
+          "info": "Solid background color for this slide.",
+          "visible_if": "{{ block.settings.background_type == 'color' }}"
+        },
+        {
+          "type": "color_background",
+          "id": "background_gradient",
+          "label": "Background Gradient",
+          "info": "Gradient background for this slide.",
+          "visible_if": "{{ block.settings.background_type == 'gradient' }}"
+        },
+        {
+          "type": "metaobject_list",
+          "id": "feature_cards",
+          "label": "Feature Cards",
+          "metaobject_type": "feature_card_item",
+          "limit": 3,
+          "info": "Select the metaobject entries for this slide."
+        }
+      ]
+    },
+    {
+      "type": "image_carousel_slide",
+      "name": "Image Carousel slide",
+      "limit": 8,
+      "settings": [
+        {
+          "type": "text",
+          "id": "slide_title",
+          "label": "Slide Title",
+          "default": "Image Carousel"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "info": "Recommended max 80 characters.",
+          "default": "Before & Afters"
+        },
+        {
+          "type": "richtext",
+          "id": "subheading",
+          "label": "Subheading",
+          "info": "Recommended max 200 characters.",
+          "default": "<p>See the effects of how using MB-1 and MB-1+45 can have in a 6 week period.</p>"
+        },
+        {
+          "type": "richtext",
+          "id": "disclaimers",
+          "label": "Disclaimers",
+          "default": "<p>(Independent <a href='/'>clinical study</a>, 2 months)*</p>"
+        },
+        {
+          "type": "select",
+          "id": "background_type",
+          "label": "Background Type",
+          "options": [
+            {
+              "value": "image",
+              "label": "Image"
+            },
+            {
+              "value": "color",
+              "label": "Solid Color"
+            },
+            {
+              "value": "gradient",
+              "label": "Gradient"
+            }
+          ],
+          "default": "image",
+          "info": "Choose how this slide's background is filled. If the selected type has no value, the contrast mode default is used (off-white for light, dark-gray for dark)."
+        },
+        {
+          "type": "image_picker",
+          "id": "background_image_desktop",
+          "label": "Background Image Desktop",
+          "info": "Select the background image for this slide.",
+          "visible_if": "{{ block.settings.background_type == 'image' }}"
+        },
+        {
+          "type": "image_picker",
+          "id": "background_image_mobile",
+          "label": "Background Image Mobile",
+          "info": "Select the background image for this slide on mobile. (if empty, the desktop image will be used)",
+          "visible_if": "{{ block.settings.background_type == 'image' }}"
+        },
+        {
+          "type": "color",
+          "id": "background_color",
+          "label": "Background Color",
+          "info": "Solid background color for this slide.",
+          "visible_if": "{{ block.settings.background_type == 'color' }}"
+        },
+        {
+          "type": "color_background",
+          "id": "background_gradient",
+          "label": "Background Gradient",
+          "info": "Gradient background for this slide.",
+          "visible_if": "{{ block.settings.background_type == 'gradient' }}"
+        },
+        {
+          "type": "text",
+          "id": "text_contrast_mode",
+          "label": "Content Contrast Mode",
+          "default": "light",
+          "info": "Enter \"dark\" for light text (dark default background). Any other value (including \"light\") uses dark text (light/off-white default background). Not case sensitive. Custom background type values override the default fill."
+        },
+        {
+          "type": "metaobject_list",
+          "id": "image_carousel_items",
+          "label": "Image Carousel Items",
+          "metaobject_type": "image_carousel_item",
+          "limit": 1,
+          "info": "Select the metaobject entries for this slide."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Education Slideshow",
+      "category": "Content",
+      "blocks": [
+        { "type": "percentage_slide" },
+        { "type": "ingredients_slide" },
+        { "type": "feature_text_slide" },
+        { "type": "feature_cards_slide" },
+        { "type": "image_carousel_slide" }
+      ]
+    }
+  ]
+}
+{% endschema %}

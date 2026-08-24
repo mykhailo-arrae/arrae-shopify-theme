@@ -1,0 +1,21 @@
+{% liquid
+  assign width = width | default: 21
+  assign height = height | default: 20
+  assign fill = fill | default: 'currentColor'
+
+  assign title_fallback = 'accessibility.icons.location' | t
+  assign title = title | default: title_fallback
+%}
+
+<svg
+  width="{{ width }}"
+  height="{{ height }}"
+  viewBox="0 0 21 20"
+  fill="none"
+  xmlns="http://www.w3.org/2000/svg"
+  aria-labelledby="location"
+>
+  <title id="location">{{ title }}</title>
+  <path d="M4.5 7.59248C4.5 4.52452 7.16667 2.00024 10.5 2.00024C13.8333 2.00024 16.5 4.52452 16.5 7.59248C16.5 10.8935 11.875 16.408 10.5 18.0002C9.125 16.408 4.5 10.8546 4.5 7.59248Z" stroke="{{ fill }}" stroke-linejoin="round"/>
+  <path d="M10.6589 5.44409C9.30391 5.44409 8.19531 6.47734 8.19531 7.74021C8.19531 9.00308 9.30391 10.0363 10.6589 10.0363C12.0138 10.0363 13.1224 9.00308 13.1224 7.74021C13.1224 6.47734 12.0138 5.44409 10.6589 5.44409Z" stroke="{{ fill }}"/>
+</svg>

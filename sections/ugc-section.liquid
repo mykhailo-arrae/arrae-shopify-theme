@@ -1,0 +1,244 @@
+{% # DO NOT EDIT: This file is auto-generated and will be overwritten. [build-fingerprint:assets:source={_js/sections/ugc-section/section.liquid}] %}
+
+<script class="json-portable-section-assets" type="application/json">
+{"sectionName":"ugc-section"}
+</script>
+
+<style>
+.tvg_ugc_section_AvJFlq_section{z-index:1;width:100%;position:relative}
+.tvg_ugc_section_AvJFlq_container{flex-direction:column;align-items:flex-start;gap:2rem;width:100%;max-width:94.5rem;margin-inline:auto;padding:3rem 1rem 1.5rem;display:flex;position:relative}
+.tvg_ugc_section_AvJFlq_heading{letter-spacing:-.045rem;letter-spacing:-.03em;font-family:Cardinal Fruit,Georgia,Book Antiqua,Times New Roman,serif;font-size:2rem;font-weight:400;line-height:1.12}
+.tvg_ugc_section_AvJFlq_heading em{letter-spacing:-.02em}
+.tvg_ugc_section_AvJFlq_carousel{width:100vw;margin-left:-1rem;margin-right:-1rem;padding-left:1rem;display:block;position:relative}
+.tvg_ugc_section_AvJFlq_carousel.swiper .swiper-slide{height:unset}
+.tvg_ugc_section_AvJFlq_carousel.swiper .swiper-wrapper{justify-content:flex-start;align-items:stretch;height:auto;display:flex}
+.tvg_ugc_section_AvJFlq_carousel:not(.swiper-initialized) .swiper-wrapper{gap:16px}
+.tvg_ugc_section_AvJFlq_carousel:not(.swiper-initialized) .tvg_ugc_section_AvJFlq_card{display:none}
+:is(.tvg_ugc_section_AvJFlq_carousel:not(.swiper-initialized) .tvg_ugc_section_AvJFlq_card:first-child,.tvg_ugc_section_AvJFlq_carousel:not(.swiper-initialized) .tvg_ugc_section_AvJFlq_card:nth-child(2),.tvg_ugc_section_AvJFlq_carousel:not(.swiper-initialized) .tvg_ugc_section_AvJFlq_card:nth-child(3),.tvg_ugc_section_AvJFlq_carousel:not(.swiper-initialized) .tvg_ugc_section_AvJFlq_card:nth-child(4)){max-width:80vw;display:block}
+.tvg_ugc_section_AvJFlq_carousel-outer-wrapper{width:100%;position:relative}
+.tvg_ugc_section_AvJFlq_carousel-pagination{justify-content:center;align-items:center;gap:.5rem;width:100%;padding-top:2rem;display:flex;position:relative;bottom:auto;left:auto;transform:none}
+.tvg_ugc_section_AvJFlq_carousel-pagination.swiper-pagination-horizontal{top:auto}
+.tvg_ugc_section_AvJFlq_carousel-pagination .swiper-pagination-bullet{opacity:1;background:oklch(21.71% .0232 69.07/.2);border-radius:50%;width:.5rem;height:.5rem;transition:background .2s;margin:0!important}
+.tvg_ugc_section_AvJFlq_carousel-pagination .swiper-pagination-bullet:focus-visible{outline-offset:2px;outline:2px solid oklch(21.71% .0232 69.07)}
+.tvg_ugc_section_AvJFlq_carousel-pagination .swiper-pagination-bullet-active{background:oklch(21.71% .0232 69.07)}
+.tvg_ugc_section_AvJFlq_carousel-nav--arrows{z-index:6;pointer-events:none;width:auto;height:auto;display:none;position:absolute;inset:0 .5rem}
+:is(.tvg_ugc_section_AvJFlq_carousel-nav--arrows .swiper-button-prev,.tvg_ugc_section_AvJFlq_carousel-nav--arrows .swiper-button-next){top:40%}
+.tvg_ugc_section_AvJFlq_carousel-nav--arrows .swiper-button-prev{left:-.375rem}
+.tvg_ugc_section_AvJFlq_carousel-nav--arrows .swiper-button-next{right:1.625rem}
+.tvg_ugc_section_AvJFlq_arrow{appearance:none;color:oklch(99.59% .0093 99.98);aspect-ratio:1;cursor:pointer;pointer-events:auto;z-index:4;background:oklch(34.85% 0 0);border:none;border-radius:50%;justify-content:center;align-items:center;width:2.5rem;height:2.5rem;margin:0;padding:0;transition:all .25s;display:flex}
+.tvg_ugc_section_AvJFlq_arrow:hover{opacity:.86}
+.tvg_ugc_section_AvJFlq_arrow span{width:inherit;height:inherit}
+.tvg_ugc_section_AvJFlq_arrow.swiper-button-lock{display:none}
+.tvg_ugc_section_AvJFlq_arrow:after,.tvg_ugc_section_AvJFlq_arrow[disabled]{display:none}
+@media print,screen and (width>=64em){.tvg_ugc_section_AvJFlq_container{gap:2.75rem;padding:3rem}
+.tvg_ugc_section_AvJFlq_heading{font-size:2.5rem;line-height:.98}
+.tvg_ugc_section_AvJFlq_heading em{letter-spacing:-.03em}
+.tvg_ugc_section_AvJFlq_carousel{width:100%;margin-left:unset;margin-right:unset;padding-left:unset}
+.tvg_ugc_section_AvJFlq_carousel:not(.swiper-initialized) .swiper-wrapper{grid-template-columns:repeat(4,1fr);gap:1rem;display:grid}
+.tvg_ugc_section_AvJFlq_carousel-pagination{display:none}
+.tvg_ugc_section_AvJFlq_carousel-nav--arrows{inset:6rem 3rem;transform:translate(0)}
+.tvg_ugc_section_AvJFlq_carousel-nav--arrows .swiper-button-prev{left:-1.25rem}
+.tvg_ugc_section_AvJFlq_carousel-nav--arrows .swiper-button-next{right:-1.25rem}
+}
+</style>
+
+{% liquid
+  assign heading = section.settings.heading
+  assign show_arrows = section.settings.show_arrows | default: true, allow_false: true
+  assign show_pagination = section.settings.show_pagination | default: true, allow_false: true
+
+  render 'ugc-card-stylesheet'
+%}
+
+<div class="">
+  <div class="tvg_ugc_section_AvJFlq_container">
+    {% if heading != blank %}
+      <h2 class="tvg_ugc_section_AvJFlq_heading">
+        {{ heading }}
+      </h2>
+    {% endif %}
+
+    <div class="tvg_ugc_section_AvJFlq_carousel swiper">
+      <div class="swiper-wrapper">
+        {% for block in section.blocks %}
+          {% if block.settings.media_image != blank
+            or block.settings.media_video != blank
+            or block.settings.main_text != blank
+            or block.settings.secondary_text != blank
+            or block.settings.tertiary_text != blank
+          %}
+            <div class="tvg_ugc_section_AvJFlq_card swiper-slide" {{ block.shopify_attributes }}>
+              {%
+                render 'ugc-card',
+                main_text: block.settings.main_text | default: null,
+                secondary_text: block.settings.secondary_text | default: null,
+                tertiary_text: block.settings.tertiary_text | default: null,
+                small_main_text: block.settings.small_main_text,
+                media_type: block.settings.media_type,
+                media_image: block.settings.media_image,
+                media_video: block.settings.media_video,
+                image_alt_text: block.settings.image_alt_text | default: null,
+                video_uid: block.id,
+              %}
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+      {% if show_pagination %}
+        <div class="tvg_ugc_section_AvJFlq_carousel-pagination swiper-pagination"></div>
+      {% endif %}
+    </div>
+
+    {% if section.blocks.size > 1 and show_arrows %}
+      <div class="tvg_ugc_section_AvJFlq_carousel-nav--arrows swiper-navigation-arrows js-nav-arrows">
+        <button
+          type="button"
+          class="swiper-button-prev tvg_ugc_section_AvJFlq_arrow"
+          title="{{ 'accessibility.previous_slide' | t }}"
+          aria-label="{{ 'accessibility.previous_slide' | t }}"
+        >
+          <span aria-hidden="true">{%- render 'icon-arrow-left' -%}</span>
+        </button>
+
+        <button
+          type="button"
+          class="swiper-button-next tvg_ugc_section_AvJFlq_arrow"
+          title="{{ 'accessibility.next_slide' | t }}"
+          aria-label="{{ 'accessibility.next_slide' | t }}"
+        >
+          <span aria-hidden="true">{%- render 'icon-arrow-right' -%}</span>
+        </button>
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "UGC Section",
+  "class": "tvg_ugc_section_AvJFlq_section js-ugc-section",
+  "settings": [
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Section title"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_arrows",
+      "label": "Show Arrows",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_pagination",
+      "label": "Show Pagination",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "ugc_card",
+      "name": "UGC Card",
+      "limit": 8,
+      "settings": [
+        {
+          "type": "header",
+          "content": "Content"
+        },
+        {
+          "type": "textarea",
+          "id": "main_text",
+          "label": "Main Text",
+          "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor."
+        },
+        {
+          "type": "text",
+          "id": "secondary_text",
+          "label": "Secondary Text",
+          "default": "Small byline text."
+        },
+        {
+          "type": "text",
+          "id": "tertiary_text",
+          "label": "Tertiary Text",
+          "info": "Optional. Renders below the secondary text (e.g. \"PhD in Nutritional Sciences\")."
+        },
+        {
+          "type": "checkbox",
+          "id": "small_main_text",
+          "label": "Use smaller main text",
+          "default": false,
+          "info": "Reduces the main text size."
+        },
+        {
+          "type": "header",
+          "content": "Background"
+        },
+        {
+          "type": "select",
+          "id": "media_type",
+          "label": "Media Type",
+          "options": [
+            {
+              "value": "image",
+              "label": "Image"
+            },
+            {
+              "value": "video",
+              "label": "Video"
+            }
+          ],
+          "default": "image"
+        },
+        {
+          "type": "image_picker",
+          "id": "media_image",
+          "label": "Media Image",
+          "visible_if": "{{ block.settings.media_type == 'image' }}"
+        },
+        {
+          "type": "text",
+          "id": "image_alt_text",
+          "label": "Image alt text",
+          "info": "Describe the image for screen readers. Falls back to the image alt in the media library, then the secondary text.",
+          "visible_if": "{{ block.settings.media_type == 'image' }}"
+        },
+        {
+          "type": "video",
+          "id": "media_video",
+          "label": "Media Video",
+          "visible_if": "{{ block.settings.media_type == 'video' }}"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "UGC Section",
+      "category": "Carousels",
+      "settings": {},
+      "blocks": [
+        {
+          "type": "ugc_card"
+        },
+        {
+          "type": "ugc_card"
+        },
+        {
+          "type": "ugc_card"
+        },
+        {
+          "type": "ugc_card"
+        },
+        {
+          "type": "ugc_card"
+        },
+        {
+          "type": "ugc_card"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

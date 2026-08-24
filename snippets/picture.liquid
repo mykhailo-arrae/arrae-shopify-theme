@@ -1,0 +1,96 @@
+{% doc %}
+  <<< Picture output snippet >>>
+
+  * desktop: IMAGE OBJECT : Shopify image object
+  * mobile: IMAGE OBJECT : Shopify image object
+  * widths: STRING : String containing all media sizes and image widths
+  * mobile_trigger: NUMBER | STRING : Outputs mobile image below this number inclusive. Default: 768
+  * class: STRING : Class to add to the picture element
+  * classImg: STRING : Class to add to the img element
+  * retina: BOOLEAN : Add retina: false if you need to turn it off. Default: true.
+  * loading: lazy | eager : Loading attribute for the image. Default: lazy
+  * fetchPriority: STRING : Priority for the image fetch. Default: auto
+  * attributes: STRING : Additional attributes to add to the picture element
+  * custom_height: NUMBER : Custom height for the image
+  * alt: STRING : Alt text for the image
+
+  We set a default media sizes.
+  It contains a maximum media query width and the image width relative to the screen size in percentages.
+  If a percentage is not added, we default to the last used one. Separate each media by comma.
+
+  Since we are using mobile first approach, we have to specify medias from the biggest -> smallest.
+
+  The syntax for widths is:
+    SCREEN_SIZE=PERCENTAGE
+
+  SCREEN_SIZE: mandatory
+  PERCENTAGE: optional : Default: 100
+
+  Note that if you overwrite the resolutions, you have to add all of the required media sizes.
+
+  Example:
+    {% render 'picture',
+      desktop: image_desktop,
+      mobile: image_mobile,
+      widths: '1600=33,1440,1280,1024=50,768=100,375',
+      mobile_trigger: 1024
+    %}
+{% enddoc %}
+
+{%- capture default_alt_message -%}
+{% if desktop.alt != blank %}{{ desktop.alt }}{% endif %}{% if desktop.alt != blank and mobile.alt != blank %} & {% endif %}{% if mobile.alt != blank %}{{ mobile.alt }}{% endif %}
+{%- endcapture -%}
+
+{% liquid
+  assign medias = widths | default: '1920=100,1600,1512,1280,1024,768,375' | split: ','
+  assign mobile_trigger = mobile_trigger | default: 768
+  assign retina = retina | default: true
+  assign percentage = 100
+  assign loading = loading | default: 'lazy'
+  assign position = position | default: image.presentation.focal_point | default: '50% 50%'
+  assign data_tag = data | default: ''
+  assign height = custom_height | default: nil
+  assign data_modal_target_id = data_modal_target_id | default: nil
+  assign alt = alt | default: default_alt_message
+%}
+
+<picture class='{{ class }}' {{ attributes }} data-modal-target-id='{{ data_modal_target_id }}'>
+  {% for media in medias %}
+    {% liquid
+      assign media_settings = media | split: '='
+      assign screen_width = media_settings | first | times: 1
+      if media_settings.size > 1
+        assign percentage = media_settings | last
+      endif
+      assign multiplier = percentage | divided_by: 100.00
+      assign width = screen_width | times: multiplier
+      assign width_retina = width | times: 2
+      assign mobile_trigger = mobile_trigger | times: 1
+      assign image = desktop
+      if screen_width <= mobile_trigger and mobile != blank
+        assign image = mobile
+      endif
+    %}
+
+    <source
+      media='(min-width: {{ screen_width | append: 'px' }})'
+      {% if retina %}
+        srcset='{{ image | image_url: width: width }}, {{ image | image_url: width: width_retina }} 2x'
+      {% else %}
+        srcset='{{ image | image_url: width: width }}'
+      {% endif %}
+    >
+  {% endfor %}
+
+  <img
+    src='{{ image | image_url: width: 375 }}'
+    alt='{{ alt | strip }}'
+    width='{{ image.width }}'
+    height='{% if height %}{{ height }}{% else %}{{ image.height }}{% endif %}'
+    loading='{{ loading }}'
+    style='object-position: {{ position }}'
+    {{ data_tag }}
+    class="{{ classImg }}"
+    fetchPriority="{{ fetchPriority | default: 'auto' }}"
+  >
+</picture>

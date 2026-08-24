@@ -1,0 +1,70 @@
+{% # DO NOT EDIT: This file is auto-generated and will be overwritten. [build-fingerprint:assets:source={_js/sections/workbench/section.liquid}] %}
+
+<script class="json-portable-section-assets" type="application/json">
+{"sectionName":"workbench"}
+</script>
+
+<style>
+.tvg_workbench_P283eW_root{background-color:oklch(90% .06 300);border-top:.25rem solid oklch(0% 0 0);border-bottom:.25rem solid oklch(0% 0 0)}
+.tvg_workbench_P283eW_container{box-sizing:border-box;width:100%;max-width:24rem;margin:0 auto;padding:2rem 1rem 3rem}
+.tvg_workbench_P283eW_title{text-align:center;text-transform:uppercase;margin:0 0 1em;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif;font-size:1.5rem;font-weight:700}
+.tvg_workbench_P283eW_summary{margin:0 0 1em}
+.tvg_workbench_P283eW_summary dt{margin:.5em 0;font-weight:700}
+.tvg_workbench_P283eW_summary dd{margin:0;font-size:.875em}
+.tvg_workbench_P283eW_summary ul{padding-left:.5em}
+.tvg_workbench_P283eW_summary li{text-overflow:ellipsis;width:100%;display:inline-block;overflow:hidden}
+.tvg_workbench_P283eW_dropdown{width:100%}
+.tvg_workbench_P283eW_multi_select{width:100%;min-height:15em}
+.tvg_workbench_P283eW_warning{background-color:#fff;border:.125rem solid red;border-radius:.5em;margin:1em 0;padding:1em;font-size:.875em}
+</style>
+
+{% render 'workbench-manifest' %}
+
+{% liquid
+  assign inferred_template_suffix = ''
+  if template.name == 'product'
+    assign inferred_template_suffix = product.template_suffix
+  elsif template.name == 'collection'
+    assign inferred_template_suffix = collection.template_suffix
+  elsif template.name == 'page'
+    unless page.template_suffix == 'page'
+      assign inferred_template_suffix = page.template_suffix
+    endunless
+  endif
+%}
+
+<div
+  class="tvg_workbench_P283eW_container"
+>
+  {% if request.design_mode %}
+    <p class="tvg_workbench_P283eW_warning">
+      The workbench doesn't work inside Theme Editor
+      <br>
+      Please use direct preview
+    </p>
+  {% endif %}
+  <h2 class="tvg_workbench_P283eW_title">Workbench</h2>
+  <p class="">{{ request.path }}</p>
+  <div
+    class="js-app-container"
+    data-default-template-name="{{ template.name }}"
+    data-default-template-view="{{ inferred_template_suffix }}"
+  >
+    <p>Loading...</p>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Workbench",
+  "tag": "footer",
+  "class": "js-workbench tvg_workbench_P283eW_root",
+  "settings": [],
+  "presets": [
+    {
+      "name": "Workbench",
+      "category": "Internal (Do not use)"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,135 @@
+{% # DO NOT EDIT: This file is auto-generated and will be overwritten. [build-fingerprint:assets:source={_js/sections/blog-featured-article/section.liquid}] %}
+
+<style>
+.tvg_blog_featured_article_mB1rsG_section{width:100%;max-width:94.5rem;margin-inline:auto;padding:1.5rem 1rem;display:block}
+.tvg_blog_featured_article_mB1rsG_layout{flex-direction:column;width:100%;display:flex}
+.tvg_blog_featured_article_mB1rsG_media{aspect-ratio:4/5;background-color:oklch(73.24% .0049 78.29);border-radius:.5rem;flex-shrink:0;width:100%;margin-bottom:2rem;position:relative;overflow:hidden}
+.tvg_blog_featured_article_mB1rsG_content{flex-direction:column;align-items:flex-start;width:100%;display:flex}
+.tvg_blog_featured_article_mB1rsG_title{letter-spacing:-.045rem;color:oklch(31.71% .0299 64.29);letter-spacing:-.06rem;text-wrap:balance;margin:0 0 1rem;font-family:Cardinal Fruit,Georgia,Book Antiqua,Times New Roman,serif;font-size:2rem;font-weight:400;line-height:112%}
+.tvg_blog_featured_article_mB1rsG_titleLink{color:inherit;text-decoration:none}
+.tvg_blog_featured_article_mB1rsG_titleLink:hover,.tvg_blog_featured_article_mB1rsG_titleLink:focus-visible{opacity:.7}
+.tvg_blog_featured_article_mB1rsG_paragraph{color:oklch(53.82% 0 0);letter-spacing:.06rem;text-transform:uppercase;text-wrap:balance;margin-bottom:1.5rem;font-family:proxima-nova,-apple-system,blinkmacsystemfont,Segoe UI,roboto,oxygen-sans,ubuntu,cantarell,Helvetica Neue,sans-serif;font-size:1rem;font-weight:400;line-height:110%}
+.tvg_blog_featured_article_mB1rsG_meta{flex-direction:row;align-items:flex-end;gap:1rem;width:100%;margin-top:2rem;display:flex}
+.tvg_blog_featured_article_mB1rsG_authorBlock{flex-direction:column;gap:.25rem;display:flex}
+.tvg_blog_featured_article_mB1rsG_author{text-transform:uppercase;letter-spacing:.03rem;color:oklch(34.85% 0 0);margin:0;font-family:proxima-nova,-apple-system,blinkmacsystemfont,Segoe UI,roboto,oxygen-sans,ubuntu,cantarell,Helvetica Neue,sans-serif;font-size:.75rem;font-weight:500;line-height:106%}
+.tvg_blog_featured_article_mB1rsG_date{letter-spacing:-.0075rem;color:oklch(34.85% 0 0);font-family:proxima-nova,-apple-system,blinkmacsystemfont,Segoe UI,roboto,oxygen-sans,ubuntu,cantarell,Helvetica Neue,sans-serif;font-size:.75rem;font-weight:300;line-height:120%}
+.tvg_blog_featured_article_mB1rsG_tag{color:oklch(34.85% 0 0);letter-spacing:.035rem;text-transform:uppercase;background-color:#9eedec;border-radius:.5rem;flex-shrink:0;justify-content:center;align-items:center;height:2rem;padding:0 .625rem;font-family:proxima-nova,-apple-system,blinkmacsystemfont,Segoe UI,roboto,oxygen-sans,ubuntu,cantarell,Helvetica Neue,sans-serif;font-size:.875rem;font-weight:500;line-height:106%;display:flex}
+@media print,screen and (width>=64em){.tvg_blog_featured_article_mB1rsG_section{padding:1.5rem 3rem 0}
+.tvg_blog_featured_article_mB1rsG_layout{flex-direction:row;align-items:stretch;gap:3rem}
+.tvg_blog_featured_article_mB1rsG_media{aspect-ratio:1;width:50%;max-width:41.75rem;margin-bottom:0}
+.tvg_blog_featured_article_mB1rsG_content{width:50%}
+.tvg_blog_featured_article_mB1rsG_title{letter-spacing:-.105rem;letter-spacing:-.105rem;font-family:Cardinal Fruit,Georgia,Book Antiqua,Times New Roman,serif;font-size:3.5rem;font-weight:400;line-height:98%}
+.tvg_blog_featured_article_mB1rsG_paragraph{margin-bottom:1rem}
+a.tvg_blog_featured_article_mB1rsG_button{width:fit-content;padding:.75rem 2rem}
+}
+</style>
+
+{% liquid
+  assign featured_article = section.settings.featured_article | default: null
+
+  if current_tags.size > 0
+    if blog.articles.size > 0
+      assign featured_article = blog.articles.first
+    else
+      assign featured_article = null
+    endif
+  endif
+
+  if current_tags.size > 0
+    assign category_tag = current_tags.first
+  else
+    assign category_tag = featured_article.tags.first
+  endif
+%}
+
+{% if featured_article != blank %}
+  <div class="tvg_blog_featured_article_mB1rsG_section">
+    <div class="tvg_blog_featured_article_mB1rsG_layout">
+      {% if featured_article.image != blank %}
+        <div class="tvg_blog_featured_article_mB1rsG_media">
+          {% render 'core-image',
+            image: featured_article.image,
+            object_fit: 'cover',
+            lazyload: false,
+            preload: true,
+            srcset_print_sizes: '480,640,800,960,1024'
+          %}
+        </div>
+      {% endif %}
+
+      <div class="tvg_blog_featured_article_mB1rsG_content">
+        <h2 class="tvg_blog_featured_article_mB1rsG_title">
+          {{ featured_article.title }}
+        </h2>
+
+        <div class="tvg_blog_featured_article_mB1rsG_paragraph">
+          {% if featured_article.excerpt != blank %}
+            {{ featured_article.excerpt }}
+          {% else %}
+            {{ featured_article.content | strip_html | truncatewords: 28 }}
+          {% endif %}
+        </div>
+
+        {% assign read_more_label = 'read_more_label' | t %}
+        {% render 'core-button',
+          url: featured_article.url,
+          label: read_more_label,
+          style: 'secondary',
+          class: 'tvg_blog_featured_article_mB1rsG_button'
+        %}
+
+        <div class="tvg_blog_featured_article_mB1rsG_meta">
+          <div class="tvg_blog_featured_article_mB1rsG_authorBlock">
+            {% if featured_article.author != blank %}
+              <p class="tvg_blog_featured_article_mB1rsG_author">
+                {{ featured_article.author }}
+              </p>
+            {% endif %}
+            <time
+              class="tvg_blog_featured_article_mB1rsG_date"
+              datetime="{{ featured_article.published_at | date: '%Y-%m-%d' }}"
+            >
+              {{ featured_article.published_at | date: format: 'month_day_year' }}
+            </time>
+          </div>
+
+          {% if category_tag != blank %}
+            <span class="tvg_blog_featured_article_mB1rsG_tag">
+              {{ category_tag }}
+            </span>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Blog Featured Article",
+  "tag": "section",
+  "enabled_on": {
+    "templates": ["blog"]
+  },
+  "locales": {
+    "en": {
+      "read_more_label": "Read more",
+      "read_more_aria_label": "Continue reading about {{ title }}"
+    }
+  },
+  "settings": [
+    {
+      "type": "article",
+      "id": "featured_article",
+      "label": "Featured article"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Blog Featured Article",
+      "category": "Blog",
+      "settings": {}
+    }
+  ]
+}
+{% endschema %}

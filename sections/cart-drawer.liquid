@@ -1,0 +1,78 @@
+{% # DO NOT EDIT: This file is auto-generated and will be overwritten. [build-fingerprint:assets:source={_js/sections/cart-drawer/section.liquid}] %}
+
+<style>
+.tvg_cart_drawer_nMLfIW_overlay{z-index:999;cursor:pointer;visibility:hidden;-webkit-backdrop-filter:blur(2.5px);backdrop-filter:blur(2.5px);opacity:0;visibility:hidden;background-color:oklch(21.71% .0232 69.07/.2);width:100%;height:100vh;transition:visibility ease-in-out,opacity .5s ease-in-out;position:fixed;top:0;left:0}
+.has-open-offcanvas[data-offcanvas=cart]{overflow:hidden!important}
+.has-open-offcanvas[data-offcanvas=cart] .tvg_cart_drawer_nMLfIW_overlay{visibility:visible;opacity:1}
+.tvg_cart_drawer_nMLfIW_root{z-index:9999;opacity:0;background-color:oklch(99.59% .0093 99.98);width:100%;height:100dvh;margin:0;padding:0;transition:transform .3s ease-in-out,opacity 4s ease-in-out;position:fixed;top:0;right:0;transform:translate(100%)translateZ(0)}
+.tvg_cart_drawer_nMLfIW_root.is-expanded{opacity:1;transition:transform .3s ease-in-out,opacity ease-in-out;transform:translate(0%)translateY(0%)translateZ(0)}
+.tvg_cart_drawer_nMLfIW_root .portable-snippet[data-snippet-name=cart]{height:100%}
+.tvg_cart_drawer_nMLfIW_wrapper{box-sizing:border-box;scrollbar-width:thin;scrollbar-color:oklch(73.24% .0049 78.29) oklch(99.59% .0093 99.98);width:100%;height:100%;position:relative;overflow:hidden auto}
+.tvg_cart_drawer_nMLfIW_wrapper::-webkit-scrollbar{width:.375rem}
+.tvg_cart_drawer_nMLfIW_wrapper::-webkit-scrollbar-thumb{background-color:oklch(73.24% .0049 78.29);border-radius:624.938rem}
+.tvg_cart_drawer_nMLfIW_wrapper::-webkit-scrollbar-track{background-color:oklch(99.59% .0093 99.98)}
+.tvg_cart_drawer_nMLfIW_content{box-sizing:border-box;width:100%;height:100%;margin:0}
+.tvg_cart_drawer_nMLfIW_close{appearance:none;color:currentColor;z-index:2;cursor:pointer;background:0 0;border:none;width:2.125rem;height:2.125rem;margin:0;padding:0;position:absolute;top:.75rem;right:.75rem}
+.tvg_cart_drawer_nMLfIW_close span{clip:rect(1px,1px,1px,1px);white-space:nowrap;width:1px;height:1px;overflow:hidden;position:absolute!important}
+.tvg_cart_drawer_nMLfIW_close svg{width:100%;height:100%}
+.tvg_cart_drawer_nMLfIW_container{height:100%}
+@media print,screen and (width>=64em){.tvg_cart_drawer_nMLfIW_root{width:100%;max-width:32.1875rem}
+.tvg_cart_drawer_nMLfIW_close{top:.5rem;right:.5rem}
+}
+@media print,screen and (width<64em){.tvg_cart_drawer_nMLfIW_root.is-mobile-left{left:0;right:auto;transform:translate(-100%)translateZ(0)}
+.tvg_cart_drawer_nMLfIW_root.is-expanded.is-mobile-left{transform:translate(0%)translateY(0%)translateZ(0)}
+}
+</style>
+
+{% doc %}
+  Card rewards are section level for Markets compatibility.
+  If project won't use markets, is recommended to move the rewards to the theme settings level.
+{% enddoc %}
+
+<div class="tvg_cart_drawer_nMLfIW_overlay js-offcanvas-bg"></div>
+
+<div
+  data-section-id="{{ section.id }}"
+  data-section-name="{{ section.type }}"
+  class="js-offcanvas tvg_cart_drawer_nMLfIW_root"
+  data-drawer-names="cart"
+  role="dialog"
+  aria-modal="true"
+  aria-label="{{ 'cart_wrapper' | t }}"
+  tabindex="-1"
+  inert
+  aria-hidden="true"
+>
+  <div
+    class="js-offcanvas-content tvg_cart_drawer_nMLfIW_wrapper"
+  >
+    <div class="js-offcanvas-content tvg_cart_drawer_nMLfIW_content">
+      <button
+        class="js-offcanvas-close tvg_cart_drawer_nMLfIW_close"
+      >
+        {% render 'icon-close' %}
+        <span class="sr-only">{{ 'accessibility.icons.close' | t }}</span>
+      </button>
+
+      <div class="tvg_cart_drawer_nMLfIW_container">
+        {% render 'react-cart', context: 'drawer', section_id: section.id %}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Cart Drawer",
+  "locales": {
+    "en": {
+      "cart_wrapper": "Cart"
+    }
+  },
+  "class": "js-drawer-cart",
+  "settings": [],
+  "enabled_on": {
+    "groups": ["header", "footer"]
+  }
+}
+{% endschema %}

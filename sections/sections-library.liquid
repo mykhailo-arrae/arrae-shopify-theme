@@ -1,0 +1,90 @@
+{% # DO NOT EDIT: This file is auto-generated and will be overwritten. [build-fingerprint:assets:source={_js/sections/sections-library/section.liquid}] %}
+
+<style>
+.tvg_sections_library_nTztYG_SectionsLibrary__title{letter-spacing:-.075rem;text-align:center;font-family:Cardinal Fruit,Georgia,Book Antiqua,Times New Roman,serif;font-size:2.5rem;font-weight:400;line-height:112%}
+.tvg_sections_library_nTztYG_SectionsLibrary__container{box-sizing:border-box;flex-flow:column;gap:1.5rem;width:100%;max-width:94.5rem;margin:0 auto;padding:1.5rem 1rem;display:flex}
+.tvg_sections_library_nTztYG_SectionsLibrary__blocks{flex-flow:wrap;justify-content:center;gap:.875rem;display:flex}
+.tvg_sections_library_nTztYG_SectionsLibraryBlock{cursor:pointer;background:#8080801c;border-radius:.625rem;width:100%;max-width:22.5rem;padding:.875rem;transition:transform .3s ease-in-out;display:flex}
+.tvg_sections_library_nTztYG_SectionsLibraryBlock:hover{transform:scale(.95)}
+.tvg_sections_library_nTztYG_SectionsLibraryBlock__title{text-align:center;font-family:proxima-nova,-apple-system,blinkmacsystemfont,Segoe UI,roboto,oxygen-sans,ubuntu,cantarell,Helvetica Neue,sans-serif;font-size:1.25rem;font-weight:300;line-height:120%}
+.tvg_sections_library_nTztYG_SectionsLibraryBlock__link{color:oklch(21.71% .0232 69.07);border-radius:.625rem;justify-content:center;align-items:center;width:100%;height:100%;min-height:11.25rem;text-decoration:none;display:flex}
+</style>
+
+{% liquid
+  assign title = section.settings.title | default: nil
+%}
+
+<div class='tvg_sections_library_nTztYG_SectionsLibrary__container'>
+  {% if title %}
+    <h2 class='tvg_sections_library_nTztYG_SectionsLibrary__title'>{{ title }}</h2>
+  {% endif %}
+
+  <div class='tvg_sections_library_nTztYG_SectionsLibrary__blocks'>
+    {% if section.blocks.size > 0 %}
+      {% for block in section.blocks %}
+        {% liquid
+          assign title = block.settings.title | default: nil
+          assign image = block.settings.image | default: nil
+          assign url = block.settings.url | default: nil
+        %}
+        <div class='tvg_sections_library_nTztYG_SectionsLibraryBlock'>
+          <a class='tvg_sections_library_nTztYG_SectionsLibraryBlock__link' href='{{ url }}'
+            style="background: url('{{ image | image_url: width: 640 }}') no-repeat center center; background-size: cover;"
+          >
+            {% if title %}
+              <h3 class='tvg_sections_library_nTztYG_SectionsLibraryBlock__title'>
+                {{ title }}
+              </h3>
+            {% endif %}
+          </a>
+        </div>
+      {% endfor %}
+    {% endif %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Sections Library",
+  "tag": "section",
+  "class": "js-sections-library ",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Sections Library"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "type",
+      "name": "Type",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Section Title"
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "URL"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Sections Library",
+      "settings": {}
+    }
+  ]
+}
+{% endschema %}
