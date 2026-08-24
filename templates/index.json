@@ -1,6 +1,15 @@
 {
-  "order": ["featured_collections_t74N6y"],
+  "order": ["dummy", "featured_collections_t74N6y"],
   "sections": {
+    "dummy": {
+      "name": "Dummy",
+      "settings": {
+        "heading": "Dummy section",
+        "image": "shopify://shop_images/section_1_0e75570e-9784-4ad4-aead-f8bdffdd82c4.png",
+        "text": "Throwaway homepage block so we can see how a section behaves."
+      },
+      "type": "dummy"
+    },
     "featured_collections_t74N6y": {
       "block_order": [
         "tab_tcwBEw",
