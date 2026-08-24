@@ -1,0 +1,192 @@
+# arrae-test
+#
+# Replaces the Vaan starter workflows (Backup themes, Track themes,
+# Deploy to Shopify, Run Tests).
+#
+# Why the old workflows failed:
+#   actions/checkout was given `token: ${{ secrets.CHECKOUT_ACTION_PAT }}`.
+#   That secret is empty on this repo, so checkout aborted with:
+#     Input required and not supplied: token
+#   Shopify calls would have failed next: SHOPIFY_ADMIN_API_TOKEN is also empty.
+#
+# This workflow:
+#   - checks out with the default GITHUB_TOKEN (no PAT required)
+#   - runs CI without Shopify credentials
+#   - deploys to the `arrae-test` GitHub Environment / Shopify store
+#
+# Required before deploy will succeed:
+#   Settings → Environments → arrae-test → Environment secrets
+#     SHOPIFY_ADMIN_API_TOKEN  = Admin API access token from a custom app
+#                                on arrae-test.myshopify.com (write_themes)
+#
+# Optional environment variables on arrae-test:
+#     SHOPIFY_STOREFRONT_PASSWORD       = storefront lock password, or `none`
+#     DEPLOYMENT_INITIAL_CONTENT_SOURCE = `live-theme` (default) or `git`
+#
+# How to get SHOPIFY_ADMIN_API_TOKEN:
+#   Shopify admin → Settings → Apps and sales channels → Develop apps
+#   → Create an app (e.g. "GitHub CI") → Configure Admin API scopes:
+#     read_locales, read_markets, read_product_listings, read_products,
+#     read_themes, write_themes, read_translations, write_translations
+#   → Install app → API credentials → Admin API access token (shpat_...)
+
+name: 'arrae-test'
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      skip_deploy:
+        description: 'Skip Shopify deploy (run CI only)'
+        required: false
+        type: boolean
+        default: false
+
+concurrency:
+  group: 'arrae-test-${{ github.ref }}'
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  ci:
+    name: 'CI'
+    runs-on: 'ubuntu-latest'
+    env:
+      COMPOSE_BAKE: 1
+      COMPOSE_DOCKER_CLI_BUILD: 1
+      DOCKER_BUILDKIT: 1
+    steps:
+      - name: 'Checkout'
+        uses: 'actions/checkout@v4'
+        with:
+          fetch-depth: 0
+
+      - name: 'Init git config'
+        run: |
+          git config --global user.name 'Autobot'
+          git config --global user.email 'engineering@vaangroup.com'
+        shell: 'script -qec "bash {0}"'
+
+      - name: 'Bootstrap TMP_DIR'
+        run: |
+          ./devops/github/bootstrap-tmp-dir.sh
+        shell: 'script -qec "bash {0}"'
+
+      - name: 'Cache pnpm store'
+        id: 'cache-pnpm-store'
+        uses: 'actions/cache@v4'
+        with:
+          path: /mnt/tmp/pnpm-store
+          key: pnpm-store
+
+      - name: 'Build and start `main_ci` container'
+        run: |
+          touch .env
+          docker compose build \
+              --build-arg GROUP_ID=$(id -g) --build-arg USER_ID=$(id -u) \
+              --progress=plain main_ci \
+            && docker compose up -d main_ci
+        shell: 'script -qec "bash {0}"'
+
+      - name: 'Install npm packages'
+        run: |
+          docker compose exec main_ci ./docker-entrypoint.sh
+        shell: 'script -qec "bash {0}"'
+
+      - name: 'Run CI checks'
+        run: |
+          docker compose exec main_ci /bin/bash -c 'bb run ci'
+        shell: 'script -qec "bash {0}"'
+
+      - name: 'Shutdown containers'
+        if: always()
+        run: 'docker compose down'
+        shell: 'script -qec "bash {0}"'
+
+  deploy:
+    name: 'Deploy to arrae-test'
+    needs: 'ci'
+    if: |
+      (github.event_name == 'push' && github.ref == 'refs/heads/main') ||
+      (github.event_name == 'workflow_dispatch' && inputs.skip_deploy != true)
+    runs-on: 'ubuntu-latest'
+    environment:
+      name: 'arrae-test'
+    concurrency:
+      group: 'arrae-test-deploy'
+      cancel-in-progress: true
+    env:
+      COMPOSE_BAKE: 1
+      COMPOSE_DOCKER_CLI_BUILD: 1
+      COMPOSE_PROJECT_NAME: 'arrae-test-deploy'
+      DEPLOYMENT_CONTENT_OVERRIDE_PATTERNS_WORKFLOW_CONFIG: ''
+      DEPLOYMENT_CONTENT_OVERRIDE_PATTERNS_DISPATCH: ''
+      DEPLOYMENT_INITIAL_CONTENT_SOURCE: ${{ vars.DEPLOYMENT_INITIAL_CONTENT_SOURCE || 'live-theme' }}
+      DEPLOYMENT_TARGET: 'dev-testing'
+      DEVOPS_ACTOR: ${{ github.actor }}
+      DOCKER_BUILDKIT: 1
+      SHOPIFY_CLI_ADMIN_AUTH_TOKEN: ${{ secrets.SHOPIFY_ADMIN_API_TOKEN }}
+      SHOPIFY_CLI_STACKTRACE: 1
+      SHOPIFY_CLI_TTY: 0
+      SHOPIFY_SHOP: 'arrae-test.myshopify.com'
+    steps:
+      - name: 'Check Shopify credentials'
+        env:
+          TOKEN: ${{ secrets.SHOPIFY_ADMIN_API_TOKEN }}
+        run: |
+          if [ -z "${TOKEN}" ]; then
+            echo '::error::Missing SHOPIFY_ADMIN_API_TOKEN on the arrae-test GitHub Environment.'
+            echo 'Add it at: Settings → Environments → arrae-test → Environment secrets'
+            echo 'Create the token from a custom app on arrae-test.myshopify.com with write_themes.'
+            echo 'See CI.md for the full setup.'
+            exit 1
+          fi
+
+      - name: 'Checkout'
+        uses: 'actions/checkout@v4'
+        with:
+          fetch-depth: 0
+
+      - name: 'Init git config'
+        run: |
+          git config --global user.name 'Autobot'
+          git config --global user.email 'engineering@vaangroup.com'
+        shell: 'script -qec "bash {0}"'
+
+      - name: 'Build and start `main_cd` container'
+        run: |
+          ./devops/ci/start-cd-container.sh
+        shell: 'script -qec "bash {0}"'
+
+      - name: 'Prepare deployment branch'
+        run: |
+          ./devops/ci/run-in-cd-container.sh bb devops-deploy-to-shopify -s prepare
+        shell: 'script -qec "bash {0}"'
+
+      - name: 'Push deployment branch'
+        run: |
+          git push origin HEAD
+        shell: 'script -qec "bash {0}"'
+
+      - name: 'Deploy to arrae-test'
+        run: |
+          ./devops/ci/run-in-cd-container.sh bb devops-deploy-to-shopify -s populate
+        shell: 'script -qec "bash {0}"'
+
+      - name: 'Push post-deploy changes'
+        run: |
+          git push origin HEAD
+        shell: 'script -qec "bash {0}"'
+
+      - name: 'Shutdown containers'
+        if: always()
+        run: |
+          ./devops/ci/shutdown-cd-container.sh
+        shell: 'script -qec "bash {0}"'
