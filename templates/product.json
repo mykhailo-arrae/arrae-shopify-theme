@@ -1,172 +1,69 @@
 {
   "order": [
-    "main",
-    "education_slideshow_rxqxrA",
-    "product_toggle_section_7mj7BN",
-    "education_slideshow_xWiVY6",
-    "compare_cPrTwL",
-    "timeline_QNxyp6",
-    "faq_iEjbWU",
-    "product_reviews_ffTL6L"
+    "featured_collections_t74N6y",
   ],
   "sections": {
-    "compare_cPrTwL": {
-      "block_order": ["feature_item_fWUDU6"],
+    "featured_collections_t74N6y": {
+      "block_order": [
+        "tab_tcwBEw",
+        "tab_pqq3Vp",
+        "tab_tGz7by",
+        "tab_3Qr9Cd",
+        "tab_JWCWVW"
+      ],
       "blocks": {
-        "feature_item_fWUDU6": {
-          "repeater": "{{ product.metafields.custom.pdp_compare_dynamic_content.value.compare_features_list.value }}",
+        "tab_3Qr9Cd": {
           "settings": {
-            "feature_product": "{{ block.repeater.feature_product.value }}",
-            "icon_type": "{{ block.repeater.icon_type.value }}",
-            "text": "{{ block.repeater.text.value }}"
+            "collection": "hormonal-health",
+            "products": [],
+            "tab_label": "Hormonal health"
           },
-          "type": "feature_item"
+          "type": "tab"
+        },
+        "tab_JWCWVW": {
+          "settings": {
+            "collection": "sleep-mood",
+            "products": [],
+            "tab_label": "SLEEP & MOOD"
+          },
+          "type": "tab"
+        },
+        "tab_pqq3Vp": {
+          "settings": {
+            "collection": "fitness-essentials",
+            "products": [],
+            "tab_label": "FITNESS & PERFORMANCE"
+          },
+          "type": "tab"
+        },
+        "tab_tGz7by": {
+          "settings": {
+            "collection": "gut-health",
+            "products": [],
+            "tab_label": "GUT HEALTH"
+          },
+          "type": "tab"
+        },
+        "tab_tcwBEw": {
+          "settings": {
+            "collection": "",
+            "products": ["bloat", "tone-sour-green-apple", "mb-1"],
+            "tab_label": "METABOLIC HEALTH"
+          },
+          "type": "tab"
         }
       },
-      "name": "Compare",
+      "name": "Featured Collections",
       "settings": {
-        "heading": "{{ product.metafields.custom.pdp_compare_dynamic_content.value.heading.value }}",
-        "product_a_image": "{{ product.metafields.custom.pdp_compare_dynamic_content.value.product_a_image.value }}",
-        "product_a_title": "{{ product.metafields.custom.pdp_compare_dynamic_content.value.product_a_title.value }}",
-        "product_b_image": "{{ product.metafields.custom.pdp_compare_dynamic_content.value.product_b_image.value }}",
-        "product_b_title": "{{ product.metafields.custom.pdp_compare_dynamic_content.value.product_b_title.value }}",
-        "subtitle": "{{ product.metafields.custom.pdp_compare_dynamic_content.value.subtitle.value }}"
+        "cta_label": "SHOP ALL",
+        "cta_link": "/collections/shop-all",
+        "show_arrows": true,
+        "show_pagination": false,
+        "title": "Find Your Daily Wellness Essentials"
       },
-      "type": "compare"
+      "type": "featured-collections"
     },
-    "education_slideshow_rxqxrA": {
-      "block_order": ["ingredients_slide_tJdxd9"],
-      "blocks": {
-        "ingredients_slide_tJdxd9": {
-          "repeater": "{{ product.metafields.custom.pdp_ingredient_slides_dynamic_content.value }}",
-          "settings": {
-            "background_image_desktop": "{{ block.repeater.background_image_desktop.value }}",
-            "background_image_mobile": "{{ block.repeater.background_image_mobile.value }}",
-            "disclaimers": "{{ block.repeater.disclaimers | metafield_tag }}",
-            "heading": "{{ block.repeater.heading.value }}",
-            "ingredients": "{{ block.repeater.ingredients.value }}",
-            "slide_title": "{{ block.repeater.slide_title.value }}",
-            "subheading": "{{ block.repeater.subheading | metafield_tag }}",
-            "text_contrast_mode": "{{ block.repeater.background.value }}"
-          },
-          "type": "ingredients_slide"
-        }
-      },
-      "name": "Education Slideshow",
-      "settings": {
-        "autoplay": false,
-        "autoplay_speed": "6000",
-        "cta_label": "Shop All",
-        "cta_url": "",
-        "show_playback_controls": true
-      },
-      "type": "education-slideshow"
-    },
-    "education_slideshow_xWiVY6": {
-      "block_order": ["percentage_slide_M8cycX"],
-      "blocks": {
-        "percentage_slide_M8cycX": {
-          "repeater": "{{ product.metafields.custom.pdp_percentage_slides_dynamic_content.value }}",
-          "settings": {
-            "background_image_desktop": "{{ block.repeater.background_image_desktop.value }}",
-            "background_image_mobile": "{{ block.repeater.background_image_mobile.value }}",
-            "disclaimers": "{{ block.repeater.disclaimers | metafield_tag }}",
-            "heading": "{{ block.repeater.heading.value }}",
-            "slide_title": "{{ block.repeater.slide_title.value }}",
-            "stat_items": "{{ block.repeater.stat_items.value }}",
-            "subheading": "{{ block.repeater.subheading | metafield_tag }}",
-            "wheel_color": "{{ block.repeater.wheel_color.value }}"
-          },
-          "type": "percentage_slide"
-        }
-      },
-      "name": "Education Slideshow",
-      "settings": {
-        "autoplay": false,
-        "autoplay_speed": "6000",
-        "cta_label": "Shop All",
-        "cta_url": "",
-        "show_playback_controls": true
-      },
-      "type": "education-slideshow"
-    },
-    "faq_iEjbWU": {
-      "block_order": ["faq_question_JzPcgB"],
-      "blocks": {
-        "faq_question_JzPcgB": {
-          "repeater": "{{ product.metafields.custom.faq_dynamic_content.value.faq_list.value }}",
-          "settings": {
-            "content": "{{ block.repeater.answer | metafield_tag }}",
-            "title": "{{ block.repeater.question.value }}"
-          },
-          "type": "faq-question"
-        }
-      },
-      "name": "FAQ",
-      "settings": {
-        "heading": "{{ product.metafields.custom.faq_dynamic_content.value.heading.value }}",
-        "subheading": "{{ product.metafields.custom.faq_dynamic_content.value.subheading.value }}"
-      },
-      "type": "faq"
-    },
-    "main": {
-      "settings": {},
-      "type": "product-main"
-    },
-    "product_reviews_ffTL6L": {
-      "name": "Product Reviews",
-      "settings": {
-        "title": "{{ product.metafields.custom.reviews_section_title.value }}"
-      },
-      "type": "product-reviews"
-    },
-    "product_toggle_section_7mj7BN": {
-      "name": "Product Toggle Section",
-      "settings": {
-        "body_1": "{{ product.metafields.custom.product_toggle_section_dynamic_content.value.body_1 | metafield_tag }}",
-        "body_2": "{{ product.metafields.custom.product_toggle_section_dynamic_content.value.body_2 | metafield_tag }}",
-        "bottom_link_text_1": "{{ product.metafields.custom.product_toggle_section_dynamic_content.value.bottom_link_text_1.value }}",
-        "bottom_link_text_2": "",
-        "bottom_link_url_1": "{{ product.metafields.custom.product_toggle_section_dynamic_content.value.bottom_link_url_1.value }}",
-        "bottom_link_url_2": "",
-        "bottom_text_1": "{{ product.metafields.custom.product_toggle_section_dynamic_content.value.bottom_text_1.value }}",
-        "bottom_text_2": "",
-        "button_1_label": "{{ product.metafields.custom.product_toggle_section_dynamic_content.value.button_1_label.value }}",
-        "button_2_label": "{{ product.metafields.custom.product_toggle_section_dynamic_content.value.button_2_label.value }}",
-        "heading": "{{ product.metafields.custom.product_toggle_section_dynamic_content.value.heading.value }}",
-        "image_alt_1": "",
-        "image_alt_2": "",
-        "image_desktop_1": "{{ product.metafields.custom.product_toggle_section_dynamic_content.value.image_desktop_1.value }}",
-        "image_desktop_2": "{{ product.metafields.custom.product_toggle_section_dynamic_content.value.image_desktop_2.value }}",
-        "image_mobile_1": "{{ product.metafields.custom.product_toggle_section_dynamic_content.value.image_mobile_1.value }}"
-      },
-      "type": "product-toggle-section"
-    },
-    "timeline_QNxyp6": {
-      "block_order": ["step_gFfzTL"],
-      "blocks": {
-        "step_gFfzTL": {
-          "repeater": "{{ product.metafields.custom.timeline_dynamic_content.value.cards.value }}",
-          "settings": {
-            "description": "{{ block.repeater.description | metafield_tag }}",
-            "eyebrow": "{{ block.repeater.eyebrow.value }}",
-            "image_desktop": "{{ block.repeater.image_desktop.value }}",
-            "image_hover": "{{ block.repeater.image_hover.value }}",
-            "image_mobile": "{{ block.repeater.image_mobile.value }}",
-            "period": "{{ block.repeater.period.value }}",
-            "step_indicator": "{{ block.repeater.step_indicator.value }}",
-            "title": "{{ block.repeater.title.value }}"
-          },
-          "type": "step"
-        }
-      },
-      "name": "Timeline",
-      "settings": {
-        "default_expanded_card_position": "2",
-        "heading": "{{ product.metafields.custom.timeline_dynamic_content.value.heading | metafield_tag }}",
-        "subtitle": "{{ product.metafields.custom.timeline_dynamic_content.value.subtitle | metafield_tag }}"
-      },
-      "type": "timeline"
-    }
-  }
+  },
+  "wrapper": "main.Product[role='main']"
 }
+
