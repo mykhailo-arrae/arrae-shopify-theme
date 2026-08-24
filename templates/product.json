@@ -62,7 +62,7 @@
         "title": "Find Your Daily Wellness Essentials"
       },
       "type": "featured-collections"
-    },
+    }
   },
   "wrapper": "main.Product[role='main']"
 }
