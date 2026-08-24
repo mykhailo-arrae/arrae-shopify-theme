@@ -1,7 +1,5 @@
 {
-  "order": [
-    "featured_collections_t74N6y",
-  ],
+  "order": ["featured_collections_t74N6y"],
   "sections": {
     "featured_collections_t74N6y": {
       "block_order": [
@@ -62,7 +60,7 @@
         "title": "Find Your Daily Wellness Essentials"
       },
       "type": "featured-collections"
-    },
+    }
   },
   "wrapper": "main.Index[role='main']"
 }
