@@ -1,0 +1,23 @@
+{% liquid
+  assign width = width | default: 21
+  assign height = height | default: 20
+  assign fill = fill | default: 'currentColor'
+
+  assign title_fallback = 'accessibility.icons.ruler' | t
+  assign title = title | default: title_fallback
+%}
+
+<svg
+  width="{{ width }}"
+  height="{{ height }}"
+  viewBox="0 0 21 20"
+  fill="none"
+  xmlns="http://www.w3.org/2000/svg"
+  aria-labelledby="ruler"
+>
+  <title id="ruler">{{ title }}</title>
+  <rect x="18.5" y="13.4995" width="16" height="7" transform="rotate(-180 18.5 13.4995)" stroke="{{ fill }}" stroke-linejoin="round"/>
+  <path d="M14.5 10.9109L14.5 13.5009" stroke="{{ fill }}" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M10.5 10.9109L10.5 13.5009" stroke="{{ fill }}" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M6.5 10.9109L6.5 13.5009" stroke="{{ fill }}" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

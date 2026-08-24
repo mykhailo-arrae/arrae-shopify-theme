@@ -1,0 +1,121 @@
+{% # DO NOT EDIT: This file is auto-generated and will be overwritten. [build-fingerprint:assets:source={_js/blocks/nav-collection-tile/block.liquid}] %}
+
+<style>
+.tvg_nav_collection_tile_-NC0pq_tile{min-width:0;display:block}
+.tvg_nav_collection_tile_-NC0pq_slot{width:100%;display:block}
+.tvg_nav_collection_tile_-NC0pq_desktop,.tvg_nav_collection_tile_-NC0pq_mobile-link{display:none}
+.tvg_nav_collection_tile_-NC0pq_mobile-link__text{letter-spacing:.02em;font-family:proxima-nova,-apple-system,blinkmacsystemfont,Segoe UI,roboto,oxygen-sans,ubuntu,cantarell,Helvetica Neue,sans-serif;font-size:1.25rem;font-weight:300;line-height:1.2;text-decoration:none;display:inline-block;position:relative}
+.tvg_nav_collection_tile_-NC0pq_mobile-link__text:before{content:"";transform-origin:0;background:currentColor;width:100%;height:1px;transition:transform .3s ease-in-out;display:block;position:absolute;bottom:0;transform:scaleX(0)}
+.tvg_nav_collection_tile_-NC0pq_mobile-link__text:hover:before{transform-origin:0;transform:scaleX(1)}
+.tvg_nav_collection_tile_-NC0pq_mobile-link__text:not(:hover):before{transform-origin:100%;transform:scaleX(0)}
+@media print,screen and (width>=64em){.js-mobile-drawer[data-drawer-mode-on-desktop=true] .tvg_nav_collection_tile_-NC0pq_tile:first-child{padding-top:1.25rem}
+.js-mobile-drawer[data-drawer-mode-on-desktop=true] .tvg_nav_collection_tile_-NC0pq_tile:last-child{padding-bottom:1.75rem}
+.js-mobile-drawer[data-drawer-mode-on-desktop=true] .tvg_nav_collection_tile_-NC0pq_tile:not([data-disable-outer-accordion=true] *){padding-left:.75rem}
+.js-mobile-drawer:not([data-drawer-mode-on-desktop=true]) .tvg_nav_collection_tile_-NC0pq_desktop{display:block}
+.js-mobile-drawer[data-drawer-mode-on-desktop=true] .tvg_nav_collection_tile_-NC0pq_mobile-link{text-decoration:none;display:inline-block}
+.js-mobile-drawer[data-drawer-mode-on-desktop=true] .tvg_nav_collection_tile_-NC0pq_mobile-link:focus-visible{outline-offset:.125rem}
+.js-mobile-drawer[data-drawer-mode-on-desktop=true] .tvg_nav_collection_tile_-NC0pq_mobile-link:is(a){color:oklch(53.82% 0 0)}
+}
+@media print,screen and (width<64em){.tvg_nav_collection_tile_-NC0pq_tile:first-child{padding-top:1.25rem}
+.tvg_nav_collection_tile_-NC0pq_tile:last-child{padding-bottom:1.75rem}
+.tvg_nav_collection_tile_-NC0pq_tile:not([data-disable-outer-accordion=true] *){padding-left:.75rem}
+.tvg_nav_collection_tile_-NC0pq_mobile-link{text-decoration:none;display:inline-block}
+.tvg_nav_collection_tile_-NC0pq_mobile-link:focus-visible{outline-offset:.125rem}
+.tvg_nav_collection_tile_-NC0pq_mobile-link:is(a){color:oklch(53.82% 0 0)}
+}
+@media (prefers-reduced-motion:reduce){.tvg_nav_collection_tile_-NC0pq_mobile-link__text:before{transition:none}
+}
+</style>
+
+{% liquid
+  assign image_desktop = block.settings.image_desktop
+  assign image_mobile = block.settings.image_mobile
+  assign hover_video = block.settings.hover_video
+  assign label = block.settings.label
+  assign url = block.settings.url
+%}
+
+<div class="tvg_nav_collection_tile_-NC0pq_slot">
+  {% comment %}
+    Desktop: full tile-card with imagery + hover video. CSS hides this
+    subtree on mobile, where the design calls for a plain text link.
+  {% endcomment %}
+  <div class="tvg_nav_collection_tile_-NC0pq_desktop">
+    {% render 'tile-card',
+      image_desktop: image_desktop,
+      image_mobile: image_mobile,
+      hover_video: hover_video,
+      label: label,
+      url: url,
+      loading: 'lazy',
+      reduced_dimensions: true
+    %}
+  </div>
+
+  {% comment %}
+    Mobile: text-only link. No image, no tile-card — just the
+    label, sized for the offcanvas accordion content.
+  {% endcomment %}
+  {% if url != blank %}
+    <a href="{{ url }}" class="tvg_nav_collection_tile_-NC0pq_mobile-link">
+      <span class="tvg_nav_collection_tile_-NC0pq_mobile-link__text">{{ label }}</span>
+    </a>
+  {% else %}
+    <span class="tvg_nav_collection_tile_-NC0pq_mobile-link">
+      <span class="tvg_nav_collection_tile_-NC0pq_mobile-link__text">{{ label }}</span>
+    </span>
+  {% endif %}
+</div>
+
+{% schema %}
+{
+  "name": "Collection Tile",
+  "class": "tvg_nav_collection_tile_-NC0pq_tile",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Media"
+    },
+    {
+      "type": "paragraph",
+      "content": "Images render on desktop only. The mobile mega menu shows the tile label as a text link."
+    },
+    {
+      "type": "image_picker",
+      "id": "image_desktop",
+      "label": "Desktop image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_mobile",
+      "label": "Mobile image",
+      "info": "Falls back to desktop image when blank."
+    },
+    {
+      "type": "video",
+      "id": "hover_video",
+      "label": "Hover video",
+      "info": "Optional. Plays while the tile is hovered or focused."
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "label",
+      "label": "Label"
+    },
+    {
+      "type": "url",
+      "id": "url",
+      "label": "Link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collection Tile"
+    }
+  ]
+}
+{% endschema %}

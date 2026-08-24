@@ -2,48 +2,9 @@
   "order": ["main"],
   "sections": {
     "main": {
-      "block_order": ["heading", "page-content"],
-      "blocks": {
-        "heading": {
-          "blocks": {},
-          "name": "Title",
-          "settings": {
-            "alignment": "left",
-            "background": false,
-            "background_color": "#00000026",
-            "case": "none",
-            "color": "",
-            "corner_radius": 0,
-            "font": "var(--font-primary--family)",
-            "font_size": "",
-            "letter_spacing": "normal",
-            "line_height": "normal",
-            "max_width": "normal",
-            "padding-block-end": 0,
-            "padding-block-start": 0,
-            "padding-inline-end": 0,
-            "padding-inline-start": 0,
-            "text": "<h1>{{ closest.page.title }}</h1>",
-            "type_preset": "h2",
-            "width": "100%",
-            "wrap": "pretty"
-          },
-          "type": "text"
-        },
-        "page-content": {
-          "blocks": {},
-          "settings": {},
-          "type": "page-content"
-        }
-      },
-      "settings": {
-        "color_scheme": "",
-        "content_direction": "column",
-        "gap": 32,
-        "padding-block-end": 80,
-        "padding-block-start": 40
-      },
-      "type": "main-page"
+      "settings": {},
+      "type": "page-main"
     }
-  }
+  },
+  "wrapper": "main.o-main[role='main']"
 }

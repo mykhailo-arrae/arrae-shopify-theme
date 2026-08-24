@@ -1,0 +1,20 @@
+{% liquid
+  assign width = width | default: 17
+  assign height = height | default: 16
+  assign fill = fill | default: 'currentColor'
+
+  assign title_fallback = 'accessibility.icons.sort' | t
+  assign title = title | default: title_fallback
+%}
+
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="{{ width }}"
+  height="{{ height }}"
+  viewBox="0 0 17 16"
+  fill="none"
+  aria-labelledby="sort"
+>
+  <title id="sort">{{ title }}</title>
+  <path d="M3.4055 0.723625L3.4055 14.4961M6.44966 11.5388L3.4055 14.7236L0.361328 11.5388M13.3172 14.7236L13.3172 0.951114M10.273 3.90846L13.3172 0.723625L16.3613 3.90846" stroke="{{ fill }}"/>
+</svg>

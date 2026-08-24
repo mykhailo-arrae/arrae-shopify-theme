@@ -1,0 +1,20 @@
+{% liquid
+  assign width = width | default: 21
+  assign height = height | default: 20
+  assign fill = fill | default: 'currentColor'
+
+  assign title_fallback = 'accessibility.icons.heart' | t
+  assign title = title | default: title_fallback
+%}
+
+<svg
+  width="{{ width }}"
+  height="{{ height }}"
+  viewBox="0 0 21 20"
+  fill="none"
+  xmlns="http://www.w3.org/2000/svg"
+  aria-labelledby="heart"
+>
+  <title id="heart">{{ title }}</title>
+  <path d="M10.5 16.0002L9.485 15.137C5.88 12.0831 3.5 10.0624 3.5 7.59697C3.5 5.57627 5.194 4.00024 7.35 4.00024C8.568 4.00024 9.737 4.52994 10.5 5.36046C11.263 4.52994 12.432 4.00024 13.65 4.00024C15.806 4.00024 17.5 5.57627 17.5 7.59697C17.5 10.0624 15.12 12.0831 11.515 15.137L10.5 16.0002Z" stroke="{{ fill }}" stroke-linejoin="round"/>
+</svg>

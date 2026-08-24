@@ -1,0 +1,19 @@
+{% liquid
+  assign width = width | default: 13
+  assign height = height | default: 12
+  assign fill = fill | default: 'currentColor'
+
+  assign title_fallback = 'accessibility.icons.star_half' | t
+  assign title = title | default: title_fallback
+%}
+
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="{{ width }}"
+  height="{{ height }}"
+  viewBox="0 0 {{width}} {{height}}"
+  fill="none"
+>
+  <title id="star-half">{{ title }}</title>
+  <path d="M7.79785 4.58398H12.6172L8.71875 7.41602L10.208 12L6.30859 9.16699L2.41016 12L3.89941 7.41602L0 4.58398H4.81934L6.30859 0L7.79785 4.58398ZM6.30859 7.93066L8.30566 9.38184L7.54297 7.03418L9.53906 5.58398H7.07129L6.30859 3.23633V7.93066Z" fill="#3A3A3A"/>
+</svg>

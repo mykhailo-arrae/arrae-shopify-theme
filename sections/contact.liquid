@@ -1,0 +1,271 @@
+{% # DO NOT EDIT: This file is auto-generated and will be overwritten. [build-fingerprint:assets:source={_js/sections/contact/section.liquid}] %}
+
+<script class="json-portable-section-assets" type="application/json">
+{"sectionName":"contact"}
+</script>
+
+<style>
+.tvg_contact_oqYeoG_section{background-color:oklch(99.59% .0093 99.98);width:100%}
+.tvg_contact_oqYeoG_breadcrumbs{width:100%}
+.tvg_contact_oqYeoG_content{width:100%;max-width:94.5rem;margin-inline:auto;padding-block:1.5rem 2rem;padding-inline:1rem}
+.tvg_contact_oqYeoG_layout{flex-direction:column;gap:1rem;display:flex}
+.tvg_contact_oqYeoG_headline{letter-spacing:-.045rem;letter-spacing:-.03em;color:oklch(21.71% .0232 69.07);font-family:Cardinal Fruit,Georgia,Book Antiqua,Times New Roman,serif;font-size:2rem;font-weight:400;line-height:1.12}
+.tvg_contact_oqYeoG_col{flex-direction:column;gap:1.25rem;display:flex}
+.tvg_contact_oqYeoG_body{color:oklch(21.71% .0232 69.07);letter-spacing:-.01em;padding-right:.625rem;font-family:proxima-nova,-apple-system,blinkmacsystemfont,Segoe UI,roboto,oxygen-sans,ubuntu,cantarell,Helvetica Neue,sans-serif;font-size:1rem;font-weight:300;line-height:120%}
+.tvg_contact_oqYeoG_body>*+*{margin-top:.75rem}
+.tvg_contact_oqYeoG_options{flex-direction:column;gap:.625rem;margin:0;padding:0;list-style:none;display:flex}
+.tvg_contact_oqYeoG_option{color:oklch(21.71% .0232 69.07);align-items:center;gap:.25rem;display:flex}
+.tvg_contact_oqYeoG_optionIcon{flex-shrink:0;width:2rem;height:2rem;display:inline-flex}
+.tvg_contact_oqYeoG_optionIcon svg{width:100%;height:100%}
+.tvg_contact_oqYeoG_optionText{letter-spacing:-.01125rem;margin:0;font-family:proxima-nova,-apple-system,blinkmacsystemfont,Segoe UI,roboto,oxygen-sans,ubuntu,cantarell,Helvetica Neue,sans-serif;font-size:1rem;font-weight:400;line-height:120%}
+.tvg_contact_oqYeoG_link{font:inherit;letter-spacing:-.01em;color:inherit;text-align:inherit;text-underline-position:from-font;cursor:pointer;background:0 0;border:0;margin:0;padding:0;font-weight:500;text-decoration:underline;transition:opacity .2s ease-in-out;display:inline}
+.tvg_contact_oqYeoG_link:hover{opacity:.7}
+.tvg_contact_oqYeoG_link:focus-visible{outline-offset:.125rem;outline:.125rem solid oklch(79.24% .1077 35.04)}
+@media print,screen and (width>=64em){.tvg_contact_oqYeoG_content{padding-block:3rem;padding-inline:3rem}
+.tvg_contact_oqYeoG_layout{grid-template-columns:1.3fr 1fr;align-items:start;min-height:22.5625rem;padding-top:3.9375rem;display:grid}
+.tvg_contact_oqYeoG_headline{font-size:3.5rem;line-height:.98}
+.tvg_contact_oqYeoG_col{gap:1.6875rem;padding-top:.875rem}
+.tvg_contact_oqYeoG_body{max-width:34.375rem;padding-right:0;font-size:1.125rem}
+.tvg_contact_oqYeoG_options{gap:.5rem}
+.tvg_contact_oqYeoG_option{min-height:1.875rem}
+.tvg_contact_oqYeoG_optionIcon{width:2.125rem;height:2.125rem}
+.tvg_contact_oqYeoG_optionText{font-size:1.125rem}
+}
+@media print,screen and (width>=80em){.tvg_contact_oqYeoG_layout{grid-template-columns:1fr 1fr}
+}
+</style>
+
+{% liquid
+  assign heading = section.settings.heading
+  assign body = section.settings.body
+  assign show_breadcrumbs = section.settings.show_breadcrumbs
+%}
+
+{% if show_breadcrumbs %}
+  <div class="tvg_contact_oqYeoG_breadcrumbs">
+    {% render 'breadcrumbs' %}
+  </div>
+{% endif %}
+
+<div class="tvg_contact_oqYeoG_content">
+  <div class="tvg_contact_oqYeoG_layout">
+    {%- if heading != blank -%}
+      <h1 class="tvg_contact_oqYeoG_headline">{{ heading | newline_to_br }}</h1>
+    {%- endif -%}
+
+    <div class="tvg_contact_oqYeoG_col">
+      {%- if body != blank -%}
+        <div class="tvg_contact_oqYeoG_body">
+          {{ body }}
+        </div>
+      {%- endif -%}
+
+      {%- if section.blocks.size > 0 -%}
+        <ul class="tvg_contact_oqYeoG_options" role="list">
+          {%- for block in section.blocks -%}
+            {%- liquid
+              assign icon = block.settings.icon
+              assign intro = block.settings.intro
+              assign link_label = block.settings.link_label
+              assign link_behavior = block.settings.link_behavior | default: 'link'
+              assign link_target = block.settings.link_target | default: '_self'
+              assign action_key = block.settings.action_key
+              assign url = block.settings.url
+
+              if link_behavior == 'open_gorgias_chat'
+                assign link_behavior = 'action'
+                assign action_key = 'gorgias-chat'
+              endif
+            -%}
+            <li class="tvg_contact_oqYeoG_option" {{ block.shopify_attributes }}>
+              {%- if icon != blank -%}
+                <span class="tvg_contact_oqYeoG_optionIcon" aria-hidden="true">
+                  {% render 'dynamic-icon', icon_handle: icon %}
+                </span>
+              {%- endif -%}
+              <p class="tvg_contact_oqYeoG_optionText">
+                {%- if intro != blank -%}{{ intro }} {% endif -%}
+                {%- if link_label != blank -%}
+                  {%- if link_behavior == 'action' and action_key != blank -%}
+                    <button
+                      type="button"
+                      class="tvg_contact_oqYeoG_link js-contact-option-action"
+                      data-contact-action="{{ action_key }}"
+                    >
+                      {{ link_label }}
+                    </button>
+                  {%- elsif url != blank -%}
+                    <a
+                      class="tvg_contact_oqYeoG_link"
+                      href="{{ url }}"
+                      {%- if link_target == '_blank' -%}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      {%- endif -%}
+                    >
+                      {{ link_label }}
+                    </a>
+                  {%- else -%}
+                    {{ link_label }}
+                  {%- endif -%}
+                {%- endif -%}
+              </p>
+            </li>
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Contact",
+  "tag": "section",
+  "class": "tvg_contact_oqYeoG_section js-contact-section",
+  "enabled_on": {
+    "templates": ["page"]
+  },
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_breadcrumbs",
+      "label": "Show breadcrumbs",
+      "default": true
+    },
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Questions on your journey\nto feeling your best?"
+    },
+    {
+      "type": "richtext",
+      "id": "body",
+      "label": "Body text",
+      "default": "<p>We know that wellness is personal and sometimes, you just need a little guidance. Whether you're curious about our ingredients, need help with your routine, or want to share a win. We're here to listen.</p>"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "contact_option",
+      "name": "Contact option",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            { "value": "icon-globe-question", "label": "Globe / FAQ" },
+            { "value": "icon-mail", "label": "Mail" },
+            { "value": "icon-chat", "label": "Chat" },
+            { "value": "icon-box", "label": "Box" },
+            { "value": "icon-account", "label": "Account" },
+            { "value": "icon-target", "label": "Target" },
+            { "value": "icon-science", "label": "Science" },
+            { "value": "icon-leaf", "label": "Leaf" },
+            { "value": "icon-focus", "label": "Focus" }
+          ],
+          "default": "icon-globe-question"
+        },
+        {
+          "type": "text",
+          "id": "intro",
+          "label": "Intro text",
+          "info": "Text shown before the link, e.g. \"Check out our:\""
+        },
+        {
+          "type": "text",
+          "id": "link_label",
+          "label": "Link label",
+          "default": "Frequently Asked Questions"
+        },
+        {
+          "type": "select",
+          "id": "link_behavior",
+          "label": "Link behavior",
+          "options": [
+            { "value": "link", "label": "Link" },
+            { "value": "action", "label": "JavaScript action" }
+          ],
+          "default": "link"
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "Link URL",
+          "visible_if": "{{ block.settings.link_behavior == 'link' }}"
+        },
+        {
+          "type": "select",
+          "id": "link_target",
+          "label": "Link open target",
+          "options": [
+            { "value": "_self", "label": "Same tab" },
+            { "value": "_blank", "label": "New tab" }
+          ],
+          "default": "_self",
+          "visible_if": "{{ block.settings.link_behavior == 'link' }}"
+        },
+        {
+          "type": "select",
+          "id": "action_key",
+          "label": "Action",
+          "info": "Runs a registered handler in theme code. Ask your developer to add new actions in the contact section script.",
+          "options": [{ "value": "gorgias-chat", "label": "Open Gorgias chat" }],
+          "default": "gorgias-chat",
+          "visible_if": "{{ block.settings.link_behavior == 'action' }}"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Contact",
+      "category": "Forms",
+      "settings": {
+        "show_breadcrumbs": true
+      },
+      "blocks": [
+        {
+          "type": "contact_option",
+          "settings": {
+            "icon": "icon-globe-question",
+            "intro": "Check out our:",
+            "link_label": "Frequently Asked Questions",
+            "url": "shopify://pages/faqs"
+          }
+        },
+        {
+          "type": "contact_option",
+          "settings": {
+            "icon": "icon-mail",
+            "intro": "Send us an Email:",
+            "link_label": "hello@arrae.com",
+            "url": "mailto:hello@arrae.com"
+          }
+        },
+        {
+          "type": "contact_option",
+          "settings": {
+            "icon": "icon-chat",
+            "intro": "Chat with us:",
+            "link_label": "Start Chat",
+            "link_behavior": "action",
+            "action_key": "gorgias-chat"
+          }
+        },
+        {
+          "type": "contact_option",
+          "settings": {
+            "icon": "icon-box",
+            "intro": "Orders and Subscriptions:",
+            "link_label": "Portal Log In",
+            "url": "/account"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

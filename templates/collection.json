@@ -1,219 +1,98 @@
 {
-  "order": ["section", "main"],
+  "order": ["page_header_JrNNbc", "main"],
   "sections": {
     "main": {
+      "block_order": [
+        "product_section_TGVmyM",
+        "product_section_MMapn8",
+        "product_section_pQwbKJ",
+        "product_section_HgfAwA",
+        "product_section_aeUQmA",
+        "product_section_RgFxxP",
+        "product_section_e9rXQr"
+      ],
       "blocks": {
-        "filters": {
-          "blocks": {},
+        "product_section_HgfAwA": {
           "settings": {
-            "color_scheme": "",
-            "enable_filtering": true,
-            "enable_grid_density": true,
-            "enable_sorting": true,
-            "facets_margin_bottom": 8,
-            "facets_margin_right": 20,
-            "filter_style": "horizontal",
-            "filter_width": "centered",
-            "inherit_color_scheme": true,
-            "padding-block-end": 8,
-            "padding-block-start": 8,
-            "padding-inline-end": 0,
-            "padding-inline-start": 0,
-            "show_filter_label": false,
-            "show_swatch_label": false,
-            "text_label_case": "default"
+            "collection": "hormonal-health",
+            "tag_name": "Hormonal Health",
+            "use_pill_style": false
           },
-          "static": true,
-          "type": "filters"
+          "type": "product_section"
         },
-        "product-card": {
-          "block_order": [
-            "card-gallery",
-            "product_title_4nY4eT",
-            "price_EzJzMm"
-          ],
-          "blocks": {
-            "card-gallery": {
-              "blocks": {},
-              "settings": {
-                "border": "none",
-                "border_opacity": 100,
-                "border_radius": 0,
-                "border_width": 1,
-                "image_ratio": "adapt",
-                "padding-block-end": 0,
-                "padding-block-start": 0,
-                "padding-inline-end": 0,
-                "padding-inline-start": 0
-              },
-              "type": "_product-card-gallery"
-            },
-            "price_EzJzMm": {
-              "blocks": {},
-              "settings": {
-                "alignment": "left",
-                "case": "none",
-                "color": "var(--color-foreground)",
-                "font": "var(--font-body--family)",
-                "font_size": "1rem",
-                "letter_spacing": "normal",
-                "line_height": "normal",
-                "padding-block-end": 0,
-                "padding-block-start": 0,
-                "padding-inline-end": 0,
-                "padding-inline-start": 0,
-                "show_installments": false,
-                "show_sale_price_first": true,
-                "show_tax_info": false,
-                "type_preset": "h6",
-                "width": "100%"
-              },
-              "type": "price"
-            },
-            "product_title_4nY4eT": {
-              "blocks": {},
-              "name": "t:names.product_title",
-              "settings": {
-                "alignment": "left",
-                "background": false,
-                "background_color": "#00000026",
-                "case": "none",
-                "color": "var(--color-foreground)",
-                "corner_radius": 0,
-                "font": "var(--font-body--family)",
-                "font_size": "1rem",
-                "letter_spacing": "normal",
-                "line_height": "normal",
-                "max_width": "normal",
-                "padding-block-end": 0,
-                "padding-block-start": 4,
-                "padding-inline-end": 0,
-                "padding-inline-start": 0,
-                "type_preset": "rte",
-                "width": "100%",
-                "wrap": "pretty"
-              },
-              "type": "product-title"
-            }
-          },
+        "product_section_MMapn8": {
           "settings": {
-            "border": "none",
-            "border_opacity": 100,
-            "border_radius": 0,
-            "border_width": 1,
-            "color_scheme": "",
-            "inherit_color_scheme": true,
-            "padding-block-end": 0,
-            "padding-block-start": 0,
-            "padding-inline-end": 0,
-            "padding-inline-start": 0,
-            "product_card_gap": 4
+            "collection": "fitness-essentials",
+            "tag_name": "Fitness & Performance",
+            "use_pill_style": false
           },
-          "static": true,
-          "type": "_product-card"
+          "type": "product_section"
+        },
+        "product_section_RgFxxP": {
+          "settings": {
+            "collection": "best-sellers",
+            "tag_name": "Best Sellers",
+            "use_pill_style": false
+          },
+          "type": "product_section"
+        },
+        "product_section_TGVmyM": {
+          "settings": {
+            "collection": "weight-management",
+            "tag_name": "Metabolic Health",
+            "use_pill_style": false
+          },
+          "type": "product_section"
+        },
+        "product_section_aeUQmA": {
+          "settings": {
+            "collection": "sleep-mood",
+            "tag_name": "Sleep & Mood",
+            "use_pill_style": false
+          },
+          "type": "product_section"
+        },
+        "product_section_e9rXQr": {
+          "settings": {
+            "collection": "shop-all",
+            "tag_name": "Shop all",
+            "use_pill_style": true
+          },
+          "type": "product_section"
+        },
+        "product_section_pQwbKJ": {
+          "settings": {
+            "collection": "gut-health",
+            "tag_name": "Gut Health",
+            "use_pill_style": false
+          },
+          "type": "product_section"
         }
       },
       "settings": {
-        "color_scheme": "scheme-1",
-        "columns_gap_horizontal": 16,
-        "columns_gap_vertical": 24,
-        "full_width_on_mobile": true,
-        "layout_type": "grid",
-        "mobile_product_card_size": "small",
-        "padding-block-end": 32,
-        "padding-block-start": 0,
-        "padding-inline-end": 0,
-        "padding-inline-start": 0,
-        "product_card_size": "medium",
-        "product_grid_width": "centered"
+        "load_more_label": "Load more",
+        "products_per_view": 18,
+        "progress_label": "[COUNT] out of [TOTAL] products",
+        "show_filters": true,
+        "show_grid_layout": true,
+        "show_sort_by": true
       },
-      "type": "main-collection"
+      "type": "collection"
     },
-    "section": {
-      "block_order": ["text_tqQTNE", "text_twGGkJ"],
-      "blocks": {
-        "text_tqQTNE": {
-          "blocks": {},
-          "name": "Title",
-          "settings": {
-            "alignment": "left",
-            "background": false,
-            "background_color": "#00000026",
-            "case": "none",
-            "color": "",
-            "corner_radius": 0,
-            "font": "var(--font-primary--family)",
-            "font_size": "",
-            "letter_spacing": "normal",
-            "line_height": "normal",
-            "max_width": "normal",
-            "padding-block-end": 0,
-            "padding-block-start": 0,
-            "padding-inline-end": 0,
-            "padding-inline-start": 0,
-            "text": "<p>{{ closest.collection.title }}</p>",
-            "type_preset": "h2",
-            "width": "fit-content",
-            "wrap": "pretty"
-          },
-          "type": "text"
-        },
-        "text_twGGkJ": {
-          "blocks": {},
-          "name": "Description",
-          "settings": {
-            "alignment": "left",
-            "background": false,
-            "background_color": "#00000026",
-            "case": "none",
-            "color": "",
-            "corner_radius": 0,
-            "font": "var(--font-primary--family)",
-            "font_size": "",
-            "letter_spacing": "normal",
-            "line_height": "normal",
-            "max_width": "normal",
-            "padding-block-end": 0,
-            "padding-block-start": 0,
-            "padding-inline-end": 0,
-            "padding-inline-start": 0,
-            "text": "{{ closest.collection.description }}",
-            "type_preset": "rte",
-            "width": "fit-content",
-            "wrap": "pretty"
-          },
-          "type": "text"
-        }
-      },
-      "name": "Collection heading",
+    "page_header_JrNNbc": {
+      "name": "Page Header",
       "settings": {
-        "align_baseline": false,
-        "background_image_position": "cover",
-        "background_media": "none",
-        "border": "none",
-        "border_opacity": 100,
-        "border_radius": 0,
-        "border_width": 1,
-        "color_scheme": "scheme-1",
-        "content_direction": "column",
-        "gap": 12,
-        "gradient_direction": "to top",
-        "horizontal_alignment": "flex-start",
-        "horizontal_alignment_flex_direction_column": "flex-start",
-        "overlay_color": "#00000026",
-        "overlay_style": "solid",
-        "padding-block-end": 48,
-        "padding-block-start": 48,
-        "section_height": "",
-        "section_height_custom": 50,
-        "section_width": "page-width",
-        "toggle_overlay": false,
-        "vertical_alignment": "center",
-        "vertical_alignment_flex_direction_column": "center",
-        "vertical_on_mobile": true,
-        "video_position": "cover"
+        "background_image_desktop": "shopify://shop_images/2026-07-30_10.27.05.png",
+        "background_image_mobile": "shopify://shop_images/Image_12.png",
+        "heading": "Targeted Supplements for[br]unsexy problems.",
+        "overlay_color": "#000000",
+        "overlay_opacity": "25",
+        "show_breadcrumbs": true,
+        "subheading": "Explore all of our formulas.",
+        "text_color": "light"
       },
-      "type": "section"
+      "type": "page-header"
     }
-  }
+  },
+  "wrapper": "main.Collection[role='main']"
 }

@@ -1,0 +1,35 @@
+{% # DO NOT EDIT: This file is auto-generated and will be overwritten. [build-fingerprint:assets:source={_js/snippets/meta-json-ld/snippet.liquid}] %}
+
+<!-- JSON-LD Structured Data -->
+<script type="application/ld+json">
+  {
+    "@context" : "http://schema.org",
+    "@type" : "WebSite",
+    "name" : {{ shop.name | json }},
+    "url" : {{ shop.url | json }}
+  }
+</script>
+
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "Organization",
+    "name" : {{ shop.name | json }},
+    "url" : {{ shop.url | json }},
+    "logo": {{ 'logo.png' | asset_url | prepend: 'https:' | json }},
+    "sameAs": [
+      {{ shop.brand.metafields.social_links.pinterest.value | json }},
+      {{ shop.brand.metafields.social_links.facebook.value | json }},
+      {{ shop.brand.metafields.social_links.instagram.value | json }},
+      {{ shop.brand.metafields.social_links.twitter.value | json }}
+    ]
+  }
+</script>
+
+{% if template.name == 'product' %}
+  <!-- Product -->
+  <script type="application/ld+json">
+    {{ product | structured_data }}
+  </script>
+{% endif %}
+<!-- End of JSON-LD Structured Data -->

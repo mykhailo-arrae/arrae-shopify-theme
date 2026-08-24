@@ -1,0 +1,28 @@
+{% liquid
+  assign width = width | default: 40
+  assign height = height | default: 40
+  assign fill = fill | default: 'currentColor'
+
+  assign title_fallback = 'accessibility.icons.chevron_circle' | t
+  assign title = title | default: title_fallback
+%}
+
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="{{ width }}"
+  height="{{ height }}"
+  viewBox="0 0 40 40"
+  fill="none"
+  aria-labelledby="chevron-circle"
+>
+  <title id="chevron-circle">{{ title }}</title>
+  <g clip-path="url(#clip0_1284_4583)">
+    <path d="M28.1445 15.5488C28.3693 15.5489 28.5684 15.667 28.7393 15.8438C28.918 16.0289 29.0184 16.247 28.9971 16.4902C28.9778 16.7066 28.8906 16.8971 28.7393 17.0537L20.9736 25.0859C20.811 25.2541 20.6399 25.3817 20.458 25.457C20.2813 25.5301 20.0889 25.5664 19.8857 25.5664C19.6828 25.5663 19.4919 25.5301 19.3154 25.457C19.1332 25.3816 18.9607 25.2544 18.7979 25.0859L11.0342 17.0537C10.8627 16.8762 10.7521 16.673 10.752 16.4482C10.7521 16.2235 10.8627 16.0212 11.0342 15.8438C11.2125 15.6593 11.4266 15.5495 11.6699 15.5723C11.8846 15.5926 12.071 15.6868 12.2227 15.8438L19.4043 23.2725L19.4072 23.2754L19.8857 23.8018L20.3643 23.2754L20.3691 23.2725L27.5498 15.8438C27.7205 15.6672 27.9199 15.549 28.1445 15.5488Z" fill="{{ fill }}"/>
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M20 0C31.0457 0 40 8.9543 40 20C40 31.0457 31.0457 40 20 40C8.9543 40 0 31.0457 0 20C0 8.9543 8.9543 0 20 0ZM20 1.5C9.78273 1.5 1.5 9.78273 1.5 20C1.5 30.2173 9.78273 38.5 20 38.5C30.2173 38.5 38.5 30.2173 38.5 20C38.5 9.78273 30.2173 1.5 20 1.5Z" fill="{{ fill }}"/>
+  </g>
+  <defs>
+    <clipPath id="clip0_1284_4583">
+      <rect width="{{ width }}" height="{{ height }}" fill="{{ fill }}"/>
+    </clipPath>
+  </defs>
+</svg>

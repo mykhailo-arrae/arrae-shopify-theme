@@ -1,0 +1,298 @@
+{% # DO NOT EDIT: This file is auto-generated and will be overwritten. [build-fingerprint:assets:source={_js/snippets/markets-drawer/snippet.liquid}] %}
+
+<div class="portable-snippet" data-snippet-name="markets-drawer">
+
+<style>
+.tvg_markets_drawer_Lj8Xkq_root{z-index:20;box-sizing:border-box;opacity:0;width:12.4375rem;max-height:17.1875rem;transition:opacity .2s ease,transform .2s ease,display .2s ease allow-discrete;background-color:oklch(99.59% .0093 99.98);border:.03125rem solid oklch(21.71% .0232 69.07/.2);border-radius:.625rem;flex-direction:column;padding-block:.75rem;display:none;position:absolute;top:calc(100% + .5rem);right:0;transform:translateY(-.25rem);box-shadow:0 .5rem 1.5rem #00000014}
+[data-markets-position=above] .tvg_markets_drawer_Lj8Xkq_root{inset:auto auto calc(100% + .5rem) 0;transform:translateY(.25rem)}
+.js-markets-wrap[data-markets-open=true] .tvg_markets_drawer_Lj8Xkq_root{opacity:1;display:flex;transform:translateY(0)}
+@starting-style{.js-markets-wrap[data-markets-open=true] .tvg_markets_drawer_Lj8Xkq_root{opacity:0;transform:translateY(-.25rem)}
+}
+@starting-style{[data-markets-position=above].js-markets-wrap[data-markets-open=true] .tvg_markets_drawer_Lj8Xkq_root{transform:translateY(.25rem)}
+}
+.tvg_markets_drawer_Lj8Xkq_form{overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:oklch(21.71% .0232 69.07/.2) transparent;flex-direction:column;flex:auto;min-width:0;min-height:0;display:flex;overflow-y:auto}
+.tvg_markets_drawer_Lj8Xkq_form::-webkit-scrollbar{width:.375rem}
+.tvg_markets_drawer_Lj8Xkq_form::-webkit-scrollbar-track{background:0 0;margin-block:.25rem}
+.tvg_markets_drawer_Lj8Xkq_form::-webkit-scrollbar-thumb{background-color:oklch(21.71% .0232 69.07/.2);background-clip:padding-box;border:.0625rem solid #0000;border-radius:9999px}
+.tvg_markets_drawer_Lj8Xkq_form::-webkit-scrollbar-thumb:hover{background-color:oklch(21.71% .0232 69.07)}
+.tvg_markets_drawer_Lj8Xkq_list{flex-direction:column;margin:0;padding:0;list-style:none;display:flex}
+.tvg_markets_drawer_Lj8Xkq_list--divided{border-top:.03125rem solid oklch(21.71% .0232 69.07/.2);margin-top:.75rem;padding-top:.75rem}
+</style>
+
+{% doc %}
+  Currency selector popover. Rendered next to its trigger inside `.js-markets-
+  wrap` — usually twice per header (once in the desktop chrome and once in the
+  mobile drawer-extras) so the dropdown can absolute-anchor to whichever
+  trigger opened it. Driven by a self-contained toggle controller in
+  `index.ts`; intentionally NOT wired into the shared offcanvas machinery so
+  opening the dropdown from inside the mobile nav drawer never closes the
+  drawer. Selections auto-submit the localization form, which reloads the
+  page on the new market.
+
+  The allow-list accepts country ISO codes (US, CA, …) plus a special `EUR`
+  entry that adds one row with the EU flag (`assets/eur-flag.png`) and submits
+  the first available EUR market country.
+
+  @param {string} allowed_countries - Optional. Comma/newline-separated ISO
+
+  country codes (plus optional `EUR`) controlling which rows show and in what order. Blank shows all available countries
+  in Shopify order.
+{% enddoc %}
+
+{% liquid
+  assign selected_country = localization.country
+  assign selected_currency = localization.country.currency.iso_code | upcase
+  assign country_found = false
+
+  for country in localization.available_countries
+    if country.iso_code == localization.country.iso_code
+      assign country_found = true
+    endif
+  endfor
+
+  if country_found == false
+    for country in localization.available_countries
+      if country.iso_code == 'US'
+        assign selected_country = country
+        assign selected_currency = country.currency.iso_code | upcase
+      endif
+    endfor
+  endif
+
+  # Optional allow-list of country ISO codes plus `EUR` (comma/newline separated).
+  # Blank = show all available countries in Shopify order. When set, rows follow
+  # this list order. `EUR` adds a single EU-flag row and hides other euro
+  # countries. The selected country/currency is appended at the end if missing.
+  assign markets_filter_active = false
+  assign markets_allowed_list = ''
+  assign markets_show_eur_row = false
+  if allowed_countries != blank
+    assign markets_filter_active = true
+    assign markets_allowed_normalized = allowed_countries | newline_to_br | replace: '<br />', ',' | replace: '<br>', ',' | strip_newlines | replace: ' ', '' | upcase
+    assign markets_allowed_list = markets_allowed_normalized | split: ','
+    if markets_allowed_list contains 'EUR'
+      assign markets_show_eur_row = true
+    endif
+  endif
+
+  assign eur_representative_iso = ''
+  assign eur_currency_symbol = '€'
+  if markets_show_eur_row
+    for country in localization.available_countries
+      if country.currency.iso_code == 'EUR' and eur_representative_iso == ''
+        assign eur_representative_country = country
+        assign eur_representative_iso = country.iso_code
+        assign eur_currency_symbol = country.currency.symbol
+        break
+      endif
+    endfor
+  endif
+
+  if eur_representative_iso == ''
+    assign markets_show_eur_row = false
+  endif
+
+  assign markets_visible_count = 0
+  assign markets_selected_in_list = false
+  assign markets_counted_codes = '|'
+
+  if markets_filter_active
+    for token in markets_allowed_list
+      if token == blank
+        continue
+      endif
+
+      # Skip tokens already counted so duplicate entries render only once.
+      assign markets_code_key = '|' | append: token | append: '|'
+      if markets_counted_codes contains markets_code_key
+        continue
+      endif
+
+      if token == 'EUR'
+        if markets_show_eur_row
+          assign markets_counted_codes = markets_counted_codes | append: 'EUR|'
+          assign markets_visible_count = markets_visible_count | plus: 1
+          if selected_currency == 'EUR'
+            assign markets_selected_in_list = true
+          endif
+        endif
+        continue
+      endif
+
+      assign markets_token_country_iso = ''
+      for country in localization.available_countries
+        if country.iso_code == token
+          assign markets_token_country = country
+          assign markets_token_country_iso = country.iso_code
+          break
+        endif
+      endfor
+
+      if markets_token_country_iso == ''
+        continue
+      endif
+
+      if markets_show_eur_row and markets_token_country.currency.iso_code == 'EUR'
+        continue
+      endif
+
+      assign markets_counted_codes = markets_counted_codes | append: markets_token_country_iso | append: '|'
+      assign markets_visible_count = markets_visible_count | plus: 1
+      if selected_country.iso_code == markets_token_country.iso_code
+        assign markets_selected_in_list = true
+      endif
+    endfor
+
+    unless markets_selected_in_list
+      assign markets_append_selected_row = true
+      if markets_show_eur_row and selected_currency == 'EUR'
+        assign markets_append_selected_row = false
+      endif
+      if markets_append_selected_row
+        assign markets_visible_count = markets_visible_count | plus: 1
+      endif
+    endunless
+  else
+    for country in localization.available_countries
+      assign markets_visible_count = markets_visible_count | plus: 1
+    endfor
+  endif
+%}
+
+<div
+  class="tvg_markets_drawer_Lj8Xkq_root js-markets-popover"
+  role="dialog"
+  aria-label="{{ 'snippets.markets-drawer.title' | t }}"
+  aria-hidden="true"
+>
+  {% form 'localization', class: 'tvg_markets_drawer_Lj8Xkq_form js-markets-form' %}
+    {% if markets_visible_count > 0 %}
+      <ul
+        class="js-region tvg_markets_drawer_Lj8Xkq_list"
+        role="radiogroup"
+        aria-label="{{ 'snippets.markets-drawer.region' | t }}"
+      >
+        {% if markets_filter_active %}
+          {% assign markets_selected_in_list = false %}
+          {% assign markets_rendered_codes = '|' %}
+          {% for token in markets_allowed_list %}
+            {% if token == blank %}
+              {% continue %}
+            {% endif %}
+
+            {% assign markets_code_key = '|' | append: token | append: '|' %}
+            {% if markets_rendered_codes contains markets_code_key %}
+              {% continue %}
+            {% endif %}
+
+            {% if token == 'EUR' and markets_show_eur_row %}
+              {% liquid
+                assign markets_rendered_codes = markets_rendered_codes | append: 'EUR|'
+                assign markets_eur_checked = false
+                if selected_currency == 'EUR'
+                  assign markets_eur_checked = true
+                  assign markets_selected_in_list = true
+                endif
+              %}
+              {% render 'markets-drawer-option',
+                input_name: 'country_code',
+                value: eur_representative_country.iso_code,
+                checked: markets_eur_checked,
+                eur: true,
+                eur_symbol: eur_currency_symbol
+              %}
+              {% continue %}
+            {% endif %}
+
+            {% liquid
+              assign markets_token_country_iso = ''
+              for country in localization.available_countries
+                if country.iso_code == token
+                  assign markets_row_country = country
+                  assign markets_token_country_iso = country.iso_code
+                  break
+                endif
+              endfor
+            %}
+            {% if markets_token_country_iso == '' %}
+              {% continue %}
+            {% endif %}
+            {% if markets_show_eur_row and markets_row_country.currency.iso_code == 'EUR' %}
+              {% continue %}
+            {% endif %}
+            {% liquid
+              assign markets_rendered_codes = markets_rendered_codes | append: markets_token_country_iso | append: '|'
+              assign markets_row_checked = false
+              if selected_country.iso_code == markets_row_country.iso_code
+                assign markets_row_checked = true
+                assign markets_selected_in_list = true
+              endif
+            %}
+            {% render 'markets-drawer-option',
+              input_name: 'country_code',
+              value: markets_row_country.iso_code,
+              checked: markets_row_checked,
+              country: markets_row_country
+            %}
+          {% endfor %}
+
+          {% unless markets_selected_in_list %}
+            {% assign markets_append_selected_row = true %}
+            {% if markets_show_eur_row and selected_currency == 'EUR' %}
+              {% assign markets_append_selected_row = false %}
+            {% endif %}
+            {% if markets_append_selected_row %}
+              {% render 'markets-drawer-option',
+                input_name: 'country_code',
+                value: selected_country.iso_code,
+                checked: true,
+                country: selected_country
+              %}
+            {% endif %}
+          {% endunless %}
+        {% else %}
+          {% for country in localization.available_countries %}
+            {% liquid
+              assign markets_row_checked = false
+              if selected_country.iso_code == country.iso_code
+                assign markets_row_checked = true
+              endif
+            %}
+            {% render 'markets-drawer-option',
+              input_name: 'country_code',
+              value: country.iso_code,
+              checked: markets_row_checked,
+              country: country
+            %}
+          {% endfor %}
+        {% endif %}
+      </ul>
+    {% endif %}
+
+    {% if localization.available_languages.size > 1 %}
+      <ul
+        class="js-language tvg_markets_drawer_Lj8Xkq_list tvg_markets_drawer_Lj8Xkq_list--divided"
+        role="radiogroup"
+        aria-label="{{ 'snippets.markets-drawer.language' | t }}"
+      >
+        {% for language in localization.available_languages %}
+          {% liquid
+            assign markets_language_checked = false
+            if localization.language.iso_code == language.iso_code
+              assign markets_language_checked = true
+            endif
+            assign markets_language_label = language.endonym_name | capitalize
+          %}
+          {% render 'markets-drawer-option',
+            input_name: 'language_code',
+            value: language.iso_code,
+            checked: markets_language_checked,
+            label: markets_language_label
+          %}
+        {% endfor %}
+      </ul>
+    {% endif %}
+  {% endform %}
+</div>
+
+</div>

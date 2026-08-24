@@ -1,0 +1,343 @@
+{% # DO NOT EDIT: This file is auto-generated and will be overwritten. [build-fingerprint:assets:source={_js/blocks/nav-item/block.liquid}] %}
+
+<style>
+.tvg_nav_item_jcRWAa_nav-item{flex-direction:column;align-items:stretch;width:100%;display:flex;position:static}
+.tvg_nav_item_jcRWAa_nav-link{appearance:none;color:currentColor;padding:0;cursor:pointer;white-space:nowrap;background:0 0;border:none;align-self:stretch;align-items:center;margin:0;padding-inline:1.25rem;text-decoration:none;display:flex}
+.tvg_nav_item_jcRWAa_nav-link:focus{outline:none}
+.tvg_nav_item_jcRWAa_desktop-trigger,.tvg_nav_item_jcRWAa_inline-trigger[hidden]{display:none}
+.tvg_nav_item_jcRWAa_nav-link__text{letter-spacing:.06em;text-transform:uppercase;font-family:proxima-nova,-apple-system,blinkmacsystemfont,Segoe UI,roboto,oxygen-sans,ubuntu,cantarell,Helvetica Neue,sans-serif;font-size:.75rem;font-weight:500;line-height:1.06;text-decoration:none;position:relative}
+.tvg_nav_item_jcRWAa_nav-link__text:before{content:"";transform-origin:0;background:currentColor;width:100%;height:1px;transition:transform .3s ease-in-out;display:block;position:absolute;bottom:0;transform:scaleX(0)}
+.tvg_nav_item_jcRWAa_nav-link__text:hover:before{transform-origin:0;transform:scaleX(1)}
+.tvg_nav_item_jcRWAa_nav-link__text:not(:hover):before{transform-origin:100%;transform:scaleX(0)}
+.tvg_nav_item_jcRWAa_nav-link__text:before{bottom:-.25rem}
+.tvg_nav_item_jcRWAa_nav-link:focus-visible .tvg_nav_item_jcRWAa_nav-link__text{outline-offset:.25rem;outline:.125rem solid}
+.tvg_nav_item_jcRWAa_nav-link[aria-expanded=true] .tvg_nav_item_jcRWAa_nav-link__text:before,.tvg_nav_item_jcRWAa_nav-link[aria-current=page] .tvg_nav_item_jcRWAa_nav-link__text:before{transform-origin:0;transform:scaleX(1)}
+.tvg_nav_item_jcRWAa_nav-item .tvg_nav_item_jcRWAa_link:hover{opacity:1}
+.tvg_nav_item_jcRWAa_mobile-trigger{appearance:none;color:currentColor;cursor:pointer;text-align:left;background:0 0;border:none;justify-content:space-between;align-items:center;gap:.75rem;width:100%;margin:0;padding:0;display:none}
+.tvg_nav_item_jcRWAa_mobile-trigger:focus-visible{outline-offset:.125rem}
+.tvg_nav_item_jcRWAa_mobile-trigger__label{letter-spacing:.04em;color:oklch(34.85% 0 0);font-family:proxima-nova,-apple-system,blinkmacsystemfont,Segoe UI,roboto,oxygen-sans,ubuntu,cantarell,Helvetica Neue,sans-serif;font-size:1.25rem;font-weight:300;line-height:1.2}
+.tvg_nav_item_jcRWAa_mobile-trigger__icon{flex-shrink:0;justify-content:center;align-items:center;width:2rem;height:2rem;transition:transform .25s;display:inline-flex}
+.tvg_nav_item_jcRWAa_mobile-trigger[aria-expanded=true] .tvg_nav_item_jcRWAa_mobile-trigger__icon{transform:rotate(180deg)}
+.tvg_nav_item_jcRWAa_mobile-trigger__icon svg{width:100%;height:100%}
+.tvg_nav_item_jcRWAa_panel-wrap{width:100%;display:block}
+.tvg_nav_item_jcRWAa_panel{visibility:visible;grid-template-rows:1fr;transition:grid-template-rows .35s cubic-bezier(.32,.72,0,1),visibility linear;display:grid}
+.tvg_nav_item_jcRWAa_panel[hidden]{display:grid}
+.tvg_nav_item_jcRWAa_panel[aria-hidden=true]{visibility:hidden;grid-template-rows:0fr;transition:grid-template-rows .35s cubic-bezier(.32,.72,0,1),visibility 0s linear .35s}
+.tvg_nav_item_jcRWAa_panel[data-disable-outer-accordion=true]{visibility:visible;grid-template-rows:1fr}
+.tvg_nav_item_jcRWAa_panel__inner{flex-direction:column;min-height:0;padding-inline:0;display:flex;overflow:hidden}
+.tvg_nav_item_jcRWAa_mobile-banner,.tvg_nav_item_jcRWAa_mobile-cta{display:none}
+.tvg_nav_item_jcRWAa_mobile-cta__label{display:block}
+@media print,screen and (width>=64em){.js-mobile-drawer:not([data-drawer-mode-on-desktop=true]) .tvg_nav_item_jcRWAa_nav-item{flex-direction:row;align-items:stretch;width:auto}
+.js-mobile-drawer:not([data-drawer-mode-on-desktop=true]) .tvg_nav_item_jcRWAa_desktop-trigger{display:flex}
+.js-mobile-drawer[data-drawer-mode-on-desktop=true] .tvg_nav_item_jcRWAa_link{width:100%;padding-inline:0}
+.js-mobile-drawer[data-drawer-mode-on-desktop=true] .tvg_nav_item_jcRWAa_link .tvg_nav_item_jcRWAa_nav-link__text{letter-spacing:.04em;text-transform:none;font-family:proxima-nova,-apple-system,blinkmacsystemfont,Segoe UI,roboto,oxygen-sans,ubuntu,cantarell,Helvetica Neue,sans-serif;font-size:1.25rem;font-weight:300;line-height:120%}
+.js-mobile-drawer[data-drawer-mode-on-desktop=true] .tvg_nav_item_jcRWAa_mobile-trigger{display:flex}
+.js-mobile-drawer:not([data-drawer-mode-on-desktop=true]) .tvg_nav_item_jcRWAa_panel-wrap{pointer-events:none;z-index:99999;width:auto;position:absolute;top:100%;left:0;right:0}
+.js-mobile-drawer:not([data-drawer-mode-on-desktop=true]) .tvg_nav_item_jcRWAa_panel{overscroll-behavior:contain;color:oklch(21.71% .0232 69.07);max-height:calc(100dvh - var(--tvg_nav_item_jcRWAa_megamenu-chrome-height,4rem));opacity:0;visibility:hidden;background-color:oklch(99.59% .0093 99.98);border-top:.0625rem solid #0000000f;border-radius:0 0 1rem 1rem;transition:opacity .2s,visibility .35s,transform .35s cubic-bezier(.32,.72,0,1);display:block;overflow:hidden auto;transform:translateY(-.5rem);box-shadow:0 .5rem 1.5rem #0000000a}
+.js-mobile-drawer:not([data-drawer-mode-on-desktop=true]) .tvg_nav_item_jcRWAa_panel[hidden]{display:none}
+.js-mobile-drawer:not([data-drawer-mode-on-desktop=true]) .tvg_nav_item_jcRWAa_panel[aria-hidden=false]{opacity:1;visibility:visible;pointer-events:auto;transform:translateY(0)}
+.js-mobile-drawer:not([data-drawer-mode-on-desktop=true]) .tvg_nav_item_jcRWAa_panel[data-disable-outer-accordion=true]{grid-template-rows:initial}
+.js-mobile-drawer:not([data-drawer-mode-on-desktop=true]) .tvg_nav_item_jcRWAa_panel[data-crossfade]{transition:none;transform:translateY(0)}
+.js-mobile-drawer:not([data-drawer-mode-on-desktop=true]) .tvg_nav_item_jcRWAa_panel__inner{grid-template-columns:repeat(3,minmax(0,1fr));align-items:flex-start;gap:2rem 1.5rem;width:100%;max-width:94.5rem;min-height:20.625rem;margin-inline:auto;padding-block:2rem 3rem;padding-inline:2rem;display:grid;overflow:visible}
+.js-mobile-drawer[data-drawer-mode-on-desktop=true] .tvg_nav_item_jcRWAa_mobile-banner{order:5;margin-bottom:1.5rem;display:block;position:relative}
+.js-mobile-drawer[data-drawer-mode-on-desktop=true] .tvg_nav_item_jcRWAa_mobile-cta{letter-spacing:.0525rem;text-transform:uppercase;background-color:oklch(21.71% .0232 69.07);border-radius:9999px;order:4;justify-content:center;align-items:center;width:100%;margin-top:1.75rem;margin-bottom:2.5rem;padding:.75rem 1.5rem;font-family:proxima-nova,-apple-system,blinkmacsystemfont,Segoe UI,roboto,oxygen-sans,ubuntu,cantarell,Helvetica Neue,sans-serif;font-size:.875rem;font-weight:400;line-height:1.06;text-decoration:none;transition:opacity .2s;display:inline-flex}
+:is(.js-mobile-drawer[data-drawer-mode-on-desktop=true] .tvg_nav_item_jcRWAa_mobile-cta:hover,.js-mobile-drawer[data-drawer-mode-on-desktop=true] .tvg_nav_item_jcRWAa_mobile-cta:focus-visible){opacity:.85}
+.js-mobile-drawer[data-drawer-mode-on-desktop=true] .tvg_nav_item_jcRWAa_mobile-cta:is(a){color:oklch(99.59% .0093 99.98)}
+}
+@media print,screen and (width<64em){.tvg_nav_item_jcRWAa_link{width:100%;padding-inline:0}
+.tvg_nav_item_jcRWAa_link .tvg_nav_item_jcRWAa_nav-link__text{letter-spacing:.04em;text-transform:none;font-family:proxima-nova,-apple-system,blinkmacsystemfont,Segoe UI,roboto,oxygen-sans,ubuntu,cantarell,Helvetica Neue,sans-serif;font-size:1.25rem;font-weight:300;line-height:120%}
+.tvg_nav_item_jcRWAa_mobile-trigger{display:flex}
+.tvg_nav_item_jcRWAa_mobile-banner{order:5;margin-bottom:1.5rem;display:block;position:relative}
+.tvg_nav_item_jcRWAa_mobile-cta{letter-spacing:.0525rem;text-transform:uppercase;background-color:oklch(21.71% .0232 69.07);border-radius:9999px;order:4;justify-content:center;align-items:center;width:100%;margin-top:1.75rem;margin-bottom:2.5rem;padding:.75rem 1.5rem;font-family:proxima-nova,-apple-system,blinkmacsystemfont,Segoe UI,roboto,oxygen-sans,ubuntu,cantarell,Helvetica Neue,sans-serif;font-size:.875rem;font-weight:400;line-height:1.06;text-decoration:none;transition:opacity .2s;display:inline-flex}
+.tvg_nav_item_jcRWAa_mobile-cta:hover,.tvg_nav_item_jcRWAa_mobile-cta:focus-visible{opacity:.85}
+.tvg_nav_item_jcRWAa_mobile-cta:is(a){color:oklch(99.59% .0093 99.98)}
+}
+@media (prefers-reduced-motion:reduce){.tvg_nav_item_jcRWAa_mobile-trigger__icon,.tvg_nav_item_jcRWAa_panel,.tvg_nav_item_jcRWAa_panel,.tvg_nav_item_jcRWAa_nav-link__text:before{transition:none}
+}
+@media print and (prefers-reduced-motion:reduce),screen and (width>=64em) and (prefers-reduced-motion:reduce){.js-mobile-drawer:not([data-drawer-mode-on-desktop=true]) .tvg_nav_item_jcRWAa_panel{transition:none}
+.js-mobile-drawer[data-drawer-mode-on-desktop=true] .tvg_nav_item_jcRWAa_mobile-cta{transition:none}
+}
+@media print,screen and (width>=64em) and (width>=80em){.js-mobile-drawer:not([data-drawer-mode-on-desktop=true]) .tvg_nav_item_jcRWAa_panel__inner{grid-template-columns:repeat(6,minmax(0,1fr));padding-block:2rem 4rem;padding-inline:3rem}
+}
+@media print and (prefers-reduced-motion:reduce),screen and (width<64em) and (prefers-reduced-motion:reduce){.tvg_nav_item_jcRWAa_mobile-cta{transition:none}
+}
+</style>
+
+{% liquid
+  assign label = block.settings.label
+  assign item_type = block.settings.item_type
+  assign link_url = block.settings.link_url
+
+  assign mobile_banner_image = block.settings.mobile_banner_image
+  assign mobile_banner_title = block.settings.mobile_banner_title
+  assign mobile_banner_url = block.settings.mobile_banner_url
+  assign mobile_cta_label = block.settings.mobile_cta_label
+  assign mobile_cta_url = block.settings.mobile_cta_url
+  assign disable_outer_accordion_setting = block.settings.disable_outer_accordion | default: false, allow_false: true
+
+  assign trigger_id = 'megamenu-trigger-' | append: block.id
+  assign panel_id = 'megamenu-panel-' | append: block.id
+  assign mobile_trigger_id = 'mobile-megamenu-trigger-' | append: block.id
+
+  assign is_megamenu = false
+  if item_type == 'mega_menu'
+    assign is_megamenu = true
+  endif
+
+  assign disable_outer_accordion = false
+  if is_megamenu and disable_outer_accordion_setting
+    assign disable_outer_accordion = true
+  endif
+
+  assign show_mobile_banner = false
+  if is_megamenu and mobile_banner_image != blank
+    assign show_mobile_banner = true
+  endif
+
+  assign show_mobile_cta = false
+  if is_megamenu and mobile_cta_label != blank and mobile_cta_url != blank
+    assign show_mobile_cta = true
+  endif
+%}
+
+{% if is_megamenu %}
+  {% comment %}
+    Desktop trigger — hover/click driven hover panel. Hidden on mobile.
+    The mobile drawer renders its own trigger (below) so the desktop
+    interaction model stays untouched.
+  {% endcomment %}
+  <button
+    type="button"
+    id="{{ trigger_id }}"
+    class="tvg_nav_item_jcRWAa_nav-link tvg_nav_item_jcRWAa_desktop-trigger js-megamenu-trigger"
+    data-block-id="{{ block.id }}"
+    aria-haspopup="true"
+    aria-expanded="false"
+    aria-controls="{{ panel_id }}"
+  >
+    <span class="tvg_nav_item_jcRWAa_nav-link__text">{{ label }}</span>
+  </button>
+
+  {% comment %}
+    Mobile accordion trigger — click-only. Hidden on desktop and omitted
+    entirely when `disable_outer_accordion` is enabled.
+  {% endcomment %}
+  {% unless disable_outer_accordion %}
+    <button
+      type="button"
+      id="{{ mobile_trigger_id }}"
+      class="tvg_nav_item_jcRWAa_mobile-trigger js-mobile-accordion-trigger"
+      data-block-id="{{ block.id }}"
+      aria-expanded="false"
+      aria-controls="{{ panel_id }}"
+    >
+      <span class="tvg_nav_item_jcRWAa_mobile-trigger__label">{{ label }}</span>
+      <span class="tvg_nav_item_jcRWAa_mobile-trigger__icon" aria-hidden="true">
+        {% render 'icon-chevron-bottom', width: 24, height: 24 %}
+      </span>
+    </button>
+  {% endunless %}
+
+  {% comment %}
+    Single panel element that serves as both the desktop hover dropdown
+    AND the mobile accordion content.
+  {% endcomment %}
+  <div class="tvg_nav_item_jcRWAa_panel-wrap">
+    <div
+      id="{{ panel_id }}"
+      class="tvg_nav_item_jcRWAa_panel js-megamenu-panel"
+      role="region"
+      aria-labelledby="{{ trigger_id }}"
+      aria-hidden="true"
+      {% if disable_outer_accordion %}
+        data-disable-outer-accordion="true"
+      {% endif %}
+      hidden
+    >
+      <div class="tvg_nav_item_jcRWAa_panel__inner" data-mobile-accordion-group="true">
+        {% content_for 'blocks' %}
+
+        {% if show_mobile_banner %}
+          <div class="tvg_nav_item_jcRWAa_mobile-banner">
+            {% render 'nav-banner-card',
+              image: mobile_banner_image,
+              title: mobile_banner_title,
+              url: mobile_banner_url,
+              sizes: '(max-width: 1024px) 100vw, 480px'
+            %}
+          </div>
+        {% endif %}
+
+        {% if show_mobile_cta %}
+          <a
+            href="{{ mobile_cta_url }}"
+            class="tvg_nav_item_jcRWAa_mobile-cta"
+          >
+            <span class="tvg_nav_item_jcRWAa_mobile-cta__label">{{ mobile_cta_label }}</span>
+          </a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+{% elsif link_url != blank %}
+  <a
+    href="{{ link_url }}"
+    class="tvg_nav_item_jcRWAa_nav-link tvg_nav_item_jcRWAa_link js-nav-link"
+  >
+    <span class="tvg_nav_item_jcRWAa_nav-link__text">{{ label }}</span>
+  </a>
+{% else %}
+  <span class="tvg_nav_item_jcRWAa_nav-link tvg_nav_item_jcRWAa_link js-nav-link">
+    <span class="tvg_nav_item_jcRWAa_nav-link__text">{{ label }}</span>
+  </span>
+{% endif %}
+
+{% comment %}
+  Inline desktop drawer trigger. It is shown when `use_drawer_mode_on_desktop` is enabled
+{% endcomment %}
+{% if is_megamenu %}
+  <button
+    type="button"
+    class="tvg_nav_item_jcRWAa_nav-link tvg_nav_item_jcRWAa_inline-trigger js-inline-drawer-trigger js-drawer-trigger"
+    data-block-id="{{ block.id }}"
+    aria-haspopup="menu"
+    hidden
+  >
+    <span class="tvg_nav_item_jcRWAa_nav-link__text">{{ label }}</span>
+  </button>
+{% elsif link_url != blank %}
+  <a
+    href="{{ link_url }}"
+    class="tvg_nav_item_jcRWAa_nav-link tvg_nav_item_jcRWAa_inline-trigger js-inline-drawer-trigger"
+    hidden
+  >
+    <span class="tvg_nav_item_jcRWAa_nav-link__text">{{ label }}</span>
+  </a>
+{% else %}
+  <span class="tvg_nav_item_jcRWAa_nav-link tvg_nav_item_jcRWAa_inline-trigger js-inline-drawer-trigger" hidden>
+    <span class="tvg_nav_item_jcRWAa_nav-link__text">{{ label }}</span>
+  </span>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Nav Item",
+  "tag": "li",
+  "class": "tvg_nav_item_jcRWAa_nav-item",
+  "settings": [
+    {
+      "type": "text",
+      "id": "label",
+      "label": "Label",
+      "info": "Maximum 25 characters recommended."
+    },
+    {
+      "type": "select",
+      "id": "item_type",
+      "label": "Type",
+      "default": "link",
+      "options": [
+        { "value": "link", "label": "Link" },
+        { "value": "mega_menu", "label": "Mega Menu" }
+      ]
+    },
+    {
+      "type": "url",
+      "id": "link_url",
+      "label": "Link",
+      "info": "Page, product, collection, or external URL.",
+      "visible_if": "{{ block.settings.item_type == 'link' }}"
+    },
+    {
+      "type": "paragraph",
+      "content": "Mega menu panels can compose Collection Tiles, Quick Links, Header Links, and a single Menu Banner.",
+      "visible_if": "{{ block.settings.item_type == 'mega_menu' }}"
+    },
+    {
+      "type": "header",
+      "content": "Mobile",
+      "visible_if": "{{ block.settings.item_type == 'mega_menu' }}"
+    },
+    {
+      "type": "paragraph",
+      "content": "These options only affect the mobile mega menu and have no impact on desktop.",
+      "visible_if": "{{ block.settings.item_type == 'mega_menu' }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "disable_outer_accordion",
+      "label": "Disable outer accordion",
+      "info": "When enabled, the label / accordion trigger is hidden on mobile and the content renders expanded by default. Nested accordions still behave normally.",
+      "default": false,
+      "visible_if": "{{ block.settings.item_type == 'mega_menu' }}"
+    },
+    {
+      "type": "header",
+      "content": "Mobile mega menu banner",
+      "visible_if": "{{ block.settings.item_type == 'mega_menu' }}"
+    },
+    {
+      "type": "paragraph",
+      "content": "Only visible on mobile. Renders at the very end of the mega menu, after the mobile CTA.",
+      "visible_if": "{{ block.settings.item_type == 'mega_menu' }}"
+    },
+    {
+      "type": "image_picker",
+      "id": "mobile_banner_image",
+      "label": "Banner image",
+      "visible_if": "{{ block.settings.item_type == 'mega_menu' }}"
+    },
+    {
+      "type": "text",
+      "id": "mobile_banner_title",
+      "label": "Banner title",
+      "info": "Optional text rendered over the image, mirroring the desktop Menu Banner.",
+      "visible_if": "{{ block.settings.item_type == 'mega_menu' }}"
+    },
+    {
+      "type": "url",
+      "id": "mobile_banner_url",
+      "label": "Banner link",
+      "visible_if": "{{ block.settings.item_type == 'mega_menu' }}"
+    },
+    {
+      "type": "header",
+      "content": "Mobile mega menu CTA",
+      "visible_if": "{{ block.settings.item_type == 'mega_menu' }}"
+    },
+    {
+      "type": "paragraph",
+      "content": "Only visible on mobile. Renders near the bottom of the mega menu, just above the mobile banner.",
+      "visible_if": "{{ block.settings.item_type == 'mega_menu' }}"
+    },
+    {
+      "type": "text",
+      "id": "mobile_cta_label",
+      "label": "CTA label",
+      "info": "e.g. \"Shop Spring Sale\".",
+      "visible_if": "{{ block.settings.item_type == 'mega_menu' }}"
+    },
+    {
+      "type": "url",
+      "id": "mobile_cta_url",
+      "label": "CTA link",
+      "visible_if": "{{ block.settings.item_type == 'mega_menu' }}"
+    }
+  ],
+  "blocks": [
+    { "type": "nav-collection-tiles" },
+    { "type": "nav-quick-links" },
+    { "type": "nav-links" },
+    { "type": "nav-banner" }
+  ],
+  "presets": [
+    {
+      "name": "Nav Item",
+      "settings": {
+        "label": "Shop",
+        "item_type": "mega_menu"
+      }
+    }
+  ]
+}
+{% endschema %}

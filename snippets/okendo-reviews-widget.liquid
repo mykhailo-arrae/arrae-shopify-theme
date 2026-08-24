@@ -1,0 +1,41 @@
+{% # DO NOT EDIT: This file is auto-generated and will be overwritten. [build-fingerprint:assets:source={_js/snippets/okendo-reviews-widget/snippet.liquid}] %}
+
+{% doc %}
+  Okendo reviews widget mount.
+
+  Prefers Okendo Widget v2 metafield/attribute, falls back to Widget v1
+  when only the legacy metafield is present.
+
+  @param {product} product - Product to render reviews for (required)
+
+  @example
+  {% render 'okendo-reviews-widget', product: product %}
+{% enddoc %}
+
+{% liquid
+  assign product = product | default: null
+
+  unless product != blank
+    break
+  endunless
+
+  assign reviews_snippet_v2 = product.metafields.okendo.ReviewsWidgetSnippet
+  assign reviews_snippet_v1 = product.metafields.okendo.ProductReviewsWidgetSnippet
+  assign reviews_snippet = reviews_snippet_v2 | default: reviews_snippet_v1
+  assign use_v1_widget = false
+
+  if reviews_snippet_v2 == blank and reviews_snippet_v1 != blank
+    assign use_v1_widget = true
+  endif
+%}
+
+<div
+  {% if use_v1_widget %}
+    data-oke-reviews-widget
+  {% else %}
+    data-oke-widget
+  {% endif %}
+  data-oke-reviews-product-id="shopify-{{ product.id }}"
+>
+  {{ reviews_snippet }}
+</div>

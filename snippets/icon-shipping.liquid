@@ -1,0 +1,24 @@
+{% liquid
+  assign width = width | default: 21
+  assign height = height | default: 20
+  assign fill = fill | default: 'currentColor'
+
+  assign title_fallback = 'accessibility.icons.shipping' | t
+  assign title = title | default: title_fallback
+%}
+
+<svg
+  width="{{ width }}"
+  height="{{ height }}"
+  viewBox="0 0 21 20"
+  fill="none"
+  xmlns="http://www.w3.org/2000/svg"
+  aria-labelledby="shipping"
+>
+  <title id="shipping">{{ title }}</title>
+  <path d="M9.48307 13.8843C9.48307 15.2495 8.42069 16.3561 7.11019 16.3561C5.79968 16.3561 4.7373 15.2495 4.7373 13.8843C4.7373 12.5192 5.79968 11.4126 7.11019 11.4126C8.42069 11.4126 9.48307 12.5192 9.48307 13.8843Z" stroke="{{ fill }}" stroke-width="0.75" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M18.7345 13.8843C18.7345 15.2495 17.6721 16.3561 16.3616 16.3561C15.0511 16.3561 13.9887 15.2495 13.9887 13.8843C13.9887 12.5192 15.0511 11.4126 16.3616 11.4126C17.6721 11.4126 18.7345 12.5192 18.7345 13.8843Z" stroke="{{ fill }}" stroke-width="0.75" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M0.5 6.46924H5.03107M0.5 8.58788H5.03107M0.5 10.7065H5.03107" stroke="{{ fill }}" stroke-width="0.75" stroke-linecap="round"/>
+  <path d="M2.97168 10.7064V12.8844C2.97168 13.4367 3.41939 13.8844 3.97168 13.8844H4.73722M2.97168 6.46915V4.64429C2.97168 4.092 3.41939 3.64429 3.97168 3.64429H15.297C16.097 3.64429 16.8201 4.12108 17.1352 4.85645L18.7344 8.58779L19.7493 9.39973C20.2237 9.77928 20.4999 10.3539 20.4999 10.9615V12.8844C20.4999 13.4367 20.0522 13.8844 19.4999 13.8844H18.7344M9.68072 13.8844H13.7909" stroke="{{ fill }}" stroke-width="0.75" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M18.7347 8.58779H14.1122C13.5449 8.58779 13.085 7.95542 13.085 7.17536V3.64429" stroke="{{ fill }}" stroke-width="0.75"/>
+</svg>

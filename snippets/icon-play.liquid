@@ -1,0 +1,21 @@
+{% liquid
+  assign width = width | default: 40
+  assign height = height | default: 40
+  assign fill = fill | default: 'currentColor'
+  assign class = class | default: ''
+
+  assign title_fallback = 'accessibility.icons.play' | t
+  assign title = title | default: title_fallback
+%}
+
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="{{ width }}"
+  height="{{ height }}"
+  viewBox="0 0 40 40"
+  fill="none"
+  aria-labelledby="play"
+>
+  <title id="play">{{ title }}</title>
+  <path fill-rule="evenodd" clip-rule="evenodd" d="M16.538 13C16.6271 13 16.7315 13.0079 16.8502 13.0232C16.969 13.0385 17.0733 13.0769 17.1624 13.1379L26.7537 19.4673C26.932 19.5895 27.0734 19.735 27.1775 19.9031C27.2815 20.0712 27.333 20.2628 27.333 20.4768C27.333 20.6909 27.2816 20.8823 27.1775 21.0505C27.0734 21.2187 26.9321 21.364 26.7537 21.4863L17.1624 27.8169C17.0734 27.878 16.969 27.923 16.8502 27.9536C16.7315 27.9841 16.6271 27.9999 16.538 28C16.2109 28 15.9282 27.885 15.6903 27.6558C15.4524 27.4264 15.333 27.128 15.333 26.761V14.239C15.333 13.8415 15.4524 13.5351 15.6903 13.321C15.9282 13.1071 16.211 13 16.538 13ZM16.3148 27.1284L26.5756 20.4768L16.3148 13.8252V27.1284Z" fill="{{ fill }}"/>
+</svg>

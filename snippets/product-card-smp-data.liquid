@@ -1,0 +1,192 @@
+{% # DO NOT EDIT: This file is auto-generated and will be overwritten. [build-fingerprint:assets:source={_js/snippets/product-card-smp-data/snippet.liquid}] %}
+
+{% doc %}
+  @description
+  Emits a JSON payload of SMP sibling product-card fields for client-side card swaps.
+  Render once inside a product-card when smp_sibling_options is present.
+
+  @param {array} smp_sibling_options - SMP option metaobjects (required).
+
+  @example
+  {% render 'product-card-smp-data', smp_sibling_options: smp_sibling_options %}
+{% enddoc %}
+
+{% liquid
+  assign smp_sibling_options = smp_sibling_options | default: null
+%}
+
+{% if smp_sibling_options != blank %}
+  <script type="application/json" class="js-product-card-smp-data">
+    {
+      "siblings": {
+        {%- assign smp_data_first = true -%}
+        {%- for entry in smp_sibling_options -%}
+          {%- liquid
+            assign entry_product = entry.product.value
+            if entry_product == blank
+              continue
+            endif
+
+            assign entry_product_id = entry_product.id | default: 0
+            assign entry_url = entry_product.url | default: ''
+            assign entry_handle = entry_product.handle | default: ''
+
+            assign collection_display = entry_product.metafields.custom.smp_display_override.value | default: null
+            assign card_title = collection_display.title | default: entry_product.title
+
+            assign image = collection_display.image | default: entry_product.metafields.custom.product_card_image.value | default: entry_product.featured_image | default: null
+            assign hover_image = collection_display.image_hover | default: entry_product.metafields.custom.product_card_image_hover.value | default: entry_product.images[1] | default: null
+            assign mobile_image = collection_display.image_mobile_optional_ | default: null
+            assign image_alt = image.alt | default: card_title
+            assign subtitle = collection_display.short_description | default: entry_product.metafields.custom.product_card_marketing_copy.value | default: entry_product.metafields.custom_fields.collection_short_description.value | default: '&nbsp;'
+
+            assign quickshop_label = 'products.general.quickshop' | t
+            if collection_display.cta_text != blank
+              assign quickshop_label = collection_display.cta_text
+            endif
+
+            assign card_variant = null
+            assign card_selling_plan_id = ''
+            assign min_allocation_price = ''
+
+            for v in entry_product.variants
+              assign hide_on_front_end = v.metafields.custom.hide_on_front_end.value | default: false, allow_false: true
+              if hide_on_front_end
+                continue
+              endif
+              if v.available and v.selling_plan_allocations.size > 0
+                assign card_variant = v
+                assign min_allocation_price = ''
+                for alloc in v.selling_plan_allocations
+                  if min_allocation_price == blank or alloc.price < min_allocation_price
+                    assign min_allocation_price = alloc.price
+                    assign card_selling_plan_id = alloc.selling_plan.id
+                  endif
+                endfor
+                break
+              endif
+            endfor
+
+            if card_variant == null
+              for v in entry_product.variants
+                assign hide_on_front_end = v.metafields.custom.hide_on_front_end.value | default: false, allow_false: true
+                unless hide_on_front_end
+                  if v.available
+                    assign card_variant = v
+                    break
+                  endif
+                endunless
+              endfor
+            endif
+
+            if card_variant == null
+              for v in entry_product.variants
+                assign hide_on_front_end = v.metafields.custom.hide_on_front_end.value | default: false, allow_false: true
+                unless hide_on_front_end
+                  assign card_variant = v
+                  break
+                endunless
+              endfor
+            endif
+
+            if card_variant == null
+              assign card_variant = entry_product.selected_or_first_available_variant
+            endif
+
+            assign product_url_with_variant = entry_url | append: '?variant=' | append: card_variant.id
+            assign card_url = product_url_with_variant
+            if collection_display.cta_link != blank
+              assign card_url = collection_display.cta_link
+            endif
+
+            assign hide_reviews = entry_product.metafields.custom.hide_reviews_summary.value | default: false, allow_false: true
+            assign badge = entry_product.metafields.custom.product_card_badge.value | default: entry_product.metafields.custom.badge.value | default: null
+            assign overlay_image = entry_product.metafields.custom.product_card_overlay_svg.value | default: null
+          -%}
+
+          {%- capture sibling_image_html -%}
+            {%- if image != blank -%}
+              {%- render 'core-image',
+                image: image,
+                image_mobile: mobile_image,
+                image_alt_text: image_alt,
+                object_fit: 'cover',
+                lazyload: true,
+                srcset_print_sizes: '480,640',
+                mobile_srcset_print_sizes: '320,480'
+              -%}
+            {%- endif -%}
+          {%- endcapture -%}
+
+          {%- capture sibling_hover_image_html -%}
+            {%- if hover_image != blank -%}
+              {%- render 'core-image',
+                image: hover_image,
+                object_fit: 'cover',
+                lazyload: true,
+                srcset_print_sizes: '480,640',
+                mobile_srcset_print_sizes: '320,480'
+              -%}
+            {%- endif -%}
+          {%- endcapture -%}
+
+          {%- capture sibling_reviews_html -%}
+            {%- unless hide_reviews -%}
+              {%- render 'product-review-ratings', product: entry_product -%}
+            {%- endunless -%}
+          {%- endcapture -%}
+
+          {%- capture sibling_price_html -%}
+            {%- render 'product-price-html',
+              product: entry_product,
+              variant: card_variant,
+              selling_plan_id: card_selling_plan_id
+            -%}
+          {%- endcapture -%}
+
+          {%- capture sibling_subtitle_html -%}
+            {{ subtitle }}
+          {%- endcapture -%}
+
+          {%- capture sibling_badge_html -%}
+            {%- if badge != blank -%}
+              {{ badge }}
+            {%- endif -%}
+          {%- endcapture -%}
+
+          {%- capture sibling_overlay_image_html -%}
+            {%- if overlay_image != blank -%}
+              {%- render 'core-image',
+                image: overlay_image,
+                mode: 'contain',
+                object_fit: 'cover',
+                lazyload: true,
+                srcset_print_sizes: '120,240'
+              -%}
+            {%- endif -%}
+          {%- endcapture -%}
+
+          {%- unless smp_data_first -%},{%- endunless -%}
+          {{ entry_product_id | append: '' | json }}: {
+            "productId": {{ entry_product_id | json }},
+            "productUrl": {{ entry_url | json }},
+            "productHandle": {{ entry_handle | json }},
+            "variantId": {% if card_variant.id != blank %}{{ card_variant.id | json }}{% else %}null{% endif %},
+            "cardUrl": {{ card_url | json }},
+            "title": {{ card_title | json }},
+            "subtitle": {{ sibling_subtitle_html | json }},
+            "imageHtml": {{ sibling_image_html | json }},
+            "hoverImageHtml": {{ sibling_hover_image_html | json }},
+            "reviewsHtml": {{ sibling_reviews_html | json }},
+            "priceHtml": {{ sibling_price_html | json }},
+            "badgeHtml": {{ sibling_badge_html | json }},
+            "overlayImageHtml": {{ sibling_overlay_image_html | json }},
+            "hideReviews": {% if hide_reviews %}true{% else %}false{% endif %},
+            "quickshopLabel": {{ quickshop_label | json }}
+          }
+          {%- assign smp_data_first = false -%}
+        {%- endfor -%}
+      }
+    }
+  </script>
+{% endif %}

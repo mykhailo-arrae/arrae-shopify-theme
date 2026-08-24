@@ -1,0 +1,141 @@
+{% # DO NOT EDIT: This file is auto-generated and will be overwritten. [build-fingerprint:assets:source={_js/sections/blog-categories/section.liquid}] %}
+
+<style>
+.tvg_blog_categories_dBTMvW_section_wrapper{width:100%;max-width:94.5rem;margin-inline:auto;padding:3rem 1rem 1.5rem;display:block}
+.tvg_blog_categories_dBTMvW_title{letter-spacing:-.045rem;color:oklch(31.71% .0299 64.29);text-align:center;letter-spacing:-.06rem;text-wrap:balance;margin:0 0 1.5rem;padding:0 1rem;font-family:Cardinal Fruit,Georgia,Book Antiqua,Times New Roman,serif;font-size:2rem;font-weight:400;line-height:112%}
+.tvg_blog_categories_dBTMvW_nav{width:100%;min-width:0}
+.tvg_blog_categories_dBTMvW_list{overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch;scrollbar-width:none;-ms-overflow-style:none;flex-wrap:nowrap;justify-content:safe center;align-items:center;gap:2.5rem;margin:0;padding:0 1rem;list-style:none;display:flex;overflow-x:auto}
+.tvg_blog_categories_dBTMvW_list::-webkit-scrollbar{display:none}
+.tvg_blog_categories_dBTMvW_item{flex-shrink:0;display:flex}
+a.tvg_blog_categories_dBTMvW_link{text-transform:uppercase;text-wrap:nowrap;color:oklch(53.82% 0 0);letter-spacing:.045rem;font-family:proxima-nova,-apple-system,blinkmacsystemfont,Segoe UI,roboto,oxygen-sans,ubuntu,cantarell,Helvetica Neue,sans-serif;font-size:.75rem;font-weight:400;line-height:110%;text-decoration:none;transition:color .16s;opacity:1!important}
+a.tvg_blog_categories_dBTMvW_link:hover{color:oklch(34.85% 0 0);font-weight:600;opacity:1!important}
+a.tvg_blog_categories_dBTMvW_link:focus-visible{outline-offset:2px;outline:2px solid oklch(34.85% 0 0)}
+a.tvg_blog_categories_dBTMvW_link[aria-current=page]{color:oklch(34.85% 0 0);border-bottom:1px solid oklch(34.85% 0 0);font-weight:600}
+@media print,screen and (width>=48em){.tvg_blog_categories_dBTMvW_section_wrapper{padding:1.5rem 1.5rem 2rem}
+.tvg_blog_categories_dBTMvW_title{letter-spacing:-.105rem;margin:.25rem 0 2.5rem;letter-spacing:-.105rem;margin-left:-.5rem;font-family:Cardinal Fruit,Georgia,Book Antiqua,Times New Roman,serif;font-size:3.5rem;font-weight:400;line-height:98%}
+.tvg_blog_categories_dBTMvW_nav{padding-top:.25rem}
+a.tvg_blog_categories_dBTMvW_link{letter-spacing:.0525rem;font-size:.875rem}
+}
+</style>
+
+{% liquid
+  assign title = section.settings.title | default: ''
+  assign show_breadcrumbs = section.settings.show_breadcrumbs | default: true, allow_false: true
+  assign blog_tags_raw = section.settings.blog_tags | split: ','
+  assign blog_tags = ''
+  assign seen_tags = '|'
+
+  for tag in blog_tags_raw
+    assign tag_trimmed = tag | strip
+    if tag_trimmed == blank
+      continue
+    endif
+
+    assign tag_key = tag_trimmed | downcase
+    assign tag_marker = '|' | append: tag_key | append: '|'
+
+    unless seen_tags contains tag_marker
+      assign seen_tags = seen_tags | append: tag_key | append: '|'
+      if blog_tags == blank
+        assign blog_tags = tag_trimmed
+      else
+        assign blog_tags = blog_tags | append: '|||' | append: tag_trimmed
+      endif
+    endunless
+  endfor
+
+  if blog_tags != blank
+    assign blog_tags = blog_tags | split: '|||'
+  endif
+%}
+
+<div>
+  {% if show_breadcrumbs %}
+    <div>
+      {% render 'breadcrumbs', breadcrumbs_title: blog.title %}
+    </div>
+  {% endif %}
+
+  <div class="tvg_blog_categories_dBTMvW_section_wrapper">
+    {% if title != blank %}
+      <h1 class="tvg_blog_categories_dBTMvW_title">
+        {{ title }}
+      </h1>
+    {% endif %}
+
+    <nav class="tvg_blog_categories_dBTMvW_nav" aria-label="{{ 'categories_label' | t }}">
+      <ul class="tvg_blog_categories_dBTMvW_list" role="list">
+        <li class="tvg_blog_categories_dBTMvW_item">
+          <a
+            href="{{ blog.url }}"
+            class="tvg_blog_categories_dBTMvW_link"
+            {% if current_tags == blank %}
+              aria-current="page"
+            {% endif %}
+          >
+            {{ 'all_label' | t }}
+          </a>
+        </li>
+        {% if blog_tags != blank %}
+          {% for tag in blog_tags %}
+            <li class="tvg_blog_categories_dBTMvW_item">
+              <a
+                href="{{ blog.url }}/tagged/{{ tag | handleize }}"
+                class="tvg_blog_categories_dBTMvW_link"
+                {% if current_tags contains tag %}
+                  aria-current="page"
+                {% endif %}
+              >
+                {{ tag }}
+              </a>
+            </li>
+          {% endfor %}
+        {% endif %}
+      </ul>
+    </nav>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Blog Categories",
+  "tag": "section",
+  "enabled_on": {
+    "templates": ["blog"]
+  },
+  "locales": {
+    "en": {
+      "all_label": "All",
+      "categories_label": "Blog categories"
+    }
+  },
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_breadcrumbs",
+      "label": "Show breadcrumbs",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Categories"
+    },
+    {
+      "type": "text",
+      "id": "blog_tags",
+      "label": "Blog tags",
+      "default": "featured, journal, test, trending, video",
+      "info": "Enter the blog tags separated by commas. Example: 'blog, news, tips, etc.'"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Blog Categories",
+      "category": "Blog",
+      "settings": {}
+    }
+  ]
+}
+{% endschema %}

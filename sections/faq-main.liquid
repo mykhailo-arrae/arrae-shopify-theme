@@ -1,0 +1,48 @@
+{% # DO NOT EDIT: This file is auto-generated and will be overwritten. [build-fingerprint:assets:source={_js/sections/faq-main/section.liquid}] %}
+
+<style>
+.tvg_faq_main_EB-nqG_content{box-sizing:border-box;width:100%;max-width:94.5rem;margin:2.5rem auto;padding:0 1rem}
+</style>
+
+{%- liquid
+  assign show_breadcrumbs = section.settings.show_breadcrumbs
+  assign show_content = section.settings.show_content
+
+  if show_breadcrumbs
+    render 'breadcrumbs'
+  endif
+-%}
+
+{% if page.content != blank and show_content %}
+  <div class="tvg_faq_main_EB-nqG_content">
+    {{ page.content }}
+  </div>
+{% endif %}
+
+{% schema %}
+{
+  "name": "FAQ Main",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_breadcrumbs",
+      "label": "Show breadcrumbs",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_content",
+      "label": "Show content",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "FAQ Main",
+      "category": "Page Content",
+      "settings": {}
+    }
+  ]
+}
+{% endschema %}

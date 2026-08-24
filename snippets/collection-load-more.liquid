@@ -1,0 +1,90 @@
+{% # DO NOT EDIT: This file is auto-generated and will be overwritten. [build-fingerprint:assets:source={_js/snippets/collection-load-more/snippet.liquid}] %}
+
+<div class="portable-snippet" data-snippet-name="collection-load-more">
+
+<style>
+.tvg_collection_load_more_KIHLoG_root{text-align:center;flex-direction:column;align-items:center;gap:.75rem;padding:1.5rem 1rem;display:flex}
+.tvg_collection_load_more_KIHLoG_root[hidden]{display:none}
+.tvg_collection_load_more_KIHLoG_count{color:oklch(34.85% 0 0);margin:0;font-family:proxima-nova,-apple-system,blinkmacsystemfont,Segoe UI,roboto,oxygen-sans,ubuntu,cantarell,Helvetica Neue,sans-serif;font-size:1rem;font-weight:400;line-height:120%}
+.tvg_collection_load_more_KIHLoG_button{text-align:center;box-sizing:border-box;color:oklch(34.85% 0 0);text-transform:uppercase;letter-spacing:.035rem;cursor:pointer;padding:.5rem 3rem;background-color:oklch(99.59% .0093 99.98);border:.0625rem solid oklch(34.85% 0 0);border-radius:3rem;justify-content:center;align-items:center;gap:.5rem;height:2.375rem;min-height:2.375rem;padding-inline:1.25rem;font-family:proxima-nova,-apple-system,blinkmacsystemfont,Segoe UI,roboto,oxygen-sans,ubuntu,cantarell,Helvetica Neue,sans-serif;font-size:.875rem;font-weight:400;line-height:120%;text-decoration:none;transition:all .25s;display:flex;position:relative;overflow:hidden}
+.tvg_collection_load_more_KIHLoG_button svg{z-index:1;flex-direction:column;justify-content:center;align-items:center;width:1.5rem;height:1.5rem;display:flex}
+.tvg_collection_load_more_KIHLoG_button span{z-index:1}
+.tvg_collection_load_more_KIHLoG_button:hover{color:oklch(99.59% .0093 99.98);background-color:oklch(34.85% 0 0);border-color:oklch(34.85% 0 0)}
+.tvg_collection_load_more_KIHLoG_button:disabled{color:oklch(73.24% .0049 78.29);cursor:not-allowed;background-color:oklch(99.59% .0093 99.98);border-width:.0625rem!important;border-color:oklch(73.24% .0049 78.29)!important}
+.tvg_collection_load_more_KIHLoG_button[hidden]{display:none}
+.tvg_collection_load_more_KIHLoG_button[aria-busy=true]{cursor:progress}
+.tvg_collection_load_more_KIHLoG_button__label{z-index:1}
+.tvg_collection_load_more_KIHLoG_error{color:oklch(47.54% .17 26.63);margin:0;font-family:proxima-nova,-apple-system,blinkmacsystemfont,Segoe UI,roboto,oxygen-sans,ubuntu,cantarell,Helvetica Neue,sans-serif;font-size:.875rem;font-weight:300;line-height:120%}
+.tvg_collection_load_more_KIHLoG_error[hidden]{display:none}
+@media print,screen and (width>=64em){.tvg_collection_load_more_KIHLoG_root{padding:2.5rem 1rem}
+}
+</style>
+
+{% doc %}
+  Renders the async "Load more" control for the collection grid: a product
+  count ("[COUNT] out of [TOTAL] products") and a button that appends the next
+  page via the Section Rendering API.
+
+  Render inside a `{% paginate %}` block so it can read pagination state from
+  the `paginate` parameter. The button is hidden up-front when there is only a
+  single page.
+
+  @param {paginate} paginate - Liquid paginate object (required)
+  @param {section} section - Parent section, used to read settings (required)
+
+  @example
+  {% render 'collection-load-more', paginate: paginate, section: section %}
+{% enddoc %}
+
+{% liquid
+  assign load_more_label = section.settings.load_more_label | default: 'Load more'
+  assign progress_label = section.settings.progress_label | default: '[COUNT] out of [TOTAL] products'
+
+  assign total = paginate.items
+  assign total_pages = paginate.pages
+
+  assign loaded = paginate.current_offset | plus: paginate.page_size
+  if loaded > total
+    assign loaded = total
+  endif
+
+  assign initial_text = progress_label | replace: '[COUNT]', loaded | replace: '[TOTAL]', total
+%}
+
+{% comment %}
+  Hide the whole block when there is only a single page: with no "Load more"
+  button there is no pagination to surface, so the product count is hidden too.
+{% endcomment %}
+<div
+  class="tvg_collection_load_more_KIHLoG_root js-load-more-root"
+  data-total="{{ total }}"
+  data-per-page="{{ paginate.page_size }}"
+  data-current-page="{{ paginate.current_page }}"
+  data-total-pages="{{ total_pages }}"
+  {% if total_pages <= 1 %}
+    hidden
+  {% endif %}
+>
+  <p
+    class="tvg_collection_load_more_KIHLoG_count js-load-more-count"
+    data-template="{{ progress_label | escape }}"
+    role="status"
+    aria-live="polite"
+  >
+    {{- initial_text -}}
+  </p>
+
+  <button
+    type="button"
+    class="tvg_collection_load_more_KIHLoG_button js-load-more"
+    {% if total_pages <= 1 %}
+      hidden
+    {% endif %}
+  >
+    <span class="tvg_collection_load_more_KIHLoG_button__label">{{ load_more_label | truncate: 24 }}</span>
+  </button>
+
+  <p class="tvg_collection_load_more_KIHLoG_error js-load-more-error" role="alert" hidden></p>
+</div>
+
+</div>

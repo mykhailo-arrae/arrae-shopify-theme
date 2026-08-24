@@ -1,0 +1,80 @@
+{% # DO NOT EDIT: This file is auto-generated and will be overwritten. [build-fingerprint:assets:source={_js/snippets/pagination-load-more/snippet.liquid}] %}
+
+{% doc %}
+  Load-more style pagination: progress legend and a link to the next page.
+
+  Hidden on page 1 when there is no next page (e.g. fewer results than per_page).
+  On later pages with no next page, shows the legend and a disabled load-more button.
+
+  @param {paginate} paginate - Shopify paginate object (required)
+  @param {number} items_on_page - Number of items on the current page (required)
+
+  @example
+  {% paginate search.results by per_page %}
+    {%- render 'pagination-load-more', paginate: paginate, items_on_page: search.results.size -%}
+  {% endpaginate %}
+{% enddoc %}
+
+{% liquid
+  assign paginate = paginate | default: null
+  assign items_on_page = items_on_page | default: 0
+
+  unless paginate != blank
+    break
+  endunless
+
+  assign has_more = paginate.next.is_link
+  assign shown_count = paginate.current_offset | plus: items_on_page
+  if shown_count > paginate.items
+    assign shown_count = paginate.items
+  endif
+
+  assign total_count = paginate.items
+  assign load_more_label = 'general.pagination.load_more.button' | t
+
+  assign show_pagination = true
+  unless has_more
+    if paginate.current_page == 1
+      assign show_pagination = false
+    endif
+  endunless
+%}
+
+{% if show_pagination %}
+  {% render 'pagination-load-more-stylesheet' %}
+
+  <nav
+    class="tvg_pagination_load_more_Ououqa_root js-pagination-load-more{% unless has_more %} tvg_pagination_load_more_Ououqa_root--complete{% endunless %}"
+    aria-label="{{ 'general.pagination.load_more.title' | t }}"
+    data-next-url="{% if has_more %}{{ paginate.next.url }}{% endif %}"
+    data-current-page="{{ paginate.current_page }}"
+    data-total-pages="{{ paginate.pages }}"
+    data-has-more="{% if has_more %}true{% else %}false{% endif %}"
+  >
+    <p class="tvg_pagination_load_more_Ououqa_legend">
+      <strong class="tvg_pagination_load_more_Ououqa_legend__count">{{ shown_count }}</strong>
+      <span class="tvg_pagination_load_more_Ououqa_legend__text">{{ 'general.pagination.load_more.out_of' | t }}</span>
+      <strong class="tvg_pagination_load_more_Ououqa_legend__count">{{ total_count }}</strong>
+      <span class="tvg_pagination_load_more_Ououqa_legend__text">{{ 'general.pagination.load_more.products' | t }}</span>
+    </p>
+
+    {% if has_more %}
+      {% render 'core-button',
+        url: paginate.next.url,
+        label: load_more_label,
+        style: 'secondary',
+        target: '_self',
+        class: 'tvg_pagination_load_more_Ououqa_button js-pagination-load-more-button',
+        attributes: 'rel="next"'
+      %}
+    {% else %}
+      {% render 'core-button',
+        label: load_more_label,
+        style: 'secondary',
+        type: 'button',
+        is_disabled: true,
+        class: 'tvg_pagination_load_more_Ououqa_button js-pagination-load-more-button'
+      %}
+    {% endif %}
+  </nav>
+{% endif %}

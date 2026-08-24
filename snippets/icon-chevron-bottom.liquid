@@ -1,0 +1,20 @@
+{% liquid
+  assign width = width | default: 40
+  assign height = height | default: 40
+  assign fill = fill | default: 'currentColor'
+
+  assign title_fallback = 'accessibility.icons.chevron_bottom' | t
+  assign title = title | default: title_fallback
+%}
+
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="{{ width }}"
+  height="{{ height }}"
+  viewBox="0 0 40 40"
+  fill="none"
+  aria-labelledby="chevron-bottom"
+>
+  <title id="chevron-bottom">{{ title }}</title>
+  <path fill-rule="evenodd" clip-rule="evenodd" d="M19.882 23.125C19.7571 23.1249 19.6392 23.1026 19.5305 23.0576C19.4182 23.0111 19.3115 22.9329 19.2111 22.8291L14.425 17.877C14.3193 17.7676 14.2513 17.6424 14.2512 17.5039C14.2512 17.3653 14.3193 17.2403 14.425 17.1309C14.5349 17.0172 14.6667 16.95 14.8166 16.9639C14.949 16.9763 15.0639 17.0342 15.1574 17.1309L19.5852 21.7109L19.5871 21.7129L19.882 22.0371L20.177 21.7129L20.1799 21.7109L24.6066 17.1309C24.7119 17.022 24.8353 16.9494 24.9738 16.9492C25.1124 16.9493 25.2348 17.022 25.34 17.1309C25.4504 17.245 25.5124 17.3793 25.4992 17.5293C25.4874 17.6628 25.4335 17.7803 25.34 17.877L20.5529 22.8291C20.4527 22.9327 20.3467 23.0112 20.2346 23.0576C20.1257 23.1026 20.0072 23.125 19.882 23.125Z" fill="{{  fill }}"/>
+</svg>
