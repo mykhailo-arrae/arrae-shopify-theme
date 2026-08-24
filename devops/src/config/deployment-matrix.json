@@ -4,7 +4,7 @@
     "dev-testing": {
       "environment": [
         {
-          "name": "arrae-staging",
+          "name": "arrae-test",
           "contentOverridePatterns": ""
         }
       ]
@@ -12,11 +12,7 @@
     "dev-qa": {
       "environment": [
         {
-          "name": "arrae-staging",
-          "contentOverridePatterns": ""
-        },
-        {
-          "name": "arrae-wellness",
+          "name": "arrae-test",
           "contentOverridePatterns": ""
         }
       ]
@@ -24,11 +20,7 @@
     "uat": {
       "environment": [
         {
-          "name": "arrae-staging",
-          "contentOverridePatterns": ""
-        },
-        {
-          "name": "arrae-wellness",
+          "name": "arrae-test",
           "contentOverridePatterns": ""
         }
       ]

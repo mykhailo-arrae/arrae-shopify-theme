@@ -300,7 +300,6 @@ If you must use Docker Desktop and experience slowdowns, optimize these settings
 The project follows `[YEAR]w[WEEK_NUMBER]` release naming convention, e.g., `2021w08` or `2021w52`, to mark weekly cumulative releases.
 
 [attach to container]: https://code.visualstudio.com/docs/remote/attach-container
-[backup_themes_workflow]: /.github/workflows/backup-themes.yml
 [development_themes]: https://shopify.dev/themes/tools/cli#development-themes
 [download docker]: https://www.docker.com/community-edition#/download
 [github flow]: http://scottchacon.com/2011/08/31/github-flow.html

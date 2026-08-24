@@ -101,10 +101,8 @@ The deployments journal each deployment attempt as Git commits in a dedicated
 branch, providing a clear audit trail and simplifying rollbacks, and aiding in
 debugging deployment-related issues.
 
-The Theme Backup system runs scheduled GitHub Actions (`backup-themes`,
-`track-themes`) to automatically back up live themes and other critical themes.
-These changes are committed to dedicated Git branches, which preserves the history of
-deployments for safe disaster recovery and regression investigations.
+Theme backup / track jobs are optional. This repo uses a single `arrae-test`
+GitHub Action for CI and deploy to `arrae-test.myshopify.com`. See [CI.md](../CI.md).
 
 The CI/CD pipeline features are optional. Clients can start using the
 development environment only without having to adopt the theme deployments or theme
