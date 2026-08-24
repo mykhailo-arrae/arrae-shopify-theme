@@ -36,6 +36,7 @@ _js/sections/collection/styles.scss.ts linguist-generated=true merge=ours
 _js/sections/compare/styles.scss.ts linguist-generated=true merge=ours
 _js/sections/contact/styles.scss.ts linguist-generated=true merge=ours
 _js/sections/create-your-routine/styles.scss.ts linguist-generated=true merge=ours
+_js/sections/dummy/styles.scss.ts linguist-generated=true merge=ours
 _js/sections/education-slideshow/styles.scss.ts linguist-generated=true merge=ours
 _js/sections/faq-main/styles.scss.ts linguist-generated=true merge=ours
 _js/sections/faq/styles.scss.ts linguist-generated=true merge=ours
@@ -160,6 +161,7 @@ sections/collection.liquid linguist-generated=true merge=ours
 sections/compare.liquid linguist-generated=true merge=ours
 sections/contact.liquid linguist-generated=true merge=ours
 sections/create-your-routine.liquid linguist-generated=true merge=ours
+sections/dummy.liquid linguist-generated=true merge=ours
 sections/education-slideshow.liquid linguist-generated=true merge=ours
 sections/faq-main.liquid linguist-generated=true merge=ours
 sections/faq.liquid linguist-generated=true merge=ours

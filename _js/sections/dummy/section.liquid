@@ -1,0 +1,68 @@
+{% liquid
+  assign heading = section.settings.heading
+  assign text = section.settings.text
+  assign image = section.settings.image
+  assign image_alt = heading | strip | default: image.alt | default: ''
+%}
+
+<div
+  class="{# style container #}"
+  data-section-id="{{ section.id }}"
+>
+  <div class="{# style media #}">
+    {% if image != blank %}
+      {% render 'core-image',
+        image: image,
+        image_alt_text: image_alt,
+        object_fit: 'cover',
+        class: '{# style image #}',
+        lazyload: true,
+        srcset_print_sizes: '480,640,800,960,1280,1600'
+      %}
+    {% else %}
+      {{ 'lifestyle-1' | placeholder_svg_tag: '{# style placeholder #}' }}
+    {% endif %}
+  </div>
+
+  <div class="{# style content #}">
+    {% if heading != blank %}
+      <h2 class="{# style heading #}">{{ heading }}</h2>
+    {% endif %}
+
+    {% if text != blank %}
+      <p class="{# style text #}">{{ text }}</p>
+    {% endif %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Dummy",
+  "tag": "section",
+  "class": "{# style section #}",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Dummy section"
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Text",
+      "default": "Throwaway homepage block so we can see how a section behaves."
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Dummy"
+    }
+  ]
+}
+{% endschema %}

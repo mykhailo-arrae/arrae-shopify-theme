@@ -30,6 +30,7 @@ _js/sections/collection/styles.scss.ts
 _js/sections/compare/styles.scss.ts
 _js/sections/contact/styles.scss.ts
 _js/sections/create-your-routine/styles.scss.ts
+_js/sections/dummy/styles.scss.ts
 _js/sections/education-slideshow/styles.scss.ts
 _js/sections/faq-main/styles.scss.ts
 _js/sections/faq/styles.scss.ts
@@ -154,6 +155,7 @@ sections/collection.liquid
 sections/compare.liquid
 sections/contact.liquid
 sections/create-your-routine.liquid
+sections/dummy.liquid
 sections/education-slideshow.liquid
 sections/faq-main.liquid
 sections/faq.liquid
