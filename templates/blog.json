@@ -1,103 +1,50 @@
 {
-  "order": ["main"],
+  "order": [
+    "blog_categories",
+    "blog_featured_article",
+    "journal_article_highlight_4W4dyn",
+    "main"
+  ],
   "sections": {
-    "main": {
-      "block_order": ["title"],
-      "blocks": {
-        "static-blog-post-card": {
-          "block_order": [],
-          "blocks": {
-            "blog-post-details": {
-              "blocks": {},
-              "name": "t:names.details",
-              "settings": {
-                "alignment": "left",
-                "padding-block-end": 0,
-                "padding-block-start": 0,
-                "show_alignment": false,
-                "show_author": false,
-                "show_date": true,
-                "type_preset": ""
-              },
-              "static": true,
-              "type": "_blog-post-info-text"
-            },
-            "heading": {
-              "blocks": {},
-              "name": "t:names.title",
-              "settings": {
-                "alignment": "left",
-                "case": "none",
-                "color": "",
-                "font": "var(--font-primary--family)",
-                "font_size": "",
-                "letter_spacing": "normal",
-                "line_height": "normal",
-                "padding-block-end": 10,
-                "padding-block-start": 0,
-                "padding-inline-end": 0,
-                "padding-inline-start": 0,
-                "read_only": true,
-                "show_alignment": false,
-                "text": "",
-                "type_preset": "h4",
-                "wrap": "pretty"
-              },
-              "static": true,
-              "type": "_heading"
-            },
-            "image": {
-              "blocks": {},
-              "settings": {
-                "border": "none",
-                "border_opacity": 100,
-                "border_radius": 4,
-                "border_width": 1,
-                "height": "large"
-              },
-              "static": true,
-              "type": "_blog-post-image"
-            }
-          },
-          "settings": {
-            "alignment": "left"
-          },
-          "static": true,
-          "type": "_blog-post-card"
-        },
-        "title": {
-          "blocks": {},
-          "name": "Title",
-          "settings": {
-            "alignment": "left",
-            "background": false,
-            "background_color": "#00000026",
-            "case": "none",
-            "color": "",
-            "corner_radius": 0,
-            "font": "var(--font-primary--family)",
-            "font_size": "",
-            "letter_spacing": "normal",
-            "line_height": "normal",
-            "max_width": "narrow",
-            "padding-block-end": 48,
-            "padding-block-start": 48,
-            "padding-inline-end": 0,
-            "padding-inline-start": 0,
-            "text": "<p>{{ closest.blog.title }}</p>",
-            "type_preset": "h2",
-            "width": "fit-content",
-            "wrap": "pretty"
-          },
-          "type": "text"
-        }
-      },
+    "blog_categories": {
       "settings": {
-        "color_scheme": "",
-        "padding-block-end": 48,
-        "padding-block-start": 0
+        "blog_tags": "THE ALIGN EDIT, WELLNESS, GUIDES, FOUNDER STORIES, COMMUNITY, RECIPES, PODCASTS",
+        "show_breadcrumbs": true,
+        "title": "Your go-to space for women's wellness"
       },
-      "type": "main-blog"
+      "type": "blog-categories"
+    },
+    "blog_featured_article": {
+      "settings": {
+        "featured_article": "arrae-journal/protein-playbook"
+      },
+      "type": "blog-featured-article"
+    },
+    "journal_article_highlight_4W4dyn": {
+      "name": "Journal Article Highlight",
+      "settings": {
+        "articles": [
+          "arrae-journal/pia-mance",
+          "arrae-journal/strawberry-protein-probiotic-smoothie-recipe",
+          "arrae-journal/jess-hunt"
+        ],
+        "cta_label": "",
+        "cta_url": "/",
+        "heading": "",
+        "show_arrows": true,
+        "show_pagination": true,
+        "subheading": ""
+      },
+      "type": "journal-article-highlight"
+    },
+    "main": {
+      "settings": {
+        "featured_article": "",
+        "highlight_articles": [],
+        "load_more_label": "Load more"
+      },
+      "type": "blog-main"
     }
-  }
+  },
+  "wrapper": "main.Blog[role='main']"
 }

@@ -3,8 +3,8 @@
   "sections": {
     "main": {
       "settings": {},
-      "type": "page-main"
+      "type": "page-legal"
     }
   },
-  "wrapper": "main.o-main[role='main']"
+  "wrapper": "main.PageLegal[role='main']"
 }
