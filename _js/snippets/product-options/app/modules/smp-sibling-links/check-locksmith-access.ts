@@ -1,3 +1,5 @@
+import type { JSONValue } from '../../../../../core/typescript/json-value.js'
+
 const accessByPath = new Map<string, boolean>()
 
 const toPath = (url: string): string | null => {
@@ -7,6 +9,20 @@ const toPath = (url: string): string | null => {
   } catch {
     return null
   }
+}
+
+const readAccessGranted = (data: JSONValue, path: string): boolean => {
+  if (data == null || typeof data !== 'object' || Array.isArray(data)) {
+    return true
+  }
+
+  const entry = data[path]
+  if (entry == null || typeof entry !== 'object' || Array.isArray(entry)) {
+    return true
+  }
+
+  const value = entry.access_granted
+  return typeof value === 'boolean' ? value : true
 }
 
 /**
@@ -52,12 +68,10 @@ export const checkLocksmithAccess = async (
         throw new Error(`Locksmith API responded with ${res.status}`)
       }
 
-      const data: Record<string, { access_granted?: boolean }> = JSON.parse(
-        await res.text()
-      )
+      const data: JSONValue = JSON.parse(await res.text())
 
       uncachedPaths.forEach((path) => {
-        accessByPath.set(path, data[path]?.access_granted ?? true)
+        accessByPath.set(path, readAccessGranted(data, path))
       })
     } catch {
       // Locksmith app not installed on this shop, proxy hiccup, etc.
