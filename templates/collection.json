@@ -1,0 +1,98 @@
+{
+  "order": ["page_header_JrNNbc", "main"],
+  "sections": {
+    "main": {
+      "block_order": [
+        "product_section_TGVmyM",
+        "product_section_MMapn8",
+        "product_section_pQwbKJ",
+        "product_section_HgfAwA",
+        "product_section_aeUQmA",
+        "product_section_RgFxxP",
+        "product_section_e9rXQr"
+      ],
+      "blocks": {
+        "product_section_HgfAwA": {
+          "settings": {
+            "collection": "hormonal-health",
+            "tag_name": "Hormonal Health",
+            "use_pill_style": false
+          },
+          "type": "product_section"
+        },
+        "product_section_MMapn8": {
+          "settings": {
+            "collection": "fitness-essentials",
+            "tag_name": "Fitness & Performance",
+            "use_pill_style": false
+          },
+          "type": "product_section"
+        },
+        "product_section_RgFxxP": {
+          "settings": {
+            "collection": "best-sellers",
+            "tag_name": "Best Sellers",
+            "use_pill_style": false
+          },
+          "type": "product_section"
+        },
+        "product_section_TGVmyM": {
+          "settings": {
+            "collection": "weight-management",
+            "tag_name": "Metabolic Health",
+            "use_pill_style": false
+          },
+          "type": "product_section"
+        },
+        "product_section_aeUQmA": {
+          "settings": {
+            "collection": "sleep-mood",
+            "tag_name": "Sleep & Mood",
+            "use_pill_style": false
+          },
+          "type": "product_section"
+        },
+        "product_section_e9rXQr": {
+          "settings": {
+            "collection": "shop-all",
+            "tag_name": "Shop all",
+            "use_pill_style": true
+          },
+          "type": "product_section"
+        },
+        "product_section_pQwbKJ": {
+          "settings": {
+            "collection": "gut-health",
+            "tag_name": "Gut Health",
+            "use_pill_style": false
+          },
+          "type": "product_section"
+        }
+      },
+      "settings": {
+        "load_more_label": "Load more",
+        "products_per_view": 18,
+        "progress_label": "[COUNT] out of [TOTAL] products",
+        "show_filters": true,
+        "show_grid_layout": true,
+        "show_sort_by": true
+      },
+      "type": "collection"
+    },
+    "page_header_JrNNbc": {
+      "name": "Page Header",
+      "settings": {
+        "background_image_desktop": "shopify://shop_images/2026-07-30_10.27.05.png",
+        "background_image_mobile": "shopify://shop_images/Image_12.png",
+        "heading": "Targeted Supplements for[br]unsexy problems.",
+        "overlay_color": "#000000",
+        "overlay_opacity": "25",
+        "show_breadcrumbs": true,
+        "subheading": "Explore all of our formulas.",
+        "text_color": "light"
+      },
+      "type": "page-header"
+    }
+  },
+  "wrapper": "main.Collection[role='main']"
+}
