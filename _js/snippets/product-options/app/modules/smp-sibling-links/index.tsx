@@ -1,10 +1,12 @@
 import clsx from 'clsx'
 import type { FC, FocusEvent, MouseEvent } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { initMainBus } from '../../../../../core/messaging/main/index.js'
 import { getLocaleString } from '../../../../../core/shopify/get-locale-string.js'
 import { kebabCase } from '../../../../../core/string/kebab-case.js'
 import { prefetchQuickshopProduct } from '../../../../../sections/quickshop/helpers.js'
 import type { SmpSiblingOption } from '../../io.js'
+import { checkLocksmithAccess } from './check-locksmith-access.js'
 import styles from './style.module.scss'
 import {
   isPrimaryUnmodifiedClick,
@@ -48,6 +50,51 @@ export const SmpSiblingLinks: FC<Props> = ({
             fallback: `Select ${productTitle}:`
           }
         )
+
+  // Non-current siblings may be locked (e.g. an unreleased product gated
+  // behind a Locksmith password). Never render, prefetch, or swap into one
+  // until Locksmith's Storefront API confirms this visitor has access —
+  // the raw product fetch used for the swap does not reliably reflect lock
+  // state on its own, so this check is the source of truth.
+  const otherOptionUrls = useMemo(
+    () =>
+      smpSiblingOptions
+        .filter((option) => !option.isCurrentProduct)
+        .map((option) => option.url),
+    [smpSiblingOptions]
+  )
+
+  const [accessByUrl, setAccessByUrl] = useState<Map<string, boolean> | null>(
+    otherOptionUrls.length === 0 ? new Map() : null
+  )
+
+  useEffect(() => {
+    if (otherOptionUrls.length === 0) {
+      setAccessByUrl(new Map())
+      return
+    }
+
+    let cancelled = false
+
+    void checkLocksmithAccess(otherOptionUrls).then((map) => {
+      if (!cancelled) {
+        setAccessByUrl(map)
+      }
+    })
+
+    return () => {
+      cancelled = true
+    }
+  }, [otherOptionUrls])
+
+  const visibleOptions = smpSiblingOptions.filter((option) => {
+    if (option.isCurrentProduct) {
+      return true
+    }
+    // While the access check is in flight (accessByUrl == null), hide —
+    // never show a locked sibling link, even briefly.
+    return accessByUrl?.get(option.url) === true
+  })
 
   const handlePrefetch = (
     event: MouseEvent<HTMLAnchorElement> | FocusEvent<HTMLAnchorElement>,
@@ -110,7 +157,7 @@ export const SmpSiblingLinks: FC<Props> = ({
         role="list"
         aria-label={titlePrefix}
       >
-        {smpSiblingOptions.map((option) => {
+        {visibleOptions.map((option) => {
           const itemClass = clsx(styles['SmpSiblingLinks-item'], {
             [styles['SmpSiblingLinks-item--current']]: option.isCurrentProduct
           })
