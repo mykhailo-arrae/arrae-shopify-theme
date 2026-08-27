@@ -1,0 +1,75 @@
+{
+  "order": ["dummy", "featured_collections_t74N6y"],
+  "sections": {
+    "dummy": {
+      "name": "Dummy",
+      "settings": {
+        "heading": "Dummy section",
+        "image": "shopify://shop_images/section_1_0e75570e-9784-4ad4-aead-f8bdffdd82c4.png",
+        "text": "Throwaway homepage block so we can see how a section behaves."
+      },
+      "type": "dummy"
+    },
+    "featured_collections_t74N6y": {
+      "block_order": [
+        "tab_tcwBEw",
+        "tab_pqq3Vp",
+        "tab_tGz7by",
+        "tab_3Qr9Cd",
+        "tab_JWCWVW"
+      ],
+      "blocks": {
+        "tab_3Qr9Cd": {
+          "settings": {
+            "collection": "hormonal-health",
+            "products": [],
+            "tab_label": "Hormonal health"
+          },
+          "type": "tab"
+        },
+        "tab_JWCWVW": {
+          "settings": {
+            "collection": "sleep-mood",
+            "products": [],
+            "tab_label": "SLEEP & MOOD"
+          },
+          "type": "tab"
+        },
+        "tab_pqq3Vp": {
+          "settings": {
+            "collection": "fitness-essentials",
+            "products": [],
+            "tab_label": "FITNESS & PERFORMANCE"
+          },
+          "type": "tab"
+        },
+        "tab_tGz7by": {
+          "settings": {
+            "collection": "gut-health",
+            "products": [],
+            "tab_label": "GUT HEALTH"
+          },
+          "type": "tab"
+        },
+        "tab_tcwBEw": {
+          "settings": {
+            "collection": "",
+            "products": ["bloat", "tone-sour-green-apple", "mb-1"],
+            "tab_label": "METABOLIC HEALTH"
+          },
+          "type": "tab"
+        }
+      },
+      "name": "Featured Collections",
+      "settings": {
+        "cta_label": "SHOP ALL",
+        "cta_link": "/collections/shop-all",
+        "show_arrows": true,
+        "show_pagination": false,
+        "title": "Find Your Daily Wellness Essentials"
+      },
+      "type": "featured-collections"
+    }
+  },
+  "wrapper": "main.Index[role='main']"
+}
