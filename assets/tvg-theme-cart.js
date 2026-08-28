@@ -1,5 +1,0 @@
-"use strict";/*! DO NOT EDIT: This file is auto-generated and will be overwritten. [build-fingerprint:assets] */(self.webpackChunktvg_shopify_theme=self.webpackChunktvg_shopify_theme||[]).push([["5376"],{4534:function(__unused_webpack_module,__unused_webpack___webpack_exports__,__webpack_require__){
-var cart_v2=__webpack_require__(3976),traversal=__webpack_require__(5925),get_locale_string=__webpack_require__(7071);(async()=>{(0,cart_v2.initCart)().subscribe(({context})=>{let itemCount=context.cart?.item_count??0;(0,traversal.findElements)(
-document,".js-cart-item-count").forEach(counter=>{counter.textContent=`${itemCount}`,counter.setAttribute("data-item-count",`${itemCount}`);let ariaLabel=(0,get_locale_string.getLocaleString)("accessibility.icons.bag_count",{replacements:{count:itemCount.
-toString()},fallback:`(${itemCount.toString()}) items in the cart`});ariaLabel&&counter.setAttribute("aria-label",ariaLabel)})})})().catch(err=>{console.error(err)})}},function(__webpack_require__){__webpack_require__.O(0,["1845","5247","53\
-23","7288","9523"],function(){return __webpack_require__(__webpack_require__.s=4534)}),__webpack_require__.O()}]);
