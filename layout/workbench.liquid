@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="{{ shop.locale | default: 'en' }}">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Stylesheets -->
+    {{ 'main.css' | asset_url | stylesheet_tag }}
+    {{ 'wc-ssr.css' | asset_url | stylesheet_tag }}
+    {% render 'inline-css' %}
+
+    <!-- Custom header content -->
+    {{ content_for_header }}
+    <!-- End of custom header content -->
+  </head>
+
+  <body
+    class="{{ template | handle | split: '-' | first | prepend: 'template-' }} {% if template == blank %}no-template{% endif %}"
+    data-shopify-template="{{ template | handleize }}"
+  >
+    <main>
+      {{ content_for_layout }}
+    </main>
+
+    <script src="{{ 'option_selection.js' | shopify_asset_url }}" defer></script>
+
+    {% if template contains 'customer' %}
+      <script id="js-customer-input-4b1bed9b28254d1bb50e8b0d8c44afd9" type="application/json">
+        {
+          "currentTemplateName": {{ template.directory | append: '/' | append: template.name | handle | json }}
+        }
+      </script>
+
+      <script src="{{ 'shopify_common.js' | shopify_asset_url }}" defer></script>
+      <script src="{{ 'customer_area.js' | shopify_asset_url }}" defer></script>
+    {% endif %}
+
+    {% render 'asset-loader' %}
+  </body>
+</html>
