@@ -1,0 +1,10 @@
+{
+  "order": ["main"],
+  "sections": {
+    "main": {
+      "settings": {},
+      "type": "cart"
+    }
+  },
+  "wrapper": "main.Cart[role='main']"
+}
