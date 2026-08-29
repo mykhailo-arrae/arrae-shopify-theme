@@ -1,0 +1,10 @@
+{
+  "markets": {
+    "ca": {
+      "parent": "@default"
+    },
+    "eu": {
+      "parent": "@default"
+    }
+  }
+}
