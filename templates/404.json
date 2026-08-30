@@ -1,0 +1,17 @@
+{
+  "order": ["main"],
+  "sections": {
+    "main": {
+      "settings": {
+        "button_label": "continue shopping",
+        "button_link": "/",
+        "desktop_image": "shopify://shop_images/section_1_0e75570e-9784-4ad4-aead-f8bdffdd82c4.png",
+        "mobile_image": "shopify://shop_images/section_3_64a8870a-5653-4c98-b740-f005ed4a8253.png",
+        "subtext": "We don’t have a supplement for this one quite yet, but we do for plenty of other unsexy problems.",
+        "title": "Page not found."
+      },
+      "type": "404"
+    }
+  },
+  "wrapper": "main.PageNotFound[role='main']"
+}
