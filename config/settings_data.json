@@ -1,63 +1,6 @@
 {
   "current": {
     "apple_touch_icon": "",
-    "blocks": {
-      "10864971697205422121": {
-        "disabled": false,
-        "settings": {},
-        "type": "shopify://apps/gorgias-live-chat-helpdesk/blocks/gorgias/a66db725-7b96-4e3f-916e-6c8e6f87aaaa"
-      },
-      "16017602894386113438": {
-        "disabled": false,
-        "settings": {
-          "enablePreviewMode": true
-        },
-        "type": "shopify://apps/junip/blocks/junip-store-key/dc14f5a8-ed15-41b1-ad08-cfba23f9789b"
-      },
-      "16798170927650018749": {
-        "disabled": false,
-        "settings": {},
-        "type": "shopify://apps/recharge-subscriptions/blocks/storefront-experiences/371eed76-0b44-4869-9813-730372ea378e"
-      },
-      "17151115064775110295": {
-        "disabled": false,
-        "settings": {
-          "app_background": "#f7f7f7",
-          "app_container": 1200,
-          "app_vertical_padding": 32,
-          "cards_background": "#FFFFFF",
-          "cards_border_color": "rgba(0,0,0,0)",
-          "color_brand": "#1773B0",
-          "color_brand_secondary": "#1773B0",
-          "contrast_color": "#FFFFFF",
-          "corners": "8px",
-          "images_aspect_ratio": "1"
-        },
-        "type": "shopify://apps/recharge-subscriptions/blocks/recharge-theme/371eed76-0b44-4869-9813-730372ea378e"
-      },
-      "1877152918344802950": {
-        "disabled": false,
-        "settings": {},
-        "type": "shopify://apps/intelligems-a-b-testing/blocks/intelligems-script/fa83b64c-0c77-4c0c-b4b2-b94b42f5ef19"
-      },
-      "5017882195547572635": {
-        "disabled": true,
-        "settings": {},
-        "type": "shopify://apps/sc-easy-redirects/blocks/app/be3f8dbd-5d43-46b4-ba43-2d65046054c2"
-      },
-      "733389323033596483": {
-        "disabled": false,
-        "settings": {
-          "show_preview_data": true
-        },
-        "type": "shopify://apps/okendo/blocks/theme-settings/bb689e69-ea70-4661-8fb7-ad24a2e23c29"
-      },
-      "855628211100114053": {
-        "disabled": false,
-        "settings": {},
-        "type": "shopify://apps/klaviyo-email-marketing-sms/blocks/klaviyo-onsite-embed/2632fe16-c075-4321-a88b-50b567f42507"
-      }
-    },
     "cart_rewards_enable_gwp": true,
     "cart_rewards_free_shipping_threshold": "100",
     "cart_rewards_gwp_products": ["mini-bloat"],
