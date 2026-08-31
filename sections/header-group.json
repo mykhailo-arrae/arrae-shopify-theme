@@ -1,0 +1,560 @@
+{
+  "name": "Header",
+  "order": [
+    "announcement_bar_rxFKJA",
+    "header",
+    "search-drawer",
+    "cart-drawer",
+    "quickshop"
+  ],
+  "sections": {
+    "announcement_bar_rxFKJA": {
+      "block_order": ["text_hAiVVF", "text_Lmzz4H"],
+      "blocks": {
+        "text_Lmzz4H": {
+          "disabled": true,
+          "name": "Announcement",
+          "settings": {
+            "announcement": "Free Shipping on orders over $50",
+            "link": "",
+            "link_opens_in_new_tab": false
+          },
+          "type": "text"
+        },
+        "text_hAiVVF": {
+          "name": "Announcement",
+          "settings": {
+            "announcement": "FREE SHIPPING ON ALL SUBSCRIPTIONS",
+            "link": "",
+            "link_opens_in_new_tab": false
+          },
+          "type": "text"
+        }
+      },
+      "name": "Announcement Bar",
+      "settings": {
+        "autoplay_delay": 4
+      },
+      "type": "announcement-bar"
+    },
+    "cart-drawer": {
+      "settings": {},
+      "type": "cart-drawer"
+    },
+    "header": {
+      "block_order": ["nav_item_nHfgky", "nav_item_7chQXF", "nav_item_rHgNWx"],
+      "blocks": {
+        "nav_item_7chQXF": {
+          "block_order": [
+            "nav_collection_tiles_HYfQUb",
+            "nav_quick_links_M9F6BX",
+            "nav_quick_links_bDftjM",
+            "nav_quick_links_fc4NiL",
+            "nav_banner_zNadzA"
+          ],
+          "blocks": {
+            "nav_banner_zNadzA": {
+              "blocks": {},
+              "name": "Menu Banner",
+              "settings": {
+                "image": "shopify://shop_images/Banner_37fb3dfc-4974-46ec-8192-4754ab8fd12c.png",
+                "title": "Our Science",
+                "url": "shopify://collections"
+              },
+              "type": "nav-banner"
+            },
+            "nav_collection_tiles_HYfQUb": {
+              "block_order": ["nav_collection_tile_kdFK8M"],
+              "blocks": {
+                "nav_collection_tile_kdFK8M": {
+                  "blocks": {},
+                  "name": "Collection Tile",
+                  "settings": {
+                    "image_desktop": "shopify://shop_images/Frame_1538238841_1.png",
+                    "image_mobile": "shopify://shop_images/arrae_journal.png",
+                    "label": "The Arrae Journal",
+                    "url": "/pages/arrae-journal"
+                  },
+                  "type": "nav-collection-tile"
+                }
+              },
+              "name": "Collection Tiles",
+              "settings": {
+                "heading": "",
+                "single_row": false
+              },
+              "type": "nav-collection-tiles"
+            },
+            "nav_quick_links_M9F6BX": {
+              "block_order": [
+                "nav_quick_link_d6CdK9",
+                "nav_quick_link_Q4KfkR",
+                "nav_quick_link_6dV8bg",
+                "nav_quick_link_bkqkFJ",
+                "nav_quick_link_4qteYA"
+              ],
+              "blocks": {
+                "nav_quick_link_4qteYA": {
+                  "blocks": {},
+                  "disabled": true,
+                  "name": "Quick Link",
+                  "settings": {
+                    "label": "Our Formulas",
+                    "url": "/"
+                  },
+                  "type": "nav-quick-link"
+                },
+                "nav_quick_link_6dV8bg": {
+                  "blocks": {},
+                  "disabled": true,
+                  "name": "Quick Link",
+                  "settings": {
+                    "label": "FAQs",
+                    "url": "shopify://pages/faqs"
+                  },
+                  "type": "nav-quick-link"
+                },
+                "nav_quick_link_Q4KfkR": {
+                  "blocks": {},
+                  "name": "Quick Link",
+                  "settings": {
+                    "label": "Loyalty",
+                    "url": "shopify://pages/loyalty-program-v2"
+                  },
+                  "type": "nav-quick-link"
+                },
+                "nav_quick_link_bkqkFJ": {
+                  "blocks": {},
+                  "disabled": true,
+                  "name": "Quick Link",
+                  "settings": {
+                    "label": "Clinical Studies",
+                    "url": "/"
+                  },
+                  "type": "nav-quick-link"
+                },
+                "nav_quick_link_d6CdK9": {
+                  "blocks": {},
+                  "name": "Quick Link",
+                  "settings": {
+                    "label": "Our Story",
+                    "url": "shopify://pages/about-us"
+                  },
+                  "type": "nav-quick-link"
+                }
+              },
+              "name": "Quick Links",
+              "settings": {
+                "cta_label": "",
+                "cta_url": "",
+                "use_capital_case": false
+              },
+              "type": "nav-quick-links"
+            },
+            "nav_quick_links_bDftjM": {
+              "block_order": [
+                "nav_quick_link_LLTCkG",
+                "nav_quick_link_X8UFpG",
+                "nav_quick_link_Y7BQ9x",
+                "nav_quick_link_RFhW8x",
+                "nav_quick_link_hFNitD"
+              ],
+              "blocks": {
+                "nav_quick_link_LLTCkG": {
+                  "blocks": {},
+                  "disabled": true,
+                  "name": "Quick Link",
+                  "settings": {
+                    "label": "Our Story",
+                    "url": "shopify://pages/about-us"
+                  },
+                  "type": "nav-quick-link"
+                },
+                "nav_quick_link_RFhW8x": {
+                  "blocks": {},
+                  "name": "Quick Link",
+                  "settings": {
+                    "label": "Clinical Studies",
+                    "url": "/"
+                  },
+                  "type": "nav-quick-link"
+                },
+                "nav_quick_link_X8UFpG": {
+                  "blocks": {},
+                  "disabled": true,
+                  "name": "Quick Link",
+                  "settings": {
+                    "label": "Loyalty",
+                    "url": "shopify://pages/loyalty-program-v2"
+                  },
+                  "type": "nav-quick-link"
+                },
+                "nav_quick_link_Y7BQ9x": {
+                  "blocks": {},
+                  "disabled": true,
+                  "name": "Quick Link",
+                  "settings": {
+                    "label": "FAQs",
+                    "url": "shopify://pages/faqs"
+                  },
+                  "type": "nav-quick-link"
+                },
+                "nav_quick_link_hFNitD": {
+                  "blocks": {},
+                  "name": "Quick Link",
+                  "settings": {
+                    "label": "Our Formulas",
+                    "url": "/"
+                  },
+                  "type": "nav-quick-link"
+                }
+              },
+              "name": "Quick Links",
+              "settings": {
+                "cta_label": "",
+                "cta_url": "",
+                "use_capital_case": false
+              },
+              "type": "nav-quick-links"
+            },
+            "nav_quick_links_fc4NiL": {
+              "block_order": [
+                "nav_quick_link_37ANBF",
+                "nav_quick_link_cVaX8i",
+                "nav_quick_link_gkYGpn",
+                "nav_quick_link_3FRYz8",
+                "nav_quick_link_4VxpJ4"
+              ],
+              "blocks": {
+                "nav_quick_link_37ANBF": {
+                  "blocks": {},
+                  "disabled": true,
+                  "name": "Quick Link",
+                  "settings": {
+                    "label": "Our Story",
+                    "url": "shopify://pages/about-us"
+                  },
+                  "type": "nav-quick-link"
+                },
+                "nav_quick_link_3FRYz8": {
+                  "blocks": {},
+                  "disabled": true,
+                  "name": "Quick Link",
+                  "settings": {
+                    "label": "Clinical Studies",
+                    "url": "/"
+                  },
+                  "type": "nav-quick-link"
+                },
+                "nav_quick_link_4VxpJ4": {
+                  "blocks": {},
+                  "disabled": true,
+                  "name": "Quick Link",
+                  "settings": {
+                    "label": "Our Formulas",
+                    "url": "/"
+                  },
+                  "type": "nav-quick-link"
+                },
+                "nav_quick_link_cVaX8i": {
+                  "blocks": {},
+                  "disabled": true,
+                  "name": "Quick Link",
+                  "settings": {
+                    "label": "Loyalty",
+                    "url": "shopify://pages/loyalty-program-v2"
+                  },
+                  "type": "nav-quick-link"
+                },
+                "nav_quick_link_gkYGpn": {
+                  "blocks": {},
+                  "name": "Quick Link",
+                  "settings": {
+                    "label": "FAQs",
+                    "url": "shopify://pages/faqs"
+                  },
+                  "type": "nav-quick-link"
+                }
+              },
+              "name": "Quick Links",
+              "settings": {
+                "cta_label": "",
+                "cta_url": "",
+                "use_capital_case": false
+              },
+              "type": "nav-quick-links"
+            }
+          },
+          "name": "Nav Item",
+          "settings": {
+            "disable_outer_accordion": false,
+            "item_type": "mega_menu",
+            "label": "Learn",
+            "link_url": "",
+            "mobile_banner_title": "",
+            "mobile_banner_url": "",
+            "mobile_cta_label": "",
+            "mobile_cta_url": ""
+          },
+          "type": "nav-item"
+        },
+        "nav_item_nHfgky": {
+          "block_order": [
+            "nav_collection_tiles_EMkNTT",
+            "nav_quick_links_LyhtqL",
+            "nav_links_yejBW8",
+            "nav_links_QwPdbf",
+            "nav_links_RipPWw"
+          ],
+          "blocks": {
+            "nav_collection_tiles_EMkNTT": {
+              "block_order": [
+                "nav_collection_tile_LCyzDc",
+                "nav_collection_tile_UQ43LX",
+                "nav_collection_tile_PL6apb",
+                "nav_collection_tile_rF9Khw",
+                "nav_collection_tile_raDgM8",
+                "nav_collection_tile_JL6qLq"
+              ],
+              "blocks": {
+                "nav_collection_tile_JL6qLq": {
+                  "blocks": {},
+                  "name": "Collection Tile",
+                  "settings": {
+                    "image_desktop": "shopify://shop_images/Frame_1171277800_97cb402a-0e89-4978-9d86-14ca1488260b.png",
+                    "label": "Take Our Quiz",
+                    "url": "https://muf27hrj3lv.typeform.com/to/p8lr7FUQ"
+                  },
+                  "type": "nav-collection-tile"
+                },
+                "nav_collection_tile_LCyzDc": {
+                  "blocks": {},
+                  "name": "Collection Tile",
+                  "settings": {
+                    "image_desktop": "shopify://shop_images/Frame_1538238845.png",
+                    "label": "Metabolic Health",
+                    "url": "shopify://collections/weight-management"
+                  },
+                  "type": "nav-collection-tile"
+                },
+                "nav_collection_tile_PL6apb": {
+                  "blocks": {},
+                  "name": "Collection Tile",
+                  "settings": {
+                    "image_desktop": "shopify://shop_images/Frame_1538238843.png",
+                    "label": "Gut Health",
+                    "url": "shopify://collections/gut-health"
+                  },
+                  "type": "nav-collection-tile"
+                },
+                "nav_collection_tile_UQ43LX": {
+                  "blocks": {},
+                  "name": "Collection Tile",
+                  "settings": {
+                    "image_desktop": "shopify://shop_images/Frame_1538238844.png",
+                    "label": "Fitness & Performance",
+                    "url": "/collections/fitness-essentials"
+                  },
+                  "type": "nav-collection-tile"
+                },
+                "nav_collection_tile_rF9Khw": {
+                  "blocks": {},
+                  "name": "Collection Tile",
+                  "settings": {
+                    "image_desktop": "shopify://shop_images/Frame_1538238842.png",
+                    "label": "Hormonal Health",
+                    "url": "shopify://collections/hormonal-health"
+                  },
+                  "type": "nav-collection-tile"
+                },
+                "nav_collection_tile_raDgM8": {
+                  "blocks": {},
+                  "name": "Collection Tile",
+                  "settings": {
+                    "image_desktop": "shopify://shop_images/Frame_1538238841.png",
+                    "label": "Sleep & Mood",
+                    "url": "shopify://collections/sleep-mood"
+                  },
+                  "type": "nav-collection-tile"
+                }
+              },
+              "name": "Collection Tiles",
+              "settings": {
+                "heading": "Shop by Goal",
+                "single_row": true
+              },
+              "type": "nav-collection-tiles"
+            },
+            "nav_links_QwPdbf": {
+              "blocks": {},
+              "disabled": true,
+              "name": "Header Links",
+              "settings": {
+                "heading": "",
+                "menu": "mega-menu-by-product-2nd"
+              },
+              "type": "nav-links"
+            },
+            "nav_links_RipPWw": {
+              "blocks": {},
+              "name": "Header Links",
+              "settings": {
+                "heading": "Shop By bundles",
+                "menu": "mega-menu-by-bundles-duos"
+              },
+              "type": "nav-links"
+            },
+            "nav_links_yejBW8": {
+              "blocks": {},
+              "name": "Header Links",
+              "settings": {
+                "heading": "Shop By Product",
+                "menu": "mega-menu-by-product"
+              },
+              "type": "nav-links"
+            },
+            "nav_quick_links_LyhtqL": {
+              "block_order": ["nav_quick_link_dxrxTd"],
+              "blocks": {
+                "nav_quick_link_dxrxTd": {
+                  "blocks": {},
+                  "name": "Quick Link",
+                  "settings": {
+                    "label": "Shop best sellers",
+                    "url": "/collections/best-sellers"
+                  },
+                  "type": "nav-quick-link"
+                }
+              },
+              "name": "Quick Links",
+              "settings": {
+                "cta_label": "SHOP ALL",
+                "cta_url": "/collections/shop-all",
+                "use_capital_case": false
+              },
+              "type": "nav-quick-links"
+            }
+          },
+          "name": "Nav Item",
+          "settings": {
+            "disable_outer_accordion": true,
+            "item_type": "mega_menu",
+            "label": "Shop",
+            "link_url": "",
+            "mobile_banner_image": "shopify://shop_images/Banner_dcab9639-3ab4-47b4-bbed-cde0c1a98fac.png",
+            "mobile_banner_title": "",
+            "mobile_banner_url": "/collections/bundles-1",
+            "mobile_cta_label": "SHOP ALL",
+            "mobile_cta_url": "shopify://collections/shop-all"
+          },
+          "type": "nav-item"
+        },
+        "nav_item_rHgNWx": {
+          "blocks": {},
+          "name": "Nav Item",
+          "settings": {
+            "disable_outer_accordion": false,
+            "item_type": "link",
+            "label": "Find your Routine",
+            "link_url": "shopify://pages/about-us",
+            "mobile_banner_title": "",
+            "mobile_banner_url": "",
+            "mobile_cta_label": "",
+            "mobile_cta_url": ""
+          },
+          "type": "nav-item"
+        }
+      },
+      "settings": {
+        "logo_dark": "shopify://shop_images/logo-black.svg",
+        "logo_light": "shopify://shop_images/logo-white.svg",
+        "markets_allowed_countries": "US, CA, AU, GB, EUR, JP",
+        "show_account_button": true,
+        "show_markets_selector": true,
+        "use_drawer_mode_on_desktop": false
+      },
+      "type": "header"
+    },
+    "quickshop": {
+      "settings": {},
+      "type": "quickshop"
+    },
+    "search-drawer": {
+      "block_order": [
+        "suggestion_EUXdU9",
+        "suggestion_gRCNtK",
+        "suggestion_BnttYD",
+        "suggestion_ha3cFU",
+        "recommended_product_gwagqp",
+        "recommended_product_FFMFaz",
+        "recommended_product_MDxk9T",
+        "recommended_product_kf6MjX"
+      ],
+      "blocks": {
+        "recommended_product_FFMFaz": {
+          "settings": {
+            "product": "clear-protein-raspberry-yuzu"
+          },
+          "type": "recommended_product"
+        },
+        "recommended_product_MDxk9T": {
+          "settings": {
+            "product": "bloat-gummies"
+          },
+          "type": "recommended_product"
+        },
+        "recommended_product_gwagqp": {
+          "settings": {
+            "product": "tone-variety-pack"
+          },
+          "type": "recommended_product"
+        },
+        "recommended_product_kf6MjX": {
+          "settings": {
+            "product": "mb-1-max"
+          },
+          "type": "recommended_product"
+        },
+        "suggestion_BnttYD": {
+          "settings": {
+            "title": "Gut Health",
+            "url": "/search?q=gut"
+          },
+          "type": "suggestion"
+        },
+        "suggestion_EUXdU9": {
+          "settings": {
+            "title": "Metabolic Health",
+            "url": "/search?q=metabolism"
+          },
+          "type": "suggestion"
+        },
+        "suggestion_gRCNtK": {
+          "settings": {
+            "title": "Fitness & Performance",
+            "url": "/search?q=fitness"
+          },
+          "type": "suggestion"
+        },
+        "suggestion_ha3cFU": {
+          "settings": {
+            "title": "Hormonal Health",
+            "url": "/search?q=hormones"
+          },
+          "type": "suggestion"
+        }
+      },
+      "settings": {
+        "empty_results": "We could not find anything for",
+        "max_products": 4,
+        "recommendations_title": "Suggested Products",
+        "recommendations_title_searching": "Products",
+        "show_suggestions_on_search": true,
+        "suggestions_title": "Popular Search Terms",
+        "suggestions_title_searching": "Top Suggestions"
+      },
+      "type": "search-drawer"
+    }
+  },
+  "type": "header"
+}
