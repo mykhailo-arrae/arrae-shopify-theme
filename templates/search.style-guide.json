@@ -1,0 +1,10 @@
+{
+  "order": ["style-guide"],
+  "sections": {
+    "style-guide": {
+      "name": "Styleguide",
+      "settings": {},
+      "type": "style-guide"
+    }
+  }
+}
