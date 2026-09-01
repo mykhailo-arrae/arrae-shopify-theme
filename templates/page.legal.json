@@ -1,0 +1,10 @@
+{
+  "order": ["main"],
+  "sections": {
+    "main": {
+      "settings": {},
+      "type": "page-legal"
+    }
+  },
+  "wrapper": "main.PageLegal[role='main']"
+}
