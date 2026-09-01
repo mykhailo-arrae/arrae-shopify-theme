@@ -1,0 +1,14 @@
+{
+  "order": ["headline", "main"],
+  "sections": {
+    "headline": {
+      "settings": {},
+      "type": "article-headline"
+    },
+    "main": {
+      "settings": {},
+      "type": "article"
+    }
+  },
+  "wrapper": "main.Article[role='main']"
+}
