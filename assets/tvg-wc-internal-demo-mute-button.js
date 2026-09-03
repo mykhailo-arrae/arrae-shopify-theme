@@ -1,0 +1,54 @@
+"use strict";/*! DO NOT EDIT: This file is auto-generated and will be overwritten. [build-fingerprint:assets] */(self.webpackChunktvg_shopify_theme=self.webpackChunktvg_shopify_theme||[]).push([["463"],{8196:function(__unused_webpack_module,__unused_webpack___webpack_exports__,__webpack_require__){
+var _dec,_init_sound,_initProto,lit=__webpack_require__(943),decorators=__webpack_require__(9460),types=__webpack_require__(6548);class ImplementationError extends Error{details;constructor(message,details={traceTag:null}){super(message),this.
+details=details,Object.defineProperty(this,"name",{value:new.target.name,enumerable:false,configurable:true}),Object.setPrototypeOf(this,new.target.prototype)}}let mutedIcon=(0,lit.html)`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M13 30a1 1 0 0 1-.707-.293L4.586 22H1a1 1 0 0 1-1-1V11a1 1 0 0 1 1-1h3.586l7.707-7.707A1 1 0 0 1 14 3v26a1.002 1.002 0 0 1-1 1z"/></svg>`,
+unmutedIcon=(0,lit.html)`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M22.485 25.985a1.5 1.5 0 0 1-1.061-2.56c4.094-4.094 4.094-10.755 0-14.849a1.5 1.5 0 1 1 2.121-2.121c2.55 2.55 3.954 5.94 3.954 9.546s-1.404 6.996-3.954 9.546a1.495 1.495 0 0 1-1.061.439zm-5.328-2.828a1.5 1.5 0 0 1-1.061-2.56 6.508 6.508 0 0 0 0-9.192 1.5 1.5 0 1 1 2.121-2.121c3.704 3.704 3.704 9.731 0 13.435a1.495 1.495 0 0 1-1.061.439zM13 30a1 1 0 0 1-.707-.293L4.586 22H1a1 1 0 0 1-1-1V11a1 1 0 0 1 1-1h3.586l7.707-7.707A1 1 0 0 1 14 3v26a1.002 1.002 0 0 1-1 1z"/></svg>`;
+function applyDecs2203RFactory(){function createAddInitializerMethod(initializers,decoratorFinishedRef){return function addInitializer(initializer){assertNotFinished(decoratorFinishedRef,"addInitializer"),assertCallable(initializer,"An init\
+ializer"),initializers.push(initializer)}}function memberDec(dec,name,desc,initializers,kind,isStatic,isPrivate,metadata,value){switch(kind){case 1:kindStr="accessor";break;case 2:kindStr="method";break;case 3:kindStr="getter";break;case 4:
+kindStr="setter";break;default:kindStr="field"}var kindStr,get,set,ctx={kind:kindStr,name:isPrivate?"#"+name:name,static:isStatic,private:isPrivate,metadata},decoratorFinishedRef={v:false};ctx.addInitializer=createAddInitializerMethod(initializers,
+decoratorFinishedRef),0===kind?isPrivate?(get=desc.get,set=desc.set):(get=function(){return this[name]},set=function(v){this[name]=v}):2===kind?get=function(){return desc.value}:((1===kind||3===kind)&&(get=function(){return desc.get.call(this)}),
+(1===kind||4===kind)&&(set=function(v){desc.set.call(this,v)})),ctx.access=get&&set?{get,set}:get?{get}:{set};try{return dec(value,ctx)}finally{decoratorFinishedRef.v=true}}function assertNotFinished(decoratorFinishedRef,fnName){if(decoratorFinishedRef.
+v)throw Error("attempted to call "+fnName+" after decoration was finished")}function assertCallable(fn,hint){if("function"!=typeof fn)throw TypeError(hint+" must be a function")}function assertValidReturnValue(kind,value){var type=typeof value;
+if(1===kind){if("object"!==type||null===value)throw TypeError("accessor decorators must return an object with get, set, or init properties or void 0");void 0!==value.get&&assertCallable(value.get,"accessor.get"),void 0!==value.set&&assertCallable(
+value.set,"accessor.set"),void 0!==value.init&&assertCallable(value.init,"accessor.init")}else if("function"!==type)throw TypeError((0===kind?"field":10===kind?"class":"method")+" decorators must return a function or void 0")}function applyMemberDec(ret,base,decInfo,name,kind,isStatic,isPrivate,initializers,metadata){
+var desc,init,value,newValue,newInit,decs=decInfo[0];if(isPrivate?desc=0===kind||1===kind?{get:decInfo[3],set:decInfo[4]}:3===kind?{get:decInfo[3]}:4===kind?{set:decInfo[3]}:{value:decInfo[3]}:0!==kind&&(desc=Object.getOwnPropertyDescriptor(
+base,name)),1===kind?value={get:desc.get,set:desc.set}:2===kind?value=desc.value:3===kind?value=desc.get:4===kind&&(value=desc.set),"function"==typeof decs)void 0!==(newValue=memberDec(decs,name,desc,initializers,kind,isStatic,isPrivate,metadata,
+value))&&(assertValidReturnValue(kind,newValue),0===kind?init=newValue:1===kind?(init=newValue.init,value={get:newValue.get||value.get,set:newValue.set||value.set}):value=newValue);else for(var i=decs.length-1;i>=0;i--)void 0!==(newValue=memberDec(
+decs[i],name,desc,initializers,kind,isStatic,isPrivate,metadata,value))&&(assertValidReturnValue(kind,newValue),0===kind?newInit=newValue:1===kind?(newInit=newValue.init,value={get:newValue.get||value.get,set:newValue.set||value.set}):value=
+newValue,void 0!==newInit&&(void 0===init?init=newInit:"function"==typeof init?init=[init,newInit]:init.push(newInit)));if(0===kind||1===kind){if(void 0===init)init=function(instance,init2){return init2};else if("function"!=typeof init){var ownInitializers=init;
+init=function(instance,init2){for(var value2=init2,i2=0;i2<ownInitializers.length;i2++)value2=ownInitializers[i2].call(instance,value2);return value2}}else{var originalInitializer=init;init=function(instance,init2){return originalInitializer.
+call(instance,init2)}}ret.push(init)}0!==kind&&(1===kind?(desc.get=value.get,desc.set=value.set):2===kind?desc.value=value:3===kind?desc.get=value:4===kind&&(desc.set=value),isPrivate?1===kind?(ret.push(function(instance,args){return value.
+get.call(instance,args)}),ret.push(function(instance,args){return value.set.call(instance,args)})):2===kind?ret.push(value):ret.push(function(instance,args){return value.call(instance,args)}):Object.defineProperty(base,name,desc))}function applyMemberDecs(Class,decInfos,metadata){
+for(var ret=[],existingProtoNonFields=new Map,existingStaticNonFields=new Map,i=0;i<decInfos.length;i++){var protoInitializers,staticInitializers,base,initializers,decInfo=decInfos[i];if(Array.isArray(decInfo)){var kind=decInfo[1],name=decInfo[2],
+isPrivate=decInfo.length>3,isStatic=kind>=5;if(isStatic?(base=Class,kind-=5,initializers=staticInitializers=staticInitializers||[]):(base=Class.prototype,initializers=protoInitializers=protoInitializers||[]),0!==kind&&!isPrivate){var existingNonFields=isStatic?
+existingStaticNonFields:existingProtoNonFields,existingKind=existingNonFields.get(name)||0;if(true===existingKind||3===existingKind&&4!==kind||4===existingKind&&3!==kind)throw Error("Attempted to decorate a public method/accessor that has t\
+he same name as a previously decorated public method/accessor. This is not currently supported by the decorators plugin. Property name was: "+name);!existingKind&&kind>2?existingNonFields.set(name,kind):existingNonFields.set(name,true)}applyMemberDec(
+ret,base,decInfo,name,kind,isStatic,isPrivate,initializers,metadata)}}return pushInitializers(ret,protoInitializers),pushInitializers(ret,staticInitializers),ret}function pushInitializers(ret,initializers){initializers&&ret.push(function(instance){
+for(var i=0;i<initializers.length;i++)initializers[i].call(instance);return instance})}function applyClassDecs(targetClass,classDecs,metadata){if(classDecs.length>0){for(var initializers=[],newClass=targetClass,name=targetClass.name,i=classDecs.
+length-1;i>=0;i--){var decoratorFinishedRef={v:false};try{var nextNewClass=classDecs[i](newClass,{kind:"class",name,addInitializer:createAddInitializerMethod(initializers,decoratorFinishedRef),metadata})}finally{decoratorFinishedRef.v=true}
+void 0!==nextNewClass&&(assertValidReturnValue(10,nextNewClass),newClass=nextNewClass)}return[defineMetadata(newClass,metadata),function(){for(var i2=0;i2<initializers.length;i2++)initializers[i2].call(newClass)}]}}function defineMetadata(Class,metadata){
+return Object.defineProperty(Class,Symbol.metadata||Symbol.for("Symbol.metadata"),{configurable:true,enumerable:true,value:metadata})}return function applyDecs2203R(targetClass,memberDecs,classDecs,parentClass){if(void 0!==parentClass)var parentMetadata=parentClass[Symbol.
+metadata||Symbol.for("Symbol.metadata")];var metadata=Object.create(void 0===parentMetadata?null:parentMetadata),e=applyMemberDecs(targetClass,memberDecs,metadata);return classDecs.length||defineMetadata(targetClass,metadata),{e,get c(){return applyClassDecs(
+targetClass,classDecs,metadata)}}}}function _apply_decs_2203_r(targetClass,memberDecs,classDecs,parentClass){return(_apply_decs_2203_r=applyDecs2203RFactory())(targetClass,memberDecs,classDecs,parentClass)}let Context=types.object({locales:types.
+object({mute:types.string(),unmute:types.string()})});_dec=(0,decorators.property)();class InternalDemoMuteButton extends lit.LitElement{static{({e:[_init_sound,_initProto]}=_apply_decs_2203_r(this,[[_dec,1,"sound"]],[]))}static styles=[(0,
+lit.unsafeCSS)(":host{display:block}\n.container{color:#fff;cursor:pointer;text-transform:uppercase;background-color:#000;border:.125rem solid #000;border-radius:.25rem;flex-flow:row;justify-content:center;align-items:center;gap:.5rem;paddin\
+g:.5rem 1rem;font-size:1rem;font-weight:600;display:flex;position:relative}\n.icon{flex:0 0 1.5rem}\n.icon-placeholder{background-position:50%;background-repeat:no-repeat;background-size:contain;width:100%;height:0;padding:0 0 100%;display:bl\
+ock;position:relative;overflow:hidden}\n.icon-placeholder svg{fill:currentColor;width:100%;height:100%;position:absolute;top:0;left:0}\n.label{flex:none}\n.button{opacity:0;cursor:pointer;width:100%;height:100%;margin:0;padding:0;position:abso\
+lute;top:0;left:0;overflow:hidden}")];context;#___private_sound_1=(_initProto(this),_init_sound(this,"muted"));get sound(){return this.#___private_sound_1}set sound(_v){this.#___private_sound_1=_v}_toggleSound=()=>{this.sound="muted"===this.
+sound?"unmuted":"muted"};constructor(){super();const script=this.querySelector('script[type="application/json"]');if(null==script)throw new ImplementationError("Context JSON script not found");const contextResult=Context.safeParse(JSON.parse(
+script.textContent||"{}"));if(!contextResult.success)throw new ImplementationError("Context JSON script is invalid",{issues:contextResult.error.issues});this.context=contextResult.data}connectedCallback(){super.connectedCallback(),console.log(
+"Connected")}render(){return null==this.context?lit.nothing:(0,lit.html)`
+    <div class="container">
+      <div class="icon">
+        <div class="icon-placeholder">
+          ${"muted"===this.sound?mutedIcon:unmutedIcon}
+        </div>
+      </div>
+      <div class="label">
+        ${"muted"===this.sound?this.context.locales.unmute:this.context.locales.mute}
+      </div>
+      <button class="button" type='button' @click=${this._toggleSound}>
+        ${"muted"===this.sound?this.context.locales.unmute:this.context.locales.mute}
+      </button>
+    </div>
+    `}}customElements.define("internal-demo-mute-button",InternalDemoMuteButton)}},function(__webpack_require__){__webpack_require__.O(0,["6979","9523"],function(){return __webpack_require__(__webpack_require__.s=8196)}),__webpack_require__.
+O()}]);
