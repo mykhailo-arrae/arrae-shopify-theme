@@ -1,0 +1,101 @@
+{
+  "name": "Footer",
+  "order": ["usp_grid_section_eYXAtD", "footer"],
+  "sections": {
+    "footer": {
+      "block_order": [
+        "navigation_FEwgRi",
+        "navigation_zPaj8V",
+        "navigation_rPGCTq",
+        "navigation_rE9V6M"
+      ],
+      "blocks": {
+        "navigation_FEwgRi": {
+          "settings": {
+            "menu": "footer-categories",
+            "title": "Shop"
+          },
+          "type": "navigation"
+        },
+        "navigation_rE9V6M": {
+          "settings": {
+            "menu": "footer-support",
+            "title": "Support"
+          },
+          "type": "navigation"
+        },
+        "navigation_rPGCTq": {
+          "settings": {
+            "menu": "footer-social",
+            "title": "Social"
+          },
+          "type": "navigation"
+        },
+        "navigation_zPaj8V": {
+          "settings": {
+            "menu": "about-us",
+            "title": "Learn"
+          },
+          "type": "navigation"
+        }
+      },
+      "settings": {
+        "copyright_text": "Where Science Meets Chic - All Rights Reserved",
+        "footer_bottom_menu": "footer-menu-2nd-new",
+        "klaviyo_embed_id": "Vu46qq",
+        "klaviyo_list_id": "",
+        "klaviyo_public_api_key": "",
+        "newsletter_button": "SUBSCRIBE",
+        "newsletter_copy": "<p>Unlock your mystery discount. </p><p>Enter your best <em>email</em> and <em>phone</em> number to get your mystery code.</p>",
+        "newsletter_info": "<p>By submitting, you agree to receive informational and marketing texts from Arrae (incl. autodialer). Consent isn’t required for purchase. Msg & data rates may apply. Reply STOP to unsubscribe. <a href=\"/policies/privacy-policy\" title=\"Privacy Policy\">Privacy Policy</a></p>",
+        "newsletter_thanks_message": "Thank you for subscribing to our newsletter!",
+        "newsletter_type": "custom",
+        "show_copyright": true,
+        "show_logo": true
+      },
+      "type": "footer"
+    },
+    "usp_grid_section_eYXAtD": {
+      "block_order": [
+        "usp_item_bKrrVF",
+        "usp_item_UMaram",
+        "usp_item_zz8p9A",
+        "usp_item_dKae69"
+      ],
+      "blocks": {
+        "usp_item_UMaram": {
+          "settings": {
+            "icon_handle": "icon-science",
+            "supporting_copy": "Results You Can See & Feel"
+          },
+          "type": "usp-item"
+        },
+        "usp_item_bKrrVF": {
+          "settings": {
+            "icon_handle": "icon-target",
+            "supporting_copy": "Science-Backed Supplements"
+          },
+          "type": "usp-item"
+        },
+        "usp_item_dKae69": {
+          "settings": {
+            "icon_handle": "icon-focus",
+            "supporting_copy": "Transparent Third-Party Testing"
+          },
+          "type": "usp-item"
+        },
+        "usp_item_zz8p9A": {
+          "settings": {
+            "icon_handle": "icon-leaf",
+            "supporting_copy": "Clean, Natural Formulas"
+          },
+          "type": "usp-item"
+        }
+      },
+      "name": "USP Grid Section",
+      "settings": {},
+      "type": "usp-grid-section"
+    }
+  },
+  "type": "footer"
+}
